@@ -6,29 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('name',200);
+            $table->string('mobile_no',15)->nullable()->unique();
+            $table->string('email',255)->unique();
+            $table->enum('user_role', ['Owner','Subordinate'])->default('Subordinate');
+            $table->string('slug',255)->unique();
+            $table->boolean('default_password')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->unsignedBigInteger('created_by_id');
+            $table->softDeletes();
             $table->timestamps();
+            $table->rememberToken();
+            $table->foreign('created_by_id','users_fk_1')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('users');
