@@ -12,11 +12,11 @@ Route::get('/home', function () {
     return redirect('/dashboard');
 });
 
-
+Route::group(['middleware' => 'prevent.back.history'],function(){
     Auth::routes(['register' => false,'verify' => true,]);
 
     // Internal user route.
     Route::prefix('dashboard')->name('dashboard.')->group(function(){
         Route::get('/', [DashboardController::class, 'index'])->name('index');
     });
-
+});
