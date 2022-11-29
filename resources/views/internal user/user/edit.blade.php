@@ -140,7 +140,7 @@
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Mobile no </label>
                                 <div class="col-lg-8">
-                                    <input type="text" id="mobileNoInput" name="mobile_no" class="form-control form-control-sm @error('mobile_no') is-invalid @enderror" value="{{ (old('mobile_no') == null) ? $user->mobile_no : old('mobile_no')}}" placeholder="Ex: 16XXXXXXX" maxlength="20" required>
+                                    <input type="text" id="mobileNoInput" name="mobile_no" class="form-control form-control-sm @error('mobile_no') is-invalid @enderror" value="{{ (old('mobile_no') == null) ? $user->mobile_no : old('mobile_no')}}" placeholder="Ex: 16XXXXXXX" maxlength="20">
                                     <div class="invalid-feedback" id="mobileNoInputIntlTelInputExtraError" style="display: none;"></div>
                                     @error('mobile_no')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
