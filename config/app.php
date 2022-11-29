@@ -196,6 +196,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\SettingServiceProvider::class,
+        App\Providers\PaginationServicenProvider::class,
     ],
 
     /*
