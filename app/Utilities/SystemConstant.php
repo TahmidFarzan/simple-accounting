@@ -91,4 +91,30 @@ class SystemConstant
             "auto_delete_scheduler_frequency" => $autoDeleteSchedulerFrequency,
         );
     }
+
+    public static function authenticationLogSetting(){
+        $dbAuthenticationLogSettingInfo = Setting::where("code","AuthenticationLogSetting")->first();
+
+        $autoDelete = "Yes";
+        $deleteRecordOlderThan = 10;
+        $sendEmailNotification = "Yes";
+        $sendMobileNotification = "Yes";
+        $autoDeleteSchedulerFrequency = "Daily";
+
+        if($dbAuthenticationLogSettingInfo){
+            $authenticationLogSetting = $dbAuthenticationLogSettingInfo->fields_with_values;
+            $autoDelete = (!($authenticationLogSetting["auto_delete"]==null)) ? $authenticationLogSetting["auto_delete"] : $autoDelete;
+            $deleteRecordOlderThan = ($authenticationLogSetting["delete_records_older_than"] > 0) ? $authenticationLogSetting["delete_records_older_than"] : $deleteRecordOlderThan;
+            $sendEmailNotification = (!($authenticationLogSetting["send_email_notification"] == null)) ? $authenticationLogSetting["send_email_notification"] : $sendEmailNotification;
+            $sendMobileNotification = (!($authenticationLogSetting["send_mobile_notification"] == null)) ? $authenticationLogSetting["send_mobile_notification"] : $sendMobileNotification;
+            $autoDeleteSchedulerFrequency = (!($authenticationLogSetting["auto_delete_scheduler_frequency"] == null)) ? $authenticationLogSetting["send_mobile_notification"] : $autoDeleteSchedulerFrequency;
+        }
+        return array(
+            "auto_delete" => $autoDelete,
+            "delete_records_older_than" => $deleteRecordOlderThan,
+            "send_email_notification" => $sendEmailNotification,
+            "send_mobile_notification" => $sendMobileNotification,
+            "auto_delete_scheduler_frequency" => $autoDeleteSchedulerFrequency,
+        );
+    }
 }

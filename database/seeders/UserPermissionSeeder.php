@@ -131,5 +131,38 @@ class UserPermissionSeeder extends Seeder
                 'description' => "The internal user can delete all activity log.",
                 'slug' => SystemConstant::slugGenerator("Delete all activity log",200),
             ])->create();
+
+        // Authentication log permission.
+            UserPermission::factory()->state([
+                'name' => "View authentication log.",
+                'code' => "AULMP01",
+                'type' => "AuthenticationLogModulePermission",
+                'description' => "The internal user can view.",
+                'slug' => SystemConstant::slugGenerator("View authentication log controller",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "View authentication log details.",
+                'code' => "AULMP02",
+                'type' => "AuthenticationLogModulePermission",
+                'description' => "The internal user can view authentication log details.",
+                'slug' => SystemConstant::slugGenerator("View authentication log  details.",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete any authentication log.",
+                'code' => "AULMP03",
+                'type' => "AuthenticationLogModulePermission",
+                'description' => "The internal user can delete any authentication log.",
+                'slug' => SystemConstant::slugGenerator("Delete any authentication log",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete all authentication log.",
+                'code' => "AULMP04",
+                'type' => "AuthenticationLogModulePermission",
+                'description' => "The internal user can delete all authentication log.",
+                'slug' => SystemConstant::slugGenerator("Delete all authentication log",200),
+            ])->create();
     }
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InternalUser\UserController;
 use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
+use App\Http\Controllers\InternalUser\AuthenticationLogController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -40,5 +41,13 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::get('details/{id}', [ActivityLogController::class, 'details'])->name('details');
         Route::delete('delete/{id}', [ActivityLogController::class, 'delete'])->name('delete');
         Route::delete('delete-all-logs', [ActivityLogController::class, 'deleteAllLogs'])->name('delete.all.logs');
+    });
+
+    // Authentication log
+    Route::prefix('authentication-log')->name('authentication.log.')->group(function(){
+        Route::get('/', [AuthenticationLogController::class, 'index'])->name('index');
+        Route::get('details/{id}', [AuthenticationLogController::class, 'details'])->name('details');
+        Route::delete('delete/{id}', [AuthenticationLogController::class, 'delete'])->name('delete');
+        Route::delete('delete-all-logs', [AuthenticationLogController::class, 'deleteAllLogs'])->name('delete.all.logs');
     });
 });

@@ -223,6 +223,13 @@
                                             Activity log
                                         </a>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link {{(Request::is('authentication-log') || (Request::is('authentication-log/*'))) ? 'active' : null}}" href="{{ route("authentication.log.index") }}">
+                                            <i class="fa-solid fa-user-clock"></i>
+                                            Authentication log
+                                        </a>
+                                    </li>
                                 </ul>
 
                                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
