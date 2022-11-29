@@ -183,6 +183,15 @@
                                             Dashboard
                                         </a>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link {{(Request::is('user')||(Request::is('user/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("user.index") }}">
+                                            <i class="fa-solid fa-users"></i>
+                                            Users
+                                        </a>
+                                    </li>
+
+
                                     <li class="nav-item">
                                         <a class="nav-link" href="#">
                                             <span data-feather="file" class="align-text-bottom"></span>
