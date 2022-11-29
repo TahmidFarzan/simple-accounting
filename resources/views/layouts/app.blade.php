@@ -178,14 +178,14 @@
                             <div class="position-sticky pt-3 sidebar-sticky">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('dashboard')||(Request::is('dashboard/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("dashboard.index") }}">
+                                        <a class="nav-link {{(Request::is('dashboard') || (Request::is('dashboard/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("dashboard.index") }}">
                                             <i class="fa-solid fa-gauge"></i>
                                             Dashboard
                                         </a>
                                     </li>
 
                                     <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('user')||(Request::is('user/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("user.index") }}">
+                                        <a class="nav-link {{(Request::is('user') || (Request::is('user/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("user.index") }}">
                                             <i class="fa-solid fa-users"></i>
                                             Users
                                         </a>
