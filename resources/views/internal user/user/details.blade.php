@@ -222,19 +222,42 @@
 
     <div class="card border-dark mb-3">
         <div class="card-body">
+
+            @php
+                $restoreAableUser = false;
+                if(($user->user_role == "Owner") && (Auth::user()->hasUserPermission(["UMP09"]) == true)){
+                    $restoreAableUser = true;
+                }
+
+                if(($user->user_role == "Subordinate") && (Auth::user()->hasUserPermission(["UMP10"]) == true)){
+                    $restoreAableUser = true;
+                }
+            @endphp
+
+            @php
+                $trashAableUser = false;
+                if(($user->user_role == "Owner") && (Auth::user()->hasUserPermission(["UMP07"]) == true)){
+                    $trashAableUser = true;
+                }
+
+                if(($user->user_role == "Subordinate") && (Auth::user()->hasUserPermission(["UMP08"]) == true)){
+                    $trashAableUser = true;
+                }
+            @endphp
+
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
                     @if (Auth::user()->hasUserPermission(["UMP05","UMP06"]) == true)
                         <a href="{{ route("user.edit",["slug" => $user->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
-                    @if (!($user->deleted_at==null) && (Auth::user()->hasUserPermission(["UMP09","UMP10"]) == true))
+                    @if (( $restoreAableUser == true) && !(Auth::user()->id == $user->id))
                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#userRestoreConfirmationModal">
                             Restore
                         </button>
                     @endif
 
-                    @if (($user->deleted_at == null) && (Auth::user()->hasUserPermission(["UMP07","UMP08"]) == true))
+                    @if (($trashAableUser == true) && !(Auth::user()->id == $user->id))
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#userTrashConfirmationModal">
                             Trash
                         </button>
@@ -242,7 +265,7 @@
                 </div>
             </div>
 
-            @if (!($user->deleted_at == null) && (Auth::user()->hasUserPermission(["UMP09","UMP10"]) == true))
+            @if (( $restoreAableUser == true) && !(Auth::user()->id == $user->id))
                 <div class="modal fade" id="userRestoreConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -270,7 +293,7 @@
                 </div>
             @endif
 
-            @if (($user->deleted_at == null) && (Auth::user()->hasUserPermission(["UMP07","UMP08"]) == true))
+            @if (($trashAableUser == true) && !(Auth::user()->id == $user->id))
                 <div class="modal fade" id="userTrashConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">

@@ -229,4 +229,90 @@ class UserController extends Controller
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
+
+    public function trash($slug){
+        $statusInformation = array("status" => "errors","message" => array());
+
+        if((User::onlyTrashed()->where("slug",$slug)->whereNot("id",Auth::user()->id)->count()) == 0){
+            if($this->trashUserValidationCheck($slug) == true){
+                $user = User::where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
+                $trashedUser = $user->delete();
+
+                if($trashedUser){
+                    $statusInformation["status"] = "status";
+                    array_push($statusInformation["message"], "User successfully trashed.");
+                }
+                else{
+                    array_push($statusInformation["message"], "User fail to trash.");
+                }
+            }
+            else{
+                array_push($statusInformation["message"], "You does not have parmission to trash user.");
+            }
+
+        }
+        else{
+            $statusInformation["status"] = "status";
+            array_push($statusInformation["message"], "User already trashed.");
+        }
+
+        return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    public function restore($slug){
+        $statusInformation = array("status" => "errors","message" => array());
+
+        if((User::where("slug",$slug)->whereNot("id",Auth::user()->id)->count()) == 0){
+            if($this->restoreUserValidationCheck($slug) == true){
+                $user = User::onlyTrashed()->where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
+                $restoreUser = $user->restore();
+                if($restoreUser){
+                    $statusInformation["status"] = "status";
+                    array_push($statusInformation["message"], "User successfully restore.");
+                }
+                else{
+                    array_push($statusInformation["message"], "User fail to restore.");
+                }
+            }
+            else{
+                array_push($statusInformation["message"], "You does not have parmission to restore user.");
+            }
+        }
+        else{
+            $statusInformation["status"] = "status";
+            array_push($statusInformation["message"], "User already active.");
+        }
+
+        return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function trashUserValidationCheck($slug){
+        $restoreAableUser = false;
+        $user = User::where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
+
+        if(($user->user_role == "Owner") && (Auth::user()->hasUserPermission(["UMP07"]) == true)){
+            $restoreAableUser = true;
+        }
+
+        if(($user->user_role == "Subordinate") && (Auth::user()->hasUserPermission(["UMP08"]) == true)){
+            $restoreAableUser = true;
+        }
+
+        return $restoreAableUser;
+    }
+
+    private function restoreUserValidationCheck($slug){
+        $restoreAableUser = false;
+        $user =  User::onlyTrashed()->where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
+
+        if(($user->user_role == "Owner") && (Auth::user()->hasUserPermission(["UMP09"]) == true)){
+            $restoreAableUser = true;
+        }
+
+        if(($user->user_role == "Subordinate") && (Auth::user()->hasUserPermission(["UMP10"]) == true)){
+            $restoreAableUser = true;
+        }
+
+        return $restoreAableUser;
+    }
 }

@@ -139,7 +139,18 @@
                                                         <a href="{{ route("user.edit",["slug" => $perUser->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["UMP07","UMP08"])==true)
+                                                    @php
+                                                        $trashAableUser = false;
+                                                        if(($perUser->user_role == "Owner") && (Auth::user()->hasUserPermission(["UMP07"]) == true)){
+                                                            $trashAableUser = true;
+                                                        }
+
+                                                        if(($perUser->user_role == "Subordinate") && (Auth::user()->hasUserPermission(["UMP08"]) == true)){
+                                                            $trashAableUser = true;
+                                                        }
+                                                    @endphp
+
+                                                    @if (($trashAableUser == true) && !(Auth::user()->id == $perUser->id))
                                                         <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#trash{{$perUser->slug}}ConfirmationModal">
                                                             Trash
                                                         </button>
@@ -215,7 +226,18 @@
                                                         <a href="{{ route("user.edit",["slug" => $perUser->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["UMP09","UMP10"]) == true)
+                                                    @php
+                                                        $restoreAableUser = false;
+                                                        if(($perUser->user_role == "Owner") && (Auth::user()->hasUserPermission(["UMP09"]) == true)){
+                                                            $restoreAableUser = true;
+                                                        }
+
+                                                        if(($perUser->user_role == "Subordinate") && (Auth::user()->hasUserPermission(["UMP10"]) == true)){
+                                                            $restoreAableUser = true;
+                                                        }
+                                                    @endphp
+
+                                                    @if (( $restoreAableUser == true) && !(Auth::user()->id == $perUser->id))
                                                         <button type="button" class="btn btn-sm btn-success m-1" data-bs-toggle="modal" data-bs-target="#restore{{$perUser->slug}}ConfirmationModal">
                                                             Restore
                                                         </button>
