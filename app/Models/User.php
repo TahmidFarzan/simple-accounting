@@ -78,7 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         if(!($this->user_role == "Owner")){
             foreach($this->userpermissionGroups as $perUserPermissionGroup){
-                if($perUserPermissionGroup->user_permissions()->where("code",[$userpermissionCodes])->count() > 0){
+                if($perUserPermissionGroup->userPermissions()->whereIn("code",$userpermissionCodes)->count() > 0){
                     $hasUserPermission = true;
                 }
             }
