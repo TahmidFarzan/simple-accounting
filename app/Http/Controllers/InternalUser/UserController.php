@@ -129,6 +129,22 @@ class UserController extends Controller
         return view('internal user.user.create',compact("userRoles"));
     }
 
+    public function edit($slug){
+        $userRoles = array();
+
+        if(Auth::user()->hasUserPermission(["UMP02"]) == true){
+            array_push($userRoles,"Owner");
+        }
+
+        if(Auth::user()->hasUserPermission(["UMP03"]) == true){
+            array_push($userRoles,"Subordinate");
+        }
+
+        $user = User::withTrashed()->where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
+
+        return view('internal user.user.edit',compact("userRoles","user"));
+    }
+
     public function save(Request $request){
         $validator = Validator::make($request->all(),
             [
@@ -226,6 +242,135 @@ class UserController extends Controller
         else{
             $statusInformation["status"] = "errors";
             $statusInformation["message"] = "Fail to create user.";
+        }
+
+        return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    public function update(Request $request,$slug){
+        $userId = User::where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail()->id;
+        $validator = Validator::make($request->all(),
+            [
+                'name' => 'required|max:200',
+                'mobile_no' => 'nullable|max:20|regex:/^([0-9\s\-\+]*)$/|unique:users,mobile_no,'.$userId,
+                'update_email' => 'required|in:Yes,No',
+                'auto_email_verify' => 'nullable|required_if:update_email,Yes|in:Yes,No',
+                'email' => 'nullable|required_if:update_email,Yes|email|max:255|unique:users,email,'.$userId,
+                'user_role' => 'required|in:Owner,Subordinate',
+                'reset_password' => 'required|in:Yes,No',
+                'default_password' => 'nullable|required_if:reset_password,Yes|in:Yes,No',
+                'password' => 'nullable|required_if:default_password,No|max:255',
+            ],
+            [
+                'name.required' => 'Name is required.',
+                'name.max' => 'Name length can not greater then 200 chars.',
+
+                'mobile_no.max' => 'Mobile no length can not greater then 20 chars.',
+                'mobile_no.regex' => 'Mobile no must be mobile no.',
+                'mobile_no.unique' => 'Mobile no must be unique.',
+
+                'update_email.required' => 'Update email is reqired.',
+                'update_email.in' => 'Update email must one out of [Yes,No].',
+
+                'email.required_if' => 'Email is required.',
+                'email.max' => 'Email length can not greater then 255 chars.',
+                'email.email' => 'Email must be email.',
+                'email.unique' => 'Email must be unique.',
+
+                'auto_email_verify.required_if' => 'Auto email verify is reqired.',
+                'auto_email_verify.in' => 'Auto email verify must one out of [Yes,No].',
+
+                'user_role.required' => 'User role is reqired.',
+                'user_role.in' => 'User role must one out of [Owner,Subordinate].',
+
+                'default_password.required_if' => 'Default password is reqired.',
+                'default_password.in' => 'Default password must one out of [Yes,No].',
+
+                'reset_password.required' => 'Reset password is reqired.',
+                'reset_password.in' => 'Reset password must one out of [Yes,No].',
+
+                'password.required_if' => 'Password is reqired.',
+                'password.max' => 'Password length can not greater then 255 chars..',
+            ]
+        );
+
+        $validator->after(function ($validator) {
+            $afterValidatorData = $validator->getData();
+
+            if($afterValidatorData["user_role"] == "Owner"){
+
+                if(Auth::user()->hasUserPermission(["UMP05"]) == false){
+                    $validator->errors()->add(
+                        'user_role', "Your do not have permission to create user that have 'Owner' user role."
+                    );
+                }
+            }
+
+            if($afterValidatorData["user_role"] == "Subordinate"){
+
+                if(Auth::user()->hasUserPermission(["UMP06"]) == false){
+                    $validator->errors()->add(
+                        'user_role', "Your do not have permission to create user that have 'Subordinate' user role."
+                    );
+                }
+            }
+
+        });
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $doneUpdateEmail = false;
+
+        $statusInformation = array("status" => "errors","message" => array());
+
+            $user = User::where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
+            $user->name = $request->name;
+            $user->mobile_no = $request->mobile_no;
+            $user->user_role = $request->user_role;
+
+            if( $request->update_email == "Yes"){
+                if(!($user->email == $request->email)){
+                    $doneUpdateEmail = true;
+                    $user->email = $request->email;
+                    $user->email_verified_at = ($request->auto_email_verify == "Yes") ? Carbon::now() : null;
+                }
+            }
+
+            if($request->reset_password == "Yes"){
+                $user->password = Hash::make(($request->default_password == "Yes") ? "123456789" : $request->password);
+                $user->default_password = ($request->default_password == "Yes") ? 1 : 0;
+            }
+
+            $user->slug = SystemConstant::slugGenerator($request->name,200);
+
+            $user->updated_at = Carbon::now();
+            $updateUser = $user->update();
+
+        if($updateUser){
+            $statusInformation["status"] = "status";
+            array_push($statusInformation["message"],"User successfully updated.");
+
+            if(($request->update_email == "Yes") && ($doneUpdateEmail == true)){
+                array_push($statusInformation["message"],"User email has been updated.");
+
+                if($request->auto_email_verify == "No"){
+                    $user->sendEmailVerificationNotification();
+                    array_push($statusInformation["message"],"Please asked user to verify email before is expired.");
+                }
+            }
+
+            if($request->reset_password == "Yes"){
+                array_push($statusInformation["message"],"Reset password is done.");
+
+                if($request->default_password == "Yes"){
+                    array_push($statusInformation["message"],"Default pasword(123456789) is used for user password.");
+                }
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"] = "Fail to update user.";
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);

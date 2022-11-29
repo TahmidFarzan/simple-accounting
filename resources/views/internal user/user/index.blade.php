@@ -222,7 +222,7 @@
                                                         <a href="{{ route("user.details",["slug" => $perUser->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["UMP05","UMP06"]) == true)
+                                                    @if ((Auth::user()->hasUserPermission(["UMP05","UMP06"]) == true) && !(Auth::user()->id == $perUser->id))
                                                         <a href="{{ route("user.edit",["slug" => $perUser->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 

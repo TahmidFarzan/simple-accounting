@@ -247,7 +247,7 @@
 
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
-                    @if (Auth::user()->hasUserPermission(["UMP05","UMP06"]) == true)
+                    @if ((Auth::user()->hasUserPermission(["UMP05","UMP06"]) == true) && !(Auth::user()->id == $user->id))
                         <a href="{{ route("user.edit",["slug" => $user->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
