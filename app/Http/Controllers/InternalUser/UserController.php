@@ -148,6 +148,7 @@ class UserController extends Controller
                 'mobile_no.regex' => 'Mobile no must be mobile no.',
                 'mobile_no.unique' => 'Mobile no must be unique.',
 
+                'email.required' => 'Email is required.',
                 'email.max' => 'Email length can not greater then 255 chars.',
                 'email.email' => 'Email must be email.',
                 'email.unique' => 'Email must be unique.',
@@ -219,12 +220,12 @@ class UserController extends Controller
             }
 
             if($request->default_password == "Yes"){
-                array_push($statusInformation["message"],"Default pasword(123456789) is save for user password.");
+                array_push($statusInformation["message"],"Default pasword(123456789) is used for user password.");
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to save user.";
+            $statusInformation["message"] = "Fail to create user.";
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);

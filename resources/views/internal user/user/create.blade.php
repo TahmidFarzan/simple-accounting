@@ -135,18 +135,18 @@
                                         </div>
                                     </div>
 
-                                    <div class="mb-2">
+                                    <div class="mt-2">
                                         <input type="password" id="passwordInput" name="password" class="form-control form-control-sm @error('password') is-invalid @enderror" value="{{ old('password') }}" placeholder="Enter your password." maxlength="255"  @if($currentDefaultPasswordOption == "No") required @endif @if($currentDefaultPasswordOption == "Yes") readonly hidden @endif>
                                     </div>
 
                                     @error('default_password')
-                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                        <span class="invalid-feedback mb-1" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
 
                                     @error('password')
-                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                        <span class="invalid-feedback mb-1" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
