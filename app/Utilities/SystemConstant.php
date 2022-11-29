@@ -68,4 +68,27 @@ class SystemConstant
         }
         return $fileNameGenerate.'.'.$fileExtention;
     }
+
+    public static function activityLogSetting(){
+        $dbActivityLogSettingInfo = Setting::where("code","ActivityLogSetting")->first();
+
+        $autoDelete = "Yes";
+        $deleteRecordOlderThan = 10;
+        $sendEmailNotification = "Yes";
+        $autoDeleteSchedulerFrequency = "Daily";
+
+        if($dbActivityLogSettingInfo){
+            $activityLogSetting = $dbActivityLogSettingInfo->fields_with_values;
+            $autoDelete = (!($activityLogSetting["auto_delete"] == null)) ? $activityLogSetting["auto_delete"] : $autoDelete;
+            $deleteRecordOlderThan = ($activityLogSetting["delete_records_older_than"] > 0) ? $activityLogSetting["delete_records_older_than"] : $deleteRecordOlderThan;
+            $sendEmailNotification = (!($activityLogSetting["send_email_notification"] == null)) ? $activityLogSetting["send_email_notification"] : $sendEmailNotification;
+            $autoDeleteSchedulerFrequency = (!($activityLogSetting["auto_delete_scheduler_frequency"] == null)) ? $activityLogSetting["send_mobile_notification"] : $autoDeleteSchedulerFrequency;
+        }
+        return array(
+            "auto_delete" => $autoDelete,
+            "delete_records_older_than" => $deleteRecordOlderThan,
+            "send_email_notification" => $sendEmailNotification,
+            "auto_delete_scheduler_frequency" => $autoDeleteSchedulerFrequency,
+        );
+    }
 }

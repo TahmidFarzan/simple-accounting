@@ -98,5 +98,38 @@ class UserPermissionSeeder extends Seeder
                 'description' => "The internal user can restore user (Subordinate).",
                 'slug' => SystemConstant::slugGenerator("Restore user",200),
             ])->create();
+
+        // Activity Log permission.
+            UserPermission::factory()->state([
+                'name' => "View activity log controller.",
+                'code' => "ACLMP01",
+                'type' => "ActivityLogModulePermission",
+                'description' => "The internal user can view controller.",
+                'slug' => SystemConstant::slugGenerator("View activity log controller",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "View activity log details.",
+                'code' => "ACLMP02",
+                'type' => "ActivityLogModulePermission",
+                'description' => "The internal user can view activity log details.",
+                'slug' => SystemConstant::slugGenerator("View activity log controller details",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete activity log.",
+                'code' => "ACLMP03",
+                'type' => "ActivityLogModulePermission",
+                'description' => "The internal user can delete any activity log.",
+                'slug' => SystemConstant::slugGenerator("Delete any activity log",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete all activity log.",
+                'code' => "ACLMP04",
+                'type' => "ActivityLogModulePermission",
+                'description' => "The internal user can delete all activity log.",
+                'slug' => SystemConstant::slugGenerator("Delete all activity log",200),
+            ])->create();
     }
 }

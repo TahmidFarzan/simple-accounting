@@ -217,9 +217,9 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            <span data-feather="layers" class="align-text-bottom"></span>
-                                            Integrations
+                                        <a class="nav-link {{(Request::is('activity-log') || (Request::is('activity-log/*'))) ? 'active' : null}}" href="{{ route("activity.log.index") }}">
+                                            <i class="fa-solid fa-chart-simple"></i>
+                                            Activity log
                                         </a>
                                     </li>
                                 </ul>
