@@ -55,4 +55,35 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(User::class,'created_by_id','id')->withTrashed();
     }
+
+    public function userPermissionGroups()
+    {
+        return $this->belongsToMany(UserPermissionGroup::class, 'user_has_user_permission_groups', 'user_id', 'user_permission_group_id');
+    }
+
+    public function hasUserPermissionGroup($userpermissionGroupCodes)
+    {
+        $hasUserPermissionGroup = false;
+        if($this->userPermissionGroups()->whereIn("code",$userpermissionGroupCodes)->count()>0){
+            $hasUserPermissionGroup = true;
+        }
+        return $hasUserPermissionGroup;
+    }
+
+    public function hasUserPermission($userpermissionCodes)
+    {
+        $hasUserPermission = false;
+        if($this->user_role == "Owner"){
+            $hasUserPermission=true;
+        }
+        if(!($this->user_role == "Owner")){
+            foreach($this->userpermissionGroups as $perUserPermissionGroup){
+                if($perUserPermissionGroup->user_permissions()->where("code",[$userpermissionCodes])->count() > 0){
+                    $hasUserPermission = true;
+                }
+            }
+        }
+
+        return $hasUserPermission;
+    }
 }
