@@ -10,6 +10,7 @@ use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -212,6 +213,7 @@ class UserController extends Controller
 
         $statusInformation = array("status" => "errors","message" => array());
 
+        LogBatch::startBatch();
             $user = new User();
             $user->name = $request->name;
             $user->mobile_no = $request->mobile_no;
@@ -225,6 +227,7 @@ class UserController extends Controller
             $user->created_by_id = Auth::user()->id;
             $user->updated_at = null;
             $saveUser = $user->save();
+        LogBatch::endBatch();
 
         if($saveUser){
             $statusInformation["status"] = "status";
@@ -324,6 +327,7 @@ class UserController extends Controller
 
         $statusInformation = array("status" => "errors","message" => array());
 
+        LogBatch::startBatch();
             $user = User::where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
             $user->name = $request->name;
             $user->mobile_no = $request->mobile_no;
@@ -346,6 +350,7 @@ class UserController extends Controller
 
             $user->updated_at = Carbon::now();
             $updateUser = $user->update();
+        LogBatch::endBatch();
 
         if($updateUser){
             $statusInformation["status"] = "status";
@@ -381,8 +386,11 @@ class UserController extends Controller
 
         if((User::onlyTrashed()->where("slug",$slug)->whereNot("id",Auth::user()->id)->count()) == 0){
             if($this->trashUserValidationCheck($slug) == true){
-                $user = User::where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
-                $trashedUser = $user->delete();
+
+                LogBatch::startBatch();
+                    $user = User::where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
+                    $trashedUser = $user->delete();
+                LogBatch::endBatch();
 
                 if($trashedUser){
                     $statusInformation["status"] = "status";
@@ -410,8 +418,12 @@ class UserController extends Controller
 
         if((User::where("slug",$slug)->whereNot("id",Auth::user()->id)->count()) == 0){
             if($this->restoreUserValidationCheck($slug) == true){
-                $user = User::onlyTrashed()->where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
-                $restoreUser = $user->restore();
+
+                LogBatch::startBatch();
+                    $user = User::onlyTrashed()->where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
+                    $restoreUser = $user->restore();
+                LogBatch::endBatch();
+
                 if($restoreUser){
                     $statusInformation["status"] = "status";
                     array_push($statusInformation["message"], "User successfully restore.");

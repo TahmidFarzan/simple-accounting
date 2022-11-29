@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity;
 
     protected $table='users';
 
@@ -46,6 +49,31 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at',
     ];
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly([
+            'name',
+            'slug',
+            'email',
+            'password',
+            'mobile_no',
+            'user_role',
+            'created_at',
+            'updated_at',
+            'deleted_at',
+            'created_by_id',
+            'default_password',
+            'email_verified_at',
+            'is_default_password',
+        ])
+        ->useLogName('User')
+        ->setDescriptionForEvent(fn(string $eventName) => "The product category has been {$eventName}.")
+        ->logOnlyDirty()
+        ->logExcept(["id",'created_by_id','created_at','remember_token',])
+        ->dontSubmitEmptyLogs();
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class,'created_by_id','id')->withTrashed();
@@ -59,6 +87,23 @@ class User extends Authenticatable implements MustVerifyEmail
     public function userPermissionGroups()
     {
         return $this->belongsToMany(UserPermissionGroup::class, 'user_has_user_permission_groups', 'user_id', 'user_permission_group_id');
+    }
+
+    public function updatedBy()
+    {
+        $causer = null;
+        if(Activity::where("subject_id",$this->id)->get()->last()){
+            $causer=Activity::where("subject_id",$this->id)->get()->last()->causer;
+        }
+        return $causer;
+    }
+
+    public function activityLogs(){
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\User")->where("subject_id",$this->id)->get();
+    }
+
+    public function modifiedActivityLogs($limit){
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\User")->where("subject_id",$this->id)->take($limit)->get();
     }
 
     public function hasUserPermissionGroup($userpermissionGroupCodes)
@@ -86,4 +131,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $hasUserPermission;
     }
+
+
 }

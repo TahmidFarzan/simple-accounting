@@ -220,6 +220,54 @@
         </div>
     </div>
 
+    @if(Auth::user()->hasUserPermission(["ACLMP01"]) == true)
+        <div class="card border-dark mb-3">
+            <h5 class="card-header">Activity Logs</h5>
+            <div class="card-body">
+                @php
+                    $limit = 3;
+                @endphp
+                <div class="card-body text-dark">
+                    <p>
+                        <b>
+                            Show last {{ $limit }} activity logs.
+                        </b>
+                    </p>
+                    <div class="table-responsive">
+                        <table class=" table table-sm table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Event</th>
+                                    <th>Causer</th>
+                                    <th>Description</th>
+                                    <th>Created at</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($user->modifiedActivityLogs($limit) as $perIndex => $perActivityLogDatas)
+                                    <tr>
+                                        <td>{{ $perIndex + 1 }}</td>
+                                        <td>{{ Str::ucfirst($perActivityLogDatas->event) }}</td>
+                                        <td>{{ $perActivityLogDatas->causer->name }}</td>
+                                        <td>{{ $perActivityLogDatas->description }}</td>
+                                        <td>{{ ($perActivityLogDatas->created_at==null) ? "Not added yet." : date('d-M-Y',strtotime($perActivityLogDatas->created_at))." at ".date('h:i:s a',strtotime($perActivityLogDatas->created_at)) }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5">
+                                            <b class="d-flex justify-content-center text-warning">No activity found.</b>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="card border-dark mb-3">
         <div class="card-body">
 
