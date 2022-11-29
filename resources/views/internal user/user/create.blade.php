@@ -192,7 +192,7 @@
             var mobileNoInputPlugin = window.intlTelInput(mobileNoInput,({
                 allowDropdown: true,
                 autoPlaceholder: "aggressive",
-                autoHideDialCode: false,
+                autoHideDialCode: true,
                 customPlaceholder: null,
                 dropdownContainer: null,
                 excludeCountries: [],
