@@ -7,7 +7,15 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ $setting["businessSetting"]["short_name"] }}</title>
+
+        @if (str_contains($setting["businessSetting"]["favicon"], 'default') == true)
+            <link rel="icon" href="{{ url('images/setting/default-favicon.ico') }}">
+        @endif
+
+        @if (str_contains($setting["businessSetting"]["favicon"], 'default') == false)
+            <link rel="icon" href="{{  asset("storage/images/setting/".$setting["businessSetting"]["favicon"]) }}">
+        @endif
 
         <!-- Scripts -->
         <script src="{{ asset("jquery/jquery.min.js") }}" ></script>
@@ -150,7 +158,7 @@
 
             @auth
                 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-                    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Company name</a>
+                    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="{{ route("dashboard.index") }}">{{ $setting["businessSetting"]["name"] }}</a>
                     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -302,9 +310,9 @@
                                         <div class="col-md-6 d-flex align-items-center mb-1">
                                             <b>
                                                 <a href="{{ route("dashboard.index") }}" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-                                                    SA{{-- {{ (strlen($setting["businessSetting"]["short_name"])==0) ? "GBA" : $setting["applicationSetting"]["short_name"] }} --}}
+                                                    {{ $setting["businessSetting"]["short_name"] }}
                                                 </a>
-                                                <span class="mb-3 mb-md-0 text-muted">&copy; 2022 Company, Inc</span>
+                                                <span class="mb-3 mb-md-0 text-muted">&copy; 2022 business</span>
                                             </b>
                                         </div>
 
@@ -321,11 +329,14 @@
                                             <span class="mb-3 mb-md-0 text-muted"></span>
                                         </div>
 
-                                        <ul class="nav col-md-6 justify-content-end list-unstyled d-flex">
-                                            <li class="ms-3"><a class="text-muted text-decoration-none" href="#"><i class="bi bi-facebook"></i></li>
-                                            <li class="ms-3"><a class="text-muted text-decoration-none" href="#"><i class="bi bi-twitter"></i></li>
-                                            <li class="ms-3"><a class="text-muted text-decoration-none" href="#"><i class="bi bi-instagram"></i></li>
-                                        </ul>
+                                        <div class="col-md-6 justify-content-end d-flex">
+                                            <span class="text-muted"><b><i>Developer link:</i></span>
+                                            <ul class="nav list-unstyled">
+                                                <li class="ms-3"><a class="text-muted text-decoration-none" href="https://www.facebook.com/tahmid.farzan007/"><i class="fa-brands fa-facebook"></i></li>
+                                                <li class="ms-3"><a class="text-muted text-decoration-none" href="https://www.linkedin.com/in/seikh-md-tahmid-farzan-540546a3/"><i class="fa-brands fa-linkedin"></i></li>
+                                                <li class="ms-3"><a class="text-muted text-decoration-none" href="https://www.instagram.com/tfarzan007/"><i class="fa-brands fa-instagram"></i></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </footer>
