@@ -38,7 +38,6 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
     Route::prefix('activity-log')->name('activity.log.')->group(function(){
         Route::get('/', [ActivityLogController::class, 'index'])->name('index');
         Route::get('details/{id}', [ActivityLogController::class, 'details'])->name('details');
-        Route::post('export', [ActivityLogController::class, 'export'])->name('export');
         Route::delete('delete/{id}', [ActivityLogController::class, 'delete'])->name('delete');
         Route::delete('delete-all-logs', [ActivityLogController::class, 'deleteAllLogs'])->name('delete.all.logs');
     });
