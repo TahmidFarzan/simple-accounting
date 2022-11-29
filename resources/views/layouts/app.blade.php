@@ -216,6 +216,7 @@
                                             Reports
                                         </a>
                                     </li>
+
                                     <li class="nav-item">
                                         <a class="nav-link {{(Request::is('activity-log') || (Request::is('activity-log/*'))) ? 'active' : null}}" href="{{ route("activity.log.index") }}">
                                             <i class="fa-solid fa-chart-simple"></i>
