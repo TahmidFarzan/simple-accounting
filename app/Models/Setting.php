@@ -25,6 +25,7 @@ class Setting extends Model
         'name',
         'code',
         'slug',
+        'created_by_id',
     ];
 
     protected $casts = [

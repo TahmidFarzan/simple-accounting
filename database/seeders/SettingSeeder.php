@@ -30,6 +30,7 @@ class SettingSeeder extends Seeder
                 "address" => null,
                 "description" => null,
                 "logo"=> null,
+                "favicon"=> null,
             ),
             'created_at' =>  Carbon::now(),
             'updated_at' =>  null,
@@ -66,6 +67,7 @@ class SettingSeeder extends Seeder
             'created_by_id' =>  1,
         ])->create();
 
+        // Country & currency setting
         Setting::factory()->state([
             'name' => "Country & currency setting",
             'code' => 'CountryAndCurrencySetting',
