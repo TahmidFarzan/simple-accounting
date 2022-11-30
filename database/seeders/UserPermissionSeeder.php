@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use Carbon\Carbon;
 use App\Models\UserPermission;
 use Illuminate\Database\Seeder;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserPermissionSeeder extends Seeder
 {
@@ -248,47 +246,6 @@ class UserPermissionSeeder extends Seeder
                     'slug' => SystemConstant::slugGenerator("Update authentication log setting.",200),
                 ])->create();
 
-            // User permission group permission.
-                UserPermission::factory()->state([
-                    'name' => "View user permission group.",
-                    'code' => "SMP06.01",
-                    'type' => "UserPermissionGroupModulePermission",
-                    'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View user permission group",200),
-                ])->create();
-
-                UserPermission::factory()->state([
-                    'name' => "Create user permission group.",
-                    'code' => "SMP06.02",
-                    'type' => "UserPermissionGroupModulePermission",
-                    'description' => "The internal user can create user permission group.",
-                    'slug' => SystemConstant::slugGenerator("Create user permission group",200),
-                ])->create();
-
-                UserPermission::factory()->state([
-                    'name' => "View user permission group details.",
-                    'code' => "SMP06.03",
-                    'type' => "UserPermissionGroupModulePermission",
-                    'description' => "The internal user can view authentication log details.",
-                    'slug' => SystemConstant::slugGenerator("View user permission group  details.",200),
-                ])->create();
-
-                UserPermission::factory()->state([
-                    'name' => "Update user permission group.",
-                    'code' => "SMP06.04",
-                    'type' => "UserPermissionGroupModulePermission",
-                    'description' => "The internal user can update user permission group.",
-                    'slug' => SystemConstant::slugGenerator("Update user permission group",200),
-                ])->create();
-
-                UserPermission::factory()->state([
-                    'name' => "Delete user permission group.",
-                    'code' => "SMP06.05",
-                    'type' => "UserPermissionGroupModulePermission",
-                    'description' => "The internal user can delete user permission group.",
-                    'slug' => SystemConstant::slugGenerator("Delete user permission group",200),
-                ])->create();
-
         // Extra modul permission.
             // User permission.
                 UserPermission::factory()->state([
@@ -305,6 +262,47 @@ class UserPermissionSeeder extends Seeder
                     'type' => "UserPermissionModulePermission",
                     'description' => "The internal user can view",
                     'slug' => SystemConstant::slugGenerator("View user permission details.",200),
+                ])->create();
+
+            // User permission group permission.
+                UserPermission::factory()->state([
+                    'name' => "View user permission group.",
+                    'code' => "UPGMP01",
+                    'type' => "UserPermissionGroupModulePermission",
+                    'description' => "The internal user can view.",
+                    'slug' => SystemConstant::slugGenerator("View user permission group",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Create user permission group.",
+                    'code' => "UPGMP02",
+                    'type' => "UserPermissionGroupModulePermission",
+                    'description' => "The internal user can create user permission group.",
+                    'slug' => SystemConstant::slugGenerator("Create user permission group",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "View user permission group details.",
+                    'code' => "UPGMP03",
+                    'type' => "UserPermissionGroupModulePermission",
+                    'description' => "The internal user can view authentication log details.",
+                    'slug' => SystemConstant::slugGenerator("View user permission group  details.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update user permission group.",
+                    'code' => "UPGMP04",
+                    'type' => "UserPermissionGroupModulePermission",
+                    'description' => "The internal user can update user permission group.",
+                    'slug' => SystemConstant::slugGenerator("Update user permission group",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Delete user permission group.",
+                    'code' => "UPGMP05",
+                    'type' => "UserPermissionGroupModulePermission",
+                    'description' => "The internal user can delete user permission group.",
+                    'slug' => SystemConstant::slugGenerator("Delete user permission group",200),
                 ])->create();
     }
 }
