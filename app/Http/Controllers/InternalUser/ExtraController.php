@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\InternalUser;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\UserPermission;
 use App\Utilities\SystemConstant;
 use App\Models\UserPermissionGroup;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\Facades\LogBatch;
+use Illuminate\Support\Facades\Validator;
 
 class ExtraController extends Controller
 {
@@ -96,5 +100,87 @@ class ExtraController extends Controller
 
         $userPermissionGroups = $userPermissionGroups->paginate($pagination);
         return view('internal user.extra.user permission group.index',compact("userPermissionGroups",'paginations','userPermissions'));
+    }
+
+    public function userPermissionGroupCreate(){
+        $userPermissions = UserPermission::orderBy('name')->get()->groupBy(function($data) {
+            return $data->type;
+        });
+
+        return view('internal user.extra.user permission group.create',compact('userPermissions'));
+    }
+
+    public function userPermissionGroupSave(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'name' => 'required|max:100',
+                'code' => 'required|max:100|unique:user_permission_groups,code',
+                'user_permission' => 'required'
+            ],
+            [
+                'name.required' => 'Name is required.',
+                'name.max' => 'Name length can not greater then 100 chars.',
+
+                'code.required' => 'Code is required.',
+                'code.max' => 'Code length can not greater then 100 chars.',
+                'code.unique' => 'Code must be unique.',
+
+                'user_permission.required' => 'User permission is required.',
+            ]
+        );
+
+        return $request;
+
+        $validator->after(function ($validator) {
+            $afterValidatorData=$validator->getData();
+
+            $validUserPermission = 0;
+            foreach($afterValidatorData["user_permission"] as $perUserPermission){
+                if(UserPermission::where("slug",$perUserPermission)->count() > 0){
+                    $validUserPermission = $validUserPermission + 1;
+                }
+            }
+
+            if(count($afterValidatorData["user_permission"]) == 0){
+                $validator->errors()->add(
+                    'user_permission', "User permission is required."
+                );
+            }
+            else{
+                if(!(count($afterValidatorData["user_permission"]) == $validUserPermission)){
+                    $validator->errors()->add(
+                        'user_permission', "Some unknown user permission is found."
+                    );
+                }
+            }
+        });
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $statusInformation = array("status" => "errors","message" => array());
+
+        LogBatch::startBatch();
+            $userPermissionGroup = new UserPermissionGroup();
+            $userPermissionGroup->name = $request->name;
+            $userPermissionGroup->code = $request->code;
+            $userPermissionGroup->slug = SystemConstant::slugGenerator($request->name,200);
+            $userPermissionGroup->created_at = Carbon::now();
+            $userPermissionGroup->created_by_id = Auth::user()->id;
+            $userPermissionGroup->updated_at = null;
+            $saveUser = $userPermissionGroup->save();
+        LogBatch::endBatch();
+
+        if($saveUser){
+            $statusInformation["status"] = "status";
+            array_push($statusInformation["message"],"User permission group successfully created.");
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"] = "Fail to create user permission group.";
+        }
+
+        return redirect()->route("user.permission.group.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 }
