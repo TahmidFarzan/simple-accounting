@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',100);
             $table->string('code',100);
-            $table->string('slug',100)->unique();
+            $table->string('slug',255)->unique();
             $table->unsignedBigInteger('created_by_id');
             $table->timestamps();
 
