@@ -11,8 +11,8 @@
 @section('navBreadcrumbSection')
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
-            <li class="breadcrumb-item"><a href="{{ route("setting.index") }}">Setting</a></li>
-            <li class="breadcrumb-item active" aria-current="page"> User permission setting index</li>
+
+            <li class="breadcrumb-item active" aria-current="page">Index</li>
         </ol>
     </nav>
 @endsection
@@ -107,8 +107,8 @@
                                         <td>{{ $perUserPermission->name }}</td>
                                         <td>{{  Str::ucfirst(Str::lower(preg_replace("/([a-z])([A-Z])/", "$1 $2", $perUserPermission->type))) }}</td>
                                         <td>
-                                            @if (Auth::user()->hasUserPermission(["SMP05.02"]) == true)
-                                                <a href="{{ route("setting.user.permission.setting.details",["slug" => $perUserPermission->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
+                                            @if (Auth::user()->hasUserPermission(["UPMP02"]) == true)
+                                                <a href="{{ route("user.permission.details",["slug" => $perUserPermission->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                             @endif
                                         </td>
                                     </tr>
@@ -225,7 +225,7 @@
             var errorMessages=[];
             $.ajax({
                 type: "get",
-                url: "{{ route('setting.user.permission.setting.index') }}" + "?" + parameterString,
+                url: "{{ route('user.permission.index') }}" + "?" + parameterString,
                 success: function(result) {
                     $("#apiErrorDiv").hide();
                     $("#apiErrorDiv").html("");

@@ -75,28 +75,6 @@
             </div>
         </div>
     </div>
-
-    <div class="card border-dark mb-2">
-        <div class="d-flex justify-content-center mt-3">
-            <p>
-                <b> User setting</b>
-            </p>
-        </div>
-        <div class="card-body text-dark mt-0">
-            <div class="row">
-                @if (Auth::user()->hasUserPermission(["SMP05.01"]) == true)
-                    <div class="col-md-6 mb-2">
-                        <a href="{{ route("setting.user.permission.setting.index") }}" class="btn btn-link text-decoration-none">
-                            <img src="{{ asset("images/setting/user-permission-setting-logo.png") }}" class="img-thumbnail" alt="Activity log setting logo">
-                            <p>
-                                User permission setting
-                            </p>
-                        </a>
-                    </div>
-                @endif
-            </div>
-        </div>
-    </div>
 @endsection
 
 @section('authContentTwo')

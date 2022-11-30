@@ -248,23 +248,6 @@ class UserPermissionSeeder extends Seeder
                     'slug' => SystemConstant::slugGenerator("Update authentication log setting.",200),
                 ])->create();
 
-            // User permission.
-                UserPermission::factory()->state([
-                    'name' => "View user permission setting",
-                    'code' => "SMP05.01",
-                    'type' => "UserPermissionSettingModulePermission",
-                    'description' => "The internal user can view",
-                    'slug' => SystemConstant::slugGenerator("View user permission setting",200),
-                ])->create();
-
-                UserPermission::factory()->state([
-                    'name' => "View user permission details.",
-                    'code' => "SMP05.02",
-                    'type' => "UserPermissionSettingModulePermission",
-                    'description' => "The internal user can view",
-                    'slug' => SystemConstant::slugGenerator("View user permission details.",200),
-                ])->create();
-
             // User permission group permission.
                 UserPermission::factory()->state([
                     'name' => "View user permission group.",
@@ -306,7 +289,22 @@ class UserPermissionSeeder extends Seeder
                     'slug' => SystemConstant::slugGenerator("Delete user permission group",200),
                 ])->create();
 
-        // Setting log permission.
+        // Extra modul permission.
+            // User permission.
+                UserPermission::factory()->state([
+                    'name' => "View user permission setting",
+                    'code' => "UPMP01",
+                    'type' => "UserPermissionModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View user permission setting",200),
+                ])->create();
 
+                UserPermission::factory()->state([
+                    'name' => "View user permission details.",
+                    'code' => "UPMP02",
+                    'type' => "UserPermissionModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View user permission details.",200),
+                ])->create();
     }
 }

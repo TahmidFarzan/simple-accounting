@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InternalUser\UserController;
+use App\Http\Controllers\InternalUser\ExtraController;
 use App\Http\Controllers\InternalUser\SettingController;
 use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
@@ -41,11 +42,6 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('edit/{slug}', [SettingController::class, 'authenticationLogSettingEdit'])->name('edit');
             Route::patch('update/{slug}', [SettingController::class, 'authenticationLogSettingUpdate'])->name('update');
         });
-
-        Route::prefix('user-permission-setting')->name('user.permission.setting.')->group(function(){
-            Route::get('/', [SettingController::class, 'userPermissionSettingIndex'])->name('index');
-            Route::get('details/{slug}', [SettingController::class, 'userPermissionSettingDetails'])->name('details');
-        });
     });
 
     // Dashboard.
@@ -80,5 +76,11 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::get('details/{id}', [AuthenticationLogController::class, 'details'])->name('details');
         Route::delete('delete/{id}', [AuthenticationLogController::class, 'delete'])->name('delete');
         Route::delete('delete-all-logs', [AuthenticationLogController::class, 'deleteAllLogs'])->name('delete.all.logs');
+    });
+
+    // Extra model.
+    Route::prefix('user-permission')->name('user.permission.')->group(function(){
+        Route::get('/', [ExtraController::class, 'userPermissionIndex'])->name('index');
+        Route::get('details/{slug}', [ExtraController::class, 'userPermissionDetails'])->name('details');
     });
 });

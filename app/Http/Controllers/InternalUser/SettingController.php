@@ -3,14 +3,10 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Setting;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\UserPermission;
 use App\Utilities\SystemConstant;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
@@ -40,8 +36,8 @@ class SettingController extends Controller
         $this->middleware(['user.user.permission.check:SMP04.03'])->only(["authenticationLogSettingEdit","authenticationLogSettingUpdate"]);
 
         // User permissions setting permission.
-        $this->middleware(['user.user.permission.check:SMP05.01'])->only(["userPermissionSettingIndex"]);
-        $this->middleware(['user.user.permission.check:SMP05.02'])->only(["userPermissionSettingDetails"]);
+        $this->middleware(['user.user.permission.check:UPMP01'])->only(["userPermissionIndex"]);
+        $this->middleware(['user.user.permission.check:UPMP02'])->only(["userPermissionDetails"]);
     }
 
     public function index()
@@ -343,43 +339,5 @@ class SettingController extends Controller
 
         // Redirect logic.
         return redirect()->route("setting.authentication.log.setting.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
-    }
-
-    // User permission setting
-    public function userPermissionSettingIndex(Request $request){
-        $pagination = 5;
-        $paginations = array(5,15,30,45,60,75,90,100);
-        $types = array(
-                    "All","User module",
-                    "Setting module","Business setting module",
-                    "Authentication log setting module","Activity log setting module",
-                    "User permission setting module"
-                );
-        $userPermissions = UserPermission::orderBy("id","asc");
-
-        if(count($request->input()) > 0){
-            if($request->has('pagination')){
-                $pagination = (in_array($request->pagination,$paginations)) ? $request->pagination : $pagination;
-            }
-
-            if($request->has('type') && in_array($request->type,$types) && !($request->type == "All")){
-                $userPermissions = $userPermissions->where("type","like","%".Str::studly($request->type)."%");
-            }
-
-            if($request->has('search')){
-                if(!($request->search == null)){
-                    $userPermissions = $userPermissions->where("name","like","%".$request->search."%")
-                                                    ->orWhere("description","like","%".$request->search."%");
-                }
-            }
-        }
-
-        $userPermissions = $userPermissions->paginate($pagination);
-        return view('internal user.setting.user permission setting.index',compact("userPermissions",'paginations','types'));
-    }
-
-    public function userPermissionSettingDetails($slug){
-        $userPermission = UserPermission::where("slug",$slug)->firstOrFail();
-        return view('internal user.setting.user permission setting.details',compact("userPermission"));
     }
 }

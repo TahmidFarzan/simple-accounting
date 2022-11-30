@@ -237,6 +237,28 @@
                                             Setting
                                         </a>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#extraModulCollapse" role="button" aria-expanded="false" aria-controls="extraModulCollapse">
+                                            <i class="fa-solid fa-bolt"></i>
+                                            Extra
+                                        </a>
+
+                                        <div class="collapse bg-light" id="extraModulCollapse">
+                                            <div class="card card-body bg-light border-0 p-0 m-0 px-2 mx-2 ">
+                                                <ul class="nav flex-column">
+                                                    @if (Auth::user()->hasUserPermission(["UPMP01"]) == true)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*'))) ? 'active' : null}}" href="{{ route("user.permission.index") }}">
+                                                                <i class="fa-duotone fa-user-secret"></i>
+                                                                User permission
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
 
                                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
