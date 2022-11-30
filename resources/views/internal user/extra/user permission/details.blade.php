@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('mainPageName')
-    Supplier
+    User permission
 @endsection
 
 @section('mainCardTitle')
@@ -11,8 +11,7 @@
 @section('navBreadcrumbSection')
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
-
-            <li class="breadcrumb-item"><a href="{{ route("user.permission.index") }}">User permission setting</a></li>
+            <li class="breadcrumb-item"><a href="{{ route("user.permission.index") }}">User permission</a></li>
             <li class="breadcrumb-item active" aria-current="page">Details</li>
         </ol>
     </nav>

@@ -11,7 +11,6 @@
 @section('navBreadcrumbSection')
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
-
             <li class="breadcrumb-item active" aria-current="page">Index</li>
         </ol>
     </nav>
