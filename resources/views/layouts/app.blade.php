@@ -259,7 +259,7 @@
                                     @endif
 
                                     <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#extraModulCollapse" role="button" aria-expanded="false" aria-controls="extraModulCollapse">
+                                        <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*')) || (Request::is('user-permission-group')) || (Request::is('user-permission-group/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#extraModulCollapse" role="button" aria-expanded="false" aria-controls="extraModulCollapse">
                                             <i class="fa-solid fa-bolt"></i>
                                             Extra <i class="fa-solid fa-angle-down"></i>
                                         </a>
@@ -350,17 +350,24 @@
 
                                     @hasSection('authContentOne')
                                         @yield('authContentOne')
-                                    @endif
 
-                                    @hasSection('authContentTwo')
                                         <div class="card mb-3">
                                             <div class="card-body text-dark">
                                                 <h5 class="card-title">Dark card title Add 1</h5>
                                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                             </div>
                                         </div>
+                                    @endif
 
+                                    @hasSection('authContentTwo')
                                         @yield('authContentTwo')
+
+                                        <div class="card mb-3">
+                                            <div class="card-body text-dark">
+                                                <h5 class="card-title">Dark card title Add 2</h5>
+                                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            </div>
+                                        </div>
                                     @endif
 
                                     @hasSection('authContentThree')

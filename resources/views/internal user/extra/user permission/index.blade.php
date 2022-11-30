@@ -121,7 +121,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="activePaginationDiv" class="mb-1">
+                    <div id="paginationDiv" class="mb-1">
                         {{ $userPermissions->links() }}
                     </div>
                 </div>
@@ -130,47 +130,16 @@
     </div>
 @endsection
 
-@section('authContentTwo')
-    <div class="card border-dark mb-3">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <a role="button" href="{{ route("dashboard.index") }}" class="btn btn-sm btn-secondary">
-                    Go to dashboard
-                </a>
-            </div>
-        </div>
-    </div>
-@endsection
-
 @push("onPageExtraScript")
     <script>
         $(document).ready(function(){
-            $(document).on('click', "#activePaginationDiv .pagination .page-item a", function () {
+            $(document).on('click', "#paginationDiv .pagination .page-item a", function () {
                 event.preventDefault();
                 var paginationiteUrl = $(this).attr('href');
                 var paginationUrlArray = paginationiteUrl.split("?");
                 parameterString = parameterGenerate();
                 var paginationParameter = (parameterString == null) ? paginationUrlArray[1] : parameterString + "&" + paginationUrlArray[1];
                 dataTableLoad(paginationParameter);
-            });
-
-            $(document).on('click', "#trashPaginationDiv .pagination .page-item a", function () {
-                event.preventDefault();
-                var paginationiteUrl = $(this).attr('href');
-                var paginationUrlArray = paginationiteUrl.split("?");
-                parameterString = parameterGenerate();
-                var paginationParameter = (parameterString == null) ? paginationUrlArray[1] : parameterString + "&" + paginationUrlArray[1];
-                dataTableLoad(paginationParameter);
-            });
-
-            $(document).on('click', "#activeNavTab", function () {
-                $("#selectedNavTabForSorting").val(null);
-                $("#selectedNavTabForSorting").val("Active");
-            });
-
-            $(document).on('click', "#trashNavTab", function () {
-                $("#selectedNavTabForSorting").val(null);
-                $("#selectedNavTabForSorting").val("Trash");
             });
 
             $(document).on('change', "#paginationInputForSorting", function () {
