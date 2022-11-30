@@ -173,7 +173,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <a role="button" href="{{ route("user.index") }}" class="btn btn-sm btn-secondary">
-                    Go to customer
+                    Go to user
                 </a>
             </div>
         </div>
