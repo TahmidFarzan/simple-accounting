@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('mainPageName')
-    User setting
+    User permission
 @endsection
 
 @section('mainCardTitle')
@@ -134,8 +134,8 @@
     <div class="card border-dark mb-3">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <a role="button" href="{{ route("setting.index") }}" class="btn btn-sm btn-secondary">
-                    Go to setting
+                <a role="button" href="{{ route("dashboard.index") }}" class="btn btn-sm btn-secondary">
+                    Go to dashboard
                 </a>
             </div>
         </div>

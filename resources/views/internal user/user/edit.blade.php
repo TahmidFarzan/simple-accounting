@@ -20,7 +20,7 @@
 @section('authContentOne')
     <div class="card border-dark mb-2">
         <div class="card-body text-dark">
-            <form action="{{ route("user.update",["slug" => $user->slug]) }}" method="POST" id="updateForm">
+            <form action="{{ route("user.update",["slug" => $user->slug]) }}" method="POST" id="editForm">
                 @csrf
 
                 @method("PATCH")
@@ -287,7 +287,7 @@
                 }
             });
 
-            $("#addForm").submit(function(e){
+            $("#editForm").submit(function(e){
                 if(formErrorCount > 0){
                     e.preventDefault();
                 }

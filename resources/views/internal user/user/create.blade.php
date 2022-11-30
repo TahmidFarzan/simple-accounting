@@ -5,14 +5,14 @@
 @endsection
 
 @section('mainCardTitle')
-    Add
+    Create
 @endsection
 
 @section('navBreadcrumbSection')
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
             <li class="breadcrumb-item"><a href="{{ route("user.index") }}">Customer</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Add</li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
         </ol>
     </nav>
 @endsection
@@ -20,7 +20,7 @@
 @section('authContentOne')
     <div class="card border-dark mb-2">
         <div class="card-body text-dark">
-            <form action="{{ route("user.save") }}" method="POST" id="addForm">
+            <form action="{{ route("user.save") }}" method="POST" id="createForm">
                 @csrf
 
                 <div class="form-group mb-3">
@@ -77,7 +77,7 @@
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Mobile no </label>
                                 <div class="col-lg-8">
-                                    <input type="text" id="mobileNoInput" name="mobile_no" class="form-control form-control-sm @error('mobile_no') is-invalid @enderror" value="{{ old('mobile_no') }}" placeholder="Ex: 16XXXXXXX" maxlength="20" required>
+                                    <input type="text" id="mobileNoInput" name="mobile_no" class="form-control form-control-sm @error('mobile_no') is-invalid @enderror" value="{{ old('mobile_no') }}" placeholder="Ex: 16XXXXXXX" maxlength="20">
                                     <div class="invalid-feedback" id="mobileNoInputIntlTelInputExtraError" style="display: none;"></div>
                                     @error('mobile_no')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
@@ -224,7 +224,7 @@
                 }
             });
 
-            $("#addForm").submit(function(e){
+            $("#createForm").submit(function(e){
                 if(formErrorCount > 0){
                     e.preventDefault();
                 }

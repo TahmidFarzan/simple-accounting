@@ -131,11 +131,11 @@
                                                 <td>{{ $perUser->email }}</td>
                                                 <td>{{ $perUser->user_role }}</td>
                                                 <td>
-                                                    @if (Auth::user()->hasUserPermission(["UMP04"])==true)
+                                                    @if (Auth::user()->hasUserPermission(["UMP04"]) == true)
                                                         <a href="{{ route("user.details",["slug" => $perUser->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["UMP05","UMP06"])==true)
+                                                    @if ((Auth::user()->hasUserPermission(["UMP05","UMP06"]) == true) && !(Auth::user()->id == $perUser->id))
                                                         <a href="{{ route("user.edit",["slug" => $perUser->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
@@ -403,12 +403,12 @@
                     }
                 },
                 error: function(errorResponse) {
-                    showApiErrorMessages(errorResponse);
+                    showExtraErrorMessages(errorResponse);
                 }
             });
         }
 
-        function showApiErrorMessages(errorMessages){
+        function showExtraErrorMessages(errorMessages){
             if(errorMessages.length > 0){
                 $("#extraErrorMessageDiv").show();
                 $("#extraErrorMessageDiv").html('<div class="p-3"><div class="alert-messages alert alert-danger" role="alert"><div class="row"><div class="col-11 col-lg-11 col-md-11 col-sm-11" id="apiErrorMessageDiv"></div><div class="p-1 col-1 col-lg-1 col-md-1 col-sm-1"><button type="button" class="btn-sm btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div></div></div>');
