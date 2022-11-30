@@ -32,7 +32,7 @@ class UserPermission extends Model
         'updated_at',
     ];
 
-    public function userpermissionGroups()
+    public function userPermissionGroups()
     {
         return $this->belongsToMany(UserPermissionGroup::class, 'user_permission_group_has_user_permissions', 'user_permission_id', 'user_permission_group_id');
     }

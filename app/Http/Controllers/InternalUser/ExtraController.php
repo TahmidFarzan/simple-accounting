@@ -5,8 +5,8 @@ namespace App\Http\Controllers\InternalUser;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\UserPermission;
-
 use App\Utilities\SystemConstant;
+use App\Models\UserPermissionGroup;
 use App\Http\Controllers\Controller;
 
 class ExtraController extends Controller
@@ -27,7 +27,7 @@ class ExtraController extends Controller
         $this->middleware(['user.user.permission.check:UPGMP05'])->only(["userPermissionDelete"]);
     }
 
-    // User permission setting
+    // User permission
     public function userPermissionIndex(Request $request){
         $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,100);
@@ -63,5 +63,38 @@ class ExtraController extends Controller
     public function userPermissionDetails($slug){
         $userPermission = UserPermission::where("slug",$slug)->firstOrFail();
         return view('internal user.extra.user permission.details',compact("userPermission"));
+    }
+
+    // User permission group
+    public function userPermissionGroupIndex(Request $request){
+        $pagination = 1;
+        $paginations = array(5,15,30,45,60,75,90,100);
+        $userPermissions = UserPermission::orderBy("id","asc")->get();
+
+        $userPermissionGroups = UserPermissionGroup::orderBy("name","asc");
+
+        if(count($request->input()) > 0){
+            if($request->has('pagination')){
+                $pagination = (in_array($request->pagination,$paginations)) ? $request->pagination : $pagination;
+            }
+
+            if($request->has('user_permission') && !($request->user_permission == null) && !($request->user_permission == "All")){
+                $userPermission = UserPermission::where("slug",$request->user_permission)->first();
+                if($userPermission){
+                    $userPermissionGroups = $userPermissionGroups->whereIn("id",$userPermission->userPermissionGroups()->pluck("id"));
+                }
+            }
+
+            if($request->has('search')){
+                if(!($request->search == null)){
+                    $userPermissionGroups = $userPermissionGroups->where("name","like","%".$request->search."%")
+                                                    ->orWhere("code","like","%".$request->search."%")
+                                                    ->orWhere("description","like","%".$request->search."%");
+                }
+            }
+        }
+
+        $userPermissionGroups = $userPermissionGroups->paginate($pagination);
+        return view('internal user.extra.user permission group.index',compact("userPermissionGroups",'paginations','userPermissions'));
     }
 }
