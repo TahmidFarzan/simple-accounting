@@ -29,22 +29,18 @@ class SettingServiceProvider extends ServiceProvider
             "description" => "Software Engineer",
             "logo" => "default-logo.png",
             "favicon" => "default-favicon.ico",
-        );
-
-        $defaultCACSettingInfo = array(
-            "country_name" => "Bangladesh",
+            "country" => "Bangladesh",
             "country_code" => "BD",
-            "currency_name" => "Bangladeshi Taka",
+            "currency" => "Bangladeshi Taka",
             "currency_code" => "BDT",
             "currency_symbol" => "Tk",
+            "country" => "Bangladesh",
         );
 
         $dbBUSettingInfo = null;
-        $dbCACSettingInfo = null;
 
         if (Schema::hasTable('settings')) {
             $dbBUSettingInfo = Setting::where("code","BusinessSetting")->first();
-            $dbCACSettingInfo = Setting::where("code","CountryAndCurrencySetting")->first();
         }
         return array(
             "businessSetting"=>array(
@@ -57,13 +53,11 @@ class SettingServiceProvider extends ServiceProvider
                 "description" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["description"]) > 0)) ? $dbBUSettingInfo->fields_with_values["description"] : $defaultBuSettingInfo['description'],
                 "logo" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["logo"]) > 0)) ? $dbBUSettingInfo->fields_with_values["logo"] : $defaultBuSettingInfo['logo'],
                 "favicon" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["favicon"]) > 0)) ? $dbBUSettingInfo->fields_with_values["favicon"] : $defaultBuSettingInfo['favicon'],
-            ),
-            "countryAndCurrencySetting"=>array(
-                "country_name" => ($dbCACSettingInfo && (strlen($dbCACSettingInfo->fields_with_values["country_name"]) > 0) ) ? $dbCACSettingInfo->fields_with_values["country_name"] : $defaultCACSettingInfo["country_name"],
-                "country_code" => ($dbCACSettingInfo && (strlen($dbCACSettingInfo->fields_with_values["country_code"]) > 0) ) ? $dbCACSettingInfo->fields_with_values["country_code"] : $defaultCACSettingInfo["country_code"],
-                "currency_name" => ($dbCACSettingInfo && (strlen($dbCACSettingInfo->fields_with_values["currency_name"]) > 0) ) ? $dbCACSettingInfo->fields_with_values["currency_name"] : $defaultCACSettingInfo["currency_name"],
-                "currency_code" => ($dbCACSettingInfo && (strlen($dbCACSettingInfo->fields_with_values["country_code"]) > 0) ) ? $dbCACSettingInfo->fields_with_values["currency_code"] : $defaultCACSettingInfo["currency_code"],
-                "currency_symbol" => ($dbCACSettingInfo && (strlen($dbCACSettingInfo->fields_with_values["currency_symbol"]) > 0) ) ? $dbCACSettingInfo->fields_with_values["currency_symbol"] : $defaultCACSettingInfo["currency_symbol"],
+                "country" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["country"]) > 0) ) ? $dbBUSettingInfo->fields_with_values["country"] : $defaultBuSettingInfo["country"],
+                "country_code" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["country_code"]) > 0) ) ? $dbBUSettingInfo->fields_with_values["country_code"] : $defaultBuSettingInfo["country_code"],
+                "currency" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["currency"]) > 0) ) ? $dbBUSettingInfo->fields_with_values["currency"] : $defaultBuSettingInfo["currency"],
+                "currency_code" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["country_code"]) > 0) ) ? $dbBUSettingInfo->fields_with_values["currency_code"] : $defaultBuSettingInfo["currency_code"],
+                "currency_symbol" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["currency_symbol"]) > 0) ) ? $dbBUSettingInfo->fields_with_values["currency_symbol"] : $defaultBuSettingInfo["currency_symbol"],
             ),
         );
     }

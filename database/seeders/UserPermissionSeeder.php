@@ -164,5 +164,108 @@ class UserPermissionSeeder extends Seeder
                 'description' => "The internal user can delete all authentication log.",
                 'slug' => SystemConstant::slugGenerator("Delete all authentication log",200),
             ])->create();
+
+        // Setting log permission.
+            UserPermission::factory()->state([
+                'name' => "Access setting.",
+                'code' => "SMP01",
+                'type' => "SettingModulePermission",
+                'description' => "The internal user can access seeting.",
+                'slug' => SystemConstant::slugGenerator("View setting",200),
+            ])->create();
+
+            // Business setting permissions.
+                UserPermission::factory()->state([
+                    'name' => "View business information.",
+                    'code' => "SMP02.01",
+                    'type' => "BusinessSettingModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View business information",200),
+                ])->create();
+                UserPermission::factory()->state([
+                    'name' => "View business information details.",
+                    'code' => "SMP02.02",
+                    'type' => "BusinessSettingModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View business information details",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update business information.",
+                    'code' => "SMP02.03",
+                    'type' => "BusinessSettingModulePermission",
+                    'description' => "The internal user can update business information.",
+                    'slug' => SystemConstant::slugGenerator("Update business information",200),
+                ])->create();
+
+            // Activity log setting permissions.
+                UserPermission::factory()->state([
+                    'name' => "View activity log setting",
+                    'code' => "SMP03.01",
+                    'type' => "ActivityLogSettingModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View activity log setting",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "View activity log setting details.",
+                    'code' => "SMP03.02",
+                    'type' => "ActivityLogSettingModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View activity log setting details.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update activity log setting.",
+                    'code' => "SMP03.03",
+                    'type' => "ActivityLogSettingModulePermission",
+                    'description' => "The internal user can update",
+                    'slug' => SystemConstant::slugGenerator("Update activity log setting.",200),
+                ])->create();
+
+           // Authentication log setting permissions.
+                UserPermission::factory()->state([
+                    'name' => "View authentication log setting",
+                    'code' => "SMP04.01",
+                    'type' => "AuthenticationLogSettingModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View authentication log setting",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "View authentication log setting details.",
+                    'code' => "SMP04.02",
+                    'type' => "AuthenticationLogSettingModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View authentication log setting details.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update authentication log setting.",
+                    'code' => "SMP04.03",
+                    'type' => "AuthenticationLogSettingModulePermission",
+                    'description' => "The internal user can update",
+                    'slug' => SystemConstant::slugGenerator("Update authentication log setting.",200),
+                ])->create();
+
+            // User permission.
+                UserPermission::factory()->state([
+                    'name' => "View user permission setting",
+                    'code' => "SMP05.01",
+                    'type' => "UserPermissionSettingModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View user permission setting",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "View user permission details.",
+                    'code' => "SMP05.02",
+                    'type' => "UserPermissionSettingModulePermission",
+                    'description' => "The internal user can view",
+                    'slug' => SystemConstant::slugGenerator("View user permission details.",200),
+                ])->create();
+
+        // Setting log permission.
+
     }
 }
