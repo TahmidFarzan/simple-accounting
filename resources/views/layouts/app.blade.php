@@ -41,7 +41,7 @@
                 <nav class="navbar navbar-expand-md navbar-expand-md navbar-light fixed-top shadow" style="background-color: #e3f2fd;">
                     <div class="container-lg">
                         <a class="navbar-brand" @auth href="{{ route('dashboard.index') }}" @endauth @guest href="{{ route('login') }}" @endguest>
-                            SA  {{-- {{ (strlen($setting["businessSetting"]["short_name"])==0) ? "GBA" : $setting["applicationSetting"]["short_name"] }} --}}
+                            {{ config('app.name') }}
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                             <span class="navbar-toggler-icon"></span>
@@ -158,7 +158,7 @@
 
             @auth
                 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-                    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="{{ route("dashboard.index") }}">{{ $setting["businessSetting"]["name"] }}</a>
+                    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="{{ route("dashboard.index") }}">{{ config('app.name') }}</a>
                     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -333,10 +333,9 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6 d-flex align-items-center mb-1">
                                             <b>
-                                                <a href="{{ route("dashboard.index") }}" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-                                                    {{ $setting["businessSetting"]["short_name"] }}
-                                                </a>
-                                                <span class="mb-3 mb-md-0 text-muted">&copy; 2022 business</span>
+                                                <span class="mb-3 me-2 mb-md-0 text-muted lh-1">
+                                                    {{ config('app.name') }} &copy; {{ date("Y",strtotime(now())) }}
+                                                </span>
                                             </b>
                                         </div>
 
@@ -347,10 +346,7 @@
 
                                     <div class="row">
                                         <div class="col-md-6 d-flex align-items-center mb-1">
-                                            <a href="" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1 pe-none">
-                                                <span class="text-muted"><b><i>Develop by: </i>Seikh Md Tahmid Farzan</b></span>
-                                            </a>
-                                            <span class="mb-3 mb-md-0 text-muted"></span>
+                                            <span class="mb-3 me-2 mb-md-0 text-muted lh-1 pe-none"><b><i>Develop by: </i>Seikh Md Tahmid Farzan</b></span>
                                         </div>
 
                                         <div class="col-md-6 justify-content-end d-flex">
