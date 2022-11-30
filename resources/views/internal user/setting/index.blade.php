@@ -24,7 +24,7 @@
     <div class="card border-dark mb-2">
         <div class="d-flex justify-content-center mt-3">
             <p>
-                <b> Basic Setting</b>
+                <b> Basic setting</b>
             </p>
         </div>
         <div class="card-body text-dark mt-0">
@@ -46,7 +46,7 @@
     <div class="card border-dark mb-2">
         <div class="d-flex justify-content-center mt-3">
             <p>
-                <b> Log Setting</b>
+                <b> Log setting</b>
             </p>
         </div>
         <div class="card-body text-dark mt-0">
@@ -79,7 +79,7 @@
     <div class="card border-dark mb-2">
         <div class="d-flex justify-content-center mt-3">
             <p>
-                <b> User Setting</b>
+                <b> User setting</b>
             </p>
         </div>
         <div class="card-body text-dark mt-0">
