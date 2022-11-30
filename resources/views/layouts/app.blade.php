@@ -275,6 +275,15 @@
                                                             </a>
                                                         </li>
                                                     @endif
+
+                                                    @if (Auth::user()->hasUserPermission(["UPMP01"]) == true)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link {{(Request::is('user-permission-group') || (Request::is('user-permission-group/*'))) ? 'active' : null}}" href="{{ route("user.permission.group.index") }}">
+                                                                <i class="fa-solid fa-users-line"></i>
+                                                                User permission group
+                                                            </a>
+                                                        </li>
+                                                    @endif
                                                 </ul>
                                             </div>
                                         </div>

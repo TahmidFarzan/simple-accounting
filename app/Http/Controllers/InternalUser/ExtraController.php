@@ -15,9 +15,16 @@ class ExtraController extends Controller
     {
         $this->middleware(['auth','verified']);
 
-        // User permissions setting permission.
+        // User permissions.
         $this->middleware(['user.user.permission.check:UPMP01'])->only(["userPermissionIndex"]);
         $this->middleware(['user.user.permission.check:UPMP02'])->only(["userPermissionDetails"]);
+
+        // User permission group.
+        $this->middleware(['user.user.permission.check:UPGMP01'])->only(["userPermissionGroupIndex"]);
+        $this->middleware(['user.user.permission.check:UPGMP02'])->only(["userPermissionGroupCreate","userPermissionGroupSave"]);
+        $this->middleware(['user.user.permission.check:UPGMP03'])->only(["userPermissionDetails"]);
+        $this->middleware(['user.user.permission.check:UPGMP04'])->only(["userPermissionGroupEdit","userPermissionGroupUpdate"]);
+        $this->middleware(['user.user.permission.check:UPGMP05'])->only(["userPermissionDelete"]);
     }
 
     // User permission setting

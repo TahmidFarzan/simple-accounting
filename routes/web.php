@@ -83,4 +83,16 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::get('/', [ExtraController::class, 'userPermissionIndex'])->name('index');
         Route::get('details/{slug}', [ExtraController::class, 'userPermissionDetails'])->name('details');
     });
+
+    // User permission group
+    Route::prefix('user-permission-group')->name('user.permission.group.')->group(function(){
+        Route::get('/', [ExtraController::class, 'userPermissionGroupIndex'])->name('index');
+        Route::get('create', [ExtraController::class, 'userPermissionGroupCreate'])->name('create');
+        Route::get('edit/{slug}', [ExtraController::class, 'userPermissionGroupEdit'])->name('edit');
+        Route::get('details/{slug}', [ExtraController::class, 'userPermissionGroupDetails'])->name('details');
+
+        Route::post('save', [ExtraController::class, 'userPermissionGroupSave'])->name('save');
+        Route::patch('update/{slug}', [ExtraController::class, 'userPermissionGroupUpdate'])->name('update');
+        Route::patch('delete/{slug}', [ExtraController::class, 'userPermissionGroupDelete'])->name('delete');
+    });
 });
