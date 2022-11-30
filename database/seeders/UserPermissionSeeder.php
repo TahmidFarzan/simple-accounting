@@ -268,7 +268,7 @@ class UserPermissionSeeder extends Seeder
             // User permission group permission.
                 UserPermission::factory()->state([
                     'name' => "View user permission group.",
-                    'code' => "UPGMP01",
+                    'code' => "SMP06.01",
                     'type' => "UserPermissionGroupModulePermission",
                     'description' => "The internal user can view.",
                     'slug' => SystemConstant::slugGenerator("View user permission group",200),
@@ -276,7 +276,7 @@ class UserPermissionSeeder extends Seeder
 
                 UserPermission::factory()->state([
                     'name' => "Create user permission group.",
-                    'code' => "UPGMP02",
+                    'code' => "SMP06.02",
                     'type' => "UserPermissionGroupModulePermission",
                     'description' => "The internal user can create user permission group.",
                     'slug' => SystemConstant::slugGenerator("Create user permission group",200),
@@ -284,7 +284,7 @@ class UserPermissionSeeder extends Seeder
 
                 UserPermission::factory()->state([
                     'name' => "View user permission group details.",
-                    'code' => "UPGMP03",
+                    'code' => "SMP06.03",
                     'type' => "UserPermissionGroupModulePermission",
                     'description' => "The internal user can view authentication log details.",
                     'slug' => SystemConstant::slugGenerator("View user permission group  details.",200),
@@ -292,7 +292,7 @@ class UserPermissionSeeder extends Seeder
 
                 UserPermission::factory()->state([
                     'name' => "Update user permission group.",
-                    'code' => "UPGMP04",
+                    'code' => "SMP06.04",
                     'type' => "UserPermissionGroupModulePermission",
                     'description' => "The internal user can update user permission group.",
                     'slug' => SystemConstant::slugGenerator("Update user permission group",200),
@@ -300,7 +300,7 @@ class UserPermissionSeeder extends Seeder
 
                 UserPermission::factory()->state([
                     'name' => "Delete user permission group.",
-                    'code' => "UPGMP05",
+                    'code' => "SMP06.05",
                     'type' => "UserPermissionGroupModulePermission",
                     'description' => "The internal user can delete user permission group.",
                     'slug' => SystemConstant::slugGenerator("Delete user permission group",200),
