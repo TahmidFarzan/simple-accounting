@@ -180,7 +180,7 @@ class UserController extends Controller
                 'default_password.in' => 'Default password must one out of [Yes,No].',
 
                 'password.required_if' => 'Password is reqired.',
-                'password.max' => 'Password length can not greater then 255 chars..',
+                'password.max' => 'Password length can not greater then 255 chars.',
             ]
         );
 
@@ -293,7 +293,7 @@ class UserController extends Controller
                 'reset_password.in' => 'Reset password must one out of [Yes,No].',
 
                 'password.required_if' => 'Password is reqired.',
-                'password.max' => 'Password length can not greater then 255 chars..',
+                'password.max' => 'Password length can not greater then 255 chars.',
             ]
         );
 
