@@ -184,13 +184,14 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('user') || (Request::is('user/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("user.index") }}">
-                                            <i class="fa-solid fa-users"></i>
-                                            Users
-                                        </a>
-                                    </li>
-
+                                    @if (Auth::user()->hasUserPermission(["UMP01"]) == true)
+                                        <li class="nav-item">
+                                            <a class="nav-link {{(Request::is('user') || (Request::is('user/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("user.index") }}">
+                                                <i class="fa-solid fa-users"></i>
+                                                Users
+                                            </a>
+                                        </li>
+                                    @endif
 
                                     <li class="nav-item">
                                         <a class="nav-link" href="#">
@@ -224,19 +225,34 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('authentication-log') || (Request::is('authentication-log/*'))) ? 'active' : null}}" href="{{ route("authentication.log.index") }}">
-                                            <i class="fa-solid fa-user-clock"></i>
-                                            Authentication log
-                                        </a>
-                                    </li>
+                                    @if (Auth::user()->hasUserPermission(["ACLMP01"]) == true)
+                                        <li class="nav-item">
+                                            <a class="nav-link {{(Request::is('activity-log') || (Request::is('activity-log/*'))) ? 'active' : null}}" href="{{ route("activity.log.index") }}">
+                                                <i class="fa-solid fa-chart-simple"></i>
+                                                Activity log
+                                            </a>
+                                        </li>
+                                    @endif
 
-                                    <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('setting') || (Request::is('setting/*'))) ? 'active' : null}}" href="{{ route("setting.index") }}">
-                                            <i class="fa-solid fa-gear"></i>
-                                            Setting
-                                        </a>
-                                    </li>
+                                    @if (Auth::user()->hasUserPermission(["AULMP01"]) == true)
+                                        <li class="nav-item">
+                                            <a class="nav-link {{(Request::is('authentication-log') || (Request::is('authentication-log/*'))) ? 'active' : null}}" href="{{ route("authentication.log.index") }}">
+                                                <i class="fa-solid fa-user-clock"></i>
+                                                Authentication log
+                                            </a>
+                                        </li>
+                                    @endif
+
+
+
+                                    @if (Auth::user()->hasUserPermission(["SMP01"]) == true)
+                                        <li class="nav-item">
+                                            <a class="nav-link {{(Request::is('setting') || (Request::is('setting/*'))) ? 'active' : null}}" href="{{ route("setting.index") }}">
+                                                <i class="fa-solid fa-gear"></i>
+                                                Setting
+                                            </a>
+                                        </li>
+                                    @endif
 
                                     <li class="nav-item">
                                         <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#extraModulCollapse" role="button" aria-expanded="false" aria-controls="extraModulCollapse">

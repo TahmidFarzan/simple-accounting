@@ -17,7 +17,7 @@ class SettingController extends Controller
     {
         $this->middleware(['auth','verified']);
         // Controller access permissions.
-        $this->middleware(['user.user.permission.check:SMP01']);
+        $this->middleware(['user.user.permission.check:SMP01'])->only(["index"]);
 
         // Business setting permissions.
         $this->middleware(['user.user.permission.check:SMP02.01'])->only(["businessSettingIndex"]);
