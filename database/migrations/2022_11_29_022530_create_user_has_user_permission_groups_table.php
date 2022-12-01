@@ -15,9 +15,12 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by_id');
             $table->timestamps();
 
+            $table->unique(["user_id","user_permission_group_id"],'user_has_user_permission_groups_uq_1');
+
             $table->foreign('user_id',"user_has_user_permission_groups_fk_1")->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('user_permission_group_id',"user_has_user_permission_groups_fk_2")->references('id')->on('user_permission_groups')->onDelete('cascade');
-            $table->foreign('created_by_id',"user_has_user_permission_groups_fk_3")->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('created_by_id',"user_has_user_permission_groups_fk_2")->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_permission_group_id',"user_has_user_permission_groups_fk_3")->references('id')->on('user_permission_groups')->onDelete('cascade');
+
         });
     }
 
