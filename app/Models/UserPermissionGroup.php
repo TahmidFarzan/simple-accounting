@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class UserPermissionGroup extends Model
 {
     use HasFactory;
+    protected $guard = 'web';
 
-    protected $table='user_permission_groups';
+    protected $table = 'user_permission_groups';
 
     protected $fillable = [
         'name',

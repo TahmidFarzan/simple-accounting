@@ -12,7 +12,7 @@ class Setting extends Model
 {
     use HasFactory,LogsActivity;
 
-    protected $table='settings';
+    protected $table = 'settings';
 
     protected $guard = 'web';
 

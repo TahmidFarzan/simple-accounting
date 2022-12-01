@@ -13,7 +13,7 @@ class UserPermissionGroupHasUserPermission extends Pivot
 
     protected $guard = 'web';
 
-    protected $table='user_permission_group_has_user_permissions';
+    protected $table = 'user_permission_group_has_user_permissions';
 
     protected $fillable = [
         'created_by_id',

@@ -9,7 +9,9 @@ class UserPermission extends Model
 {
     use HasFactory;
 
-    protected $table='user_permissions';
+    protected $guard = 'web';
+
+    protected $table = 'user_permissions';
 
     protected $fillable = [
         'name',
