@@ -71,7 +71,7 @@ class ExtraController extends Controller
 
     // User permission group
     public function userPermissionGroupIndex(Request $request){
-        $pagination = 1;
+        $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,100);
         $userPermissions = UserPermission::orderBy("id","asc")->get();
 
