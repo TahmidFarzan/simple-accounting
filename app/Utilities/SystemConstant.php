@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Http;
 
 class SystemConstant
 {
+    public static function arraySort($array,$sortBy,$sortSeauence){
+        $sortBy = ($sortBy == null) ? "Value" : $sortBy;
+        $sortSeauence = ($sortSeauence == null) ? "Asc" : $sortSeauence;
+
+        if(($sortBy == "Value") && ($sortSeauence == "Asc")){
+            sort($array);
+        }
+        return $array;
+    }
+
     public static function slugGenerator($title,$maxLength){
         $defaultLengtn = ($maxLength > 0) ? $maxLength : 200;
         if (Str::of($title)->length() > $defaultLengtn) {
