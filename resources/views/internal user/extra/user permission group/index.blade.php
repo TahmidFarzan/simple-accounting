@@ -138,7 +138,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                <form action="{{ route("user.delete",["slug" => $perUserPermissionGroup->slug]) }}" method="POST">
+                                                                <form action="{{ route("user.permission.group.delete",["slug" => $perUserPermissionGroup->slug]) }}" method="POST">
                                                                     @csrf
                                                                     @method("DELETE")
                                                                     <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
@@ -229,18 +229,16 @@
         }
 
         function dataTableLoad(parameterString){
-            var errorMessages=[];
             $.ajax({
                 type: "get",
-                url: "{{ route('user.permission.index') }}" + "?" + parameterString,
+                url: "{{ route('user.permission.group.index') }}" + "?" + parameterString,
                 success: function(result) {
                     $("#extraErrorMessageDiv").hide();
                     $("#extraErrorMessageDiv").html("");
                     $("#dataTableGridView").html($(result).find("#dataTableGridView").html());
                 },
                 error: function(errorResponse) {
-                    errorMessages.push(errorResponse);
-                    showExtraErrorMessages(errorMessages);
+                    showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
                 }
             });
         }

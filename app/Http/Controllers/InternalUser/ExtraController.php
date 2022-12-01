@@ -85,7 +85,7 @@ class ExtraController extends Controller
             if($request->has('user_permission') && !($request->user_permission == null) && !($request->user_permission == "All")){
                 $userPermission = UserPermission::where("slug",$request->user_permission)->first();
                 if($userPermission){
-                    $userPermissionGroups = $userPermissionGroups->whereIn("id",$userPermission->userPermissionGroups()->pluck("id"));
+                    $userPermissionGroups = $userPermissionGroups->whereIn("id",$userPermission->userPermissionGroups->pluck("id"));
                 }
             }
 
@@ -129,8 +129,6 @@ class ExtraController extends Controller
             ]
         );
 
-        return $request;
-
         $validator->after(function ($validator) {
             $afterValidatorData=$validator->getData();
 
@@ -159,6 +157,7 @@ class ExtraController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $userPermissionIds = array();
         $statusInformation = array("status" => "errors","message" => array());
 
         LogBatch::startBatch();
@@ -169,12 +168,34 @@ class ExtraController extends Controller
             $userPermissionGroup->created_at = Carbon::now();
             $userPermissionGroup->created_by_id = Auth::user()->id;
             $userPermissionGroup->updated_at = null;
-            $saveUser = $userPermissionGroup->save();
+            $saveUserPermissionGroup = $userPermissionGroup->save();
+
+            if($saveUserPermissionGroup){
+                foreach($request->user_permission as $perUserPermission){
+                    $userPermission = UserPermission::where("slug",$perUserPermission)->firstOrFail();
+                    array_push($userPermissionIds,$userPermission->id);
+                }
+
+                if(count($userPermissionIds) > 0){
+                    $userPermissionGroup->userPermissions()->attach(
+                        $userPermissionIds,["created_at" => Carbon::now(),"updated_at" => null,"created_by_id" => Auth::user()->id]
+                    );
+                }
+
+            }
         LogBatch::endBatch();
 
-        if($saveUser){
+        if($saveUserPermissionGroup){
             $statusInformation["status"] = "status";
             array_push($statusInformation["message"],"User permission group successfully created.");
+
+            if(count($userPermissionIds) == count($request->user_permission)){
+                array_push($statusInformation["message"],"All selected user permission are added to uer permission group.");
+            }
+            else{
+                $statusInformation["status"] = "warning";
+                array_push($statusInformation["message"],"Some selected user permission are fail to add to uer permission group.");
+            }
         }
         else{
             $statusInformation["status"] = "errors";
