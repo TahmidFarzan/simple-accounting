@@ -71,58 +71,66 @@ class AuthenticationLogController extends Controller
 
     public function delete($id)
     {
+        $statusInformation = array("status" => "errors","message" => collect());
+
         $authenticationLogSetting = SystemConstant::authenticationLogSetting();
-        $statusInformation = array("status" => "errors","message" => array());
+
         $authenticationLog = AuthenticationLog::where("id",$id)->firstOrFail();
 
         $dateDiff = strtotime(Carbon::now()) - strtotime($authenticationLog->login_at);
         $dateDiffInDays = abs(round($dateDiff / (60 * 60 * 24)));
+
         if(($dateDiffInDays < $authenticationLogSetting["delete_records_older_than"])){
-            array_push($statusInformation["message"], "Record must be older than ".$authenticationLogSetting["delete_records_older_than"]." days. More ".($authenticationLogSetting["delete_records_older_than"] - $dateDiffInDays)." days need to be passed.");
+            $statusInformation["message"]->push("Record must be older than ".$authenticationLogSetting["delete_records_older_than"]." days.");
+            $statusInformation["message"]->push("More ".($authenticationLogSetting["delete_records_older_than"] - $dateDiffInDays)." days need to be passed.");
         }
         else{
             if($authenticationLog->delete()){
                 $statusInformation["status"] = "status";
-                array_push($statusInformation["message"], "Authentication log successfully deleted.");
+                $statusInformation["message"]->push("Authentication log successfully deleted.");
             }
             else{
-                array_push($statusInformation["message"], "Fali to delete the authentication log.");
+                $statusInformation["message"]->push("Fali to delete the authentication log.");
             }
         }
 
-        return redirect()->back()->with([$statusInformation["status"] => (count($statusInformation["message"])<=1) ? implode(",",$statusInformation["message"]) : $statusInformation["message"]]);
+        return redirect()->back()->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
     public function deleteAllLogs(Request $request)
     {
+        $statusInformation=array("status" => "errors","message" => collect());
+
         $authenticationLogSetting = SystemConstant::authenticationLogSetting();
+
         $deleteRecordsOlderThan = ($request->delete_records_older_than > 0) ? $request->delete_records_older_than : $authenticationLogSetting["delete_records_older_than"];
-        $statusInformation=array("status" => "errors","message" => array());
+
         if(($authenticationLogSetting["delete_records_older_than"] >= $deleteRecordsOlderThan) && ($deleteRecordsOlderThan <= 365)){
             $cutOffDate = Carbon::now()->subDays($deleteRecordsOlderThan)->format('Y-m-d H:i:s');
 
             if(AuthenticationLog::where('login_at', '<', $cutOffDate)->count() > 0){
                 $authenticationLogId = AuthenticationLog::where('login_at', '<', $cutOffDate)->pluck("id");
                 $authenticationLogDelete = AuthenticationLog::whereIn("id",$authenticationLogId)->delete();
+
                 if($authenticationLogDelete){
                     $statusInformation["status"] = "status";
-                    array_push($statusInformation["message"], "All authentication log are deleted successfully.");
+                    $statusInformation["message"]->push("All authentication log are deleted successfully.");
                 }
                 else{
                     $statusInformation["status"] = "errors";
-                    array_push($statusInformation["message"], "Fail to delete.");
+                    $statusInformation["message"]->push("Fail to delete.");
                 }
             }
             else{
                 $statusInformation["status"] = "status";
-                array_push($statusInformation["message"], "No older authentication log exit to be deleted.");
+                $statusInformation["message"]->push("No older authentication log exit to be deleted.");
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            array_push($statusInformation["message"], "Please enter valid day count.");
-            array_push($statusInformation["message"], "The delete records older than must equal or greater then ".$authenticationLogSetting["delete_records_older_than"]." days");
-            array_push($statusInformation["message"], "The delete records older than must equal or less than 365.");
+            $statusInformation["message"]->push("Please enter valid day count.");
+            $statusInformation["message"]->push("The delete records older than must equal or greater then ".$authenticationLogSetting["delete_records_older_than"]." days");
+            $statusInformation["message"]->push("The delete records older than must equal or less than 365.");
         }
 
         return redirect()->back()->with([$statusInformation["status"] => $statusInformation["message"]]);

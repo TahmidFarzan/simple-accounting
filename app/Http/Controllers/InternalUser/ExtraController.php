@@ -162,7 +162,7 @@ class ExtraController extends Controller
         }
 
         $userPermissionIds = array();
-        $statusInformation = array("status" => "errors","message" => array());
+        $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
             $userPermissionGroup = new UserPermissionGroup();
@@ -193,14 +193,14 @@ class ExtraController extends Controller
 
         if($saveUserPermissionGroup){
             $statusInformation["status"] = "status";
-            array_push($statusInformation["message"],"User permission group successfully created.");
+            $statusInformation["message"]->push("User permission group successfully created.");
 
             if(count($userPermissionIds) == count($request->user_permission)){
-                array_push($statusInformation["message"],"All selected user permission are added to uer permission group.");
+                $statusInformation["message"]->push("All selected user permission are added to uer permission group.");
             }
             else{
                 $statusInformation["status"] = "warning";
-                array_push($statusInformation["message"],"Some selected user permission are fail to add to uer permission group.");
+                $statusInformation["message"]->push("Some selected user permission are fail to add to uer permission group.");
             }
         }
         else{
@@ -261,7 +261,7 @@ class ExtraController extends Controller
         }
 
         $userPermissionIds = array();
-        $statusInformation = array("status" => "errors","message" => array());
+        $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
             $userPermissionGroup = UserPermissionGroup::where("slug",$slug)->firstorFail();
@@ -294,14 +294,14 @@ class ExtraController extends Controller
 
         if($updateUserPermissionGroup){
             $statusInformation["status"] = "status";
-            array_push($statusInformation["message"],"User permission group successfully updated.");
+            $statusInformation["message"]->push("User permission group successfully updated.");
 
             if(count($userPermissionIds) == count($request->user_permission)){
-                array_push($statusInformation["message"],"All selected user permission are updated to uer permission group.");
+                $statusInformation["message"]->push("All selected user permission are updated to uer permission group.");
             }
             else{
                 $statusInformation["status"] = "warning";
-                array_push($statusInformation["message"],"Some selected user permission are fail to updated to uer permission group.");
+                $statusInformation["message"]->push("Some selected user permission are fail to updated to uer permission group.");
             }
         }
         else{

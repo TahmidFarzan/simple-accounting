@@ -211,7 +211,7 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $statusInformation = array("status" => "errors","message" => array());
+        $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
             $user = new User();
@@ -231,15 +231,15 @@ class UserController extends Controller
 
         if($saveUser){
             $statusInformation["status"] = "status";
-            array_push($statusInformation["message"],"User successfully created.");
+            $statusInformation["message"]->push("User successfully created.");
 
             if($request->auto_email_verify == "No"){
                 $user->sendEmailVerificationNotification();
-                array_push($statusInformation["message"],"Please asked user to verify email before is expired.");
+                $statusInformation["message"]->push("Please asked user to verify email before is expired.");
             }
 
             if($request->default_password == "Yes"){
-                array_push($statusInformation["message"],"Default pasword(123456789) is used for user password.");
+                $statusInformation["message"]->push("Default pasword(123456789) is used for user password.");
             }
         }
         else{
@@ -325,7 +325,7 @@ class UserController extends Controller
         }
         $doneUpdateEmail = false;
 
-        $statusInformation = array("status" => "errors","message" => array());
+        $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
             $user = User::where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
@@ -354,22 +354,22 @@ class UserController extends Controller
 
         if($updateUser){
             $statusInformation["status"] = "status";
-            array_push($statusInformation["message"],"User successfully updated.");
+            $statusInformation["message"]->push("User successfully updated.");
 
             if(($request->update_email == "Yes") && ($doneUpdateEmail == true)){
-                array_push($statusInformation["message"],"User email has been updated.");
+                $statusInformation["message"]->push("User email has been updated.");
 
                 if($request->auto_email_verify == "No"){
                     $user->sendEmailVerificationNotification();
-                    array_push($statusInformation["message"],"Please asked user to verify email before is expired.");
+                    $statusInformation["message"]->push("Please asked user to verify email before is expired.");
                 }
             }
 
             if($request->reset_password == "Yes"){
-                array_push($statusInformation["message"],"Reset password is done.");
+                $statusInformation["message"]->push("Reset password is done.");
 
                 if($request->default_password == "Yes"){
-                    array_push($statusInformation["message"],"Default pasword(123456789) is used for user password.");
+                    $statusInformation["message"]->push("Default pasword(123456789) is used for user password.");
                 }
             }
         }
@@ -382,7 +382,7 @@ class UserController extends Controller
     }
 
     public function trash($slug){
-        $statusInformation = array("status" => "errors","message" => array());
+        $statusInformation = array("status" => "errors","message" => collect());
 
         if((User::onlyTrashed()->where("slug",$slug)->whereNot("id",Auth::user()->id)->count()) == 0){
             if($this->trashUserValidationCheck($slug) == true){
@@ -394,27 +394,27 @@ class UserController extends Controller
 
                 if($trashedUser){
                     $statusInformation["status"] = "status";
-                    array_push($statusInformation["message"], "User successfully trashed.");
+                    $statusInformation["message"]->push( "User successfully trashed.");
                 }
                 else{
-                    array_push($statusInformation["message"], "User fail to trash.");
+                    $statusInformation["message"]->push("User fail to trash.");
                 }
             }
             else{
-                array_push($statusInformation["message"], "You does not have parmission to trash user.");
+                $statusInformation["message"]->push( "You does not have parmission to trash user.");
             }
 
         }
         else{
             $statusInformation["status"] = "status";
-            array_push($statusInformation["message"], "User already trashed.");
+            $statusInformation["message"]->push("User already trashed.");
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
     public function restore($slug){
-        $statusInformation = array("status" => "errors","message" => array());
+        $statusInformation = array("status" => "errors","message" => collect());
 
         if((User::where("slug",$slug)->whereNot("id",Auth::user()->id)->count()) == 0){
             if($this->restoreUserValidationCheck($slug) == true){
@@ -426,19 +426,19 @@ class UserController extends Controller
 
                 if($restoreUser){
                     $statusInformation["status"] = "status";
-                    array_push($statusInformation["message"], "User successfully restore.");
+                    $statusInformation["message"]->push( "User successfully restore.");
                 }
                 else{
-                    array_push($statusInformation["message"], "User fail to restore.");
+                    $statusInformation["message"]->push( "User fail to restore.");
                 }
             }
             else{
-                array_push($statusInformation["message"], "You does not have parmission to restore user.");
+                $statusInformation["message"]->push( "You does not have parmission to restore user.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            array_push($statusInformation["message"], "User already active.");
+            $statusInformation["message"]->push( "User already active.");
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);

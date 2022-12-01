@@ -131,7 +131,7 @@ class SettingController extends Controller
         }
 
         $newLogoName = null;
-        $statusInformation = array("status" => "errors","message" => array());
+        $statusInformation = array("status" => "errors","message" => collect());
         $oldLogoName = Setting::where("slug",$slug)->firstOrFail()->fields_with_values["logo"];
 
         if(!($request->hasFile('logo'))){
@@ -173,10 +173,10 @@ class SettingController extends Controller
 
         if($updateBusinessSetting){
             $statusInformation["status"] = "status";
-            array_push($statusInformation["message"], "All business setting successfully updated.");
+            $statusInformation["message"]->push("All business setting successfully updated.");
         }
         else{
-            array_push($statusInformation["message"], "Fail to update some field. Please update business setting again");
+            $statusInformation["message"]->push("Fail to update some field. Please update business setting again");
         }
 
         // Redirect logic.
@@ -233,7 +233,7 @@ class SettingController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $statusInformation = array("status" => "errors","message" => array());
+        $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
             $activityLogSetting = Setting::where("slug",$slug)->firstOrFail();
@@ -241,7 +241,6 @@ class SettingController extends Controller
 
             $activityLogSettingFieldsWithValues['delete_records_older_than'] = $request->delete_records_older_than;
             $activityLogSettingFieldsWithValues['auto_delete'] = $request->auto_delete;
-            $activityLogSettingFieldsWithValues['send_mobile_notification'] = $request->send_mobile_notification;
             $activityLogSettingFieldsWithValues['send_email_notification'] = $request->send_email_notification;
             $activityLogSettingFieldsWithValues['auto_delete_scheduler_frequency'] = $request->auto_delete_scheduler_frequency;
 
@@ -252,10 +251,10 @@ class SettingController extends Controller
 
         if($updateActivityLogSetting){
             $statusInformation["status"] = "status";
-            array_push($statusInformation["message"], "All activity log setting successfully updated.");
+            $statusInformation["message"]->push("All activity log setting successfully updated.");
         }
         else{
-            array_push($statusInformation["message"], "Fail to update some field. Please update activity log setting again");
+            $statusInformation["message"]->push("Fail to update some field. Please update activity log setting again");
         }
 
         // Redirect logic.
@@ -312,7 +311,7 @@ class SettingController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $statusInformation = array("status" => "errors","message" => array());
+        $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
             $authenticationLogSetting = Setting::where("slug",$slug)->firstOrFail();
@@ -320,7 +319,6 @@ class SettingController extends Controller
 
             $authenticationLogSettingFieldsWithValues['delete_records_older_than'] = $request->delete_records_older_than;
             $authenticationLogSettingFieldsWithValues['auto_delete'] = $request->auto_delete;
-            $authenticationLogSettingFieldsWithValues['send_mobile_notification'] = $request->send_mobile_notification;
             $authenticationLogSettingFieldsWithValues['send_email_notification'] = $request->send_email_notification;
             $authenticationLogSettingFieldsWithValues['auto_delete_scheduler_frequency'] = $request->auto_delete_scheduler_frequency;
 
@@ -331,10 +329,10 @@ class SettingController extends Controller
 
         if($updateActivityLogSetting){
             $statusInformation["status"] = "status";
-            array_push($statusInformation["message"], "All authentication log setting successfully updated.");
+            $statusInformation["message"]->push("All authentication log setting successfully updated.");
         }
         else{
-            array_push($statusInformation["message"], "Fail to update some field. Please update authentication log setting again");
+            $statusInformation["message"]->push("Fail to update some field. Please update authentication log setting again");
         }
 
         // Redirect logic.

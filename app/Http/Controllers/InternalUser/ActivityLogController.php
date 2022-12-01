@@ -80,56 +80,65 @@ class ActivityLogController extends Controller
 
     public function delete($id)
     {
+        $statusInformation = array("status" => "errors","message" => collect());
+
         $activityLogSetting = SystemConstant::activityLogSetting();
-        $statusInformation = array("status" => "errors","message" => array());
+
         $activitLog = Activity::where("id",$id)->firstOrFail();
+
         $dateDiff = strtotime(Carbon::now()) - strtotime($activitLog->created_at);
         $dateDiffInDays = abs(round($dateDiff / (60 * 60 * 24)));
+
         if(($dateDiffInDays < $activityLogSetting["delete_records_older_than"])){
-            array_push($statusInformation["message"], "Record must be older than ".$activityLogSetting["delete_records_older_than"]." days. More ".($activityLogSetting["delete_records_older_than"] - $dateDiffInDays)." days need to be passed.");
+            $statusInformation["message"]->push("Record must be older than ".$activityLogSetting["delete_records_older_than"]." days.");
+            $statusInformation["message"]->push("More ".($activityLogSetting["delete_records_older_than"] - $dateDiffInDays)." days need to be passed.");
         }
         else{
             if($activitLog->delete()){
                 $statusInformation["status"] = "status";
-                array_push($statusInformation["message"], "Activity log successfully deleted.");
+                $statusInformation["message"]->push("Activity log successfully deleted.");
             }
             else{
-                array_push($statusInformation["message"], "Fali to delete the activity log.");
+                $statusInformation["message"]->push("Fali to delete the activity log.");
             }
         }
 
-        return redirect()->back()->with([$statusInformation["status"] => (count($statusInformation["message"])<=1) ? implode(",",$statusInformation["message"]) : $statusInformation["message"]]);
+        return redirect()->back()->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
     public function deleteAllLogs(Request $request)
     {
+        $statusInformation = array("status" => "errors","message" => collect());
+
         $activityLogSetting = SystemConstant::activityLogSetting();
         $deleteRecordsOlderThan = ($request->delete_records_older_than > 0) ? $request->delete_records_older_than : $activityLogSetting["delete_records_older_than"];
-        $statusInformation = array("status" => "errors","message" => array());
+
         if(($activityLogSetting["delete_records_older_than"] >= $deleteRecordsOlderThan) && ($deleteRecordsOlderThan <= 365)){
+
             $cutOffDate = Carbon::now()->subDays($deleteRecordsOlderThan)->format('Y-m-d H:i:s');
+
             if(Activity::where('created_at', '<', $cutOffDate)->count() > 0){
                 $activitLogsId = Activity::where('created_at', '<', $cutOffDate)->pluck("id");
                 $activitLogsDelete = Activity::whereIn("id",$activitLogsId)->delete();
                 if($activitLogsDelete){
                     $statusInformation["status"] = "status";
-                    array_push($statusInformation["message"], "All activity log are deleted successfully.");
+                    $statusInformation["message"]->push( "All activity log are deleted successfully.");
                 }
                 else{
                     $statusInformation["status"] = "errors";
-                    array_push($statusInformation["message"], "Fail to delete.");
+                    $statusInformation["message"]->push("Fail to delete.");
                 }
             }
             else{
                 $statusInformation["status"] = "status";
-                array_push($statusInformation["message"], "No older activity log exit to be deleted.");
+                $statusInformation["message"]->push("No older activity log exit to be deleted.");
             }
         }
         else{
             $statusInformation["status"]="errors";
-            array_push($statusInformation["message"], "Please enter valid day count.");
-            array_push($statusInformation["message"], "The delete records older than must equal or greater then ".$activityLogSetting["delete_records_older_than"]." days");
-            array_push($statusInformation["message"], "The delete records older than must equal or less than 365.");
+            $statusInformation["message"]->push("Please enter valid day count.");
+            $statusInformation["message"]->push("The delete records older than must equal or greater then ".$activityLogSetting["delete_records_older_than"]." days");
+            $statusInformation["message"]->push("The delete records older than must equal or less than 365.");
         }
 
         return redirect()->back()->with([$statusInformation["status"] => $statusInformation["message"]]);
