@@ -190,7 +190,6 @@
         }
 
         function dataTableLoad(parameterString){
-            var errorMessages=[];
             $.ajax({
                 type: "get",
                 url: "{{ route('user.permission.index') }}" + "?" + parameterString,
@@ -200,8 +199,7 @@
                     $("#dataTableGridView").html($(result).find("#dataTableGridView").html());
                 },
                 error: function(errorResponse) {
-                    errorMessages.push(errorResponse);
-                    showApiErrorMessages(errorMessages);
+                    showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
                 }
             });
         }

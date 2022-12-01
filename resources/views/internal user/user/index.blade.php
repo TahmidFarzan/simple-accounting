@@ -394,7 +394,7 @@
                     }
                 },
                 error: function(errorResponse) {
-                    showExtraErrorMessages(errorResponse);
+                    showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
                 }
             });
         }

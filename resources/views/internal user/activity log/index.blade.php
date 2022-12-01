@@ -323,7 +323,6 @@
         }
 
         function dataTableLoad(parameterString){
-            var errorMessages = [];
             $.ajax({
                 type: "get",
                 url: "{{ route('activity.log.index') }}" + "?" + parameterString,
@@ -331,8 +330,7 @@
                     $("#dataTableDiv").html($(result).find("#dataTableDiv").html());
                 },
                 error: function(errorResponse) {
-                    errorMessages.push(errorResponse);
-                    showApiErrorMessages(errorMessages);
+                    showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
                 }
             });
         }
