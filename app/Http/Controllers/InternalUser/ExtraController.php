@@ -107,6 +107,13 @@ class ExtraController extends Controller
         return view('internal user.extra.user permission group.create',compact('userPermissions'));
     }
 
+    public function userPermissionGroupEdit($slug){
+        $userPermissions = UserPermission::orderBy("type")->orderBy("name")->get()->groupBy("type");
+
+        $userPermissionGroup = UserPermissionGroup::where("slug",$slug)->firstorFail();
+        return view('internal user.extra.user permission group.edit',compact('userPermissions',"userPermissionGroup"));
+    }
+
     public function userPermissionGroupSave(Request $request){
         $validator = Validator::make($request->all(),
             [
@@ -203,4 +210,106 @@ class ExtraController extends Controller
 
         return redirect()->route("user.permission.group.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
+
+    public function userPermissionGroupUpdate(Request $request,$slug){
+        $userPermissionGroupId = UserPermissionGroup::where("slug",$slug)->firstOrFail()->id;
+
+        $validator = Validator::make($request->all(),
+            [
+                'name' => 'required|max:100',
+                'code' => 'required|max:100|unique:user_permission_groups,code,'.$userPermissionGroupId,
+                'user_permission' => 'required'
+            ],
+            [
+                'name.required' => 'Name is required.',
+                'name.max' => 'Name length can not greater then 100 chars.',
+
+                'code.required' => 'Code is required.',
+                'code.max' => 'Code length can not greater then 100 chars.',
+                'code.unique' => 'Code must be unique.',
+
+                'user_permission.required' => 'User permission is required.',
+            ]
+        );
+
+        $validator->after(function ($validator) {
+            $afterValidatorData = $validator->getData();
+
+            $validUserPermission = 0;
+            foreach($afterValidatorData["user_permission"] as $perUserPermission){
+                if(UserPermission::where("slug",$perUserPermission)->count() > 0){
+                    $validUserPermission = $validUserPermission + 1;
+                }
+            }
+
+            if(count($afterValidatorData["user_permission"]) == 0){
+                $validator->errors()->add(
+                    'user_permission', "User permission is required."
+                );
+            }
+            else{
+                if(!(count($afterValidatorData["user_permission"]) == $validUserPermission)){
+                    $validator->errors()->add(
+                        'user_permission', "Some unknown user permission is found."
+                    );
+                }
+            }
+        });
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $userPermissionIds = array();
+        $statusInformation = array("status" => "errors","message" => array());
+
+        LogBatch::startBatch();
+            $userPermissionGroup = UserPermissionGroup::where("slug",$slug)->firstorFail();
+            $userPermissionGroup->name = $request->name;
+            $userPermissionGroup->code = $request->code;
+            $userPermissionGroup->slug = SystemConstant::slugGenerator($request->name,200);
+            $userPermissionGroup->updated_at = Carbon::now();
+            $updateUserPermissionGroup = $userPermissionGroup->update();
+
+            if($updateUserPermissionGroup){
+                foreach($request->user_permission as $perUserPermission){
+                    $userPermission = UserPermission::where("slug",$perUserPermission)->firstOrFail();
+                    array_push($userPermissionIds,$userPermission->id);
+                }
+
+
+                $userPermissionIds = SystemConstant::arraySort($userPermissionIds,"Value","Asc");
+
+                if(count($userPermissionIds) > 0){
+                    $syncuserPermissionData = array();
+                    foreach($userPermissionIds as $perUPId){
+                        $syncuserPermissionData[$perUPId] = ["created_at" => Carbon::now(),"updated_at" => Carbon::now(),"created_by_id" => Auth::user()->id];
+                    }
+
+                    $userPermissionGroup->userPermissions()->sync($syncuserPermissionData);
+                }
+
+            }
+        LogBatch::endBatch();
+
+        if($updateUserPermissionGroup){
+            $statusInformation["status"] = "status";
+            array_push($statusInformation["message"],"User permission group successfully updated.");
+
+            if(count($userPermissionIds) == count($request->user_permission)){
+                array_push($statusInformation["message"],"All selected user permission are updated to uer permission group.");
+            }
+            else{
+                $statusInformation["status"] = "warning";
+                array_push($statusInformation["message"],"Some selected user permission are fail to updated to uer permission group.");
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"] = "Fail to updated user permission group.";
+        }
+
+        return redirect()->route("user.permission.group.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
 }
