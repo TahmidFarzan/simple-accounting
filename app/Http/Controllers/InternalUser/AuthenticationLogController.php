@@ -74,7 +74,8 @@ class AuthenticationLogController extends Controller
         $authenticationLogSetting = SystemConstant::authenticationLogSetting();
         $statusInformation = array("status" => "errors","message" => array());
         $authenticationLog = AuthenticationLog::where("id",$id)->firstOrFail();
-        $dateDiff = strtotime(Carbon::now()) - strtotime($authenticationLog->created_at);
+
+        $dateDiff = strtotime(Carbon::now()) - strtotime($authenticationLog->login_at);
         $dateDiffInDays = abs(round($dateDiff / (60 * 60 * 24)));
         if(($dateDiffInDays < $authenticationLogSetting["delete_records_older_than"])){
             array_push($statusInformation["message"], "Record must be older than ".$authenticationLogSetting["delete_records_older_than"]." days. More ".($authenticationLogSetting["delete_records_older_than"] - $dateDiffInDays)." days need to be passed.");
@@ -99,8 +100,9 @@ class AuthenticationLogController extends Controller
         $statusInformation=array("status" => "errors","message" => array());
         if(($authenticationLogSetting["delete_records_older_than"] >= $deleteRecordsOlderThan) && ($deleteRecordsOlderThan <= 365)){
             $cutOffDate = Carbon::now()->subDays($deleteRecordsOlderThan)->format('Y-m-d H:i:s');
-            if(AuthenticationLog::where('created_at', '<', $cutOffDate)->count() > 0){
-                $authenticationLogId = AuthenticationLog::where('created_at', '<', $cutOffDate)->pluck("id");
+
+            if(AuthenticationLog::where('login_at', '<', $cutOffDate)->count() > 0){
+                $authenticationLogId = AuthenticationLog::where('login_at', '<', $cutOffDate)->pluck("id");
                 $authenticationLogDelete = AuthenticationLog::whereIn("id",$authenticationLogId)->delete();
                 if($authenticationLogDelete){
                     $statusInformation["status"] = "status";
