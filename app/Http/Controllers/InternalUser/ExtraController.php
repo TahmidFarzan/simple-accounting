@@ -103,10 +103,7 @@ class ExtraController extends Controller
     }
 
     public function userPermissionGroupCreate(){
-        $userPermissions = UserPermission::orderBy('name')->get()->groupBy(function($data) {
-            return $data->type;
-        });
-
+        $userPermissions = UserPermission::orderBy("type")->orderBy("name")->get()->groupBy("type");
         return view('internal user.extra.user permission group.create',compact('userPermissions'));
     }
 
@@ -175,6 +172,8 @@ class ExtraController extends Controller
                     $userPermission = UserPermission::where("slug",$perUserPermission)->firstOrFail();
                     array_push($userPermissionIds,$userPermission->id);
                 }
+
+                $userPermissionIds = SystemConstant::arraySort($userPermissionIds,"Value","Asc");
 
                 if(count($userPermissionIds) > 0){
                     $userPermissionGroup->userPermissions()->attach(

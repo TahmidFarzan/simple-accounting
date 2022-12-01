@@ -57,11 +57,19 @@
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">User permission <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
+                                    @php
+                                        $allSelectedUserPermissions = array();
+
+                                        if(!(old('user_permission') == null)){
+                                            $allSelectedUserPermissions = old("user_permission");
+                                        }
+                                    @endphp
+
                                     <select class="form-control form-control-sm @error('user_permission') is-invalid @enderror" id="userPermissionInput" name="user_permission[]" multiple required>
                                         @foreach ($userPermissions as $perUserPermissionGroup => $userPermissionGroupPermissions)
                                             <optgroup label="{{ Str::ucfirst(Str::lower(preg_replace("/([a-z])([A-Z])/", "$1 $2", $perUserPermissionGroup))) }}">
                                                 @foreach ($userPermissionGroupPermissions as $perUserPermission)
-                                                    <option value="{{ $perUserPermission->slug }}" {{ (old('user_permission') == $perUserPermission->slug) ? 'selected' : null }}>{{ $perUserPermission->name }}</option>
+                                                    <option value="{{ $perUserPermission->slug }}" {{ (in_array($perUserPermission->slug,$allSelectedUserPermissions) == true) ? 'selected' : null }}>{{ $perUserPermission->name }}</option>
                                                 @endforeach
                                             </optgroup>
                                         @endforeach
