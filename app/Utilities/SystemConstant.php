@@ -92,7 +92,7 @@ class SystemConstant
             $autoDelete = (!($activityLogSetting["auto_delete"] == null)) ? $activityLogSetting["auto_delete"] : $autoDelete;
             $deleteRecordOlderThan = ($activityLogSetting["delete_records_older_than"] > 0) ? $activityLogSetting["delete_records_older_than"] : $deleteRecordOlderThan;
             $sendEmailNotification = (!($activityLogSetting["send_email_notification"] == null)) ? $activityLogSetting["send_email_notification"] : $sendEmailNotification;
-            $autoDeleteSchedulerFrequency = (!($activityLogSetting["auto_delete_scheduler_frequency"] == null)) ? $activityLogSetting["send_mobile_notification"] : $autoDeleteSchedulerFrequency;
+            $autoDeleteSchedulerFrequency = (!($activityLogSetting["auto_delete_scheduler_frequency"] == null)) ? $activityLogSetting["sauto_delete_scheduler_frequency"] : $autoDeleteSchedulerFrequency;
         }
         return array(
             "auto_delete" => $autoDelete,
@@ -108,7 +108,6 @@ class SystemConstant
         $autoDelete = "Yes";
         $deleteRecordOlderThan = 10;
         $sendEmailNotification = "Yes";
-        $sendMobileNotification = "Yes";
         $autoDeleteSchedulerFrequency = "Daily";
 
         if($dbAuthenticationLogSettingInfo){
@@ -116,14 +115,12 @@ class SystemConstant
             $autoDelete = (!($authenticationLogSetting["auto_delete"]==null)) ? $authenticationLogSetting["auto_delete"] : $autoDelete;
             $deleteRecordOlderThan = ($authenticationLogSetting["delete_records_older_than"] > 0) ? $authenticationLogSetting["delete_records_older_than"] : $deleteRecordOlderThan;
             $sendEmailNotification = (!($authenticationLogSetting["send_email_notification"] == null)) ? $authenticationLogSetting["send_email_notification"] : $sendEmailNotification;
-            $sendMobileNotification = (!($authenticationLogSetting["send_mobile_notification"] == null)) ? $authenticationLogSetting["send_mobile_notification"] : $sendMobileNotification;
-            $autoDeleteSchedulerFrequency = (!($authenticationLogSetting["auto_delete_scheduler_frequency"] == null)) ? $authenticationLogSetting["send_mobile_notification"] : $autoDeleteSchedulerFrequency;
+            $autoDeleteSchedulerFrequency = (!($authenticationLogSetting["auto_delete_scheduler_frequency"] == null)) ? $authenticationLogSetting["auto_delete_scheduler_frequency"] : $autoDeleteSchedulerFrequency;
         }
         return array(
             "auto_delete" => $autoDelete,
             "delete_records_older_than" => $deleteRecordOlderThan,
             "send_email_notification" => $sendEmailNotification,
-            "send_mobile_notification" => $sendMobileNotification,
             "auto_delete_scheduler_frequency" => $autoDeleteSchedulerFrequency,
         );
     }
