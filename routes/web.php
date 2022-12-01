@@ -93,6 +93,6 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
 
         Route::post('save', [ExtraController::class, 'userPermissionGroupSave'])->name('save');
         Route::patch('update/{slug}', [ExtraController::class, 'userPermissionGroupUpdate'])->name('update');
-        Route::patch('delete/{slug}', [ExtraController::class, 'userPermissionGroupDelete'])->name('delete');
+        Route::delete('delete/{slug}', [ExtraController::class, 'userPermissionGroupDelete'])->name('delete');
     });
 });

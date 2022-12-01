@@ -312,4 +312,50 @@ class ExtraController extends Controller
         return redirect()->route("user.permission.group.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
+    public function userPermissionGroupDelete($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $passedDeleteValidation = $this->userPermissionGroupDeleteValidation($slug);
+
+        if( $passedDeleteValidation["status"] == "status"){
+            $userPermissionGroup = UserPermissionGroup::where("slug",$slug)->firstorFail();
+            $deleteUserPermissionGroup =  $userPermissionGroup->delete();
+
+            if($deleteUserPermissionGroup){
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("User permission group successfully deleted.");
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Fail to delete user permission group.");
+            }
+        }
+        else{
+            $statusInformation["status"] = $passedDeleteValidation["status"];
+
+            $statusInformation["message"]->push("You can not delete user permission group.");
+            $statusInformation["message"]->push("Please remove these dependency first.");
+
+            foreach($passedDeleteValidation["message"] as $errorMessage){
+                $statusInformation["message"]->push($errorMessage);
+            }
+        }
+
+        return redirect()->route("user.permission.group.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+    public function userPermissionGroupDeleteValidation($slug){
+        $userPermissionGroup = UserPermissionGroup::where("slug",$slug)->firstorFail();
+
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        if($userPermissionGroup->users->count() > 0){
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Some user are using this user permission group.");
+        }
+        else{
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Pass the validation.");
+        }
+        return $statusInformation;
+    }
 }

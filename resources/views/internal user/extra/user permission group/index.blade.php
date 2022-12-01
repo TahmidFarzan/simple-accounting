@@ -133,6 +133,8 @@
                                                                     <ul>
                                                                         <li>This record will be deleted.</li>
                                                                         <li>Recovery of this record is not possible.</li>
+                                                                        <li>Dependency relatioon between user permissions which and this user permission group will be deleted.</li>
+                                                                        <li> Recovery of dependency relatioon between user permissions which and this user permission group is not possible.</li>
                                                                     </ul>
                                                                 </p>
                                                             </div>
