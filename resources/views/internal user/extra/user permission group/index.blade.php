@@ -114,7 +114,7 @@
                                             @endif
 
                                             @if (Auth::user()->hasUserPermission(["UPGMP04"]) == true)
-                                                <a href="{{ route("user.permission.group.edit",["slug" => $perUserPermissionGroup->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
+                                                <a href="{{ route("user.permission.group.edit",["slug" => $perUserPermissionGroup->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                             @endif
 
                                             @if (Auth::user()->hasUserPermission(["UPGMP05"]) == true)
