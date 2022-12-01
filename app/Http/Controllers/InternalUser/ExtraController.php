@@ -130,7 +130,7 @@ class ExtraController extends Controller
         );
 
         $validator->after(function ($validator) {
-            $afterValidatorData=$validator->getData();
+            $afterValidatorData = $validator->getData();
 
             $validUserPermission = 0;
             foreach($afterValidatorData["user_permission"] as $perUserPermission){
