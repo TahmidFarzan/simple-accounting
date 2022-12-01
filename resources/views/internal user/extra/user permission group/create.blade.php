@@ -57,8 +57,7 @@
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">User permission <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
-                                    <select class="form-control form-control-sm js-example-basic-multiple @error('user_permission') is-invalid @enderror" id="userPermissionInput" name="user_permission[]" multiple required>
-                                        <option value="">Select</option>
+                                    <select class="form-control form-control-sm @error('user_permission') is-invalid @enderror" id="userPermissionInput" name="user_permission[]" multiple required>
                                         @foreach ($userPermissions as $perUserPermissionGroup => $userPermissionGroupPermissions)
                                             <optgroup label="{{ Str::ucfirst(Str::lower(preg_replace("/([a-z])([A-Z])/", "$1 $2", $perUserPermissionGroup))) }}">
                                                 @foreach ($userPermissionGroupPermissions as $perUserPermission)
@@ -103,19 +102,33 @@
 @endsection
 
 @push('onPageExtraScript')
-    <script src="{{ asset("select2/select2.min.js") }}"></script>
+    <script src="{{ asset("bootstrap-multiselect/bootstrap-multiselect.min.js") }}"></script>
     <script>
         $(document).ready(function(){
-            $("#userPermissionInput").select2({
-                width: '100%',
-                allowClear: true,
-                closeOnSelect: false,
-                placeholder: "Select",
+            $('#userPermissionInput').multiselect({
+                buttonWidth: '100%',
+                enableFiltering: true,
+                includeResetOption: true,
+                includeResetDivider: true,
+                filterPlaceholder: 'Search',
+                includeFilterClearBtn: true,
+                includeSelectAllOption: true,
+                includeSelectAllOption: true,
+                enableClickableOptGroups: true,
+                enableCollapsibleOptGroups: true,
+
+                templates: {
+                    divider: '<div class="dropdown-divider"></div>',
+                    popupContainer: '<div class="multiselect-container dropdown-menu"></div>',
+                    resetButton: '<div class="multiselect-reset text-center p-2"><button type="button" class="btn btn-sm btn-block btn-outline-secondary"></button></div>',
+                    filter: '<div class="multiselect-filter d-flex align-items-center"><input type="search" class="multiselect-search form-control form-control-sm self" style="margin-left:0rem !important;"/></div>',
+                    button: '<button type="button" class="multiselect dropdown-toggle form-control form-control-sm" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+                },
             });
         });
     </script>
 @endpush
 
 @push('onPageExtraCss')
-    <link href="{{ asset("select2/select2.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("bootstrap-multiselect/bootstrap-multiselect.min.css") }}" rel="stylesheet">
 @endpush
