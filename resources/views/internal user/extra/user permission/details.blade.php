@@ -104,8 +104,8 @@
     <div class="card border-dark mb-3">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <a role="button" href="{{ route("setting.index") }}" class="btn btn-sm btn-secondary">
-                    Go to setting
+                <a role="button" href="{{ route("user.permission.index") }}" class="btn btn-sm btn-secondary">
+                    Go to user permission index
                 </a>
             </div>
         </div>

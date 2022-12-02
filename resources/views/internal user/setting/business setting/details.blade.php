@@ -282,7 +282,7 @@
                                     <tr>
                                         <td>{{ $perIndex + 1 }}</td>
                                         <td>{{ Str::ucfirst($perActivityLogDatas->event) }}</td>
-                                        <td>{{ $perActivityLogDatas->causer->name }}</td>
+                                        <td>{{ ($perActivityLogDatas->causer == null) ? "Unknown" : $perActivityLogDatas->causer->name }}</td>
                                         <td>{{ $perActivityLogDatas->description }}</td>
                                         <td>{{ ($perActivityLogDatas->created_at == null) ? "Not added yet." : date('d-M-Y',strtotime($perActivityLogDatas->created_at))." at ".date('h:i:s a',strtotime($perActivityLogDatas->created_at)) }}</td>
                                     </tr>

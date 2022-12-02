@@ -59,7 +59,7 @@
                                         <tr>
                                             <th>Causer type</th>
                                             <th>:</th>
-                                            <td> {{ ($activitLog->causer->name) ? $activitLog->causer->name : "Unknown" }}</td>
+                                            <td> {{ ($activitLog->causer == null) ? "Unknown" : $activitLog->causer->name }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
