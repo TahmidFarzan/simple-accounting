@@ -143,6 +143,49 @@
                         </div>
                     </div>
                 </div>
+
+                @if ($user->user_role == "Subordinate")
+                    <div class="col-md-12 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="d-flex justify-content-center">
+                                    <p>
+                                        <b>Showing {{ (3 < $user->userPermissionGroups->count() ) ? "top 3" : "All" }} out of {{ $user->userPermissionGroups->count() }} user permission group(s).</b>
+                                    </p>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Code</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($user->userPermissionGroups()->orderBy("name","asc")->take(3)->get() as $perUserPermissionGroupIndex => $perUserPermissionGroup)
+                                                <tr>
+                                                    <td>{{ $perUserPermissionGroupIndex + 1 }}</td>
+                                                    <td>{{ $perUserPermissionGroup->name }}</td>
+                                                    <td>{{  $perUserPermissionGroup->code }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <b class="d-flex justify-content-center text-warning">No user permission found.</b>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>
