@@ -18,6 +18,13 @@
 @endsection
 
 @section('authContentOne')
+    @php
+        $allSelectedUserPermissions = array();
+
+        if(!(old('user_permission') == null)){
+            $allSelectedUserPermissions = old("user_permission");
+        }
+    @endphp
     <div class="card border-dark mb-2">
         <div class="card-body text-dark">
             <form action="{{ route("user.permission.group.save") }}" method="POST" id="createForm">
@@ -57,14 +64,6 @@
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">User permission <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
-                                    @php
-                                        $allSelectedUserPermissions = array();
-
-                                        if(!(old('user_permission') == null)){
-                                            $allSelectedUserPermissions = old("user_permission");
-                                        }
-                                    @endphp
-
                                     <select class="form-control form-control-sm @error('user_permission') is-invalid @enderror" id="userPermissionInput" name="user_permission[]" multiple required>
                                         @foreach ($userPermissions as $perUserPermissionGroup => $userPermissionGroupPermissions)
                                             <optgroup label="{{ Str::ucfirst(Str::lower(preg_replace("/([a-z])([A-Z])/", "$1 $2", $perUserPermissionGroup))) }}">
