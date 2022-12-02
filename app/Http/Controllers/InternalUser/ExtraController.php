@@ -178,34 +178,32 @@ class ExtraController extends Controller
             $userPermissionGroup->created_by_id = Auth::user()->id;
             $userPermissionGroup->updated_at = null;
             $saveUserPermissionGroup = $userPermissionGroup->save();
-
-            if($saveUserPermissionGroup){
-                foreach($request->user_permission as $perUserPermission){
-                    $userPermission = UserPermission::where("slug",$perUserPermission)->firstOrFail();
-                    array_push($userPermissionIds,$userPermission->id);
-                }
-
-                $userPermissionIds = SystemConstant::arraySort($userPermissionIds,"Value","Asc");
-
-                if(count($userPermissionIds) > 0){
-                    $userPermissionGroup->userPermissions()->attach(
-                        $userPermissionIds,["created_at" => Carbon::now(),"updated_at" => null,"created_by_id" => Auth::user()->id]
-                    );
-                }
-
-            }
         LogBatch::endBatch();
 
         if($saveUserPermissionGroup){
+
+            foreach($request->user_permission as $perUserPermission){
+                $userPermission = UserPermission::where("slug",$perUserPermission)->firstOrFail();
+                array_push($userPermissionIds,$userPermission->id);
+            }
+
+            $userPermissionIds = SystemConstant::arraySort($userPermissionIds,"Value","Asc");
+
+            if(count($userPermissionIds) > 0){
+                $userPermissionGroup->userPermissions()->attach(
+                    $userPermissionIds,["created_at" => Carbon::now(),"updated_at" => null,"created_by_id" => Auth::user()->id]
+                );
+            }
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("User permission group successfully created.");
 
-            if(count($userPermissionIds) == count($request->user_permission)){
-                $statusInformation["message"]->push("All selected user permission are added to uer permission group.");
+            if($userPermissionGroup->userPermissions()->count() == count($request->user_permission)){
+                $statusInformation["message"]->push("All selected user permission are added to user permission group.");
             }
             else{
                 $statusInformation["status"] = "warning";
-                $statusInformation["message"]->push("Some selected user permission are fail to add to uer permission group.");
+                $statusInformation["message"]->push("Some selected user permission are fail to add to user permission group.");
             }
         }
         else{
@@ -276,6 +274,10 @@ class ExtraController extends Controller
             $userPermissionGroup->updated_at = Carbon::now();
             $updateUserPermissionGroup = $userPermissionGroup->update();
 
+        LogBatch::endBatch();
+
+        if($updateUserPermissionGroup){
+
             if($updateUserPermissionGroup){
                 foreach($request->user_permission as $perUserPermission){
                     $userPermission = UserPermission::where("slug",$perUserPermission)->firstOrFail();
@@ -295,18 +297,16 @@ class ExtraController extends Controller
                 }
 
             }
-        LogBatch::endBatch();
 
-        if($updateUserPermissionGroup){
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("User permission group successfully updated.");
 
-            if(count($userPermissionIds) == count($request->user_permission)){
-                $statusInformation["message"]->push("All selected user permission are updated to uer permission group.");
+            if($userPermissionGroup->userPermissions()->count() == count($request->user_permission)){
+                $statusInformation["message"]->push("All selected user permission are updated to user permission group.");
             }
             else{
                 $statusInformation["status"] = "warning";
-                $statusInformation["message"]->push("Some selected user permission are fail to updated to uer permission group.");
+                $statusInformation["message"]->push("Some selected user permission are fail to updated to user permission group.");
             }
         }
         else{

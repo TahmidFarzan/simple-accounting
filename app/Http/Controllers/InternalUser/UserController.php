@@ -252,8 +252,6 @@ class UserController extends Controller
         LogBatch::endBatch();
 
         if($saveUser){
-            $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("User successfully created.");
 
             if(($request->user_role == "Subordinate") && ($request->has("user_permission_group") && (count($request->user_permission_group) > 0))){
                 foreach($request->user_permission_group as $perUserPermissionGroup){
@@ -278,13 +276,16 @@ class UserController extends Controller
                 }
             }
 
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("User successfully created.");
+
             if($request->auto_email_verify == "No"){
                 $user->sendEmailVerificationNotification();
                 $statusInformation["message"]->push("Please asked user to verify email before is expired.");
             }
 
             if($request->default_password == "Yes"){
-                $statusInformation["message"]->push("Default pasword(123456789) is used for user password.");
+                $statusInformation["message"]->push("Default pasword (123456789) is used for user password.");
             }
         }
         else{
@@ -419,9 +420,6 @@ class UserController extends Controller
         LogBatch::endBatch();
 
         if($updateUser){
-            $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("User successfully updated.");
-
             if(($request->user_role == "Subordinate") && ($request->has("user_permission_group") && (count($request->user_permission_group) > 0))){
                 foreach($request->user_permission_group as $perUserPermissionGroup){
                     $userPermissionGroup = UserPermissionGroup::where("slug",$perUserPermissionGroup)->firstOrFail();
@@ -448,6 +446,9 @@ class UserController extends Controller
                 }
             }
 
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("User successfully updated.");
+
             if(($request->user_role == "Owner")){
                 foreach($user->userPermissionGroups as $perUPG){
                     $user->userPermissionGroups()->detach([$perUPG->id]);
@@ -467,7 +468,7 @@ class UserController extends Controller
                 $statusInformation["message"]->push("Reset password is done.");
 
                 if($request->default_password == "Yes"){
-                    $statusInformation["message"]->push("Default pasword(123456789) is used for user password.");
+                    $statusInformation["message"]->push("Default pasword (123456789) is used for user password.");
                 }
             }
 
