@@ -34,7 +34,7 @@ class UserController extends Controller
         $paginations = array(5,15,30,45,60,75,90,100);
         $searchFields = array("All","Name","Email","Mobile no");
 
-        $activeUsers = User::orderby("name","desc");
+        $activeUsers = User::orderby("name","asc");
         $trashUsers = User::onlyTrashed()->orderby("name","asc");
 
         if(count($request->input()) > 0){
