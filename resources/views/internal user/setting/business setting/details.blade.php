@@ -258,14 +258,17 @@
             <h5 class="card-header">Activity Logs</h5>
             <div class="card-body">
                 @php
-                    $limit = 3;
+                    $activitylogLimit = 3;
                 @endphp
+
                 <div class="card-body text-dark">
-                    <p>
-                        <b>
-                            Show last {{ $limit }} activity logs.
-                        </b>
-                    </p>
+
+                    <div class="d-flex justify-content-center">
+                        <p>
+                            <b>Showing {{ ($activitylogLimit < $businessSetting->activityLogs()->count() ) ? "last ".$activitylogLimit : "All" }} out of {{ $businessSetting->activityLogs()->count() }} activity log(s).</b>
+                        </p>
+                    </div>
+
                     <div class="table-responsive">
                         <table class=" table table-sm table-bordered table-striped">
                             <thead>
@@ -278,7 +281,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($businessSetting->modifiedActivityLogs($limit) as $perIndex => $perActivityLogDatas)
+                                @forelse ($businessSetting->modifiedActivityLogs($activitylogLimit) as $perIndex => $perActivityLogDatas)
                                     <tr>
                                         <td>{{ $perIndex + 1 }}</td>
                                         <td>{{ Str::ucfirst($perActivityLogDatas->event) }}</td>

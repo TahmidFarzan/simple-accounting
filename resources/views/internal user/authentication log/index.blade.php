@@ -147,7 +147,7 @@
                                                 <span class="badge text-bg-success p-2">No</span>
                                             @endif
                                         </td>
-                                        <td>{{ ($perAuthenticationLog->logout_at == null) ? "Not login yet." : date('d-M-Y',strtotime($perAuthenticationLog->logout_at))." at ".date('h:i:s a',strtotime($perAuthenticationLog->logout_at)) }}</td>
+                                        <td>{{ ($perAuthenticationLog->logout_at == null) ? "Not logout yet." : date('d-M-Y',strtotime($perAuthenticationLog->logout_at))." at ".date('h:i:s a',strtotime($perAuthenticationLog->logout_at)) }}</td>
                                         <td>
                                             @if (Auth::user()->hasUserPermission(["ACLMP02"]) == true)
                                                 <a href="{{ route("authentication.log.details",["id" => $perAuthenticationLog->id]) }}" class="btn btn-sm btn-info m-2"> Details</a>
