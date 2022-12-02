@@ -18,6 +18,31 @@
 @endsection
 
 @section('authContentOne')
+    @php
+        $userPermissionGroupIsRequired = false;
+        $allSelectedUserPermissionGroups = array();
+
+        $updateEmailIsRequired = (old("update_email") == null) ? "No" : old("update_email");
+        $currentUserRole = (old('user_role') == null) ? $user->user_role : old('user_role');
+        $currentResetPasswordIsRequired = (old("reset_password") == null) ? "No" : old("reset_password");
+        $useAutoEmailVerify = (old("auto_email_verify") == null) ? "No" : old("auto_email_verify");
+        $useDefaultPassword = (old("default_password") == null) ? "Yes" : old("default_password");
+
+        if($currentUserRole == "Subordinate"){
+            $userPermissionGroupIsRequired = true;
+        }
+        else{
+            $userPermissionGroupIsRequired = false;
+        }
+
+        if(old('user_permission_group') == null){
+            $allSelectedUserPermissionGroups = $user->userPermissionGroups()->orderBy("user_permission_group_id","asc")->pluck("slug")->toArray();
+        }
+        else{
+            $allSelectedUserPermissionGroups = old("user_permission_group");
+        }
+    @endphp
+
     <div class="card border-dark mb-2">
         <div class="card-body text-dark">
             <form action="{{ route("user.update",["slug" => $user->slug]) }}" method="POST" id="editForm">
@@ -43,10 +68,6 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                @php
-                                    $currentUserRole = (old('user_role') == null) ? $user->user_role : old('user_role');
-                                @endphp
-
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">User role <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
                                     <select class="form-control form-control-sm @error('user_role') is-invalid @enderror" id="userRoleInput" name="user_role" required>
@@ -64,22 +85,17 @@
                             </div>
                         </div>
 
-
                         <div class="col-md-6 mb-2">
-                            @php
-                                $updateEmailOption = (old("update_email") == null) ? "No" : old("update_email");
-                            @endphp
-
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold"> Update email <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
                                     <div class="pt-2">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="update_email" id="updateEmailOptionYes" value="Yes" {{ ($updateEmailOption == "Yes") ? "checked" : null }}>
+                                            <input class="form-check-input" type="radio" name="update_email" id="updateEmailOptionYes" value="Yes" {{ ($updateEmailIsRequired == "Yes") ? "checked" : null }}>
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="update_email" id="updateEmailOptionNo" value="No" {{ ($updateEmailOption == "No") ? "checked" : null }}>
+                                            <input class="form-check-input" type="radio" name="update_email" id="updateEmailOptionNo" value="No" {{ ($updateEmailIsRequired == "No") ? "checked" : null }}>
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
@@ -93,11 +109,11 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mb-2" id="updateEmailDiv" hidden>
+                        <div class="col-md-6 mb-2" id="updateEmailDiv" @if( $updateEmailIsRequired == "No") hidden @endif>
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Email <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
-                                    <input type="email" id="emailInput" name="email" class="form-control form-control-sm @error('email') is-invalid @enderror" value="{{ (old('email') == null) ? $user->email : old('email')}}" placeholder="Ex: hello@xx.com" maxlength="255" required readonly>
+                                    <input type="email" id="emailInput" name="email" class="form-control form-control-sm @error('email') is-invalid @enderror" value="{{ (old('email') == null) ? $user->email : old('email')}}" placeholder="Ex: hello@xx.com" maxlength="255" @if( $updateEmailIsRequired == "Yes") required @endif  @if( $updateEmailIsRequired == "No") readonly disabled hidden @endif>
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
@@ -108,21 +124,17 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mb-2" id="autoVerifyEmailDiv" hidden>
-                            @php
-                                $currentAutoEmailVerifyOption = (old("auto_email_verify") == null) ? "No" : old("auto_email_verify");
-                            @endphp
-
+                        <div class="col-md-6 mb-2" id="autoVerifyEmailDiv" @if( $updateEmailIsRequired == "No") hidden @endif>
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Auto email verify <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
                                     <div class=" pt-2">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="auto_email_verify" id="autoEmailVerifyOptionYes" value="Yes" {{ ($currentAutoEmailVerifyOption == "Yes") ? "checked" : null }}>
+                                            <input class="form-check-input" type="radio" name="auto_email_verify" id="autoEmailVerifyOptionYes" value="Yes" {{ ($useAutoEmailVerify == "Yes") ? "checked" : null }} @if( $updateEmailIsRequired == "No") disabled @endif>
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="auto_email_verify" id="autoEmailVerifyOptionNo" value="No" {{ ($currentAutoEmailVerifyOption == "No") ? "checked" : null }}>
+                                            <input class="form-check-input" type="radio" name="auto_email_verify" id="autoEmailVerifyOptionNo" value="No" {{ ($useAutoEmailVerify == "No") ? "checked" : null }} @if( $updateEmailIsRequired == "No") disabled @endif>
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
@@ -151,21 +163,35 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mb-2">
-                            @php
-                                $currentResetPasswordOption = (old("reset_password") == null) ? "No" : old("reset_password");
-                            @endphp
+                        <div class="col-md-6 mb-2" id="userPermissionGroupDiv" @if($userPermissionGroupIsRequired == false) hidden @endif>
+                            <div class="row">
+                                <label class="col-lg-4 col-form-label col-form-label-sm text-bold">User permission group <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <div class="col-lg-8">
+                                    <select class="form-control form-control-sm @error('user_permission_group') is-invalid @enderror" id="userPermissionGroupInput" name="user_permission_group[]" multiple @if($userPermissionGroupIsRequired == false) disabled hidden @endif @if($userPermissionGroupIsRequired == true) required @endif>
+                                        @foreach ($userPermissionGroups as $perUserPermissionGroup)
+                                            <option value="{{ $perUserPermissionGroup->slug }}" {{ (in_array($perUserPermissionGroup->slug,$allSelectedUserPermissionGroups) == true) ? 'selected' : null }}>{{ $perUserPermissionGroup->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('user_permission_group')
+                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="col-md-6 mb-2">
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Reset password <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
                                     <div class="pt-2">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="reset_password" id="resetPasswordOptionYes" value="Yes" {{ ($currentResetPasswordOption == "Yes") ? "checked" : null }}>
+                                            <input class="form-check-input" type="radio" name="reset_password" id="resetPasswordOptionYes" value="Yes" {{ ($currentResetPasswordIsRequired == "Yes") ? "checked" : null }}>
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="reset_password" id="resetPasswordOptionNo" value="No" {{ ($currentResetPasswordOption == "No") ? "checked" : null }}>
+                                            <input class="form-check-input" type="radio" name="reset_password" id="resetPasswordOptionNo" value="No" {{ ($currentResetPasswordIsRequired == "No") ? "checked" : null }}>
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
@@ -179,27 +205,23 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mb-2" id="setPasswordDiv" hidden>
-                            @php
-                                $currentDefaultPasswordOption = (old("default_password") == null) ? "Yes" : old("default_password");
-                            @endphp
-
+                        <div class="col-md-6 mb-2" id="setPasswordDiv" @if($currentResetPasswordIsRequired == "No") hidden @endif>
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Default password <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
                                     <div class="pt-2">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="default_password" id="defaultPasswordOptionYes" value="Yes" {{ ($currentDefaultPasswordOption == "Yes") ? "checked" : null }}>
+                                            <input class="form-check-input" type="radio" name="default_password" id="defaultPasswordOptionYes" value="Yes" {{ ($useDefaultPassword == "Yes") ? "checked" : null }} @if($currentResetPasswordIsRequired == "No") disabled @endif>
                                             <label class="form-check-label">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="default_password" id="defaultPasswordOptionNo" value="No" {{ ($currentDefaultPasswordOption == "No") ? "checked" : null }}>
+                                            <input class="form-check-input" type="radio" name="default_password" id="defaultPasswordOptionNo" value="No" {{ ($useDefaultPassword == "No") ? "checked" : null }} @if($currentResetPasswordIsRequired == "No") disabled @endif>
                                             <label class="form-check-label">No</label>
                                         </div>
                                     </div>
 
                                     <div class="mt-2">
-                                        <input type="password" id="passwordInput" name="password" class="form-control form-control-sm @error('password') is-invalid @enderror" value="{{ old('password') }}" placeholder="Enter your password." maxlength="255"  @if($currentDefaultPasswordOption == "No") required @endif @if($currentDefaultPasswordOption == "Yes") readonly hidden @endif>
+                                        <input type="password" id="passwordInput" name="password" class="form-control form-control-sm @error('password') is-invalid @enderror" value="{{ old('password') }}" placeholder="Enter your password." maxlength="255"  @if($useDefaultPassword == "No") required @endif @if($useDefaultPassword == "Yes") readonly hidden disabled @endif>
                                     </div>
 
                                     @error('default_password')
@@ -246,6 +268,7 @@
 @push('onPageExtraScript')
     <script src="{{ asset("intlTelInput/intlTelInput.min.js") }}"></script>
     <script src="{{ asset("intlTelInput/intlTelInput-jquery.min.js") }}"></script>
+    <script src="{{ asset("bootstrap-multiselect/bootstrap-multiselect.min.js") }}"></script>
     <script>
         $(document).ready(function(){
             var formErrorCount=0;
@@ -296,15 +319,40 @@
                 }
             });
 
+            $('#userPermissionGroupInput').multiselect({
+                buttonWidth: '100%',
+                enableFiltering: true,
+                includeResetOption: true,
+                includeResetDivider: true,
+                filterPlaceholder: 'Search',
+                includeFilterClearBtn: true,
+                includeSelectAllOption: true,
+                includeSelectAllOption: true,
+                enableClickableOptGroups: true,
+                enableCollapsibleOptGroups: true,
+
+                templates: {
+                    divider: '<div class="dropdown-divider"></div>',
+                    popupContainer: '<div class="multiselect-container dropdown-menu"></div>',
+                    resetButton: '<div class="multiselect-reset text-center p-2"><button type="button" class="btn btn-sm btn-block btn-outline-secondary"></button></div>',
+                    filter: '<div class="multiselect-filter d-flex align-items-center"><input type="search" class="multiselect-search form-control form-control-sm self" style="margin-left:0rem !important;"/></div>',
+                    button: '<button type="button" id="userPermissionGroupMultiSelectDropDownButtton" class="multiselect dropdown-toggle form-control form-control-sm" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+                },
+            });
+
             $(document).on('change','input[type=radio][name=default_password]', function () {
                 if($(this).val() == "Yes"){
                     $("#passwordInput").prop("hidden",true);
+                    $("#passwordInput").prop("disabled",true);
                     $("#passwordInput").prop("readonly",true);
+
                     $("#passwordInput").prop("required",false);
                 }
                 else{
                     $("#passwordInput").prop("hidden",false);
+                    $("#passwordInput").prop("disabled",false);
                     $("#passwordInput").prop("readonly",false);
+
                     $("#passwordInput").prop("required",true);
                 }
             });
@@ -312,9 +360,11 @@
             $(document).on('change','input[type=radio][name=reset_password]', function () {
                 if($(this).val() == "Yes"){
                     $("#setPasswordDiv").prop("hidden",false);
+                    $('input[type=radio][name="default_password"]').prop("disabled",false);
                 }
                 else{
                     $("#setPasswordDiv").prop("hidden",true);
+                    $('input[type=radio][name="default_password"]').prop("disabled",true);
                 }
             });
 
@@ -324,14 +374,45 @@
                     $("#autoVerifyEmailDiv").prop("hidden",false);
 
                     $("#emailInput").prop("required",true);
+                    $("#emailInput").prop("hidden",false);
+                    $("#emailInput").prop("disabled",false);
                     $("#emailInput").prop("readonly",false);
+
+
+                    $('input[type=radio][name="auto_email_verify"]').prop("disabled",false);
                 }
                 else{
                     $("#updateEmailDiv").prop("hidden",true);
                     $("#autoVerifyEmailDiv").prop("hidden",true);
 
                     $("#emailInput").prop("required",false);
+
+                    $("#emailInput").prop("hidden",true);
+                    $("#emailInput").prop("disabled",true);
                     $("#emailInput").prop("readonly",true);
+
+                    $('input[type=radio][name="auto_email_verify"]').prop("disabled",true);
+                }
+            });
+
+            $(document).on('change','#userRoleInput', function () {
+                if($(this).val() == "Subordinate"){
+                    $("#userPermissionGroupDiv").prop("hidden",false);
+                    $("#userPermissionGroupInput").prop("hidden",false);
+                    $("#userPermissionGroupInput").prop("disabled",false);
+                    $("#userPermissionGroupInput").prop("required",true);
+                    $("#userPermissionGroupMultiSelectDropDownButtton").prop("disabled",false);
+
+                    $("#userPermissionGroupMultiSelectDropDownButtton").removeClass("disabled");
+                }
+                else{
+                    $("#userPermissionGroupDiv").prop("hidden",true);
+                    $("#userPermissionGroupInput").prop("hidden",true);
+                    $("#userPermissionGroupInput").prop("disabled",true);
+                    $("#userPermissionGroupInput").prop("required",false);
+                    $("#userPermissionGroupMultiSelectDropDownButtton").prop("disabled",true);
+
+                    $("#userPermissionGroupMultiSelectDropDownButtton").addClass("disabled");
                 }
             });
         });
@@ -340,4 +421,5 @@
 
 @push('onPageExtraCss')
     <link href="{{ asset("intlTelInput/intlTelInput.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("bootstrap-multiselect/bootstrap-multiselect.min.css") }}" rel="stylesheet">
 @endpush

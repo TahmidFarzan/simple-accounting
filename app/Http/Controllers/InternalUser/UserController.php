@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Utilities\SystemConstant;
+use App\Models\UserPermissionGroup;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -118,7 +119,7 @@ class UserController extends Controller
 
     public function create(){
         $userRoles = array();
-
+        $userPermissionGroups = UserPermissionGroup::orderBy("name","asc")->get();
         if(Auth::user()->hasUserPermission(["UMP02"]) == true){
             array_push($userRoles,"Owner");
         }
@@ -127,11 +128,12 @@ class UserController extends Controller
             array_push($userRoles,"Subordinate");
         }
 
-        return view('internal user.user.create',compact("userRoles"));
+        return view('internal user.user.create',compact("userRoles","userPermissionGroups"));
     }
 
     public function edit($slug){
         $userRoles = array();
+        $userPermissionGroups = UserPermissionGroup::orderBy("name","asc")->get();
 
         if(Auth::user()->hasUserPermission(["UMP02"]) == true){
             array_push($userRoles,"Owner");
@@ -143,7 +145,7 @@ class UserController extends Controller
 
         $user = User::withTrashed()->where("slug",$slug)->whereNot("id",Auth::user()->id)->firstOrFail();
 
-        return view('internal user.user.edit',compact("userRoles","user"));
+        return view('internal user.user.edit',compact("userRoles","userPermissionGroups","user"));
     }
 
     public function save(Request $request){
@@ -156,6 +158,7 @@ class UserController extends Controller
                 'auto_email_verify' => 'required|in:Yes,No',
                 'default_password' => 'required|in:Yes,No',
                 'password' => 'nullable|required_if:default_password,No|max:255',
+                'user_permission_group' => 'nullable|required_if:user_role,Subordinate',
             ],
             [
                 'name.required' => 'Name is required.',
@@ -181,6 +184,8 @@ class UserController extends Controller
 
                 'password.required_if' => 'Password is reqired.',
                 'password.max' => 'Password length can not greater then 255 chars.',
+
+                'user_permission_group.required_if' => 'User permission group is reqired.',
             ]
         );
 
@@ -203,6 +208,22 @@ class UserController extends Controller
                         'user_role', "Your do not have permission to create user that have 'Subordinate' user role."
                     );
                 }
+
+                if(!(array_key_exists("user_permission_group",$afterValidatorData) == true) && ( ($afterValidatorData["user_permission_group"]) > 0)){
+                    $validUserPermissionGroup = 0;
+
+                    foreach ($afterValidatorData["user_permission_group"] as $userPermissionGroup) {
+                        if(UserPermissionGroup::where("slug",$userPermissionGroup)->count() > 0){
+                            $validUserPermissionGroup = $validUserPermissionGroup + 1;
+                        }
+                    }
+
+                    if(!($validUserPermissionGroup == count($afterValidatorData["user_permission_group"]))){
+                        $validator->errors()->add(
+                            'user_permission_group', "Some user permission group are unknown."
+                        );
+                    }
+                }
             }
 
         });
@@ -211,6 +232,7 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $userPermissionGroupIds = array();
         $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
@@ -232,6 +254,29 @@ class UserController extends Controller
         if($saveUser){
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("User successfully created.");
+
+            if(($request->user_role == "Subordinate") && ($request->has("user_permission_group") && (count($request->user_permission_group) > 0))){
+                foreach($request->user_permission_group as $perUserPermissionGroup){
+                    $userPermissionGroup = UserPermissionGroup::where("slug",$perUserPermissionGroup)->firstOrFail();
+                    array_push($userPermissionGroupIds,$userPermissionGroup->id);
+                }
+
+                $userPermissionGroupIds = SystemConstant::arraySort($userPermissionGroupIds,"Value","Asc");
+
+                if(count($userPermissionGroupIds) > 0){
+                    $user->userPermissionGroups()->attach(
+                        $userPermissionGroupIds,["created_at" => Carbon::now(),"updated_at" => null,"created_by_id" => Auth::user()->id]
+                    );
+                }
+
+                if($user->userPermissionGroups()->count() == count($request->user_permission_group)){
+                    $statusInformation["message"]->push("All selected user permission group are added to user.");
+                }
+                else{
+                    $statusInformation["status"] = "warning";
+                    $statusInformation["message"]->push("Some selected user permission group are fail to add to user.");
+                }
+            }
 
             if($request->auto_email_verify == "No"){
                 $user->sendEmailVerificationNotification();
@@ -263,6 +308,7 @@ class UserController extends Controller
                 'reset_password' => 'required|in:Yes,No',
                 'default_password' => 'nullable|required_if:reset_password,Yes|in:Yes,No',
                 'password' => 'nullable|required_if:default_password,No|max:255',
+                'user_permission_group' => 'nullable|required_if:user_role,Subordinate',
             ],
             [
                 'name.required' => 'Name is required.',
@@ -294,6 +340,8 @@ class UserController extends Controller
 
                 'password.required_if' => 'Password is reqired.',
                 'password.max' => 'Password length can not greater then 255 chars.',
+
+                'user_permission_group.required_if' => 'User permission group is reqired.',
             ]
         );
 
@@ -302,7 +350,7 @@ class UserController extends Controller
 
             if($afterValidatorData["user_role"] == "Owner"){
 
-                if(Auth::user()->hasUserPermission(["UMP05"]) == false){
+                if(Auth::user()->hasUserPermission(["UMP02"]) == false){
                     $validator->errors()->add(
                         'user_role', "Your do not have permission to create user that have 'Owner' user role."
                     );
@@ -311,10 +359,26 @@ class UserController extends Controller
 
             if($afterValidatorData["user_role"] == "Subordinate"){
 
-                if(Auth::user()->hasUserPermission(["UMP06"]) == false){
+                if(Auth::user()->hasUserPermission(["UMP03"]) == false){
                     $validator->errors()->add(
                         'user_role', "Your do not have permission to create user that have 'Subordinate' user role."
                     );
+                }
+
+                if(!(array_key_exists("user_permission_group",$afterValidatorData) == true) && ( ($afterValidatorData["user_permission_group"]) > 0)){
+                    $validUserPermissionGroup = 0;
+
+                    foreach ($afterValidatorData["user_permission_group"] as $userPermissionGroup) {
+                        if(UserPermissionGroup::where("slug",$userPermissionGroup)->count() > 0){
+                            $validUserPermissionGroup = $validUserPermissionGroup + 1;
+                        }
+                    }
+
+                    if(!($validUserPermissionGroup == count($afterValidatorData["user_permission_group"]))){
+                        $validator->errors()->add(
+                            'user_permission_group', "Some user permission group are unknown."
+                        );
+                    }
                 }
             }
 
@@ -323,7 +387,9 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
         $doneUpdateEmail = false;
+        $userPermissionGroupIds = array();
 
         $statusInformation = array("status" => "errors","message" => collect());
 
@@ -356,6 +422,38 @@ class UserController extends Controller
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("User successfully updated.");
 
+            if(($request->user_role == "Subordinate") && ($request->has("user_permission_group") && (count($request->user_permission_group) > 0))){
+                foreach($request->user_permission_group as $perUserPermissionGroup){
+                    $userPermissionGroup = UserPermissionGroup::where("slug",$perUserPermissionGroup)->firstOrFail();
+                    array_push($userPermissionGroupIds,$userPermissionGroup->id);
+                }
+
+                $userPermissionGroupIds = SystemConstant::arraySort($userPermissionGroupIds,"Value","Asc");
+
+                if(count($userPermissionGroupIds) > 0 ){
+                    $syncUserPermissionGroupData = array();
+                    foreach($userPermissionGroupIds as $perUPGId){
+                        $syncUserPermissionGroupData[$perUPGId] = ["created_at" => Carbon::now(),"updated_at" => Carbon::now(),"created_by_id" => Auth::user()->id];
+                    }
+
+                    $user->userPermissionGroups()->sync($syncUserPermissionGroupData);
+                }
+
+                if($user->userPermissionGroups()->count() == count($request->user_permission_group)){
+                    $statusInformation["message"]->push("All selected user permission group are syn to user.");
+                }
+                else{
+                    $statusInformation["status"] = "warning";
+                    $statusInformation["message"]->push("Some selected user permission group are fail to syn to user.");
+                }
+            }
+
+            if(($request->user_role == "Owner")){
+                foreach($user->userPermissionGroups as $perUPG){
+                    $user->userPermissionGroups()->detach([$perUPG->id]);
+                }
+            }
+
             if(($request->update_email == "Yes") && ($doneUpdateEmail == true)){
                 $statusInformation["message"]->push("User email has been updated.");
 
@@ -372,6 +470,7 @@ class UserController extends Controller
                     $statusInformation["message"]->push("Default pasword(123456789) is used for user password.");
                 }
             }
+
         }
         else{
             $statusInformation["status"] = "errors";
