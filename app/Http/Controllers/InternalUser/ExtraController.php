@@ -114,6 +114,11 @@ class ExtraController extends Controller
         return view('internal user.extra.user permission group.edit',compact('userPermissions',"userPermissionGroup"));
     }
 
+    public function userPermissionGroupDetails($slug){
+        $userPermissionGroup = UserPermissionGroup::where("slug",$slug)->firstorFail();
+        return view('internal user.extra.user permission group.details',compact("userPermissionGroup"));
+    }
+
     public function userPermissionGroupSave(Request $request){
         $validator = Validator::make($request->all(),
             [
