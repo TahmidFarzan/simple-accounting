@@ -37,11 +37,7 @@
                         <th>:</th>
                         <td>{{ ($authenticationLogSetting->fields_with_values["auto_delete"] == null) ? "Not added yet." : $authenticationLogSetting->fields_with_values["auto_delete"] }}</td>
                     </tr>
-                    <tr>
-                        <th>Auto delete scheduler frequency</th>
-                        <th>:</th>
-                        <td>{{ ($authenticationLogSetting->fields_with_values["auto_delete_scheduler_frequency"] == null) ? "Not added yet." : $authenticationLogSetting->fields_with_values["auto_delete_scheduler_frequency"] }}</td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>

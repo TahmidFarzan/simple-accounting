@@ -207,8 +207,6 @@ class SettingController extends Controller
             [
                 'delete_records_older_than' => 'required|min:1|max:50|numeric',
                 'auto_delete' => 'required|string|in:Yes,No',
-                'send_email_notification' => 'required|string|in:Yes,No',
-                'auto_delete_scheduler_frequency' => 'required|string|in:Daily,Weekly,Monthly,Quarterly,Yearly',
             ],
             [
                 'delete_records_older_than.required' => 'Delete records older than is required.',
@@ -219,14 +217,6 @@ class SettingController extends Controller
                 'auto_delete.required' => 'Auto delete is required.',
                 'auto_delete.string' => 'Auto delete must be a string.',
                 'auto_delete.in' => 'Auto delete either Yes or No.',
-
-                'send_email_notification.required' => 'Send email notification is required.',
-                'send_email_notification.string' => 'Send email notification  must be a string.',
-                'send_email_notification.in' => 'Send email notification either Yes or No.',
-
-                'auto_delete_scheduler_frequency.required' => 'Auto delete scheduler frequency is required.',
-                'auto_delete_scheduler_frequency.string' => 'Auto delete scheduler frequency must be a string.',
-                'auto_delete_scheduler_frequency.in' => 'Auto delete scheduler frequency must one out of [Daily,Weekly,Monthly,Quarterly,Yearly].',
             ]
         );
         if ($validator->fails()) {
@@ -241,8 +231,6 @@ class SettingController extends Controller
 
             $activityLogSettingFieldsWithValues['delete_records_older_than'] = $request->delete_records_older_than;
             $activityLogSettingFieldsWithValues['auto_delete'] = $request->auto_delete;
-            $activityLogSettingFieldsWithValues['send_email_notification'] = $request->send_email_notification;
-            $activityLogSettingFieldsWithValues['auto_delete_scheduler_frequency'] = $request->auto_delete_scheduler_frequency;
 
             $activityLogSetting->fields_with_values = $activityLogSettingFieldsWithValues;
             $activityLogSetting->updated_at = Carbon::now();
@@ -285,8 +273,6 @@ class SettingController extends Controller
             [
                 'delete_records_older_than' => 'required|min:1|max:50|numeric',
                 'auto_delete' => 'required|string|in:Yes,No',
-                'send_email_notification' => 'required|string|in:Yes,No',
-                'auto_delete_scheduler_frequency' => 'required|string|in:Daily,Weekly,Monthly,Quarterly,Yearly',
             ],
             [
                 'delete_records_older_than.required' => 'Delete records older than is required.',
@@ -297,14 +283,6 @@ class SettingController extends Controller
                 'auto_delete.required' => 'Auto delete is required.',
                 'auto_delete.string' => 'Auto delete must be a string.',
                 'auto_delete.in' => 'Auto delete either Yes or No.',
-
-                'send_email_notification.required' => 'Send email notification is required.',
-                'send_email_notification.string' => 'Send email notification  must be a string.',
-                'send_email_notification.in' => 'Send email notification either Yes or No.',
-
-                'auto_delete_scheduler_frequency.required' => 'Auto delete scheduler frequency is required.',
-                'auto_delete_scheduler_frequency.string' => 'Auto delete scheduler frequency must be a string.',
-                'auto_delete_scheduler_frequency.in' => 'Auto delete scheduler frequency must one out of [Daily,Weekly,Monthly,Quarterly,Yearly].',
             ]
         );
         if ($validator->fails()) {
@@ -319,8 +297,8 @@ class SettingController extends Controller
 
             $authenticationLogSettingFieldsWithValues['delete_records_older_than'] = $request->delete_records_older_than;
             $authenticationLogSettingFieldsWithValues['auto_delete'] = $request->auto_delete;
-            $authenticationLogSettingFieldsWithValues['send_email_notification'] = $request->send_email_notification;
-            $authenticationLogSettingFieldsWithValues['auto_delete_scheduler_frequency'] = $request->auto_delete_scheduler_frequency;
+
+
 
             $authenticationLogSetting->fields_with_values = $authenticationLogSettingFieldsWithValues;
             $authenticationLogSetting->updated_at = Carbon::now();

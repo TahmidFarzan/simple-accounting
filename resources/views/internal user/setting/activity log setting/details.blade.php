@@ -47,47 +47,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-6 mb-2">
-                    <div class="card pt-3">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <th>Send email notification</th>
-                                            <th>:</th>
-                                            <td>
-                                                {{ ($activityLogSetting->fields_with_values["send_email_notification"] == null) ? "Not added yet." : $activityLogSetting->fields_with_values["send_email_notification"] }}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="card pt-3">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <th style="width: auto!important;">Auto delete scheduler frequency</th>
-                                            <th style="width: 1%!important;">:</th>
-                                            <td>
-                                                {{ ($activityLogSetting->fields_with_values["auto_delete_scheduler_frequency"] == null) ? "Not added yet." : $activityLogSetting->fields_with_values["auto_delete_scheduler_frequency"] }}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -191,7 +150,6 @@
             </div>
         </div>
     @endif
-
 
     <div class="card border-dark mb-3">
         <div class="card-body">

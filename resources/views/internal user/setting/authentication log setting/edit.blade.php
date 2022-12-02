@@ -66,58 +66,6 @@
                     </div>
                 </div>
 
-                <div class="form-group mb-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="row mb-1">
-                                <label class="col-md-8 col-form-label text-bold">Auto delete scheduler frequency<i class="fa-solid fa-asterisk float-end mt-2" style="font-size: 10px;!important"></i></label>
-                                <div class="col-md-4">
-                                    <select class="form-control" name="auto_delete_scheduler_frequency">
-                                        <option value="Daily" {{  (old("auto_delete_scheduler_frequency") == null) ? ( ($authenticationLogSetting->fields_with_values["auto_delete_scheduler_frequency"] == "Daily") ? "selected": null  ) : ( ( (old("auto_delete_scheduler_frequency") == "Daily") ? "selected" :  null) ) }} > Daily</option>
-                                        <option value="Weekly" {{  (old("auto_delete_scheduler_frequency") == null) ? ( ($authenticationLogSetting->fields_with_values["auto_delete_scheduler_frequency"] == "Weekly") ? "selected": null  ) : ( ( (old("auto_delete_scheduler_frequency") == "Weekly") ? "selected" :  null) ) }} > Weekly</option>
-                                        <option value="Monthly" {{  (old("auto_delete_scheduler_frequency") == null) ? ( ($authenticationLogSetting->fields_with_values["auto_delete_scheduler_frequency"] == "Monthly") ? "selected": null  ) : ( ( (old("auto_delete_scheduler_frequency") == "Monthly") ? "selected" :  null) ) }} > Monthly</option>
-                                        <option value="Quarterly" {{  (old("auto_delete_scheduler_frequency") == null) ? ( ($authenticationLogSetting->fields_with_values["auto_delete_scheduler_frequency"] == "Quarterly") ? "selected": null  ) : ( ( (old("auto_delete_scheduler_frequency") == "Quarterly") ? "selected" :  null) ) }} >Quarterly</option>
-                                        <option value="Yearly" {{  (old("auto_delete_scheduler_frequency") == null) ? ( ($authenticationLogSetting->fields_with_values["auto_delete_scheduler_frequency"] == "Yearly") ? "selected": null  ) : ( ( (old("auto_delete_scheduler_frequency") == "Yearly") ? "selected" :  null) ) }} > Yearly</option>
-                                    </select>
-                                    @error('auto_delete_scheduler_frequency')
-                                        <span class="invalid-feedback" role="alert" style="display: block;">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6"></div>
-                    </div>
-                </div>
-
-                <div class="form-group mb-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="row mb-1">
-                                <label class="col-md-8 col-form-label text-bold">Send email notification<i class="fa-solid fa-asterisk float-end mt-2" style="font-size: 10px;!important"></i></label>
-                                <div class="col-md-4">
-                                    <div class="mt-2">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="send_email_notification" value="No" {{  (old("send_email_notification") == null) ? ( ($authenticationLogSetting->fields_with_values["send_email_notification"] == "Yes") ? null : "checked" ) : ( ( (old("send_email_notification") == "Yes") ? null : "checked" ) ) }} >
-                                            <label class="form-check-label">No</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="send_email_notification" value="Yes" {{  (old("send_email_notification") == null) ? ( ($authenticationLogSetting->fields_with_values["send_email_notification"] == "Yes") ? "checked" : null ) : ( ( (old("send_email_notification") == "Yes") ? "checked" : null ) ) }} >
-                                            <label class="form-check-label">Yes</label>
-                                        </div>
-                                    </div>
-                                    @error('send_email_notification')
-                                        <span class="invalid-feedback" role="alert" style="display: block;">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row mb-0">
                     <div class="col-md-8 offset-md-4 mb-3">
                         <button type="submit" class="btn btn-outline-success">

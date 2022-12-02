@@ -50,8 +50,6 @@ class SettingSeeder extends Seeder
             'fields_with_values' => array(
                 "delete_records_older_than" => null,
                 "auto_delete" => null,
-                "send_email_notification" => null,
-                "auto_delete_scheduler_frequency" => null,
             ),
             'created_at' =>  Carbon::now(),
             'updated_at' =>  null,
@@ -66,8 +64,6 @@ class SettingSeeder extends Seeder
             'fields_with_values' => array(
                 "delete_records_older_than" => null,
                 "auto_delete" => null,
-                "send_email_notification" => null,
-                "auto_delete_scheduler_frequency" => null,
             ),
             'created_at' =>  Carbon::now(),
             'updated_at' =>  null,
