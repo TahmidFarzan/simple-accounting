@@ -3,14 +3,8 @@
 namespace App\Utilities;
 
 use Carbon\Carbon;
-use App\Models\Product;
-use App\Models\Supplier;
-use App\Models\Inventory;
-use App\Models\SupplierAgent;
 use App\Models\ProjectContractCategory;
-use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductAttributeValue;
 use Spatie\Activitylog\Facades\LogBatch;
 
 class ModelsRelationDependencyConstant
@@ -21,15 +15,15 @@ class ModelsRelationDependencyConstant
         $allCategoryIds = array();
         $pCategory = ProjectContractCategory::where("slug",$slug)->first();
         if($pCategory){
-            // Dependent product category.
+            // Dependent category.
             $pCategoryTreeIds = $pCategory->descendants()->pluck("id")->toArray();
-            array_push($records,count($pCategoryTreeIds)." product category(ies) will be trashed according to dependency relation.");
+            array_push($records,count($pCategoryTreeIds)." category(ies) will be trashed according to dependency relation.");
 
             $allCategoryIds = $pCategoryTreeIds;
             array_push($allCategoryIds,$pCategory->id);
         }
         else{
-            array_push($records,"Unknown product category for trash dependency.");
+            array_push($records,"Unknown category for trash dependency.");
         }
         return $records;
     }
@@ -42,19 +36,18 @@ class ModelsRelationDependencyConstant
         $pCategory = ProjectContractCategory::onlyTrashed()->where("slug",$slug)->first();
 
         if($pCategory){
-            // Dependent product category.
+            // Dependent category.
             $pCategoryTreeIds = $pCategory->descendantsWithTrashed()->where(DB::raw("(STR_TO_DATE(deleted_at,'%Y-%m-%d'))"),date('Y-m-d',strtotime($deletedAt)))->pluck("id")->toArray();
-            array_push($records,count($pCategoryTreeIds)." product category(ies) will be restored according to dependency relation.");
+            array_push($records,count($pCategoryTreeIds)." category(ies) will be restored according to dependency relation.");
 
             $allCategoryIds = $pCategoryTreeIds;
             array_push($allCategoryIds,$pCategory->id);
         }
         else{
-            array_push($records,"Unknown product category for restore dependency.");
+            array_push($records,"Unknown category for restore dependency.");
         }
         return $records;
     }
-
 
     //Trash all related logic.
     public static function projectContractCategoryTrashDependency($slug){
@@ -66,17 +59,17 @@ class ModelsRelationDependencyConstant
         if($pCategory){
             array_push($allCategoryIds,$pCategory->id);
 
-            // Dependent product category.
+            // Dependent category.
             $pCategoryTreeIds = $pCategory->descendants()->pluck("id")->toArray();
             if(count($pCategoryTreeIds) > 0){
                 $pCategoriesTrash=ProjectContractCategory::whereIn("id",$pCategoryTreeIds)->delete();
                 if($pCategoriesTrash){
                     $statusInformation["status"] = "status";
-                    array_push($statusInformation["message"],count($pCategoryTreeIds)." dependent product category(ies) is/are trashed.");
+                    array_push($statusInformation["message"],count($pCategoryTreeIds)." dependent category(ies) is/are trashed.");
                 }
                 else{
                     $statusInformation["status"] = "errors";
-                    array_push($statusInformation["message"],"Fail to trash dependent product category(ies).");
+                    array_push($statusInformation["message"],"Fail to trash dependent category(ies).");
                 }
 
                 foreach($pCategoryTreeIds as $perPCTId){
@@ -87,16 +80,15 @@ class ModelsRelationDependencyConstant
             }
             else{
                 $statusInformation["status"] = "status";
-                array_push($statusInformation["message"],"No product category(ies) are dependent to be trashed.");
+                array_push($statusInformation["message"],"No category(ies) are dependent to be trashed.");
             }
         }
         else{
-            array_push($statusInformation["message"],"Unknown product category for trash dependency.");
+            array_push($statusInformation["message"],"Unknown category for trash dependency.");
         }
 
         return $statusInformation;
     }
-
 
     // Restore all related logic.
     public static function projectContractCategoryRestoreDependency($slug,$deletedAt){
@@ -109,17 +101,17 @@ class ModelsRelationDependencyConstant
             $pCategoryTreeIds = $pCategory->descendantsWithTrashed()->where(DB::raw("(STR_TO_DATE(deleted_at,'%Y-%m-%d'))"),date('Y-m-d',strtotime($deletedAt)))->pluck("id")->toArray();
             array_push($allCategoryIds,$pCategory->id);
 
-           // Dependent product category.
+           // Dependent category.
             if(count($pCategoryTreeIds) > 0){
                 $pCategoriesRestore = ProjectContractCategory::onlyTrashed()->whereIn("id",$pCategoryTreeIds)->restore();
 
                 if($pCategoriesRestore){
                     $statusInformation["status"] = "status";
-                    array_push($statusInformation["message"],count($pCategoryTreeIds)." dependent product category(ies) is/are restored.");
+                    array_push($statusInformation["message"],count($pCategoryTreeIds)." dependent category(ies) is/are restored.");
                 }
                 else{
                     $statusInformation["status"] = "errors";
-                    array_push($statusInformation["message"],"Fail to restore dependent product category(ies).");
+                    array_push($statusInformation["message"],"Fail to restore dependent category(ies).");
                 }
 
                 foreach($pCategoryTreeIds as $perPCTId){
@@ -131,15 +123,14 @@ class ModelsRelationDependencyConstant
             }
             else{
                 $statusInformation["status"] = "status";
-                array_push($statusInformation["message"],"No product category(ies) is/are dependent to be restored.");
+                array_push($statusInformation["message"],"No category(ies) is/are dependent to be restored.");
             }
         }
         else{
-            array_push($statusInformation["message"],"Unknown product category for restore dependency.");
+            array_push($statusInformation["message"],"Unknown category for restore dependency.");
         }
 
         return $statusInformation;
     }
-
 
 }

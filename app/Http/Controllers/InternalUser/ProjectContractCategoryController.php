@@ -147,13 +147,13 @@ class ProjectContractCategoryController extends Controller
                         $projectContractCategoryFound = ($projectContractCategoryFound->where("parent_id",$parentCategory->id))->count();
                         if($projectContractCategoryFound > 0){
                             $validator->errors()->add(
-                                'name', "Same category exit for parent contract category."
+                                'name', "Same category exit for parent category."
                             );
                         }
                     }
                     else{
                         $validator->errors()->add(
-                            'parent', "Unknown parent contract category."
+                            'parent', "Unknown parent ategory."
                         );
                     }
                 }
@@ -163,7 +163,7 @@ class ProjectContractCategoryController extends Controller
                 $projectContractCategoryFound = $projectContractCategoryFound->count();
                 if($projectContractCategoryFound >0 ){
                     $validator->errors()->add(
-                        'name', "Same parent contract category exit."
+                        'name', "Same parent category exit."
                     );
                 }
             }
@@ -190,11 +190,11 @@ class ProjectContractCategoryController extends Controller
 
         if($saveProjectContractCategory){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Contract category successfully created.";
+            $statusInformation["message"] = "Category successfully created.";
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to create contract category.";
+            $statusInformation["message"] = "Fail to create category.";
         }
 
         return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -239,13 +239,13 @@ class ProjectContractCategoryController extends Controller
                         $projectContractCategoryFound = ($projectContractCategoryFound->where("parent_id",$parentCategory->id)->whereNot('slug',$this->slug))->count();
                         if($projectContractCategoryFound > 0){
                             $validator->errors()->add(
-                                'name', "Same category exit for parent contract category."
+                                'name', "Same category exit for category."
                             );
                         }
                     }
                     else{
                         $validator->errors()->add(
-                            'parent', "Unknown parent contract category."
+                            'parent', "Unknown category."
                         );
                     }
                 }
@@ -255,7 +255,7 @@ class ProjectContractCategoryController extends Controller
                 $projectContractCategoryFound = $projectContractCategoryFound->whereNot('slug',$this->slug)->count();
                 if($projectContractCategoryFound > 0){
                     $validator->errors()->add(
-                        'name', "Same parent contract category exit."
+                        'name', "Same parent category exit."
                     );
                 }
             }
@@ -280,11 +280,11 @@ class ProjectContractCategoryController extends Controller
 
         if($updateProjectContractCategory){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Contract category successfully updated.";
+            $statusInformation["message"] = "Category successfully updated.";
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to update contract category.";
+            $statusInformation["message"] = "Fail to update category.";
         }
 
         return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -304,7 +304,7 @@ class ProjectContractCategoryController extends Controller
 
             if($trashedProjectContractCategory){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Contract category successfully trashed.");
+                $statusInformation["message"]->push("Category successfully trashed.");
 
                 $statusInformation["status"] = $trashDependencyStatusInformation["status"];
                 foreach($trashDependencyStatusInformation["message"] as $perMessages){
@@ -312,12 +312,12 @@ class ProjectContractCategoryController extends Controller
                 }
             }
             else{
-                $statusInformation["message"]->push("Contract category fail to trash.");
+                $statusInformation["message"]->push("Category fail to trash.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Contract category already trashed.");
+            $statusInformation["message"]->push("Category already trashed.");
         }
 
         return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -339,7 +339,7 @@ class ProjectContractCategoryController extends Controller
 
                 if($restoreProjectContractCategory){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push("Contract category successfully restored.");
+                    $statusInformation["message"]->push("Category successfully restored.");
 
                     $statusInformation["status"] = $restoreDependencyStatusInformation["status"];
                     foreach($restoreDependencyStatusInformation["message"] as $perMessages){
@@ -347,7 +347,7 @@ class ProjectContractCategoryController extends Controller
                     }
                 }
                 else{
-                    $statusInformation["message"]->push("Contract category fail to restore.");
+                    $statusInformation["message"]->push("Category fail to restore.");
                 }
 
             }
@@ -358,7 +358,7 @@ class ProjectContractCategoryController extends Controller
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Contract category already actived.");
+            $statusInformation["message"]->push("Category already actived.");
         }
 
         return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -374,17 +374,17 @@ class ProjectContractCategoryController extends Controller
 
             if( $pCAncestors->count() > 0){
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Restore validation fail. Some ancestors contract category ".$pCAncestors->pluck("name")." are trashed.");
+                $statusInformation["message"]->push("Restore validation fail. Some ancestors category ".$pCAncestors->pluck("name")." are trashed.");
             }
             else{
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Restore validation pass. All ancestors contract category are active.");
+                $statusInformation["message"]->push("Restore validation pass. All ancestors category are active.");
             }
 
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Restore validation pass. This contract category is  one of the root category.");
+            $statusInformation["message"]->push("Restore validation pass. This category is one of the root category.");
         }
 
         return $statusInformation;
