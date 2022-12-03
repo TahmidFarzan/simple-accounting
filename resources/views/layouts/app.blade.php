@@ -194,37 +194,6 @@
                                     @endif
 
                                     <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('activity-log') || (Request::is('activity-log/*')) || (Request::is('authentication-log')) || (Request::is('authentication-log/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#logCollapseDiv" role="button" aria-expanded="false" aria-controls="logCollapseDiv">
-                                            <i class="fa-sharp fa-solid fa-chart-simple"></i>
-                                            Logs <i class="fa-solid fa-angle-down"></i>
-                                        </a>
-
-                                        <div class="collapse bg-light" id="logCollapseDiv">
-                                            <div class="card card-body bg-light border-0 p-0 m-0 px-2 mx-2 ">
-                                                <ul class="nav flex-column">
-                                                    @if (Auth::user()->hasUserPermission(["ACLMP01"]) == true)
-                                                        <li class="nav-item">
-                                                            <a class="nav-link {{(Request::is('activity-log') || (Request::is('activity-log/*'))) ? 'active' : null}}" href="{{ route("activity.log.index") }}">
-                                                                <i class="fa-solid fa-chart-simple"></i>
-                                                                Activity logs
-                                                            </a>
-                                                        </li>
-                                                    @endif
-
-                                                    @if (Auth::user()->hasUserPermission(["AULMP01"]) == true)
-                                                        <li class="nav-item">
-                                                            <a class="nav-link {{(Request::is('authentication-log') || (Request::is('authentication-log/*'))) ? 'active' : null}}" href="{{ route("authentication.log.index") }}">
-                                                                <i class="fa-solid fa-user-clock"></i>
-                                                                Authentication logs
-                                                            </a>
-                                                        </li>
-                                                    @endif
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    <li class="nav-item">
                                         <a class="nav-link {{(Request::is('project-contract') || (Request::is('project-contract/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#projectContractCollapseDiv" role="button" aria-expanded="false" aria-controls="projectContractCollapseDiv">
                                             <i class="fa-solid fa-bolt"></i>
                                             Project contract <i class="fa-solid fa-angle-down"></i>
@@ -279,6 +248,37 @@
                                                             <a class="nav-link {{(Request::is('user-permission-group') || (Request::is('user-permission-group/*'))) ? 'active' : null}}" href="{{ route("user.permission.group.index") }}">
                                                                 <i class="fa-solid fa-users-line"></i>
                                                                 User permission groups
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link {{(Request::is('activity-log') || (Request::is('activity-log/*')) || (Request::is('authentication-log')) || (Request::is('authentication-log/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#logCollapseDiv" role="button" aria-expanded="false" aria-controls="logCollapseDiv">
+                                            <i class="fa-sharp fa-solid fa-chart-simple"></i>
+                                            Logs <i class="fa-solid fa-angle-down"></i>
+                                        </a>
+
+                                        <div class="collapse bg-light" id="logCollapseDiv">
+                                            <div class="card card-body bg-light border-0 p-0 m-0 px-2 mx-2 ">
+                                                <ul class="nav flex-column">
+                                                    @if (Auth::user()->hasUserPermission(["ACLMP01"]) == true)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link {{(Request::is('activity-log') || (Request::is('activity-log/*'))) ? 'active' : null}}" href="{{ route("activity.log.index") }}">
+                                                                <i class="fa-solid fa-chart-simple"></i>
+                                                                Activity logs
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+                                                    @if (Auth::user()->hasUserPermission(["AULMP01"]) == true)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link {{(Request::is('authentication-log') || (Request::is('authentication-log/*'))) ? 'active' : null}}" href="{{ route("authentication.log.index") }}">
+                                                                <i class="fa-solid fa-user-clock"></i>
+                                                                Authentication logs
                                                             </a>
                                                         </li>
                                                     @endif
