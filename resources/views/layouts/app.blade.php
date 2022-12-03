@@ -195,7 +195,7 @@
 
                                     <li class="nav-item">
                                         <a class="nav-link {{(Request::is('project-contract') || (Request::is('project-contract/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#projectContractCollapseDiv" role="button" aria-expanded="false" aria-controls="projectContractCollapseDiv">
-                                            <i class="fa-solid fa-bolt"></i>
+                                            <i class="fa-solid fa-briefcase"></i>
                                             Project contract <i class="fa-solid fa-angle-down"></i>
                                         </a>
 
