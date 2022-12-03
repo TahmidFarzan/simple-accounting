@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('mainPageName')
-    Contract category
+    Project contract
 @endsection
 
 @section('mainCardTitle')
@@ -11,7 +11,8 @@
 @section('navBreadcrumbSection')
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
-            <li class="breadcrumb-item active" aria-current="page">Contract category</li>
+            <li class="breadcrumb-item">Project contract</li>
+            <li class="breadcrumb-item active" aria-current="page">Category</li>
         </ol>
     </nav>
 @endsection
@@ -26,7 +27,7 @@
             <div class="row mb-2">
                 <p>
                     @if (Auth::user()->hasUserPermission(["PCCMP02"]) == true)
-                        <a href="{{ route("contract.category.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create category</a>
+                        <a href="{{ route("project.contract.category.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create category</a>
                     @endif
 
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sortingCollapseDiv" aria-expanded="false" aria-controls="sortingCollapseDiv">
@@ -120,11 +121,11 @@
                                                 <td>{{ ($perCategory->parent_id == null) ? "Parent category" : $perCategory->parentCategory->name }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["PCCMP03"]) == true)
-                                                        <a href="{{ route("contract.category.details",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
+                                                        <a href="{{ route("project.contract.category.details",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["PCCMP04"]) == true)
-                                                        <a href="{{ route("contract.category.edit",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
+                                                        <a href="{{ route("project.contract.category.edit",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["PCCMP05"]) == true)
@@ -152,7 +153,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                        <form action="{{ route("contract.category.trash",["slug" => $perCategory->slug]) }}" method="POST">
+                                                                        <form action="{{ route("project.contract.category.trash",["slug" => $perCategory->slug]) }}" method="POST">
                                                                             @csrf
                                                                             @method("DELETE")
                                                                             <button type="submit" class="btn btn-sm btn-success">Yes,Trash</button>
@@ -201,11 +202,11 @@
                                                 <td>{{ ($perCategory->parent_id == null) ? "Parent category" : $perCategory->parentCategory->name }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["PCCMP03"]) == true)
-                                                        <a href="{{ route("contract.category.details",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
+                                                        <a href="{{ route("project.contract.category.details",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["PCCMP04"]) == true)
-                                                        <a href="{{ route("contract.category.edit",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
+                                                        <a href="{{ route("project.contract.category.edit",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["PCCMP06"]) == true)
@@ -232,7 +233,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                        <form action="{{ route("contract.category.restore",["slug" => $perCategory->slug]) }}" method="POST">
+                                                                        <form action="{{ route("project.contract.category.restore",["slug" => $perCategory->slug]) }}" method="POST">
                                                                             @csrf
                                                                             @method("PATCH")
                                                                             <button type="submit" class="btn btn-sm btn-success">Yes,Restore</button>
@@ -349,7 +350,7 @@
             var errorMessages = [];
             $.ajax({
                 type: "get",
-                url: "{{ route('contract.category.index') }}" + "?" + parameterString,
+                url: "{{ route('project.contract.category.index') }}" + "?" + parameterString,
                 success: function(result) {
                     $("#extraErrorMessageDiv").hide();
                     $("#extraErrorMessageDiv").html("");;

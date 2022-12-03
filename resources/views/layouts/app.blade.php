@@ -236,7 +236,7 @@
 
                                                     @if (Auth::user()->hasUserPermission(["PCCMP01"]) == true)
                                                         <li class="nav-item">
-                                                            <a class="nav-link {{(Request::is('project-contract/category') || (Request::is('project-contract/category/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("contract.category.index") }}">
+                                                            <a class="nav-link {{(Request::is('project-contract/category') || (Request::is('project-contract/category/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("project.contract.category.index") }}">
                                                                 <i class="fa-solid fa-folder-tree"></i>
                                                                 Categories
                                                             </a>
@@ -257,12 +257,12 @@
                                     @endif
 
                                     <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*')) || (Request::is('user-permission-group')) || (Request::is('user-permission-group/*')) || Request::is('contract-category') || (Request::is('contract-category/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#extraModulCollapse" role="button" aria-expanded="false" aria-controls="extraModulCollapse">
+                                        <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*')) || (Request::is('user-permission-group')) || (Request::is('user-permission-group/*')) || Request::is('contract-category') || (Request::is('contract-category/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#extraModuleCollapseDiv" role="button" aria-expanded="false" aria-controls="extraModuleCollapseDiv">
                                             <i class="fa-solid fa-bolt"></i>
                                             Extra <i class="fa-solid fa-angle-down"></i>
                                         </a>
 
-                                        <div class="collapse bg-light" id="extraModulCollapse">
+                                        <div class="collapse bg-light" id="extraModuleCollapseDiv">
                                             <div class="card card-body bg-light border-0 p-0 m-0 px-2 mx-2 ">
                                                 <ul class="nav flex-column">
                                                     @if (Auth::user()->hasUserPermission(["UPMP01"]) == true)
@@ -279,15 +279,6 @@
                                                             <a class="nav-link {{(Request::is('user-permission-group') || (Request::is('user-permission-group/*'))) ? 'active' : null}}" href="{{ route("user.permission.group.index") }}">
                                                                 <i class="fa-solid fa-users-line"></i>
                                                                 User permission groups
-                                                            </a>
-                                                        </li>
-                                                    @endif
-
-                                                    @if (Auth::user()->hasUserPermission(["CCMP01"]) == true)
-                                                        <li class="nav-item">
-                                                            <a class="nav-link {{(Request::is('contract-category') || (Request::is('contract-category/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("contract.category.index") }}">
-                                                                <i class="fa-solid fa-folder-tree"></i>
-                                                                Contract categories
                                                             </a>
                                                         </li>
                                                     @endif

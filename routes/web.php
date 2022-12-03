@@ -97,9 +97,11 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::delete('delete/{slug}', [ExtraController::class, 'userPermissionGroupDelete'])->name('delete');
     });
 
-    // Contract category
-    Route::prefix('contract')->name('contract.')->group(function(){
-        Route::prefix('category')->name('category.')->group(function(){
+    // Project contract
+    Route::prefix('project-contract')->name('project.contract.')->group(function(){
+
+        // Categories
+        Route::prefix('categories')->name('category.')->group(function(){
             Route::get('/', [ProjectContractCategoryController::class, 'index'])->name('index');
             Route::get('edit/{slug}', [ProjectContractCategoryController::class, 'edit'])->name('edit');
             Route::get('create', [ProjectContractCategoryController::class, 'create'])->name('create');

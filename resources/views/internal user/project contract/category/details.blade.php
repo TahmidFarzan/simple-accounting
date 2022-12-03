@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('mainPageName')
-    Contract category
+    Project contract
 @endsection
 
 @section('mainCardTitle')
@@ -11,7 +11,8 @@
 @section('navBreadcrumbSection')
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
-            <li class="breadcrumb-item"><a href="{{ route("contract.category.index") }}">Contract category</a></li>
+            <li class="breadcrumb-item">Project contract</li>
+            <li class="breadcrumb-item"><a href="{{ route("project.contract.category.index") }}">Category</a></li>
             <li class="breadcrumb-item active" aria-current="page">Details</li>
         </ol>
     </nav>
@@ -198,7 +199,7 @@
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
                     @if (Auth::user()->hasUserPermission(["PCCMP04"]) == true)
-                        <a href="{{ route("contract.category.edit",["slug"=>$projectContractCategory->slug]) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route("project.contract.category.edit",["slug"=>$projectContractCategory->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
                     @if (!($projectContractCategory->deleted_at == null) && (Auth::user()->hasUserPermission(["PCCMP05"]) == true))
@@ -236,7 +237,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                <form action="{{ route("contract.category.restore",["slug" => $projectContractCategory->slug]) }}" method="POST">
+                                <form action="{{ route("project.contract.category.restore",["slug" => $projectContractCategory->slug]) }}" method="POST">
                                     @csrf
                                     @method("PATCH")
                                     <button type="submit" class="btn btn-sm btn-success">Yes,Restore</button>
@@ -268,7 +269,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                <form action="{{ route("contract.category.trash",["slug" => $projectContractCategory->slug]) }}" method="POST">
+                                <form action="{{ route("project.contract.category.trash",["slug" => $projectContractCategory->slug]) }}" method="POST">
                                     @csrf
                                     @method("DELETE")
                                     <button type="submit" class="btn btn-sm btn-success">Yes,Trash</button>
@@ -286,7 +287,7 @@
     <div class="card border-dark mb-3">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <a role="button" href="{{ route("contract.category.index") }}" class="btn btn-sm btn-secondary">
+                <a role="button" href="{{ route("project.contract.category.index") }}" class="btn btn-sm btn-secondary">
                     Go to contract category
                 </a>
             </div>

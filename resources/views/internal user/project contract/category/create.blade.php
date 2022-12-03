@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('mainPageName')
-    Contract category
+    Project contract
 @endsection
 
 @section('mainCardTitle')
@@ -11,7 +11,8 @@
 @section('navBreadcrumbSection')
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
-            <li class="breadcrumb-item"><a href="{{ route("contract.category.index") }}">Contract category</a></li>
+            <li class="breadcrumb-item">Contract</li>
+            <li class="breadcrumb-item"><a href="{{ route("project.contract.category.index") }}">Contract category</a></li>
             <li class="breadcrumb-item active" aria-current="page">Create</li>
         </ol>
     </nav>
@@ -34,7 +35,7 @@
 
     <div class="card border-dark mb-2">
         <div class="card-body text-dark">
-            <form action="{{ route("contract.category.save") }}" method="POST" id="createForm">
+            <form action="{{ route("project.contract.category.save") }}" method="POST" id="createForm">
                 @csrf
 
                 <div class="form-group mb-3">
@@ -145,7 +146,7 @@
     <div class="card border-dark mb-3">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <a role="button" href="{{ route("contract.category.index") }}" class="btn btn-sm btn-secondary">
+                <a role="button" href="{{ route("project.contract.category.index") }}" class="btn btn-sm btn-secondary">
                     Go to contract category
                 </a>
             </div>

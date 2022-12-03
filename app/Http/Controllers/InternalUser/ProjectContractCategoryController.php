@@ -197,7 +197,7 @@ class ProjectContractCategoryController extends Controller
             $statusInformation["message"] = "Fail to create contract category.";
         }
 
-        return redirect()->route("contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+        return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
     public function update(Request $request,$slug){
@@ -287,7 +287,7 @@ class ProjectContractCategoryController extends Controller
             $statusInformation["message"] = "Fail to update contract category.";
         }
 
-        return redirect()->route("contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+        return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
     public function trash($slug){
@@ -320,7 +320,7 @@ class ProjectContractCategoryController extends Controller
             $statusInformation["message"]->push("Contract category already trashed.");
         }
 
-        return redirect()->route("contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+        return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
     public function restore($slug){
@@ -361,7 +361,7 @@ class ProjectContractCategoryController extends Controller
             $statusInformation["message"]->push("Contract category already actived.");
         }
 
-        return redirect()->route("contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+        return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
     private function restoreValidation($slug){
