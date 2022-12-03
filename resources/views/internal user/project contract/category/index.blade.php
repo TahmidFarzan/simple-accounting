@@ -25,8 +25,8 @@
         <div class="card-body text-dark mt-0">
             <div class="row mb-2">
                 <p>
-                    @if (Auth::user()->hasUserPermission(["CCMP02"]) == true)
-                        <a href="{{ route("contract.category.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create contract category</a>
+                    @if (Auth::user()->hasUserPermission(["PCCMP02"]) == true)
+                        <a href="{{ route("contract.category.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create category</a>
                     @endif
 
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sortingCollapseDiv" aria-expanded="false" aria-controls="sortingCollapseDiv">
@@ -63,12 +63,12 @@
                                 <div class="row">
                                     <label class="col-md-4 col-form-label col-form-label-sm">Contract category</label>
                                     <div class="col-md-8">
-                                        <select class="form-control form-control-sm" id="contractCategoryTreeInputForSorting" name="contract_category">
+                                        <select class="form-control form-control-sm" id="projectContractCategoryTreeInputForSorting" name="contract_category">
                                             <option>Select</option>
                                             <option value="All">All</option>
-                                            <x-contract_category.form.contract-categories :categories="$contractCategoriesTree" :activeCategorySlug="null"/>
+                                            <x-project_contract.category.form.categories :categories="$contractCategoriesTree" :activeCategorySlug="null"/>
                                         </select>
-                                        <div id="contractCategoryTreeInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                                        <div id="projectContractCategoryTreeInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -119,15 +119,15 @@
                                                 <td>{{ $perCategory->code }}</td>
                                                 <td>{{ ($perCategory->parent_id == null) ? "Parent category" : $perCategory->parentCategory->name }}</td>
                                                 <td>
-                                                    @if (Auth::user()->hasUserPermission(["CCMP03"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCMP03"]) == true)
                                                         <a href="{{ route("contract.category.details",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["CCMP04"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCMP04"]) == true)
                                                         <a href="{{ route("contract.category.edit",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["CCMP05"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCMP05"]) == true)
                                                         <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perCategory->slug}}TrashConfirmationModal">
                                                             Trash
                                                         </button>
@@ -200,15 +200,15 @@
                                                 <td>{{ $perCategory->code }}</td>
                                                 <td>{{ ($perCategory->parent_id == null) ? "Parent category" : $perCategory->parentCategory->name }}</td>
                                                 <td>
-                                                    @if (Auth::user()->hasUserPermission(["CCMP03"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCMP03"]) == true)
                                                         <a href="{{ route("contract.category.details",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["CCMP04"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCMP04"]) == true)
                                                         <a href="{{ route("contract.category.edit",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["CCMP06"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCMP06"]) == true)
                                                         <button type="button" class="btn btn-sm btn-success m-1" data-bs-toggle="modal" data-bs-target="#{{$perCategory->slug}}RestoreConfirmationModal">
                                                             Restore
                                                         </button>
@@ -308,7 +308,7 @@
                 hideOrShowInputFieldErrorMessages(errorMessages,"paginationInputForSorting");
             });
 
-            $(document).on('change', "#contractCategoryTreeInputForSorting", function () {
+            $(document).on('change', "#projectContractCategoryTreeInputForSorting", function () {
                 var errorMessages = [];
                 if($(this).val().length > 0){
                     dataTableLoad(parameterGenerate());
@@ -316,7 +316,7 @@
                 else{
                     errorMessages.push("Contract category is empty.");
                 }
-                hideOrShowInputFieldErrorMessages(errorMessages,"contractCategoryTreeInputForSorting");
+                hideOrShowInputFieldErrorMessages(errorMessages,"projectContractCategoryTreeInputForSorting");
             });
 
             $(document).on('click', "#searchButton", function () {
@@ -334,7 +334,7 @@
 
         function parameterGenerate(){
             var parameterString = null;
-            $.each( ["paginationInputForSorting","contractCategoryTreeInputForSorting","searchInputForSorting","selectedNavTabForSorting"], function( key, perInput ) {
+            $.each( ["paginationInputForSorting","projectContractCategoryTreeInputForSorting","searchInputForSorting","selectedNavTabForSorting"], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
                     var inputFieldValue = $("#" + perInput).val();
                     var inputFieldName = $("#" + perInput).attr('name');

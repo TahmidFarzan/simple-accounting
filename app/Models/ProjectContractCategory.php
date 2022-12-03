@@ -11,13 +11,13 @@ use App\Utilities\ModelsRelationDependencyConstant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
-class ContractCategory extends Model
+class ProjectContractCategory extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity, HasRecursiveRelationships;
 
     protected $guard = 'web';
 
-    protected $table='contract_categories';
+    protected $table='project_contract_categories';
 
     protected $fillable = [
         'name',
@@ -58,7 +58,7 @@ class ContractCategory extends Model
 
     public function allChildrens()
     {
-        return $this->hasMany(ContractCategory::class,'parent_id')->withTrashed();
+        return $this->hasMany(ProjectContractCategory::class,'parent_id')->withTrashed();
     }
 
     public function descendantsWithTrashed()
@@ -107,7 +107,7 @@ class ContractCategory extends Model
 
     public function parentCategory()
     {
-        return $this->belongsTo(ContractCategory::class,'parent_id')->withTrashed();
+        return $this->belongsTo(ProjectContractCategory::class,'parent_id')->withTrashed();
     }
 
     public function createdBy()
@@ -125,18 +125,18 @@ class ContractCategory extends Model
     }
 
     public function activityLogs(){
-        return Activity::orderBy("id","desc")->where("subject_type","App\Models\ContractCategory")->where("subject_id",$this->id)->get();
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\ProjectContractCategory")->where("subject_id",$this->id)->get();
     }
 
     public function modifiedActivityLogs($limit){
-        return Activity::orderBy("id","desc")->where("subject_type","App\Models\ContractCategory")->where("subject_id",$this->id)->take($limit)->get();
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\ProjectContractCategory")->where("subject_id",$this->id)->take($limit)->get();
     }
 
     public function dependencyNeedToTrashRecordsInfo(){
-        return ModelsRelationDependencyConstant::contractCategoryDependencyNeedToTrashRecordsInfo($this->slug);
+        return ModelsRelationDependencyConstant::projectContractCategoryDependencyNeedToTrashRecordsInfo($this->slug);
     }
 
     public function dependencyNeedToRestoreRecordsInfo(){
-        return ModelsRelationDependencyConstant::contractCategoryDependencyNeedToRestoreRecordsInfo($this->slug,$this->deleted_at);
+        return ModelsRelationDependencyConstant::projectContractCategoryDependencyNeedToRestoreRecordsInfo($this->slug,$this->deleted_at);
     }
 }

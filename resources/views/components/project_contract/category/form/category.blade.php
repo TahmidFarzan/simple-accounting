@@ -15,4 +15,4 @@
 
 <option value="{{ $category->slug }}" {{ ($activeCategorySlug == $category->slug) ?  "selected" : null }}>{{ $depthString }} {{ $category->name }}</option>
 
-<x-contract_category.form.contract-categories :categories="$category->children" :activeCategorySlug="$activeCategorySlug"/>
+<x-project_contract.category.form.categories :categories="$category->children" :activeCategorySlug="$activeCategorySlug"/>

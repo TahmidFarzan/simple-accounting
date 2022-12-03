@@ -5,7 +5,7 @@ namespace App\Http\Controllers\InternalUser;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\ContractCategory;
+use App\Models\ProjectContractCategory;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -13,28 +13,28 @@ use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
 use App\Utilities\ModelsRelationDependencyConstant;
 
-class ContractCategoryController extends Controller
+class ProjectContractCategoryController extends Controller
 {
     private $slug;
 
     public function __construct()
     {
         $this->middleware(['auth','verified']);
-        $this->middleware(['user.user.permission.check:CCMP01'])->only(["index"]);
-        $this->middleware(['user.user.permission.check:CCMP02'])->only(["create","save"]);
-        $this->middleware(['user.user.permission.check:CCMP03'])->only(["details"]);
-        $this->middleware(['user.user.permission.check:CCMP04'])->only(["edit","update"]);
-        $this->middleware(['user.user.permission.check:CCMP05'])->only(["trash"]);
-        $this->middleware(['user.user.permission.check:CCMP06'])->only(["restore"]);
+        $this->middleware(['user.user.permission.check:PCCMP01'])->only(["index"]);
+        $this->middleware(['user.user.permission.check:PCCMP02'])->only(["create","save"]);
+        $this->middleware(['user.user.permission.check:PCCMP03'])->only(["details"]);
+        $this->middleware(['user.user.permission.check:PCCMP04'])->only(["edit","update"]);
+        $this->middleware(['user.user.permission.check:PCCMP05'])->only(["trash"]);
+        $this->middleware(['user.user.permission.check:PCCMP06'])->only(["restore"]);
     }
 
     public function index(Request $request){
         $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,105,120);
-        $contractCategoriesTree = ContractCategory::withTrashed()->tree()->get()->toTree();
+        $contractCategoriesTree = ProjectContractCategory::withTrashed()->tree()->get()->toTree();
 
-        $activeContractCategories = ContractCategory::orderby("created_at","desc");
-        $trashContractCategories = ContractCategory::onlyTrashed()->orderby("created_at","desc");
+        $activeContractCategories = ProjectContractCategory::orderby("created_at","desc");
+        $trashContractCategories = ProjectContractCategory::onlyTrashed()->orderby("created_at","desc");
 
 
         if(count($request->input()) > 0){
@@ -43,14 +43,14 @@ class ContractCategoryController extends Controller
             }
 
             if($request->has('contract_category') && !($request->contract_category == null) && !($request->contract_category == "All")){
-                $contractCategory = ContractCategory::where("slug",$request->contract_category)->first();
+                $projectContractCategory = ProjectContractCategory::where("slug",$request->contract_category)->first();
                 switch ($request->selected_nav_tab) {
                     case 'Active':
-                        $activeContractCategories = $activeContractCategories->whereIn("id",$contractCategory->descendantsAndSelf()->pluck("id"));
+                        $activeContractCategories = $activeContractCategories->whereIn("id",$projectContractCategory->descendantsAndSelf()->pluck("id"));
                     break;
 
                     case 'Trash':
-                        $trashContractCategories = $trashContractCategories->whereIn("id",$contractCategory->descendantsAndSelf()->pluck("id"));
+                        $trashContractCategories = $trashContractCategories->whereIn("id",$projectContractCategory->descendantsAndSelf()->pluck("id"));
                     break;
 
                     default:
@@ -82,32 +82,32 @@ class ContractCategoryController extends Controller
         $trashContractCategories = $trashContractCategories->paginate($pagination);
         $activeContractCategories = $activeContractCategories->paginate($pagination);
 
-        return view('internal user.extra.contract category.index',compact("activeContractCategories","trashContractCategories","paginations","contractCategoriesTree"));
+        return view('internal user.project contract.category.index',compact("activeContractCategories","trashContractCategories","paginations","contractCategoriesTree"));
     }
 
     public function create(){
-        $contractCategories = ContractCategory::tree()->get()->toTree();
-        return view('internal user.extra.contract category.create',compact("contractCategories"));
+        $contractCategories = ProjectContractCategory::tree()->get()->toTree();
+        return view('internal user.project contract.category.create',compact("contractCategories"));
     }
 
     public function details($slug){
-        $contractCategory = ContractCategory::withTrashed()->where("slug",$slug)->firstOrFail();
+        $projectContractCategory = ProjectContractCategory::withTrashed()->where("slug",$slug)->firstOrFail();
 
-        $contractCategoryConstraint = function ($query) use ($contractCategory) {
-            $query->where('id', $contractCategory->id);
+        $projectContractCategoryConstraint = function ($query) use ($projectContractCategory) {
+            $query->where('id', $projectContractCategory->id);
         };
 
-        $contractCategoryTree = ContractCategory::treeOf(function ($query) use ($contractCategory) {
-            $query->where('id', $contractCategory->id);
+        $projectContractCategoryTree = ProjectContractCategory::treeOf(function ($query) use ($projectContractCategory) {
+            $query->where('id', $projectContractCategory->id);
         })->get()->toTree();
 
-        return view('internal user.extra.contract category.details',compact("contractCategory","contractCategoryTree"));
+        return view('internal user.project contract.category.details',compact("projectContractCategory","projectContractCategoryTree"));
     }
 
     public function edit($slug){
-        $contractCategories = ContractCategory::withTrashed()->tree()->get()->toTree();
-        $contractCategory = ContractCategory::withTrashed()->where("slug",$slug)->firstOrFail();
-        return view('internal user.extra.contract category.edit',compact("contractCategories","contractCategory"));
+        $contractCategories = ProjectContractCategory::withTrashed()->tree()->get()->toTree();
+        $projectContractCategory = ProjectContractCategory::withTrashed()->where("slug",$slug)->firstOrFail();
+        return view('internal user.project contract.category.edit',compact("contractCategories","projectContractCategory"));
     }
 
     public function save(Request $request){
@@ -115,7 +115,7 @@ class ContractCategoryController extends Controller
             [
                 'name' => 'required|max:200',
                 'description' => 'nullable',
-                'code' => 'required|max:200|unique:contract_categories,code',
+                'code' => 'required|max:200|unique:project_contract_categories,code',
                 'has_a_parent' => 'required|string|in:Yes,No',
                 'parent' => 'nullable|string|required_if:has_a_parent,Yes',
             ],
@@ -138,14 +138,14 @@ class ContractCategoryController extends Controller
 
         $validator->after(function ($validator) {
             $afterValidatorData = $validator->getData();
-            $contractCategoryFound = ContractCategory::withTrashed()->where(Str::lower("name"),Str::lower($afterValidatorData["name"]));
+            $projectContractCategoryFound = ProjectContractCategory::withTrashed()->where(Str::lower("name"),Str::lower($afterValidatorData["name"]));
 
             if(Str::upper($afterValidatorData["has_a_parent"]) == "YES"){
                 if(array_key_exists('parent', $afterValidatorData) && !($afterValidatorData["parent"] == null)){
-                    $parentCategory = ContractCategory::withTrashed()->where("slug",$afterValidatorData["parent"])->first();
+                    $parentCategory = ProjectContractCategory::withTrashed()->where("slug",$afterValidatorData["parent"])->first();
                     if($parentCategory){
-                        $contractCategoryFound = ($contractCategoryFound->where("parent_id",$parentCategory->id))->count();
-                        if($contractCategoryFound > 0){
+                        $projectContractCategoryFound = ($projectContractCategoryFound->where("parent_id",$parentCategory->id))->count();
+                        if($projectContractCategoryFound > 0){
                             $validator->errors()->add(
                                 'name', "Same category exit for parent contract category."
                             );
@@ -160,8 +160,8 @@ class ContractCategoryController extends Controller
             }
 
             if(Str::upper($afterValidatorData["has_a_parent"]) == "NO"){
-                $contractCategoryFound = $contractCategoryFound->count();
-                if($contractCategoryFound >0 ){
+                $projectContractCategoryFound = $projectContractCategoryFound->count();
+                if($projectContractCategoryFound >0 ){
                     $validator->errors()->add(
                         'name', "Same parent contract category exit."
                     );
@@ -176,19 +176,19 @@ class ContractCategoryController extends Controller
         $statusInformation=array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
-            $contractCategory= new ContractCategory();
-            $contractCategory->name = $request->name;
-            $contractCategory->code = $request->code;
-            $contractCategory->description = $request->description;
-            $contractCategory->parent_id = (Str::upper($request->has_a_parent) == "YES") ? ContractCategory::where("slug",$request->parent)->firstOrFail()->id : null;
-            $contractCategory->slug = SystemConstant::slugGenerator($request->name,200);
-            $contractCategory->created_at = Carbon::now();
-            $contractCategory->created_by_id = Auth::user()->id;
-            $contractCategory->updated_at = null;
-            $saveContractCategory = $contractCategory->save();
+            $projectContractCategory= new ProjectContractCategory();
+            $projectContractCategory->name = $request->name;
+            $projectContractCategory->code = $request->code;
+            $projectContractCategory->description = $request->description;
+            $projectContractCategory->parent_id = (Str::upper($request->has_a_parent) == "YES") ? ProjectContractCategory::where("slug",$request->parent)->firstOrFail()->id : null;
+            $projectContractCategory->slug = SystemConstant::slugGenerator($request->name,200);
+            $projectContractCategory->created_at = Carbon::now();
+            $projectContractCategory->created_by_id = Auth::user()->id;
+            $projectContractCategory->updated_at = null;
+            $saveProjectContractCategory = $projectContractCategory->save();
         LogBatch::endBatch();
 
-        if($saveContractCategory){
+        if($saveProjectContractCategory){
             $statusInformation["status"] = "status";
             $statusInformation["message"] = "Contract category successfully created.";
         }
@@ -207,7 +207,7 @@ class ContractCategoryController extends Controller
             [
                 'name' => 'required|max:200',
                 'description' => "nullable",
-                'code' => 'required|max:200|unique:contract_categories,code,'.(ContractCategory::withTrashed()->where("slug",$slug)->firstOrFail())->id,
+                'code' => 'required|max:200|unique:project_contract_categories,code,'.(ProjectContractCategory::withTrashed()->where("slug",$slug)->firstOrFail())->id,
                 'has_a_parent' => 'required|string|in:Yes,No',
                 'parent' => 'nullable|string|required_if:has_a_parent,Yes',
             ],
@@ -230,14 +230,14 @@ class ContractCategoryController extends Controller
 
         $validator->after(function ($validator) {
             $afterValidatorData = $validator->getData();
-            $contractCategoryFound = ContractCategory::withTrashed()->where(Str::lower("name"),Str::lower($afterValidatorData["name"]));
+            $projectContractCategoryFound = ProjectContractCategory::withTrashed()->where(Str::lower("name"),Str::lower($afterValidatorData["name"]));
 
             if(Str::upper($afterValidatorData["has_a_parent"]) == "YES"){
                 if(array_key_exists('parent', $afterValidatorData) && !($afterValidatorData["parent"] == null)){
-                    $parentCategory = ContractCategory::withTrashed()->where("slug",$afterValidatorData["parent"])->first();
+                    $parentCategory = ProjectContractCategory::withTrashed()->where("slug",$afterValidatorData["parent"])->first();
                     if($parentCategory){
-                        $contractCategoryFound = ($contractCategoryFound->where("parent_id",$parentCategory->id)->whereNot('slug',$this->slug))->count();
-                        if($contractCategoryFound > 0){
+                        $projectContractCategoryFound = ($projectContractCategoryFound->where("parent_id",$parentCategory->id)->whereNot('slug',$this->slug))->count();
+                        if($projectContractCategoryFound > 0){
                             $validator->errors()->add(
                                 'name', "Same category exit for parent contract category."
                             );
@@ -252,8 +252,8 @@ class ContractCategoryController extends Controller
             }
 
             if(Str::upper($afterValidatorData["has_a_parent"]) == "NO"){
-                $contractCategoryFound = $contractCategoryFound->whereNot('slug',$this->slug)->count();
-                if($contractCategoryFound > 0){
+                $projectContractCategoryFound = $projectContractCategoryFound->whereNot('slug',$this->slug)->count();
+                if($projectContractCategoryFound > 0){
                     $validator->errors()->add(
                         'name', "Same parent contract category exit."
                     );
@@ -268,17 +268,17 @@ class ContractCategoryController extends Controller
         $statusInformation=array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
-            $contractCategory = ContractCategory::withTrashed()->where("slug",$slug)->firstOrFail();
-            $contractCategory->name = $request->name;
-            $contractCategory->code = $request->code;
-            $contractCategory->description = $request->description;
-            $contractCategory->parent_id = (Str::upper($request->has_a_parent) == "YES") ? ContractCategory::withTrashed()->where("slug",$request->parent)->firstOrFail()->id : null;
-            $contractCategory->slug = SystemConstant::slugGenerator($request->name,200);
-            $contractCategory->updated_at = Carbon::now();
-            $updateContractCategory = $contractCategory->update();
+            $projectContractCategory = ProjectContractCategory::withTrashed()->where("slug",$slug)->firstOrFail();
+            $projectContractCategory->name = $request->name;
+            $projectContractCategory->code = $request->code;
+            $projectContractCategory->description = $request->description;
+            $projectContractCategory->parent_id = (Str::upper($request->has_a_parent) == "YES") ? ProjectContractCategory::withTrashed()->where("slug",$request->parent)->firstOrFail()->id : null;
+            $projectContractCategory->slug = SystemConstant::slugGenerator($request->name,200);
+            $projectContractCategory->updated_at = Carbon::now();
+            $updateProjectContractCategory = $projectContractCategory->update();
         LogBatch::endBatch();
 
-        if($updateContractCategory){
+        if($updateProjectContractCategory){
             $statusInformation["status"] = "status";
             $statusInformation["message"] = "Contract category successfully updated.";
         }
@@ -294,15 +294,15 @@ class ContractCategoryController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
         $trashDependencyStatusInformation = array();
 
-        if((ContractCategory::onlyTrashed()->where("slug",$slug)->count()) == 0){
+        if((ProjectContractCategory::onlyTrashed()->where("slug",$slug)->count()) == 0){
 
             LogBatch::startBatch();
-                $contractCategory = ContractCategory::where("slug",$slug)->firstOrFail();
-                $trashedContractCategory = $contractCategory->delete();
-                $trashDependencyStatusInformation = ModelsRelationDependencyConstant::contractCategoryTrashDependency($slug);
+                $projectContractCategory = ProjectContractCategory::where("slug",$slug)->firstOrFail();
+                $trashedProjectContractCategory = $projectContractCategory->delete();
+                $trashDependencyStatusInformation = ModelsRelationDependencyConstant::projectContractCategoryTrashDependency($slug);
             LogBatch::endBatch();
 
-            if($trashedContractCategory){
+            if($trashedProjectContractCategory){
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Contract category successfully trashed.");
 
@@ -327,17 +327,17 @@ class ContractCategoryController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
         $restoreDependencyStatusInformation = array();
 
-        if((ContractCategory::where("slug",$slug)->count()) == 0){
+        if((ProjectContractCategory::where("slug",$slug)->count()) == 0){
             $restoreValidation = $this->restoreValidation($slug);
             if($restoreValidation["status"] == "status"){
                 LogBatch::startBatch();
-                    $contractCategory = ContractCategory::onlyTrashed()->where("slug",$slug)->firstOrFail();
-                    $deletedAt = $contractCategory->deleted_at;
-                    $restoreContractCategory = $contractCategory->restore();
-                    $restoreDependencyStatusInformation = ModelsRelationDependencyConstant::contractCategoryRestoreDependency($slug,$deletedAt);
+                    $projectContractCategory = ProjectContractCategory::onlyTrashed()->where("slug",$slug)->firstOrFail();
+                    $deletedAt = $projectContractCategory->deleted_at;
+                    $restoreProjectContractCategory = $projectContractCategory->restore();
+                    $restoreDependencyStatusInformation = ModelsRelationDependencyConstant::projectContractCategoryRestoreDependency($slug,$deletedAt);
                 LogBatch::endBatch();
 
-                if($restoreContractCategory){
+                if($restoreProjectContractCategory){
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push("Contract category successfully restored.");
 
@@ -366,11 +366,11 @@ class ContractCategoryController extends Controller
 
     private function restoreValidation($slug){
         $statusInformation = array("status" => "errors","message" => collect());
-        $contractCategory = ContractCategory::onlyTrashed()->where("slug",$slug)->firstOrFail();
+        $projectContractCategory = ProjectContractCategory::onlyTrashed()->where("slug",$slug)->firstOrFail();
 
-        if(!($contractCategory->parent_id == null)){
+        if(!($projectContractCategory->parent_id == null)){
 
-            $pCAncestors = $contractCategory->ancestorsWithTrashed()->whereNotNull("deleted_at");
+            $pCAncestors = $projectContractCategory->ancestorsWithTrashed()->whereNotNull("deleted_at");
 
             if( $pCAncestors->count() > 0){
                 $statusInformation["status"] = "errors";

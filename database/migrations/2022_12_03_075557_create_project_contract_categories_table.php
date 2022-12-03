@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('contract_categories', function (Blueprint $table) {
+        Schema::create('project_contract_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name',200);
             $table->string('code',200)->unique();
@@ -19,14 +19,14 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->unique(["name","parent_id"],'contract_categories_uq_1');
-            $table->foreign('created_by_id','contract_categories_fk_1')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('parent_id','contract_categories_fk_2')->references('id')->on('contract_categories')->onDelete('cascade');
+            $table->unique(["name","parent_id"],'project_contract_categories_uq_1');
+            $table->foreign('created_by_id','project_contract_categories_fk_1')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('parent_id','project_contract_categories_fk_2')->references('id')->on('project_contract_categories')->onDelete('cascade');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('contract_categories');
+        Schema::dropIfExists('project_contract_categories');
     }
 };

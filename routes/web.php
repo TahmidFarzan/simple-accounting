@@ -6,7 +6,7 @@ use App\Http\Controllers\InternalUser\ExtraController;
 use App\Http\Controllers\InternalUser\SettingController;
 use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
-use App\Http\Controllers\InternalUser\ContractCategoryController;
+use App\Http\Controllers\InternalUser\ProjectContractCategoryController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
 
 Route::get('/', function () {
@@ -98,15 +98,17 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
     });
 
     // Contract category
-    Route::prefix('contract-category')->name('contract.category.')->group(function(){
-        Route::get('/', [ContractCategoryController::class, 'index'])->name('index');
-        Route::get('edit/{slug}', [ContractCategoryController::class, 'edit'])->name('edit');
-        Route::get('create', [ContractCategoryController::class, 'create'])->name('create');
-        Route::get('details/{slug}', [ContractCategoryController::class, 'details'])->name('details');
+    Route::prefix('contract')->name('contract.')->group(function(){
+        Route::prefix('category')->name('category.')->group(function(){
+            Route::get('/', [ProjectContractCategoryController::class, 'index'])->name('index');
+            Route::get('edit/{slug}', [ProjectContractCategoryController::class, 'edit'])->name('edit');
+            Route::get('create', [ProjectContractCategoryController::class, 'create'])->name('create');
+            Route::get('details/{slug}', [ProjectContractCategoryController::class, 'details'])->name('details');
 
-        Route::post('save', [ContractCategoryController::class, 'save'])->name('save');
-        Route::patch('update/{slug}', [ContractCategoryController::class, 'update'])->name('update');
-        Route::delete('trash/{slug}', [ContractCategoryController::class, 'trash'])->name('trash');
-        Route::patch('restore/{slug}', [ContractCategoryController::class, 'restore'])->name('restore');
+            Route::post('save', [ProjectContractCategoryController::class, 'save'])->name('save');
+            Route::patch('update/{slug}', [ProjectContractCategoryController::class, 'update'])->name('update');
+            Route::delete('trash/{slug}', [ProjectContractCategoryController::class, 'trash'])->name('trash');
+            Route::patch('restore/{slug}', [ProjectContractCategoryController::class, 'restore'])->name('restore');
+        });
     });
 });

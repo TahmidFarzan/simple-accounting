@@ -305,55 +305,55 @@ class UserPermissionSeeder extends Seeder
                     'slug' => SystemConstant::slugGenerator("Delete user permission group",200),
                 ])->create();
 
-            // Contract category permission.
+            // Project contract category permission.
                 UserPermission::factory()->state([
-                    'name' => "View contract category controller.",
-                    'code' => "CCMP01",
-                    'type' => "ContractCategoryModulePermission",
+                    'name' => "View the category of project contract.",
+                    'code' => "PCCMP01",
+                    'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View contract category",200),
+                    'slug' => SystemConstant::slugGenerator("View the category of project contract",200),
                 ])->create();
                 UserPermission::factory()->state([
-                    'name' => "Create contract category.",
-                    'code' => "CCMP02",
-                    'type' => "ContractCategoryModulePermission",
+                    'name' => "Create a category for the project contract.",
+                    'code' => "PCCMP02",
+                    'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can create.",
-                    'slug' => SystemConstant::slugGenerator("Create contract category.",200),
+                    'slug' => SystemConstant::slugGenerator("Create a category for the project contract.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View contract category details.",
-                    'code' => "CCMP03",
-                    'type' => "ContractCategoryModulePermission",
+                    'name' => "View the category details of the project contract..",
+                    'code' => "PCCMP03",
+                    'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View contract category details.",200),
+                    'slug' => SystemConstant::slugGenerator("View the category details of the project contract.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update contract category.",
-                    'code' => "CCMP04",
-                    'type' => "ContractCategoryModulePermission",
+                    'name' => "Update a category of the project contract.",
+                    'code' => "PCCMP04",
+                    'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can update.",
-                    'slug' => SystemConstant::slugGenerator("Update contract category",200),
+                    'slug' => SystemConstant::slugGenerator("Update a category of the project contract.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Trash contract category.",
-                    'code' => "CCMP05",
-                    'type' => "ContractCategoryModulePermission",
+                    'name' => "Trash a category of the project contract.",
+                    'code' => "PCCMP05",
+                    'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can trash.",
-                    'slug' => SystemConstant::slugGenerator("Trash contract category.",200),
+                    'slug' => SystemConstant::slugGenerator("Trash a category of the project contract.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Restore contract category.",
-                    'code' => "CCMP06",
-                    'type' => "ContractCategoryModulePermission",
+                    'name' => "Restore a category of the project contract.",
+                    'code' => "PCCMP06",
+                    'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can restore.",
-                    'slug' => SystemConstant::slugGenerator("Restore contract category.",200),
+                    'slug' => SystemConstant::slugGenerator("Restore category of project contract.",200),
                 ])->create();
 
-            // Contract category permission.
+            // Category of project contract permission.
 
     }
 }

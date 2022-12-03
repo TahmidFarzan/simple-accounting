@@ -11,7 +11,7 @@
 
             <div id="accordionDiv{{$category->slug}}Collapse{{$category->slug}}" class="accordion-collapse collapse {{ ($category->parent_id==null) ?  "show": null }}" data-bs-parent="#accordionDiv{{$category->slug}}">
                 <div class="accordion-body">
-                    <x-contract_category.tree.contract-categories :categories="$category->children"/>
+                    <x-project_contract.category.tree.categories :categories="$category->children"/>
                 </div>
             </div>
         @endif

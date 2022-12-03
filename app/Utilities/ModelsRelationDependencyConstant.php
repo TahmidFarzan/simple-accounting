@@ -7,7 +7,7 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Inventory;
 use App\Models\SupplierAgent;
-use App\Models\ContractCategory;
+use App\Models\ProjectContractCategory;
 use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductAttributeValue;
@@ -16,10 +16,10 @@ use Spatie\Activitylog\Facades\LogBatch;
 class ModelsRelationDependencyConstant
 {
     // Get dependency records information for trash.
-    public static function contractCategoryDependencyNeedToTrashRecordsInfo($slug){
+    public static function projectContractCategoryDependencyNeedToTrashRecordsInfo($slug){
         $records = array();
         $allCategoryIds = array();
-        $pCategory = ContractCategory::where("slug",$slug)->first();
+        $pCategory = ProjectContractCategory::where("slug",$slug)->first();
         if($pCategory){
             // Dependent product category.
             $pCategoryTreeIds = $pCategory->descendants()->pluck("id")->toArray();
@@ -35,11 +35,11 @@ class ModelsRelationDependencyConstant
     }
 
     // Get dependency records information for restore.
-    public static function contractCategoryDependencyNeedToRestoreRecordsInfo($slug,$deletedAt){
+    public static function projectContractCategoryDependencyNeedToRestoreRecordsInfo($slug,$deletedAt){
         $records = array();
         $allCategoryIds = array();
 
-        $pCategory = ContractCategory::onlyTrashed()->where("slug",$slug)->first();
+        $pCategory = ProjectContractCategory::onlyTrashed()->where("slug",$slug)->first();
 
         if($pCategory){
             // Dependent product category.
@@ -57,11 +57,11 @@ class ModelsRelationDependencyConstant
 
 
     //Trash all related logic.
-    public static function contractCategoryTrashDependency($slug){
+    public static function projectContractCategoryTrashDependency($slug){
         $statusInformation = array("status" => "errors","message" => array());
 
         $allCategoryIds = array();
-        $pCategory = ContractCategory::onlyTrashed()->where("slug",$slug)->first();
+        $pCategory = ProjectContractCategory::onlyTrashed()->where("slug",$slug)->first();
 
         if($pCategory){
             array_push($allCategoryIds,$pCategory->id);
@@ -69,7 +69,7 @@ class ModelsRelationDependencyConstant
             // Dependent product category.
             $pCategoryTreeIds = $pCategory->descendants()->pluck("id")->toArray();
             if(count($pCategoryTreeIds) > 0){
-                $pCategoriesTrash=ContractCategory::whereIn("id",$pCategoryTreeIds)->delete();
+                $pCategoriesTrash=ProjectContractCategory::whereIn("id",$pCategoryTreeIds)->delete();
                 if($pCategoriesTrash){
                     $statusInformation["status"] = "status";
                     array_push($statusInformation["message"],count($pCategoryTreeIds)." dependent product category(ies) is/are trashed.");
@@ -99,11 +99,11 @@ class ModelsRelationDependencyConstant
 
 
     // Restore all related logic.
-    public static function contractCategoryRestoreDependency($slug,$deletedAt){
+    public static function projectContractCategoryRestoreDependency($slug,$deletedAt){
         $statusInformation = array("status" => "errors","message" => array());
 
         $allCategoryIds = array();
-        $pCategory = ContractCategory::where("slug",$slug)->first();
+        $pCategory = ProjectContractCategory::where("slug",$slug)->first();
 
         if($pCategory){
             $pCategoryTreeIds = $pCategory->descendantsWithTrashed()->where(DB::raw("(STR_TO_DATE(deleted_at,'%Y-%m-%d'))"),date('Y-m-d',strtotime($deletedAt)))->pluck("id")->toArray();
@@ -111,7 +111,7 @@ class ModelsRelationDependencyConstant
 
            // Dependent product category.
             if(count($pCategoryTreeIds) > 0){
-                $pCategoriesRestore = ContractCategory::onlyTrashed()->whereIn("id",$pCategoryTreeIds)->restore();
+                $pCategoriesRestore = ProjectContractCategory::onlyTrashed()->whereIn("id",$pCategoryTreeIds)->restore();
 
                 if($pCategoriesRestore){
                     $statusInformation["status"] = "status";
