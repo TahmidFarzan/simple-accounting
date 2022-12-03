@@ -6,6 +6,7 @@ use App\Http\Controllers\InternalUser\ExtraController;
 use App\Http\Controllers\InternalUser\SettingController;
 use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
+use App\Http\Controllers\InternalUser\ContractCategoryController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
 
 Route::get('/', function () {
@@ -94,5 +95,18 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::post('save', [ExtraController::class, 'userPermissionGroupSave'])->name('save');
         Route::patch('update/{slug}', [ExtraController::class, 'userPermissionGroupUpdate'])->name('update');
         Route::delete('delete/{slug}', [ExtraController::class, 'userPermissionGroupDelete'])->name('delete');
+    });
+
+    // Contract category
+    Route::prefix('contract-category')->name('contract.category.')->group(function(){
+        Route::get('/', [ContractCategoryController::class, 'index'])->name('index');
+        Route::get('edit/{slug}', [ContractCategoryController::class, 'edit'])->name('edit');
+        Route::get('create', [ContractCategoryController::class, 'create'])->name('create');
+        Route::get('details/{slug}', [ContractCategoryController::class, 'details'])->name('details');
+
+        Route::post('save', [ContractCategoryController::class, 'save'])->name('save');
+        Route::patch('update/{slug}', [ContractCategoryController::class, 'update'])->name('update');
+        Route::delete('trash/{slug}', [ContractCategoryController::class, 'trash'])->name('trash');
+        Route::patch('restore/{slug}', [ContractCategoryController::class, 'restore'])->name('restore');
     });
 });

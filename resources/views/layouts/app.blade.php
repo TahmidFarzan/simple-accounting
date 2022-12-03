@@ -234,7 +234,7 @@
                                     @endif
 
                                     <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*')) || (Request::is('user-permission-group')) || (Request::is('user-permission-group/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#extraModulCollapse" role="button" aria-expanded="false" aria-controls="extraModulCollapse">
+                                        <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*')) || (Request::is('user-permission-group')) || (Request::is('user-permission-group/*')) || Request::is('contract-category') || (Request::is('contract-category/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#extraModulCollapse" role="button" aria-expanded="false" aria-controls="extraModulCollapse">
                                             <i class="fa-solid fa-bolt"></i>
                                             Extra <i class="fa-solid fa-angle-down"></i>
                                         </a>
@@ -256,6 +256,15 @@
                                                             <a class="nav-link {{(Request::is('user-permission-group') || (Request::is('user-permission-group/*'))) ? 'active' : null}}" href="{{ route("user.permission.group.index") }}">
                                                                 <i class="fa-solid fa-users-line"></i>
                                                                 User permission groups
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+                                                    @if (Auth::user()->hasUserPermission(["CCMP01"]) == true)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link {{(Request::is('contract-category') || (Request::is('contract-category/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("contract.category.index") }}">
+                                                                <i class="fa-solid fa-folder-tree"></i>
+                                                                Contract categories
                                                             </a>
                                                         </li>
                                                     @endif

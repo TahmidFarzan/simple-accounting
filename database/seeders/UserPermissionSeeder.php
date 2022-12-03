@@ -304,5 +304,56 @@ class UserPermissionSeeder extends Seeder
                     'description' => "The internal user can delete user permission group.",
                     'slug' => SystemConstant::slugGenerator("Delete user permission group",200),
                 ])->create();
+
+            // Contract category permission.
+                UserPermission::factory()->state([
+                    'name' => "View contract category controller.",
+                    'code' => "CCMP01",
+                    'type' => "ContractCategoryModulePermission",
+                    'description' => "The internal user can view.",
+                    'slug' => SystemConstant::slugGenerator("View contract category",200),
+                ])->create();
+                UserPermission::factory()->state([
+                    'name' => "Create contract category.",
+                    'code' => "CCMP02",
+                    'type' => "ContractCategoryModulePermission",
+                    'description' => "The internal user can create.",
+                    'slug' => SystemConstant::slugGenerator("Create contract category.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "View contract category details.",
+                    'code' => "CCMP03",
+                    'type' => "ContractCategoryModulePermission",
+                    'description' => "The internal user can view.",
+                    'slug' => SystemConstant::slugGenerator("View contract category details.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update contract category.",
+                    'code' => "CCMP04",
+                    'type' => "ContractCategoryModulePermission",
+                    'description' => "The internal user can update.",
+                    'slug' => SystemConstant::slugGenerator("Update contract category",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Trash contract category.",
+                    'code' => "CCMP05",
+                    'type' => "ContractCategoryModulePermission",
+                    'description' => "The internal user can trash.",
+                    'slug' => SystemConstant::slugGenerator("Trash contract category.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Restore contract category.",
+                    'code' => "CCMP06",
+                    'type' => "ContractCategoryModulePermission",
+                    'description' => "The internal user can restore.",
+                    'slug' => SystemConstant::slugGenerator("Restore contract category.",200),
+                ])->create();
+
+            // Contract category permission.
+
     }
 }
