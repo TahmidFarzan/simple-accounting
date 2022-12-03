@@ -224,6 +224,29 @@
                                         </div>
                                     </li>
 
+                                    <li class="nav-item">
+                                        <a class="nav-link {{(Request::is('project-contract') || (Request::is('project-contract/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#projectContractCollapseDiv" role="button" aria-expanded="false" aria-controls="projectContractCollapseDiv">
+                                            <i class="fa-solid fa-bolt"></i>
+                                            Project contract <i class="fa-solid fa-angle-down"></i>
+                                        </a>
+
+                                        <div class="collapse bg-light" id="projectContractCollapseDiv">
+                                            <div class="card card-body bg-light border-0 p-0 m-0 px-2 mx-2 ">
+                                                <ul class="nav flex-column">
+
+                                                    @if (Auth::user()->hasUserPermission(["PCCMP01"]) == true)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link {{(Request::is('project-contract/category') || (Request::is('project-contract/category/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("contract.category.index") }}">
+                                                                <i class="fa-solid fa-folder-tree"></i>
+                                                                Categories
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+
                                     @if (Auth::user()->hasUserPermission(["SMP01"]) == true)
                                         <li class="nav-item">
                                             <a class="nav-link {{(Request::is('setting') || (Request::is('setting/*'))) ? 'active' : null}}" href="{{ route("setting.index") }}">
