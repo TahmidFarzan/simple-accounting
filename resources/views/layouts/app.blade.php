@@ -211,6 +211,15 @@
                                                             </a>
                                                         </li>
                                                     @endif
+
+                                                    @if (Auth::user()->hasUserPermission(["PCPMMP01"]) == true)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link {{(Request::is('project-contract/payment-method') || (Request::is('project-contract/payment-method/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("project.contract.payment.method.index") }}">
+                                                                <i class="fa-solid fa-money-bill-1"></i>
+                                                                Payment Method
+                                                            </a>
+                                                        </li>
+                                                    @endif
                                                 </ul>
                                             </div>
                                         </div>

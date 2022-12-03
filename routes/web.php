@@ -6,8 +6,10 @@ use App\Http\Controllers\InternalUser\ExtraController;
 use App\Http\Controllers\InternalUser\SettingController;
 use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
-use App\Http\Controllers\InternalUser\ProjectContractCategoryController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
+use App\Http\Controllers\InternalUser\ProjectContractCategoryController;
+use App\Http\Controllers\InternalUser\ProjectContractPaymentMethodController;
+
 
 Route::get('/', function () {
     return redirect('/login');
@@ -100,7 +102,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
     // Project contract
     Route::prefix('project-contract')->name('project.contract.')->group(function(){
 
-        // Categories
+        // Category
         Route::prefix('category')->name('category.')->group(function(){
             Route::get('/', [ProjectContractCategoryController::class, 'index'])->name('index');
             Route::get('edit/{slug}', [ProjectContractCategoryController::class, 'edit'])->name('edit');
@@ -111,6 +113,19 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::patch('update/{slug}', [ProjectContractCategoryController::class, 'update'])->name('update');
             Route::delete('trash/{slug}', [ProjectContractCategoryController::class, 'trash'])->name('trash');
             Route::patch('restore/{slug}', [ProjectContractCategoryController::class, 'restore'])->name('restore');
+        });
+
+        // Payment method
+        Route::prefix('payment-method')->name('payment.method.')->group(function(){
+            Route::get('/', [ProjectContractPaymentMethodController::class, 'index'])->name('index');
+            Route::get('edit/{slug}', [ProjectContractPaymentMethodController::class, 'edit'])->name('edit');
+            Route::get('create', [ProjectContractPaymentMethodController::class, 'create'])->name('create');
+            Route::get('details/{slug}', [ProjectContractPaymentMethodController::class, 'details'])->name('details');
+
+            Route::post('save', [ProjectContractPaymentMethodController::class, 'save'])->name('save');
+            Route::patch('update/{slug}', [ProjectContractPaymentMethodController::class, 'update'])->name('update');
+            Route::delete('trash/{slug}', [ProjectContractPaymentMethodController::class, 'trash'])->name('trash');
+            Route::patch('restore/{slug}', [ProjectContractPaymentMethodController::class, 'restore'])->name('restore');
         });
     });
 });
