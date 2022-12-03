@@ -58,7 +58,7 @@
         <h5 class="card-header"> Description</h5>
         <div class="card-body text-dark">
             <div class=" d-flex justify-content-center">
-                {{ ($projectContractCategory->description) ? "Unknown" : $projectContractCategory->description }}
+                {{ ($projectContractCategory->description == null) ? "Not added." : $projectContractCategory->description }}
             </div>
         </div>
     </div>
