@@ -194,31 +194,6 @@
                                     @endif
 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            <span data-feather="file" class="align-text-bottom"></span>
-                                            Orders
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            <span data-feather="shopping-cart" class="align-text-bottom"></span>
-                                            Products
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            <span data-feather="users" class="align-text-bottom"></span>
-                                            Customers
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            <span data-feather="bar-chart-2" class="align-text-bottom"></span>
-                                            Reports
-                                        </a>
-                                    </li>
-
-                                    <li class="nav-item">
                                         <a class="nav-link {{(Request::is('activity-log') || (Request::is('activity-log/*')) || (Request::is('authentication-log')) || (Request::is('authentication-log/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#logCollapseDiv" role="button" aria-expanded="false" aria-controls="logCollapseDiv">
                                             <i class="fa-sharp fa-solid fa-chart-simple"></i>
                                             Logs <i class="fa-solid fa-angle-down"></i>
@@ -231,7 +206,7 @@
                                                         <li class="nav-item">
                                                             <a class="nav-link {{(Request::is('activity-log') || (Request::is('activity-log/*'))) ? 'active' : null}}" href="{{ route("activity.log.index") }}">
                                                                 <i class="fa-solid fa-chart-simple"></i>
-                                                                Activity log
+                                                                Activity logs
                                                             </a>
                                                         </li>
                                                     @endif
@@ -240,7 +215,7 @@
                                                         <li class="nav-item">
                                                             <a class="nav-link {{(Request::is('authentication-log') || (Request::is('authentication-log/*'))) ? 'active' : null}}" href="{{ route("authentication.log.index") }}">
                                                                 <i class="fa-solid fa-user-clock"></i>
-                                                                Authentication log
+                                                                Authentication logs
                                                             </a>
                                                         </li>
                                                     @endif
@@ -253,7 +228,7 @@
                                         <li class="nav-item">
                                             <a class="nav-link {{(Request::is('setting') || (Request::is('setting/*'))) ? 'active' : null}}" href="{{ route("setting.index") }}">
                                                 <i class="fa-solid fa-gear"></i>
-                                                Setting
+                                                Settings
                                             </a>
                                         </li>
                                     @endif
@@ -271,7 +246,7 @@
                                                         <li class="nav-item">
                                                             <a class="nav-link {{(Request::is('user-permission') || (Request::is('user-permission/*'))) ? 'active' : null}}" href="{{ route("user.permission.index") }}">
                                                                 <i class="fa-solid fa-user-shield"></i>
-                                                                User permission
+                                                                User permissions
                                                             </a>
                                                         </li>
                                                     @endif
@@ -280,7 +255,7 @@
                                                         <li class="nav-item">
                                                             <a class="nav-link {{(Request::is('user-permission-group') || (Request::is('user-permission-group/*'))) ? 'active' : null}}" href="{{ route("user.permission.group.index") }}">
                                                                 <i class="fa-solid fa-users-line"></i>
-                                                                User permission group
+                                                                User permission groups
                                                             </a>
                                                         </li>
                                                     @endif
