@@ -26,7 +26,7 @@
         <div class="card-body text-dark mt-0">
             <div class="row mb-2">
                 <p>
-                    @if (Auth::user()->hasUserPermission(["PCCMP02"]) == true)
+                    @if (Auth::user()->hasUserPermission(["PCCAMP02"]) == true)
                         <a href="{{ route("project.contract.category.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create category</a>
                     @endif
 
@@ -120,15 +120,15 @@
                                                 <td>{{ $perCategory->code }}</td>
                                                 <td>{{ ($perCategory->parent_id == null) ? "Parent category" : $perCategory->parentCategory->name }}</td>
                                                 <td>
-                                                    @if (Auth::user()->hasUserPermission(["PCCMP03"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCAMP03"]) == true)
                                                         <a href="{{ route("project.contract.category.details",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["PCCMP04"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCAMP04"]) == true)
                                                         <a href="{{ route("project.contract.category.edit",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["PCCMP05"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCAMP05"]) == true)
                                                         <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perCategory->slug}}TrashConfirmationModal">
                                                             Trash
                                                         </button>
@@ -201,15 +201,15 @@
                                                 <td>{{ $perCategory->code }}</td>
                                                 <td>{{ ($perCategory->parent_id == null) ? "Parent category" : $perCategory->parentCategory->name }}</td>
                                                 <td>
-                                                    @if (Auth::user()->hasUserPermission(["PCCMP03"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCAMP03"]) == true)
                                                         <a href="{{ route("project.contract.category.details",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["PCCMP04"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCAMP04"]) == true)
                                                         <a href="{{ route("project.contract.category.edit",["slug" => $perCategory->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
-                                                    @if (Auth::user()->hasUserPermission(["PCCMP06"]) == true)
+                                                    @if (Auth::user()->hasUserPermission(["PCCAMP06"]) == true)
                                                         <button type="button" class="btn btn-sm btn-success m-1" data-bs-toggle="modal" data-bs-target="#{{$perCategory->slug}}RestoreConfirmationModal">
                                                             Restore
                                                         </button>

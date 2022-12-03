@@ -308,14 +308,14 @@ class UserPermissionSeeder extends Seeder
             // Project contract category permission.
                 UserPermission::factory()->state([
                     'name' => "View the category of project contract.",
-                    'code' => "PCCMP01",
+                    'code' => "PCCAMP01",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can view.",
                     'slug' => SystemConstant::slugGenerator("View the category of project contract",200),
                 ])->create();
                 UserPermission::factory()->state([
                     'name' => "Create a category for the project contract.",
-                    'code' => "PCCMP02",
+                    'code' => "PCCAMP02",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can create.",
                     'slug' => SystemConstant::slugGenerator("Create a category for the project contract.",200),
@@ -323,7 +323,7 @@ class UserPermissionSeeder extends Seeder
 
                 UserPermission::factory()->state([
                     'name' => "View the category details of the project contract..",
-                    'code' => "PCCMP03",
+                    'code' => "PCCAMP03",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can view.",
                     'slug' => SystemConstant::slugGenerator("View the category details of the project contract.",200),
@@ -331,7 +331,7 @@ class UserPermissionSeeder extends Seeder
 
                 UserPermission::factory()->state([
                     'name' => "Update a category of the project contract.",
-                    'code' => "PCCMP04",
+                    'code' => "PCCAMP04",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can update.",
                     'slug' => SystemConstant::slugGenerator("Update a category of the project contract.",200),
@@ -339,7 +339,7 @@ class UserPermissionSeeder extends Seeder
 
                 UserPermission::factory()->state([
                     'name' => "Trash a category of the project contract.",
-                    'code' => "PCCMP05",
+                    'code' => "PCCAMP05",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can trash.",
                     'slug' => SystemConstant::slugGenerator("Trash a category of the project contract.",200),
@@ -347,7 +347,7 @@ class UserPermissionSeeder extends Seeder
 
                 UserPermission::factory()->state([
                     'name' => "Restore a category of the project contract.",
-                    'code' => "PCCMP06",
+                    'code' => "PCCAMP06",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can restore.",
                     'slug' => SystemConstant::slugGenerator("Restore category of project contract.",200),

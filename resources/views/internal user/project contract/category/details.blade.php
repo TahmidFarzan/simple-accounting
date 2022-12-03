@@ -198,17 +198,17 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
-                    @if (Auth::user()->hasUserPermission(["PCCMP04"]) == true)
+                    @if (Auth::user()->hasUserPermission(["PCCAMP04"]) == true)
                         <a href="{{ route("project.contract.category.edit",["slug"=>$projectContractCategory->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
-                    @if (!($projectContractCategory->deleted_at == null) && (Auth::user()->hasUserPermission(["PCCMP05"]) == true))
+                    @if (!($projectContractCategory->deleted_at == null) && (Auth::user()->hasUserPermission(["PCCAMP05"]) == true))
                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#restoreConfirmationModal">
                             Restore
                         </button>
                     @endif
 
-                    @if (($projectContractCategory->deleted_at == null) && (Auth::user()->hasUserPermission(["PCCMP06"]) == true))
+                    @if (($projectContractCategory->deleted_at == null) && (Auth::user()->hasUserPermission(["PCCAMP06"]) == true))
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#trashConfirmationModal">
                             Trash
                         </button>
@@ -216,7 +216,7 @@
                 </div>
             </div>
 
-            @if (!($projectContractCategory->deleted_at == null) && (Auth::user()->hasUserPermission(["PCCMP05"]) == true))
+            @if (!($projectContractCategory->deleted_at == null) && (Auth::user()->hasUserPermission(["PCCAMP05"]) == true))
                 <div class="modal fade" id="restoreConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -248,7 +248,7 @@
                 </div>
             @endif
 
-            @if (($projectContractCategory->deleted_at == null) && (Auth::user()->hasUserPermission(["PCCMP06"]) == true))
+            @if (($projectContractCategory->deleted_at == null) && (Auth::user()->hasUserPermission(["PCCAMP06"]) == true))
                 <div class="modal fade" id="trashConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">

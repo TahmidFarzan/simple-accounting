@@ -20,12 +20,12 @@ class ProjectContractCategoryController extends Controller
     public function __construct()
     {
         $this->middleware(['auth','verified']);
-        $this->middleware(['user.user.permission.check:PCCMP01'])->only(["index"]);
-        $this->middleware(['user.user.permission.check:PCCMP02'])->only(["create","save"]);
-        $this->middleware(['user.user.permission.check:PCCMP03'])->only(["details"]);
-        $this->middleware(['user.user.permission.check:PCCMP04'])->only(["edit","update"]);
-        $this->middleware(['user.user.permission.check:PCCMP05'])->only(["trash"]);
-        $this->middleware(['user.user.permission.check:PCCMP06'])->only(["restore"]);
+        $this->middleware(['user.user.permission.check:PCCAMP01'])->only(["index"]);
+        $this->middleware(['user.user.permission.check:PCCAMP02'])->only(["create","save"]);
+        $this->middleware(['user.user.permission.check:PCCAMP03'])->only(["details"]);
+        $this->middleware(['user.user.permission.check:PCCAMP04'])->only(["edit","update"]);
+        $this->middleware(['user.user.permission.check:PCCAMP05'])->only(["trash"]);
+        $this->middleware(['user.user.permission.check:PCCAMP06'])->only(["restore"]);
     }
 
     public function index(Request $request){
