@@ -13,6 +13,7 @@
         "laravel/ui": "^4.1",
         "rappasoft/laravel-authentication-log": "^2.0",
         "spatie/laravel-activitylog": "^4.7",
+        "staudenmeir/laravel-adjacency-list": "^1.12",
         "torann/geoip": "^3.0"
     },
     "require-dev": {
