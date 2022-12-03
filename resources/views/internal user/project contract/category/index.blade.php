@@ -347,7 +347,6 @@
         }
 
         function dataTableLoad(parameterString){
-            var errorMessages = [];
             $.ajax({
                 type: "get",
                 url: "{{ route('project.contract.category.index') }}" + "?" + parameterString,
@@ -366,8 +365,7 @@
                     }
                 },
                 error: function(errorResponse) {
-                    errorMessages.push(errorResponse);
-                    showExtraErrorMessages(errorMessages);
+                    showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
                 }
             });
         }
