@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\Auth;
