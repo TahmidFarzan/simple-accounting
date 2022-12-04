@@ -353,53 +353,53 @@ class UserPermissionSeeder extends Seeder
                     'slug' => SystemConstant::slugGenerator("Restore category of project contract.",200),
                 ])->create();
 
-            // Project contract client permission.
+            // Project contract payment method permission.
                 UserPermission::factory()->state([
-                    'name' => "View the client of project contract.",
+                    'name' => "View the payment method of project contract.",
                     'code' => "PCPMMP01",
                     'type' => "ProjectContractPaymentMethodModulePermission",
                     'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View the client of project contract",200),
+                    'slug' => SystemConstant::slugGenerator("View the payment method of project contract",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Create a client for the project contract.",
+                    'name' => "Create a payment method for the project contract.",
                     'code' => "PCPMMP02",
                     'type' => "ProjectContractPaymentMethodModulePermission",
                     'description' => "The internal user can create.",
-                    'slug' => SystemConstant::slugGenerator("Create a client for the project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("Create a payment method for the project contract.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View the client details of the project contract..",
+                    'name' => "View the payment method details of the project contract..",
                     'code' => "PCPMMP03",
                     'type' => "ProjectContractPaymentMethodModulePermission",
                     'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View the client details of the project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("View the payment method details of the project contract.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update a client of the project contract.",
+                    'name' => "Update a payment method of the project contract.",
                     'code' => "PCPMMP04",
                     'type' => "ProjectContractPaymentMethodModulePermission",
                     'description' => "The internal user can update.",
-                    'slug' => SystemConstant::slugGenerator("Update a client of the project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("Update a payment method of the project contract.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Trash a client of the project contract.",
+                    'name' => "Trash a payment method of the project contract.",
                     'code' => "PCPMMP05",
                     'type' => "ProjectContractPaymentMethodModulePermission",
                     'description' => "The internal user can trash.",
-                    'slug' => SystemConstant::slugGenerator("Trash a client of the project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("Trash a payment method of the project contract.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Restore a client of the project contract.",
+                    'name' => "Restore a payment method of the project contract.",
                     'code' => "PCPMMP06",
                     'type' => "ProjectContractPaymentMethodModulePermission",
                     'description' => "The internal user can restore.",
-                    'slug' => SystemConstant::slugGenerator("Restore client of project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("Restore payment method of project contract.",200),
                 ])->create();
 
             // Project contract category permission.
