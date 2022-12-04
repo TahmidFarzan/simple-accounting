@@ -212,6 +212,15 @@
                                                         </li>
                                                     @endif
 
+                                                    @if (Auth::user()->hasUserPermission(["PCCLMP01"]) == true)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link {{(Request::is('project-contract/client') || (Request::is('project-contract/client/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("project.contract.client.index") }}">
+                                                                <i class="fa-solid fa-user-tie"></i>
+                                                                Clients
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
                                                     @if (Auth::user()->hasUserPermission(["PCPMMP01"]) == true)
                                                         <li class="nav-item">
                                                             <a class="nav-link {{(Request::is('project-contract/payment-method') || (Request::is('project-contract/payment-method/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("project.contract.payment.method.index") }}">
@@ -220,6 +229,7 @@
                                                             </a>
                                                         </li>
                                                     @endif
+
                                                 </ul>
                                             </div>
                                         </div>

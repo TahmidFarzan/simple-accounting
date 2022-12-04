@@ -402,6 +402,53 @@ class UserPermissionSeeder extends Seeder
                     'slug' => SystemConstant::slugGenerator("Restore payment method of project contract.",200),
                 ])->create();
 
-            // Project contract category permission.
+            // Project contract client permission.
+                UserPermission::factory()->state([
+                    'name' => "View the client of project contract.",
+                    'code' => "PCCLMP01",
+                    'type' => "ProjectContractClientModulePermission",
+                    'description' => "The internal user can view.",
+                    'slug' => SystemConstant::slugGenerator("View the client of project contract",200),
+                ])->create();
+                UserPermission::factory()->state([
+                    'name' => "Create a client for the project contract.",
+                    'code' => "PCCLMP02",
+                    'type' => "ProjectContractClientModulePermission",
+                    'description' => "The internal user can create.",
+                    'slug' => SystemConstant::slugGenerator("Create a client for the project contract.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "View the client details of the project contract..",
+                    'code' => "PCCLMP03",
+                    'type' => "ProjectContractClientModulePermission",
+                    'description' => "The internal user can view.",
+                    'slug' => SystemConstant::slugGenerator("View the client details of the project contract.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update a client of the project contract.",
+                    'code' => "PCCLMP04",
+                    'type' => "ProjectContractClientModulePermission",
+                    'description' => "The internal user can update.",
+                    'slug' => SystemConstant::slugGenerator("Update a client of the project contract.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Trash a client of the project contract.",
+                    'code' => "PCCLMP05",
+                    'type' => "ProjectContractClientModulePermission",
+                    'description' => "The internal user can trash.",
+                    'slug' => SystemConstant::slugGenerator("Trash a client of the project contract.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Restore a client of the project contract.",
+                    'code' => "PCCLMP06",
+                    'type' => "ProjectContractClientModulePermission",
+                    'description' => "The internal user can restore.",
+                    'slug' => SystemConstant::slugGenerator("Restore client of project contract.",200),
+                ])->create();
+           // Project contract category permission.
     }
 }

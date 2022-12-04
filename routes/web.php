@@ -7,6 +7,7 @@ use App\Http\Controllers\InternalUser\SettingController;
 use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
+use App\Http\Controllers\InternalUser\ProjectContractClientController;
 use App\Http\Controllers\InternalUser\ProjectContractCategoryController;
 use App\Http\Controllers\InternalUser\ProjectContractPaymentMethodController;
 
@@ -113,6 +114,19 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::patch('update/{slug}', [ProjectContractCategoryController::class, 'update'])->name('update');
             Route::delete('trash/{slug}', [ProjectContractCategoryController::class, 'trash'])->name('trash');
             Route::patch('restore/{slug}', [ProjectContractCategoryController::class, 'restore'])->name('restore');
+        });
+
+        // Client
+        Route::prefix('client')->name('client.')->group(function(){
+            Route::get('/', [ProjectContractClientController::class, 'index'])->name('index');
+            Route::get('edit/{slug}', [ProjectContractClientController::class, 'edit'])->name('edit');
+            Route::get('create', [ProjectContractClientController::class, 'create'])->name('create');
+            Route::get('details/{slug}', [ProjectContractClientController::class, 'details'])->name('details');
+
+            Route::post('save', [ProjectContractClientController::class, 'save'])->name('save');
+            Route::patch('update/{slug}', [ProjectContractClientController::class, 'update'])->name('update');
+            Route::delete('trash/{slug}', [ProjectContractClientController::class, 'trash'])->name('trash');
+            Route::patch('restore/{slug}', [ProjectContractClientController::class, 'restore'])->name('restore');
         });
 
         // Payment method
