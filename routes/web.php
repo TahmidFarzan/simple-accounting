@@ -6,6 +6,7 @@ use App\Http\Controllers\InternalUser\ExtraController;
 use App\Http\Controllers\InternalUser\SettingController;
 use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
+use App\Http\Controllers\InternalUser\ProjectContractController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
 use App\Http\Controllers\InternalUser\ProjectContractClientController;
 use App\Http\Controllers\InternalUser\ProjectContractCategoryController;
@@ -102,6 +103,14 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
 
     // Project contract
     Route::prefix('project-contract')->name('project.contract.')->group(function(){
+        // Project contract
+        Route::get('/', [ProjectContractController::class, 'index'])->name('index');
+        Route::get('edit/{slug}', [ProjectContractController::class, 'edit'])->name('edit');
+        Route::get('create', [ProjectContractController::class, 'create'])->name('create');
+        Route::get('details/{slug}', [ProjectContractController::class, 'details'])->name('details');
+
+        Route::post('save', [ProjectContractController::class, 'save'])->name('save');
+        Route::patch('update/{slug}', [ProjectContractController::class, 'update'])->name('update');
 
         // Category
         Route::prefix('category')->name('category.')->group(function(){

@@ -449,6 +449,38 @@ class UserPermissionSeeder extends Seeder
                     'description' => "The internal user can restore.",
                     'slug' => SystemConstant::slugGenerator("Restore client of project contract.",200),
                 ])->create();
+
+            // Project contract  permission.
+                UserPermission::factory()->state([
+                    'name' => "View the project contract.",
+                    'code' => "PCMP01",
+                    'type' => "ProjectContractModulePermission",
+                    'description' => "The internal user can view.",
+                    'slug' => SystemConstant::slugGenerator("View project contract",200),
+                ])->create();
+                UserPermission::factory()->state([
+                    'name' => "Create a project contract.",
+                    'code' => "PCMP02",
+                    'type' => "ProjectContractModulePermission",
+                    'description' => "The internal user can create.",
+                    'slug' => SystemConstant::slugGenerator("Create a project contract.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "View details of the project contract..",
+                    'code' => "PCMP03",
+                    'type' => "ProjectContractModulePermission",
+                    'description' => "The internal user can view.",
+                    'slug' => SystemConstant::slugGenerator("View details of the project contract.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update a project contract.",
+                    'code' => "PCMP04",
+                    'type' => "ProjectContractModulePermission",
+                    'description' => "The internal user can update.",
+                    'slug' => SystemConstant::slugGenerator("Update a the project contract.",200),
+                ])->create();
            // Project contract category permission.
     }
 }

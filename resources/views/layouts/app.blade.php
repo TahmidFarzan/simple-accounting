@@ -203,6 +203,15 @@
                                             <div class="card card-body bg-light border-0 p-0 m-0 px-2 mx-2 ">
                                                 <ul class="nav flex-column">
 
+                                                    @if (Auth::user()->hasUserPermission(["PCMP01"]) == true)
+                                                        <li class="nav-item">
+                                                            <a class="nav-link {{(Request::is('project-contract') || (Request::is('project-contract/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("project.contract.index") }}">
+                                                                <i class="fa-solid fa-file-signature"></i>
+                                                                Project contract
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
                                                     @if (Auth::user()->hasUserPermission(["PCCAMP01"]) == true)
                                                         <li class="nav-item">
                                                             <a class="nav-link {{(Request::is('project-contract/category') || (Request::is('project-contract/category/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("project.contract.category.index") }}">
