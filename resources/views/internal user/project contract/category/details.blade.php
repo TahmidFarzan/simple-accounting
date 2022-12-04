@@ -52,24 +52,37 @@
                 </table>
             </div>
         </div>
-    </div>
 
-    <div class="card border-dark mb-2">
-        <h5 class="card-header"> Description</h5>
-        <div class="card-body text-dark">
-            <div class=" d-flex justify-content-center">
-                {{ ($projectContractCategory->description == null) ? "Not added." : $projectContractCategory->description }}
+        <div class="card-body text-dark mb-2">
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <div class="card border-secondary">
+                        <div class="card-body text-dark">
+                            <b class="d-flex justify-content-center mb-1">
+                                Description
+                            </b>
+                            <p>
+                                {{ ($projectContractCategory->description == null) ? "Not added." : $projectContractCategory->description }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-secondary">
+                        <div class="card-body text-dark">
+                            <b class="d-flex justify-content-center mb-1">
+                                Tree information
+                            </b>
+                            <p>
+                                <x-project_contract.category.tree.categories :categories="$projectContractCategoryTree"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="card border-dark mb-2">
-        <h5 class="card-header"> Tree information</h5>
-        <div class="card-body text-dark">
-            <div class=" d-flex justify-content-center">
-                <x-project_contract.category.tree.categories :categories="$projectContractCategoryTree"/>
-            </div>
-        </div>
     </div>
 
     <div class="card border-dark mb-3">
