@@ -14,8 +14,6 @@ use App\Models\ProjectContractPaymentMethod;
 
 class ProjectContractPaymentMethodController extends Controller
 {
-    private $slug;
-
     public function __construct()
     {
         $this->middleware(['auth','verified']);
@@ -120,11 +118,11 @@ class ProjectContractPaymentMethodController extends Controller
     }
 
     public function update(Request $request,$slug){
-        $this->slug = $slug;
+        $projectContractPaymentMethodId = (ProjectContractPaymentMethod::withTrashed()->where("slug",$slug)->firstOrFail())->id;
 
         $validator = Validator::make($request->all(),
             [
-                'name' => 'required|max:200|unique:project_contract_payment_methods,name,'.(ProjectContractPaymentMethod::withTrashed()->where("slug",$slug)->firstOrFail())->id,
+                'name' => 'required|max:200|unique:project_contract_payment_methods,name,'.$projectContractPaymentMethodId,
                 'description' => "nullable",
             ],
             [
