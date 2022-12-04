@@ -125,7 +125,7 @@
                                                                     <div class="modal-body">
                                                                         <p>
                                                                             <ul>
-                                                                                <li>Contract category will not show dependency.</li>
+                                                                                <li>Payment method will not show dependency.</li>
                                                                             </ul>
                                                                         </p>
                                                                     </div>
@@ -146,7 +146,7 @@
                                         @empty
                                             <tr>
                                                 <td colspan="3">
-                                                    <b class="d-flex justify-content-center text-warning">No contract category found.</b>
+                                                    <b class="d-flex justify-content-center text-warning">No payment method found.</b>
                                                 </td>
                                             </tr>
                                         @endforelse
@@ -197,7 +197,7 @@
                                                                     <div class="modal-body">
                                                                         <p>
                                                                             <ul>
-                                                                                <li>Contract category will show dependency.</li>
+                                                                                <li>Payment method will show dependency.</li>
                                                                             </ul>
                                                                         </p>
                                                                     </div>
@@ -218,7 +218,7 @@
                                         @empty
                                             <tr>
                                                 <td colspan="3">
-                                                    <b class="d-flex justify-content-center text-warning">No contract category found.</b>
+                                                    <b class="d-flex justify-content-center text-warning">No payment method found.</b>
                                                 </td>
                                             </tr>
                                         @endforelse

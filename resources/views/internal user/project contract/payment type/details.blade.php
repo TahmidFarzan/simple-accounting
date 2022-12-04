@@ -214,7 +214,7 @@
                                 <p>
                                     <p>
                                         <ul>
-                                            <li>Contract category will show dependency.</li>
+                                            <li>Payment method will show dependency.</li>
                                         </ul>
                                     </p>
                                 </p>
@@ -243,7 +243,7 @@
                             <div class="modal-body">
                                 <p>
                                     <ul>
-                                        <li>Contract category will not show dependency.</li>
+                                        <li>Payment method will not show dependency.</li>
                                     </ul>
                                 </p>
                             </div>
