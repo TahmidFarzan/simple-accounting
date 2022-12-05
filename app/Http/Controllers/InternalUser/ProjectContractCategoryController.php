@@ -153,7 +153,7 @@ class ProjectContractCategoryController extends Controller
                     }
                     else{
                         $validator->errors()->add(
-                            'parent', "Unknown parent ategory."
+                            'parent', "Unknown parent category."
                         );
                     }
                 }
