@@ -43,7 +43,7 @@
                         <div class="col-md-6 mb-2">
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Name <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
-                                <div class="col-lg-8 col-md-7">
+                                <div class="col-lg-8">
                                     <input id="nameInput" name="name" type="text" class="form-control form-control-sm @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Ex: Hello" maxlength="200" required>
                                     @error('name')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
@@ -57,7 +57,7 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Code <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
-                                <div class="col-lg-8 col-md-7">
+                                <div class="col-lg-8">
                                     <input id="codeInput" name="code" type="text" class="form-control form-control-sm @error('code') is-invalid @enderror" value="{{ old('code') }}" placeholder="Ex: Hello" maxlength="200" required>
                                     @error('code')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
@@ -75,7 +75,7 @@
                         <div class="col-md-6 mb-2">
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Description</label>
-                                <div class="col-lg-8 col-md-7">
+                                <div class="col-lg-8">
                                     <textarea id="descriptionInput" name="description" class="form-control form-control-sm @error('description') is-invalid @enderror" placeholder="Ex: Hello">{{ old('description') }}</textarea>
 
                                     @error('description')

@@ -60,8 +60,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-lg-4 col-md-5 col-form-label col-form-label-sm text-bold">Name <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
-                                <div class="col-lg-8 col-md-7">
+                                <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Name <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <div class="col-lg-8">
                                     <input id="name" name="name" type="text" class="form-control form-control-sm @error('name') is-invalid @enderror" value="{{ (old('name') == null) ? $projectContractCategory->name : old('name') }}" placeholder="Ex: Hello" maxlength="200" required>
                                     @error('name')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
@@ -74,8 +74,8 @@
 
                         <div class="col-md-6">
                             <div class="row">
-                                <label class="col-lg-4 col-md-5 col-form-label col-form-label-sm text-bold">Code <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
-                                <div class="col-lg-8 col-md-7">
+                                <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Code <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <div class="col-lg-8">
                                     <input id="code" name="code" type="text" class="form-control form-control-sm @error('code') is-invalid @enderror" value="{{ (old('code') == null) ? $projectContractCategory->code : old('code') }}" placeholder="Ex: Hello" maxlength="200" required>
                                     @error('code')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
@@ -93,7 +93,7 @@
                         <div class="col-md-6 mb-2">
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Description</label>
-                                <div class="col-lg-8 col-md-7">
+                                <div class="col-lg-8">
                                     <textarea id="descriptionInput" name="description" class="form-control form-control-sm @error('description') is-invalid @enderror" placeholder="Ex: Hello">{{ (old('description') == null) ? $projectContractCategory->description : old('description') }}</textarea>
 
                                     @error('description')
@@ -111,8 +111,8 @@
 
                 <div class="form-group mb-3">
                     <div class="row">
-                        <label class="col-lg-4 col-md-5 col-form-label col-form-label-sm text-bold">Has a parent <i class="fa-solid fa-asterisk mt-2" style="font-size: 10px;!important"></i></label>
-                        <div class="col-lg-8 col-md-7 mt-2">
+                        <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Has a parent <i class="fa-solid fa-asterisk mt-2" style="font-size: 10px;!important"></i></label>
+                        <div class="col-lg-8 mt-2">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" id="hasAParentInputYesOption" name="has_a_parent" value="Yes" {{ ($hasAParentOptionCheckedStatus == "Yes") ? "checked" : null }}>
                                 <label class="form-check-label">Yes</label>
@@ -132,8 +132,8 @@
 
                 <div class="form-group mb-3" id="parentInputDiv" @if ($hasAParentOptionCheckedStatus == "No") style="display: none" @endif>
                     <div class="row">
-                        <label class="col-lg-4 col-md-5 col-form-label text-bold">Parent <i class="fa-solid fa-asterisk mt-2" style="font-size: 10px;!important"></i></label>
-                        <div class="col-lg-8 col-md-7">
+                        <label class="col-lg-4 col-form-label text-bold">Parent <i class="fa-solid fa-asterisk mt-2" style="font-size: 10px;!important"></i></label>
+                        <div class="col-lg-8">
                             <select id="parentInput" name="parent" class="form-control form-control-sm @error('parent') is-invalid @enderror" @if ($hasAParentOptionCheckedStatus == "No") hidden disabled @endif @if ($hasAParentOptionCheckedStatus == "Yes") required @endif>
                                 <option value="">Select</option>
                                 <x-project_contract.category.form.categories :categories="$contractCategories" :activeCategorySlug="$activeCategorySlug"/>

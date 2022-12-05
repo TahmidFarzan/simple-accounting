@@ -111,7 +111,7 @@
                         <div class="col-md-6 mb-2">
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Description</label>
-                                <div class="col-lg-8 col-md-7">
+                                <div class="col-lg-8">
                                     <textarea id="descriptionInput" name="description" class="form-control form-control-sm @error('description') is-invalid @enderror" placeholder="Ex: Hello">{{ (old('description') == null) ? $projectContractClient->description : old('description') }}</textarea>
 
                                     @error('description')
@@ -126,7 +126,7 @@
                         <div class="col-md-6 mb-2">
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Note</label>
-                                <div class="col-lg-8 col-md-7">
+                                <div class="col-lg-8">
                                     <textarea id="noteInput" name="note" class="form-control form-control-sm @error('note') is-invalid @enderror" placeholder="Ex: Hello">{{ (old('note') == null) ? $projectContractClient->note : old('note') }}</textarea>
 
                                     @error('note')
