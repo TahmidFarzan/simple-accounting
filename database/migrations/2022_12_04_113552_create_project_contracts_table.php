@@ -21,14 +21,14 @@ return new class extends Migration
             $table->double('invested_amount', 8, 2)->default(0);
             $table->enum('receivable_status', ['NotStarted','Due',"Partial","Full"])->default('NotStarted');
 
+            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('created_by_id');
-            $table->unsignedBigInteger('project_contract_client_id');
-            $table->unsignedBigInteger('project_contract_category_id');
             $table->timestamps();
 
-            $table->foreign('created_by_id','project_contracts_fk_1')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('project_contract_client_id','project_contracts_fk_2')->references('id')->on('project_contract_clients')->onDelete('cascade');
-            $table->foreign('project_contract_category_id','project_contracts_fk_3')->references('id')->on('project_contract_categories')->onDelete('cascade');
+            $table->foreign('client_id','project_contracts_fk_1')->references('id')->on('project_contract_clients')->onDelete('cascade');
+            $table->foreign('created_by_id','project_contracts_fk_2')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id','project_contracts_fk_3')->references('id')->on('project_contract_categories')->onDelete('cascade');
         });
     }
 

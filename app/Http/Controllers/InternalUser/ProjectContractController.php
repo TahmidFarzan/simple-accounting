@@ -30,6 +30,7 @@ class ProjectContractController extends Controller
         $paginations = array(5,15,30,45,60,75,90,105,120);
         $receivableStatuses = array('Not started', 'Due', 'Partial', 'Full');
         $projectContractClients = ProjectContractClient::orderby("name","asc")->get();
+        $projectContractCategories = ProjectContractCategory::tree()->get()->toTree();
 
         $ongoingProjectContracts = ProjectContract::orderby("created_at","desc")->orderby("name","asc")->where("status","Ongoing");
         $upcomingProjectContracts = ProjectContract::orderby("created_at","desc")->orderby("name","asc")->where("status","Upcoming");
@@ -40,21 +41,21 @@ class ProjectContractController extends Controller
                 $pagination = (in_array($request->pagination,$paginations)) ? $request->pagination : $pagination;
             }
 
-            if($request->has('project_contract_client') && !($request->project_contract_client == null) && !($request->project_contract_client == "All")){
-                $projectContractClient = ProjectContractClient::where("slug",$request->project_contract_client)->first();
+            if($request->has('client') && !($request->client == null) && !($request->client == "All")){
+                $projectContractClient = ProjectContractClient::where("slug",$request->client)->first();
 
                 if($projectContractClient){
                     switch ($request->selected_nav_tab) {
                         case 'Ongoing':
-                            $ongoingProjectContracts = $ongoingProjectContracts->where("project_contract_client_id",$projectContractClient->id);
+                            $ongoingProjectContracts = $ongoingProjectContracts->where("client_id",$projectContractClient->id);
                         break;
 
                         case 'Upcoming':
-                            $upcomingProjectContracts = $upcomingProjectContracts->where("project_contract_client_id",$projectContractClient->id);
+                            $upcomingProjectContracts = $upcomingProjectContracts->where("client_id",$projectContractClient->id);
                         break;
 
                         case 'Complete':
-                            $completeProjectContracts = $completeProjectContracts->where("project_contract_client_id",$projectContractClient->id);
+                            $completeProjectContracts = $completeProjectContracts->where("client_id",$projectContractClient->id);
                         break;
 
                         default:
@@ -64,8 +65,8 @@ class ProjectContractController extends Controller
                 }
             }
 
-            if($request->has('project_contract_category') && !($request->project_contract_category == null) && !($request->project_contract_category == "All")){
-                $projectContractCategory = ProjectContractCategory::where("slug",$request->project_contract_category)->first();
+            if($request->has('category') && !($request->category == null) && !($request->category == "All")){
+                $projectContractCategory = ProjectContractCategory::where("slug",$request->category)->first();
 
                 if($projectContractCategory){
                     $allCategoryIds =  $projectContractCategory->descendants()->pluck("id")->toArray();
@@ -73,15 +74,15 @@ class ProjectContractController extends Controller
 
                     switch ($request->selected_nav_tab) {
                         case 'Ongoing':
-                            $ongoingProjectContracts = $ongoingProjectContracts->whereIn("project_contract_category_id",$allCategoryIds);
+                            $ongoingProjectContracts = $ongoingProjectContracts->whereIn("category_id",$allCategoryIds);
                         break;
 
                         case 'Upcoming':
-                            $upcomingProjectContracts = $upcomingProjectContracts->whereIn("project_contract_category_id",$allCategoryIds);
+                            $upcomingProjectContracts = $upcomingProjectContracts->whereIn("category_id",$allCategoryIds);
                         break;
 
                         case 'Complete':
-                            $completeProjectContracts = $completeProjectContracts->whereIn("project_contract_category_id",$allCategoryIds);
+                            $completeProjectContracts = $completeProjectContracts->whereIn("category_id",$allCategoryIds);
                         break;
 
                         default:
@@ -103,6 +104,46 @@ class ProjectContractController extends Controller
 
                     case 'Complete':
                         $completeProjectContracts = $completeProjectContracts->where("receivable_status",Str::studly($request->receivable_status));
+                    break;
+
+                    default:
+                        abort(404,"Unknown nav.");
+                    break;
+                }
+            }
+
+            if($request->has('start_date') && !($request->start_date == null) && $request->has('start_date_condition') && !($request->start_date_condition == null) && in_array($request->start_date_condition, array("=",">","<",">=","<="))){
+                switch ($request->selected_nav_tab) {
+                    case 'Ongoing':
+                        $ongoingProjectContracts = $ongoingProjectContracts->where("start_date",$request->start_date_condition,$request->start_date);
+                    break;
+
+                    case 'Upcoming':
+                        $upcomingProjectContracts = $upcomingProjectContracts->where("start_date",$request->start_date_condition,$request->start_date);
+                    break;
+
+                    case 'Complete':
+                        $completeProjectContracts = $completeProjectContracts->where("start_date",$request->start_date_condition,$request->start_date);
+                    break;
+
+                    default:
+                        abort(404,"Unknown nav.");
+                    break;
+                }
+            }
+
+            if($request->has('end_date') && !($request->end_date == null) && $request->has('end_date_condition') && !($request->end_date_condition == null) && in_array($request->end_date_condition, array("=",">","<",">=","<="))){
+                switch ($request->selected_nav_tab) {
+                    case 'Ongoing':
+                        $ongoingProjectContracts = $ongoingProjectContracts->where("start_date",$request->end_date_condition,$request->end_date);
+                    break;
+
+                    case 'Upcoming':
+                        $upcomingProjectContracts = $upcomingProjectContracts->where("end_date",$request->end_date_condition,$request->end_date);
+                    break;
+
+                    case 'Complete':
+                        $completeProjectContracts = $completeProjectContracts->where("end_date",$request->end_date_condition,$request->end_date);
                     break;
 
                     default:
@@ -145,6 +186,6 @@ class ProjectContractController extends Controller
         $completeProjectContracts = $completeProjectContracts->paginate($pagination);
         $ongoingProjectContracts = $ongoingProjectContracts->paginate($pagination);
 
-        return view('internal user.project contract.project contract.index',compact("ongoingProjectContracts","upcomingProjectContracts","completeProjectContracts","paginations","receivableStatuses","projectContractClients"));
+        return view('internal user.project contract.project contract.index',compact("ongoingProjectContracts","upcomingProjectContracts","completeProjectContracts","paginations","receivableStatuses","projectContractClients","projectContractCategories"));
     }
 }

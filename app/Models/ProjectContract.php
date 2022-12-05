@@ -28,8 +28,8 @@ class ProjectContract extends Model
         'created_by_id',
         'invested_amount',
         'receivable_status',
-        'project_contract_client_id',
-        'project_contract_category_id',
+        'client_id',
+        'category_id',
     ];
 
     protected $hidden = [
@@ -50,7 +50,7 @@ class ProjectContract extends Model
         ->logOnly([
                 'name','code','slug','note','status','description','end_date','start_date',
                 'created_by_id','receivable_status','invested_amount',
-                'project_contract_client_id','project_contract_category_id',
+                'client_id','category_id',
         ])
         ->useLogName('Project contract')
         ->setDescriptionForEvent(fn(string $eventName) => "The product category has been {$eventName}.")
@@ -64,14 +64,14 @@ class ProjectContract extends Model
         return $this->belongsTo(User::class,'created_by_id','id')->withTrashed();
     }
 
-    public function projectContractClient()
+    public function client()
     {
-        return $this->belongsTo(ProjectContractClient::class,'project_contract_client_id','id')->withTrashed();
+        return $this->belongsTo(ProjectContractClient::class,'client_id','id')->withTrashed();
     }
 
-    public function projectContractCategory()
+    public function category()
     {
-        return $this->belongsTo(ProjectContractCategory::class,'project_contract_category_id','id')->withTrashed();
+        return $this->belongsTo(ProjectContractCategory::class,'category_id','id')->withTrashed();
     }
 
     public function activityLogs(){

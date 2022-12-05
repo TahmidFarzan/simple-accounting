@@ -61,6 +61,88 @@
 
                             <div class="col-md-6 mb-2">
                                 <div class="row">
+                                    <label class="col-md-4 col-form-label col-form-label-sm">Receivable status</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control form-control-sm" id="receivableStatusInputForSorting" name="receivable_status">
+                                            <option value="">Select</option>
+                                            <option value="All">All</option>
+                                            @foreach ( $receivableStatuses as $perStatus)
+                                                <option value="{{ $perStatus }}">{{ $perStatus }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div id="receivableStatusInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <div class="row">
+                                    <label class="col-md-4 col-form-label col-form-label-sm">Client</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control form-control-sm" id="clientInputForSorting" name="client">
+                                            <option value="">Select</option>
+                                            <option value="All">All</option>
+                                            @foreach ( $projectContractClients as $perClient)
+                                                <option value="{{ $perClient->slug }}">{{ $perClient->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div id="clientInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <div class="row">
+                                    <label class="col-md-4 col-form-label col-form-label-sm">Category</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control form-control-sm" id="categoryInputForSorting" name="category">
+                                            <option value="">Select</option>
+                                            <option value="All">All</option>
+                                            <x-project_contract.project_contract.form.categories :categories="$projectContractCategories" :activeCategorySlug="null"/>
+                                        </select>
+                                        <div id="categoryInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <div class="row">
+                                    <label class="col-md-4 col-form-label col-form-label-sm">Start date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group mb-3">
+                                            <input type="date" class="form-control form-control-sm" id="startDateInputForSorting" name="start_date">
+                                            <select id="startDateConditionInputForSorting" name="start_date_condition" class="form-control form-control-sm">
+                                                @foreach (array(""=>"Select","="=>"Equal",">"=>"Less than","<"=>"Greater than",">="=>"Equal or less than","<="=>"Equal or greater than") as $perConditionIndex => $perCondition)
+                                                    <option value="{{ $perConditionIndex }}">{{ $perCondition }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div id="startDateInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                                        <div id="startDateConditionInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <div class="row">
+                                    <label class="col-md-4 col-form-label col-form-label-sm">End date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group mb-3">
+                                            <input type="date" class="form-control form-control-sm" id="endDateInputForSorting" name="end_date">
+                                            <select id="endDateConditionInputForSorting" name="end_date_condition" class="form-control form-control-sm">
+                                                @foreach (array(""=>"Select","="=>"Equal",">"=>"Less than","<"=>"Greater than",">="=>"Equal or less than","<="=>"Equal or greater than") as $perConditionIndex => $perCondition)
+                                                    <option value="{{ $perConditionIndex }}">{{ $perCondition }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div id="endDateInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                                        <div id="endDateConditionInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <div class="row">
                                     <label class="col-md-4 col-form-label col-form-label-sm">Search</label>
                                     <div class="col-md-8">
                                         <div class="input-group mb-3">
@@ -106,8 +188,8 @@
                                             <tr>
                                                 <td>{{ $perProjectContractIndex + 1 }}</td>
                                                 <td>{{ $perProjectContract->name }}</td>
-                                                <td>{{ $perProjectContract->projectContractClient->name }}</td>
-                                                <td>{{ $perProjectContract->projectContractCategory->name }}</td>
+                                                <td>{{ $perProjectContract->client->name }}</td>
+                                                <td>{{ $perProjectContract->category->name }}</td>
                                                 <td>
                                                     @php
                                                         $dateRange = "<p>";
@@ -191,8 +273,8 @@
                                             <tr>
                                                 <td>{{ $perProjectContractIndex + 1 }}</td>
                                                 <td>{{ $perProjectContract->name }}</td>
-                                                <td>{{ $perProjectContract->projectContractClient->name }}</td>
-                                                <td>{{ $perProjectContract->projectContractCategory->name }}</td>
+                                                <td>{{ $perProjectContract->client->name }}</td>
+                                                <td>{{ $perProjectContract->category->name }}</td>
                                                 <td>
                                                     @php
                                                         $dateRange = "<p>";
@@ -277,8 +359,8 @@
                                             <tr>
                                                 <td>{{ $perProjectContractIndex + 1 }}</td>
                                                 <td>{{ $perProjectContract->name }}</td>
-                                                <td>{{ $perProjectContract->projectContractClient->name }}</td>
-                                                <td>{{ $perProjectContract->projectContractCategory->name }}</td>
+                                                <td>{{ $perProjectContract->client->name }}</td>
+                                                <td>{{ $perProjectContract->category->name }}</td>
                                                 <td>
                                                     @php
                                                         $dateRange = "<p>";
@@ -406,6 +488,87 @@
                 hideOrShowInputFieldErrorMessages(errorMessages,"paginationInputForSorting");
             });
 
+            $(document).on('change', "#receivableStatusInputForSorting", function () {
+                var errorMessages = [];
+                if($(this).val().length > 0){
+                    dataTableLoad(parameterGenerate());
+                }
+                else{
+                    errorMessages.push("Receivable status is empty.");
+                }
+                hideOrShowInputFieldErrorMessages(errorMessages,"receivableStatusInputForSorting");
+            });
+
+            $(document).on('change', "#clientInputForSorting", function () {
+                var errorMessages = [];
+                if($(this).val().length > 0){
+                    dataTableLoad(parameterGenerate());
+                }
+                else{
+                    errorMessages.push("Client status is empty.");
+                }
+                hideOrShowInputFieldErrorMessages(errorMessages,"clientInputForSorting");
+            });
+
+            $(document).on('change', "#categoryInputForSorting", function () {
+                var errorMessages = [];
+                if($(this).val().length > 0){
+                    dataTableLoad(parameterGenerate());
+                }
+                else{
+                    errorMessages.push("Category status is empty.");
+                }
+                hideOrShowInputFieldErrorMessages(errorMessages,"categoryInputForSorting");
+            });
+
+            $(document).on('change', "#startDateInputForSorting", function () {
+                var errorMessages = [];
+                if($(this).val().length > 0){
+                    if($("#startDateConditionInputForSorting").val().length > 0){
+                        dataTableLoad(parameterGenerate());
+                    }
+                }
+                else{
+                    errorMessages.push("Start date status is empty.");
+                }
+                hideOrShowInputFieldErrorMessages(errorMessages,"startDateInputForSorting");
+            });
+
+            $(document).on('change', "#startDateConditionInputForSorting", function () {
+                var errorMessages = [];
+                if($(this).val().length > 0){
+                    dataTableLoad(parameterGenerate());
+                }
+                else{
+                    errorMessages.push("Start date condition status is empty.");
+                }
+                hideOrShowInputFieldErrorMessages(errorMessages,"startDateConditionInputForSorting");
+            });
+
+            $(document).on('change', "#endDateInputForSorting", function () {
+                var errorMessages = [];
+                if($(this).val().length > 0){
+                    if($("#endDateConditionInputForSorting").val().length > 0){
+                        dataTableLoad(parameterGenerate());
+                    }
+                }
+                else{
+                    errorMessages.push("End date status is empty.");
+                }
+                hideOrShowInputFieldErrorMessages(errorMessages,"endDateInputForSorting");
+            });
+
+            $(document).on('change', "#endDateConditionInputForSorting", function () {
+                var errorMessages = [];
+                if($(this).val().length > 0){
+                    dataTableLoad(parameterGenerate());
+                }
+                else{
+                    errorMessages.push("End date condition status is empty.");
+                }
+                hideOrShowInputFieldErrorMessages(errorMessages,"endDateConditionInputForSorting");
+            });
+
             $(document).on('click', "#searchButton", function () {
                 var errorMessages = [];
                 if($("#searchInputForSorting").val().length > 0){
@@ -421,7 +584,18 @@
 
         function parameterGenerate(){
             var parameterString = null;
-            $.each( ["paginationInputForSorting","searchInputForSorting","selectedNavTabForSorting"], function( key, perInput ) {
+            $.each( [
+                    "paginationInputForSorting",
+                    "receivableStatusInputForSorting",
+                    "clientInputForSorting",
+                    "categoryInputForSorting",
+                    "startDateInputForSorting",
+                    "startDateConditionInputForSorting",
+                    "endDateInputForSorting",
+                    "endDateConditionInputForSorting",
+                    "searchInputForSorting",
+                    "selectedNavTabForSorting"
+                ], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
                     var inputFieldValue = $("#" + perInput).val();
                     var inputFieldName = $("#" + perInput).attr('name');
