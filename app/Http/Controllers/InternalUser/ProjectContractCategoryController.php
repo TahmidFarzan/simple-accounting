@@ -176,7 +176,7 @@ class ProjectContractCategoryController extends Controller
         $statusInformation=array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
-            $projectContractCategory= new ProjectContractCategory();
+            $projectContractCategory = new ProjectContractCategory();
             $projectContractCategory->name = $request->name;
             $projectContractCategory->code = $request->code;
             $projectContractCategory->description = $request->description;
@@ -265,7 +265,7 @@ class ProjectContractCategoryController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $statusInformation=array("status" => "errors","message" => collect());
+        $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
             $projectContractCategory = ProjectContractCategory::withTrashed()->where("slug",$slug)->firstOrFail();
