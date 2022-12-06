@@ -23,6 +23,7 @@ class ProjectContractController extends Controller
         $this->middleware(['user.user.permission.check:PCMP02'])->only(["create","save"]);
         $this->middleware(['user.user.permission.check:PCMP03'])->only(["details"]);
         $this->middleware(['user.user.permission.check:PCMP04'])->only(["edit","update"]);
+        $this->middleware(['user.user.permission.check:PCMP05'])->only(["delete"]);
     }
 
     public function index(Request $request){
@@ -406,5 +407,36 @@ class ProjectContractController extends Controller
 
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
 
+    }
+
+    public function delete($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        if(!(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete")){
+            $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+
+            if($projectContract->journals->count() > 0){
+                //
+            }
+
+            if($projectContract->payments->count() > 0){
+                //
+            }
+
+            $deleteProjectContract =  $projectContract->delete();
+
+            if($deleteProjectContract){
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Project contract successfully deleted.");
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Fail to delete project contract .");
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Can not delete completed project contract .");
+        }
     }
 }

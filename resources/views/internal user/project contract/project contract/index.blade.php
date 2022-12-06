@@ -234,6 +234,38 @@
                                                         <a href="{{ route("project.contract.edit",["slug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
+                                                    @if (Auth::user()->hasUserPermission(["PCMP05"]) == true)
+                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#ongoingDeleteConfirmationModal">
+                                                            Delete
+                                                        </button>
+                                                        <div class="modal fade" id="ongoingDeleteConfirmationModal" tabindex="-1">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h1 class="modal-title fs-5">{{ $perProjectContract->name }} delete confirmation model</h1>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>
+                                                                            <ul>
+                                                                                <li>Project contract will not show dependency.</li>
+                                                                                <li>Can not recover record.</li>
+                                                                            </ul>
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                        <form action="{{ route("project.contract.delete",["slug" => $perProjectContract->slug]) }}" method="POST">
+                                                                            @csrf
+                                                                            @method("DELETE")
+                                                                            <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
                                                 </td>
                                             </tr>
                                         @empty
@@ -403,6 +435,38 @@
 
                                                     @if (Auth::user()->hasUserPermission(["PCMP04"]) == true)
                                                         <a href="{{ route("project.contract.edit",["slug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
+                                                    @endif
+
+                                                    @if (Auth::user()->hasUserPermission(["PCMP05"]) == true)
+                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#upcomingDeleteConfirmationModal">
+                                                            Delete
+                                                        </button>
+                                                        <div class="modal fade" id="upcomingDeleteConfirmationModal" tabindex="-1">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h1 class="modal-title fs-5">{{ $perProjectContract->name }} delete confirmation model</h1>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>
+                                                                            <ul>
+                                                                                <li>Project contract will not show dependency.</li>
+                                                                                <li>Can not recover record.</li>
+                                                                            </ul>
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                        <form action="{{ route("project.contract.delete",["slug" => $perProjectContract->slug]) }}" method="POST">
+                                                                            @csrf
+                                                                            @method("DELETE")
+                                                                            <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     @endif
 
                                                 </td>

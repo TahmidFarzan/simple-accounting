@@ -111,6 +111,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
 
         Route::post('save', [ProjectContractController::class, 'save'])->name('save');
         Route::patch('update/{slug}', [ProjectContractController::class, 'update'])->name('update');
+        Route::delete('delete/{slug}', [ProjectContractController::class, 'delete'])->name('delete');
 
         // Category
         Route::prefix('category')->name('category.')->group(function(){
