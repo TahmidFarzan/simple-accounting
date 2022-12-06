@@ -206,15 +206,15 @@
                                                     @php
                                                         $investedAmount = $perProjectContract->invested_amount;
 
-                                                        $totalRevenueAmount = 0;
-                                                        $totalLossAmount = 0;
-                                                        $totalReceivableAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
+                                                        $totalRevenueAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Revenue")->sum("amount");
+                                                        $totalLossAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Loss")->sum("amount");
+                                                        $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
 
                                                         $investedPopOver = "<p>";
                                                         $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total Invested :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Total receivable :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
@@ -264,6 +264,10 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    @endif
+
+                                                    @if (Auth::user()->hasUserPermission(["PCJMP01"]) == true)
+                                                        <a href="{{ route("project.contract.journal.index",["pcSlug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-secondary m-1">Journals</a>
                                                     @endif
 
                                                 </td>
@@ -323,15 +327,15 @@
                                                     @php
                                                         $investedAmount = $perProjectContract->invested_amount;
 
-                                                        $totalRevenueAmount = 0;
-                                                        $totalLossAmount = 0;
-                                                        $totalReceivableAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
+                                                        $totalRevenueAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Revenue")->sum("amount");
+                                                        $totalLossAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Loss")->sum("amount");
+                                                        $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
 
                                                         $investedPopOver = "<p>";
                                                         $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total Invested :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Total receivable :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
@@ -349,6 +353,10 @@
 
                                                     @if (Auth::user()->hasUserPermission(["PCMP04"]) == true)
                                                         <a href="{{ route("project.contract.edit",["slug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
+                                                    @endif
+
+                                                    @if (Auth::user()->hasUserPermission(["PCJMP01"]) == true)
+                                                        <a href="{{ route("project.contract.journal.index",["pcSlug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-secondary m-1">Journals</a>
                                                     @endif
 
                                                 </td>
@@ -409,15 +417,15 @@
                                                     @php
                                                         $investedAmount = $perProjectContract->invested_amount;
 
-                                                        $totalRevenueAmount = 0;
-                                                        $totalLossAmount = 0;
-                                                        $totalReceivableAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
+                                                        $totalRevenueAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Revenue")->sum("amount");
+                                                        $totalLossAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Loss")->sum("amount");
+                                                        $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
 
                                                         $investedPopOver = "<p>";
                                                         $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total Invested :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Total receivable :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 

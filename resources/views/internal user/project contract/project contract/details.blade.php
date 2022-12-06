@@ -21,9 +21,9 @@
     @php
         $investedAmount = $projectContract->invested_amount;
 
-        $totalRevenueAmount = 0;
-        $totalLossAmount = 0;
-        $totalReceivableAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
+        $totalRevenueAmount = ($projectContract->journals->count() == 0 ) ? 0 : $projectContract->journals()->where("entry_type","Revenue")->sum("amount");
+        $totalLossAmount = ($projectContract->journals->count() == 0 ) ? 0 : $projectContract->journals()->where("entry_type","Loss")->sum("amount");
+        $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
 
     @endphp
 
@@ -323,6 +323,10 @@
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
                             Delete
                         </button>
+                    @endif
+
+                    @if (!($projectContract->status == "Upcomming") && (Auth::user()->hasUserPermission(["PCJMP01"]) == true))
+                        <a href="{{ route("project.contract.journal.index",["pcSlug" => $projectContract->slug]) }}" class="btn btn-info">Journals</a>
                     @endif
 
                 </div>
