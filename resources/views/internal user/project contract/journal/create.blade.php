@@ -84,7 +84,7 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Amount <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Amount ({{ $setting["businessSetting"]["currency_symbol"] }})  <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
                                     <input id="amountInput" name="amount" type="number" class="form-control form-control-sm @error('amount') is-invalid @enderror" value="{{ old('amount') }}" min="0" placeholder="Ex: 0.0" step="0.01" required>
                                     @error('amount')

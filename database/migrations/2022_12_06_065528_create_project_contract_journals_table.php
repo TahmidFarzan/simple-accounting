@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',200);
             $table->string('slug',200)->unique();
-            $table->dateTime('entry_date')->nullable();
+            $table->dateTime('entry_date');
             $table->text('description')->nullable();
             $table->json('note');
             $table->enum('entry_type', ['Revenue','Loss'])->default('Revenue');
