@@ -219,7 +219,7 @@
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
                     @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCJMP04"]) == true))
-                        <a href="{{ route("project.contract.journal.edit",["slug"=>$projectContractJournal->slug,"pcSlug"=>$projectContract->slug]) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route("project.contract.journal.edit",["pcSlug" => $projectContract->slug,"slug" => $projectContractJournal->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
                     @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
@@ -248,7 +248,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                <form action="{{ route("project.contract.journal.delete",["slug"=>$projectContractJournal->slug,"pcSlug"=>$projectContract->slug]) }}" method="POST">
+                                <form action="{{ route("project.contract.journal.delete",["pcSlug" => $projectContract->slug,"slug" => $projectContractJournal->slug]) }}" method="POST">
                                     @csrf
                                     @method("DELETE")
                                     <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>

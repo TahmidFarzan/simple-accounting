@@ -122,7 +122,6 @@ class ProjectContractJournalController extends Controller
                 'description' => 'nullable',
                 'entry_type' => 'required|in:Revenue,Loss',
                 'amount' => 'required|numeric|min:0',
-
             ],
             [
                 'name.required' => 'Name is required.',

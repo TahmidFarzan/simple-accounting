@@ -125,11 +125,11 @@
                                                 <td> {{ $perProjectContractJournal->amount }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["PCJMP03"]) == true)
-                                                        <a href="{{ route("project.contract.journal.details",["slug" => $perProjectContractJournal->slug,"pcSlug" => $projectContract->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
+                                                        <a href="{{ route("project.contract.journal.details",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
                                                     @if (($projectContract->status =="Ongoing") &&  (Auth::user()->hasUserPermission(["PCJMP04"]) == true))
-                                                        <a href="{{ route("project.contract.journal.edit",["slug" => $perProjectContractJournal->slug,"pcSlug" => $projectContract->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
+                                                        <a href="{{ route("project.contract.journal.edit",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
                                                     @if (($projectContract->status =="Ongoing") && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
@@ -154,7 +154,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                        <form action="{{ route("project.contract.journal.delete",["slug" => $perProjectContractJournal->slug,"pcSlug" => $projectContract->slug]) }}" method="POST">
+                                                                        <form action="{{ route("project.contract.journal.delete",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" method="POST">
                                                                             @csrf
                                                                             @method("DELETE")
                                                                             <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
@@ -170,7 +170,7 @@
                                         @empty
                                             <tr>
                                                 <td colspan="5">
-                                                    <b class="d-flex justify-content-center text-warning">No project contract found.</b>
+                                                    <b class="d-flex justify-content-center text-warning">No journal entry found.</b>
                                                 </td>
                                             </tr>
                                         @endforelse
@@ -205,11 +205,11 @@
                                                 <td> {{ $perProjectContractJournal->amount }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["PCJMP03"]) == true)
-                                                        <a href="{{ route("project.contract.journal.details",["slug" => $perProjectContractJournal->slug,"pcSlug" => $projectContract->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
+                                                        <a href="{{ route("project.contract.journal.details",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
                                                     @if (($projectContract->status =="Ongoing") &&  (Auth::user()->hasUserPermission(["PCJMP04"]) == true))
-                                                        <a href="{{ route("project.contract.journal.edit",["slug" => $perProjectContractJournal->slug,"pcSlug" => $projectContract->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
+                                                        <a href="{{ route("project.contract.journal.edit",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
                                                     @if (($projectContract->status =="Ongoing") && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
@@ -233,7 +233,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                        <form action="{{ route("project.contract.journal.delete",["slug" => $perProjectContractJournal->slug,"pcSlug" => $projectContract->slug]) }}" method="POST">
+                                                                        <form action="{{ route("project.contract.journal.delete",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" method="POST">
                                                                             @csrf
                                                                             @method("DELETE")
                                                                             <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
@@ -248,7 +248,7 @@
                                         @empty
                                             <tr>
                                                 <td colspan="5">
-                                                    <b class="d-flex justify-content-center text-warning">No project contract found.</b>
+                                                    <b class="d-flex justify-content-center text-warning">No jornal entry found.</b>
                                                 </td>
                                             </tr>
                                         @endforelse

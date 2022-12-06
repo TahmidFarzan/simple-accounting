@@ -49,7 +49,7 @@
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Entry date <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
-                                    <input id="entryDateInput" name="entry_date" type="date" class="form-control form-control-sm @error('entry_date') is-invalid @enderror" value="{{ old('entry_date') }}" required>
+                                    <input id="entryDateInput" name="entry_date" type="date" class="form-control form-control-sm @error('entry_date') is-invalid @enderror" value="{{ (old('entry_date') == null) ? date('Y-m-d',strtotime(now())) : date('Y-m-d',strtotime(old('entry_date'))) }}" required>
                                     @error('entry_date')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
