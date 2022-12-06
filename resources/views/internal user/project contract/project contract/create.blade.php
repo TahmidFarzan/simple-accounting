@@ -205,7 +205,7 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-md-4 col-form-label col-form-label-sm text-bold">Invested amount</label>
+                                <label class="col-md-4 col-form-label col-form-label-sm text-bold">Invested amount ({{ $setting["businessSetting"]["currency_symbol"] }})</label>
                                 <div class="col-md-8">
                                     <input id="investedAmountInput" name="invested_amount" type="number" class="form-control form-control-sm @error('invested_amount') is-invalid @enderror" value="{{ (old('invested_amount') == null) ? 0 : old('invested_amount') }}" placeholder="Ex: 0" min="0" step="0.01">
                                     @error('invested_amount')
