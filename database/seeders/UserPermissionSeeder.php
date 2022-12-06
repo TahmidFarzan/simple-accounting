@@ -458,6 +458,7 @@ class UserPermissionSeeder extends Seeder
                     'description' => "The internal user can view.",
                     'slug' => SystemConstant::slugGenerator("View project contract",200),
                 ])->create();
+
                 UserPermission::factory()->state([
                     'name' => "Create a project contract.",
                     'code' => "PCMP02",
@@ -481,6 +482,7 @@ class UserPermissionSeeder extends Seeder
                     'description' => "The internal user can update.",
                     'slug' => SystemConstant::slugGenerator("Update a the project contract.",200),
                 ])->create();
+
                 UserPermission::factory()->state([
                     'name' => "Delete a project contract.",
                     'code' => "PCMP05",
@@ -488,6 +490,46 @@ class UserPermissionSeeder extends Seeder
                     'description' => "The internal user can Delete.",
                     'slug' => SystemConstant::slugGenerator("Delete a the project contract.",200),
                 ])->create();
-           // Project contract category permission.
+           // Project contract  permission.
+                UserPermission::factory()->state([
+                    'name' => "View the project contract journal.",
+                    'code' => "PCJMP01",
+                    'type' => "ProjectContractJournalModulePermission",
+                    'description' => "The internal user can view.",
+                    'slug' => SystemConstant::slugGenerator("View project contract journal",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Create a project contract journal.",
+                    'code' => "PCJMP02",
+                    'type' => "ProjectContractJournalModulePermission",
+                    'description' => "The internal user can create.",
+                    'slug' => SystemConstant::slugGenerator("Create a project contract journal.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "View details of the project contract journal.",
+                    'code' => "PCJMP03",
+                    'type' => "ProjectContractJournalModulePermission",
+                    'description' => "The internal user can view.",
+                    'slug' => SystemConstant::slugGenerator("View details of the project contract journal.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update a project contract journal.",
+                    'code' => "PCJMP04",
+                    'type' => "ProjectContractJournalModulePermission",
+                    'description' => "The internal user can update.",
+                    'slug' => SystemConstant::slugGenerator("Update a the project contract journal.",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Delete a project contract journal.",
+                    'code' => "PCJMP05",
+                    'type' => "ProjectContractJournalModulePermission",
+                    'description' => "The internal user can Delete.",
+                    'slug' => SystemConstant::slugGenerator("Delete a the project contract journal.",200),
+                ])->create();
+           // Project contract category permission
     }
 }
