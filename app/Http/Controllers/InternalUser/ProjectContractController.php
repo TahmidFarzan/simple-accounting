@@ -194,6 +194,7 @@ class ProjectContractController extends Controller
         $statuses = array('Ongoing', 'Upcoming', 'Complete');
         $clients = ProjectContractClient::orderby("name","asc")->get();
         $categories = ProjectContractCategory::tree()->get()->toTree();
+        $receivableStatuses = array('Not started', 'Due', 'Partial', 'Full');
         return view('internal user.project contract.project contract.create',compact("statuses","receivableStatuses","clients","categories"));
     }
 
@@ -202,6 +203,26 @@ class ProjectContractController extends Controller
         return view('internal user.project contract.project contract.details',compact("projectContract"));
     }
 
+    public function edit($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        if(!(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete")){
+            $statuses = array('Ongoing', 'Upcoming', 'Complete');
+            $clients = ProjectContractClient::orderby("name","asc")->get();
+            $categories = ProjectContractCategory::tree()->get()->toTree();
+            $receivableStatuses = array('Not started', 'Due', 'Partial', 'Full');
+
+            $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+
+            return view('internal user.project contract.project contract.edit',compact("statuses","receivableStatuses","clients","categories","projectContract"));
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Can not edit completed project contract.");
+            return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+        }
+
+    }
 
     public function save(Request $request){
         $validator = Validator::make($request->all(),
@@ -402,6 +423,216 @@ class ProjectContractController extends Controller
         else{
             $statusInformation["status"] = "errors";
             $statusInformation["message"] = "Fail to create project contract.";
+        }
+
+        return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+
+    }
+
+    public function update(Request $request,$slug){
+        $projectContractId = ProjectContract::where("slug",$slug)->firstOrFail()->id;
+
+        $validator = Validator::make($request->all(),
+            [
+                'name' => 'required|max:200',
+                'code' => 'required|max:200|unique:project_contracts,code,'.$projectContractId,
+                'start_date' => 'nullable|date',
+                'end_date' => 'nullable|date',
+                'note' => 'nullable',
+                'description' => 'nullable',
+                'status' => 'required|in:Ongoing,Upcoming,Complete',
+                'invested_amount' => 'required|numeric|min:0',
+                'receivable_status' => 'required|in:NotStarted,Due,Partial,Full',
+                'client' => 'required',
+                'category' => 'required',
+            ],
+            [
+                'name.required' => 'Name is required.',
+                'name.max' => 'Name length can not greater then 200 chars.',
+
+                'code.required' => 'Code is required.',
+                'code.max' => 'Code length can not greater then 200 chars.',
+                'code.unique' => 'Code must be unique.',
+
+                'start_date.date' => 'Start date must be a date.',
+                'end_date.date' => 'End date must be a date.',
+
+                'status.required' => 'Status is required.',
+                'status.in' => 'Status must be one out of [Ongoing,Upcoming,Complete].',
+
+                'invested_amount.required' => 'Invested amount is required.',
+                'invested_amount.min' => 'Invested amount must be at lease 0.',
+                'invested_amount.numeric' => 'Invested amount must be unumeric.',
+
+                'receivable_status.required' => 'Receivable status is required.',
+                'receivable_status.in' => 'Receivable status must be one out of [Not started,Due,Partial,Full].',
+
+                'client.required' => 'Client is required.',
+                'category.required' => 'Category is required.',
+            ]
+        );
+
+        $validator->after(function ($validator) {
+            $afterValidatorData = $validator->getData();
+            $currentDate = Carbon::now();;
+            $clientFound = ProjectContractClient::where("slug",$afterValidatorData["client"])->count();
+            $categoryFound = ProjectContractCategory::where("slug",$afterValidatorData["category"])->count();
+
+            if($clientFound == 0){
+                $validator->errors()->add(
+                    'client', "Unknown client."
+                );
+            }
+
+            if($categoryFound == 0){
+                $validator->errors()->add(
+                    'category', "Unknown category."
+                );
+            }
+
+            if(array_key_exists('end_date', $afterValidatorData) && !($afterValidatorData["end_date"] == null) ){
+
+                $endDateToTime = strtotime($afterValidatorData["end_date"]);
+
+                if( array_key_exists('start_date', $afterValidatorData)  && !($afterValidatorData["start_date"] == null )){
+
+                    $startDateToTime = strtotime($afterValidatorData["start_date"]);
+
+                    if($startDateToTime > $endDateToTime){
+                        $validator->errors()->add(
+                            'start_date', "Start date can not greater then end date."
+                        );
+                    }
+
+                    if( $endDateToTime < $startDateToTime){
+                        $validator->errors()->add(
+                            'end_date', "Start date is can not less then end date."
+                        );
+                    }
+
+                    if(!( ($startDateToTime == $endDateToTime) || ($startDateToTime < $endDateToTime))){
+                        $validator->errors()->add(
+                            'start_date', "Incorrect start date."
+                        );
+
+                        $validator->errors()->add(
+                            'end_date', "Incorrect end date."
+                        );
+                    }
+                }
+                else{
+                    $validator->errors()->add(
+                        'start_date', "Start date is required."
+                    );
+                }
+            }
+
+            if(array_key_exists('start_date', $afterValidatorData) && !($afterValidatorData["start_date"] == null)){
+                $currentDateToTime = strtotime($currentDate);
+                $startDateToTime = strtotime($afterValidatorData["start_date"]);
+
+                if($startDateToTime <= $currentDateToTime){
+
+                    if(in_array($afterValidatorData["status"],array("Ongoing","Complete")) == false){
+                        $validator->errors()->add(
+                            'status', "Incorrect status for date range. Status must be one out of [Ongoing,Complete]"
+                        );
+                    }
+
+                    if(array_key_exists('end_date', $afterValidatorData) && !($afterValidatorData["end_date"] == null)){
+                        $endDateToTime = strtotime($afterValidatorData["end_date"]);
+
+                        if(($endDateToTime == $currentDateToTime) || ($endDateToTime > $currentDateToTime)){
+                            if($endDateToTime == $currentDateToTime){
+                                if(in_array($afterValidatorData["status"],array("Ongoing","Complete")) == false){
+                                    $validator->errors()->add(
+                                        'status', "Incorrect status for date range. Status must be one out of [Ongoing,Complete]."
+                                    );
+                                }
+                            }
+                            else{
+                                if(!($afterValidatorData["status"] == "Ongoing")){
+                                    $validator->errors()->add(
+                                        'status', "Incorrect status for date range. Status must be 'Ongoing'."
+                                    );
+                                }
+                            }
+                        }
+                        else{
+                            if(!($afterValidatorData["status"] == "Complete")){
+                                $validator->errors()->add(
+                                    'status', "Incorrect status for date range. Status must be 'Complete'."
+                                );
+                            }
+                        }
+
+
+                    }
+                }
+                else{
+                    if(!($afterValidatorData["status"] == "Upcoming")){
+                        $validator->errors()->add(
+                            'status', "Incorrect status for date range. Status must be 'Upcoming'."
+                        );
+                    }
+                }
+            }
+
+            if(in_array($afterValidatorData["status"],array("Ongoing","Upcoming"))){
+                if(!($afterValidatorData["receivable_status"] == "NotStarted")){
+                    $validator->errors()->add(
+                        'receivable_status', "Incorrect receivable status for status. Receivable status must be 'Not started'."
+                    );
+                }
+            }
+
+            if($afterValidatorData["status"] == "Complete"){
+                if(in_array($afterValidatorData["receivable_status"],array("NotStarted","Due","Partial","Full")) == false){
+                    $validator->errors()->add(
+                        'receivable_status', "Incorrect receivable status for status. Receivable status must be one out of [Not started,Due,Partial,Full]"
+                    );
+                }
+            }
+
+        });
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        if(!(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete")){
+            LogBatch::startBatch();
+                $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+                $projectContract->name = $request->name;
+                $projectContract->code = $request->code;
+                $projectContract->start_date = $request->start_date;
+                $projectContract->end_date = $request->end_date;
+                $projectContract->description = $request->description;
+                $projectContract->note = $request->note;
+                $projectContract->status = $request->status;
+                $projectContract->invested_amount = $request->invested_amount;
+                $projectContract->receivable_status = $request->receivable_status;
+                $projectContract->client_id = ProjectContractClient::where("slug",$request->client)->firstOrFail()->id;
+                $projectContract->category_id = ProjectContractCategory::where("slug",$request->category)->firstOrFail()->id;
+                $projectContract->slug = SystemConstant::slugGenerator($request->name,200);
+                $projectContract->updated_at = Carbon::now();
+                $updateProjectContract = $projectContract->update();
+            LogBatch::endBatch();
+
+            if($updateProjectContract){
+                $statusInformation["status"] = "status";
+                $statusInformation["message"] = "Project contract successfully updated.";
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"] = "Fail to update project contract.";
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Can not update completed project contract.");
         }
 
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
