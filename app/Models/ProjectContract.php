@@ -37,7 +37,9 @@ class ProjectContract extends Model
         'created_by_id',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'note' => 'array',
+    ];
 
     protected $dates = [
         'created_at',
@@ -72,6 +74,15 @@ class ProjectContract extends Model
     public function category()
     {
         return $this->belongsTo(ProjectContractCategory::class,'category_id','id')->withTrashed();
+    }
+
+    public function updatedBy()
+    {
+        $causer = null;
+        if(Activity::where("subject_id",$this->id)->get()->last()){
+            $causer=Activity::where("subject_id",$this->id)->get()->last()->causer;
+        }
+        return $causer;
     }
 
     public function activityLogs(){

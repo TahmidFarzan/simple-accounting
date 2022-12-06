@@ -194,9 +194,13 @@
                             <b class="d-flex justify-content-center mb-1">
                                 Note
                             </b>
-                            <p>
-                                {{ ($projectContract->note == null) ? "Not added." : $projectContract->note }}
-                            </p>
+                            <ul>
+                                @forelse ($projectContract->note as $perNote)
+                                    <li> {{ $perNote }}</li>
+                                @empty
+                                    <li> No note added.</li>
+                                @endforelse
+                            </ul>
                         </div>
                     </div>
                 </div>

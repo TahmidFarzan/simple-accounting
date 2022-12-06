@@ -403,7 +403,7 @@ class ProjectContractController extends Controller
             $projectContract->start_date = $request->start_date;
             $projectContract->end_date = $request->end_date;
             $projectContract->description = $request->description;
-            $projectContract->note = $request->note;
+            $projectContract->note = array($request->note);
             $projectContract->status = $request->status;
             $projectContract->invested_amount = $request->invested_amount;
             $projectContract->receivable_status = $request->receivable_status;
@@ -605,12 +605,16 @@ class ProjectContractController extends Controller
         if(!(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete")){
             LogBatch::startBatch();
                 $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+
+                $notes = $projectContract->note;
+                array_push($notes,$request->note);
+
                 $projectContract->name = $request->name;
                 $projectContract->code = $request->code;
                 $projectContract->start_date = $request->start_date;
                 $projectContract->end_date = $request->end_date;
                 $projectContract->description = $request->description;
-                $projectContract->note = $request->note;
+                $projectContract->note = $notes;
                 $projectContract->status = $request->status;
                 $projectContract->invested_amount = $request->invested_amount;
                 $projectContract->receivable_status = $request->receivable_status;

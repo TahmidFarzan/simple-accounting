@@ -242,7 +242,7 @@
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Note</label>
                                         <div class="col-md-8">
-                                            <textarea id="noteInput" name="note" class="form-control form-control-sm @error('note') is-invalid @enderror" placeholder="Ex: Hello">{{ (old('note') == null) ? $projectContract->description : old('note') }}</textarea>
+                                            <textarea id="noteInput" name="note" class="form-control form-control-sm @error('note') is-invalid @enderror" placeholder="Ex: Hello">{{ old('note') }}</textarea>
 
                                             @error('note')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
