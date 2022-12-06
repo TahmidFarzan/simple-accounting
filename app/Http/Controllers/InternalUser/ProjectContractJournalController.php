@@ -167,4 +167,28 @@ class ProjectContractJournalController extends Controller
 
         return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
+
+    public function delete($pcSlug,$slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        if(ProjectContract::where("slug",$pcSlug)->firstOrFail()->status == "Ongoing"){
+            $projectContractJournal = ProjectContractJournal::where("slug",$slug)->firstOrFail();
+            $deleteProjectContractJournal = $projectContractJournal->delete();
+
+            if($deleteProjectContractJournal){
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Journal entry successfully deleted.");
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Fail to delete journal entry.");
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Project contract is not in ongoing.");
+        }
+
+        return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
 }
