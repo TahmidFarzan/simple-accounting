@@ -231,7 +231,7 @@ class ProjectContractController extends Controller
                 'code' => 'required|max:200|unique:project_contracts,code',
                 'start_date' => 'nullable|date',
                 'end_date' => 'nullable|date',
-                'note' => 'nullable',
+                'note' => 'required',
                 'description' => 'nullable',
                 'status' => 'required|in:Ongoing,Upcoming,Complete',
                 'invested_amount' => 'required|numeric|min:0',
@@ -263,6 +263,8 @@ class ProjectContractController extends Controller
 
                 'client.required' => 'Client is required.',
                 'category.required' => 'Category is required.',
+
+                'note.required' => 'Note is required.',
             ]
         );
 
@@ -438,7 +440,7 @@ class ProjectContractController extends Controller
                 'code' => 'required|max:200|unique:project_contracts,code,'.$projectContractId,
                 'start_date' => 'nullable|date',
                 'end_date' => 'nullable|date',
-                'note' => 'nullable',
+                'note' => 'required',
                 'description' => 'nullable',
                 'status' => 'required|in:Ongoing,Upcoming,Complete',
                 'invested_amount' => 'required|numeric|min:0',
@@ -469,6 +471,8 @@ class ProjectContractController extends Controller
 
                 'client.required' => 'Client is required.',
                 'category.required' => 'Category is required.',
+
+                'note.required' => 'Note is required.',
             ]
         );
 

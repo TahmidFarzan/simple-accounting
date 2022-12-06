@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->string('slug',200)->unique();
             $table->text('description')->nullable();
-            $table->json('note')->nullable();
+            $table->json('note');
             $table->enum('status', ['Ongoing','Upcoming','Complete'])->default('Ongoing');
             $table->double('invested_amount', 8, 2)->default(0);
             $table->enum('receivable_status', ['NotStarted','Due',"Partial","Full"])->default('NotStarted');

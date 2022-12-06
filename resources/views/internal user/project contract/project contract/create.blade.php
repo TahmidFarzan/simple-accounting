@@ -205,7 +205,7 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-md-4 col-form-label col-form-label-sm text-bold">Invested amount ({{ $setting["businessSetting"]["currency_symbol"] }})</label>
+                                <label class="col-md-4 col-form-label col-form-label-sm text-bold">Invested amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-8">
                                     <input id="investedAmountInput" name="invested_amount" type="number" class="form-control form-control-sm @error('invested_amount') is-invalid @enderror" value="{{ (old('invested_amount') == null) ? 0 : old('invested_amount') }}" placeholder="Ex: 0" min="0" step="0.01">
                                     @error('invested_amount')
@@ -236,9 +236,9 @@
 
                                 <div class="col-md-6">
                                     <div class="row">
-                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Note</label>
+                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Note <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
-                                            <textarea id="noteInput" name="note" class="form-control form-control-sm @error('note') is-invalid @enderror" placeholder="Ex: Hello">{{ old('note') }}</textarea>
+                                            <textarea id="noteInput" name="note" class="form-control form-control-sm @error('note') is-invalid @enderror" placeholder="Ex: Hello" required>{{ old('note') }}</textarea>
 
                                             @error('note')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
