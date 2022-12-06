@@ -197,6 +197,11 @@ class ProjectContractController extends Controller
         return view('internal user.project contract.project contract.create',compact("statuses","receivableStatuses","clients","categories"));
     }
 
+    public function details($slug){
+        $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+        return view('internal user.project contract.project contract.details',compact("projectContract"));
+    }
+
 
     public function save(Request $request){
         $validator = Validator::make($request->all(),

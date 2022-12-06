@@ -178,7 +178,7 @@
                                             <th>Client</th>
                                             <th>Category</th>
                                             <th>Date range</th>
-                                            <th>Invested ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
+                                            <th>Receivable ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
                                             <th>Receivable status</th>
                                             <th>Link</th>
                                         </tr>
@@ -199,7 +199,7 @@
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="date-range-popover" data-bs-title="Date range information" data-bs-content="{{ $dateRange }}">
-                                                        {{ ( ($perProjectContract->start_date == null) ? "Not added." : date('d-M-Y',strtotime($perProjectContract->start_date)) ) }} - {{ ( ($perProjectContract->end_date == null) ? "Not added." : date('d-M-Y',strtotime($perProjectContract->end_date)) ) }}
+                                                        {{ ( ($perProjectContract->start_date == null) ? "Not added." : date('d-M-Y',strtotime($perProjectContract->start_date)) ) }} to {{ ( ($perProjectContract->end_date == null) ? "Not added." : date('d-M-Y',strtotime($perProjectContract->end_date)) ) }}
                                                     </button>
                                                 </td>
                                                 <td>
@@ -208,18 +208,18 @@
 
                                                         $totalRevenueAmount = 0;
                                                         $totalLossAmount = 0;
-                                                        $totalInvestedAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
+                                                        $totalReceivableAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
 
                                                         $investedPopOver = "<p>";
                                                         $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total Invested :</b> '.$totalInvestedAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Total Invested :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="invested-amount-popover" data-bs-title="Invented amount information" data-bs-content="{{ $investedPopOver }}">
-                                                        {{ $totalInvestedAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $totalReceivableAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
                                                 <td>
@@ -263,7 +263,7 @@
                                             <th>Client</th>
                                             <th>Category</th>
                                             <th>Date range</th>
-                                            <th>Invested ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
+                                            <th>Receivable ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
                                             <th>Receivable status</th>
                                             <th>Link</th>
                                         </tr>
@@ -293,18 +293,18 @@
 
                                                         $totalRevenueAmount = 0;
                                                         $totalLossAmount = 0;
-                                                        $totalInvestedAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
+                                                        $totalReceivableAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
 
                                                         $investedPopOver = "<p>";
                                                         $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total Invested :</b> '.$totalInvestedAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Total Invested :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="invested-amount-popover" data-bs-title="Invented amount information" data-bs-content="{{ $investedPopOver }}">
-                                                        {{ $totalInvestedAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $totalReceivableAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
                                                 <td>
@@ -349,7 +349,7 @@
                                             <th>Client</th>
                                             <th>Category</th>
                                             <th>Date range</th>
-                                            <th>Invested ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
+                                            <th>Receivable ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
                                             <th>Receivable status</th>
                                             <th>Link</th>
                                         </tr>
@@ -379,18 +379,18 @@
 
                                                         $totalRevenueAmount = 0;
                                                         $totalLossAmount = 0;
-                                                        $totalInvestedAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
+                                                        $totalReceivableAmount = ($investedAmount + $totalLossAmount) - $totalLossAmount;
 
                                                         $investedPopOver = "<p>";
                                                         $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total Invested :</b> '.$totalInvestedAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Total Invested :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="invested-amount-popover" data-bs-title="Invented amount information" data-bs-content="{{ $investedPopOver }}">
-                                                        {{ $totalInvestedAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $totalReceivableAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
                                                 <td>
