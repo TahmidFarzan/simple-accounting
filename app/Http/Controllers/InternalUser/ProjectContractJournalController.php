@@ -99,6 +99,20 @@ class ProjectContractJournalController extends Controller
         }
     }
 
+    public function edit ($pcSlug,$slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+        if(ProjectContract::where("slug",$pcSlug)->firstOrFail()->status == "Ongoing"){
+            $projectContract = ProjectContract::where("slug",$pcSlug)->firstOrFail();
+            $projectContractJournal = ProjectContractJournal::where("slug",$slug)->firstOrFail();
+            return view('internal user.project contract.journal.edit',compact("projectContract","projectContractJournal"));
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Project contract is not in ongoing.");
+            return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+        }
+    }
+
     public function save(Request $request,$pcSlug){
         $validator = Validator::make($request->all(),
             [
@@ -158,6 +172,74 @@ class ProjectContractJournalController extends Controller
             else{
                 $statusInformation["status"] = "errors";
                 $statusInformation["message"] = "Fail to create journal entry.";
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Project contract is not in ongoing.");
+        }
+
+        return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    public function update(Request $request,$pcSlug,$slug){
+        $validator = Validator::make($request->all(),
+            [
+                'name' => 'required|max:200',
+                'entry_date' => 'required|date',
+                'note' => 'required',
+                'description' => 'nullable',
+                'entry_type' => 'required|in:Revenue,Loss',
+                'amount' => 'required|numeric|min:0',
+            ],
+            [
+                'name.required' => 'Name is required.',
+                'name.max' => 'Name length can not greater then 200 chars.',
+
+                'entry_date.required' => 'Entry date is required.',
+                'entry_date.date' => 'Entry date must be a date.',
+
+                'entry_type.required' => 'Entry type is required.',
+                'entry_type.in' => 'Entry type must be one out of [Revenue,Loss].',
+
+                'amount.required' => 'Amount is required.',
+                'amount.min' => 'Amount must be at lease 0.',
+                'amount.numeric' => 'Amount must be unumeric.',
+
+                'note.required' => 'Note is required.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        if(ProjectContract::where("slug",$pcSlug)->firstOrFail()->status == "Ongoing"){
+            LogBatch::startBatch();
+                $projectContractJournal =ProjectContractJournal::where("slug",$slug)->firstOrFail();
+                $notes = $projectContractJournal->note;
+                array_push($notes,$request->note);
+
+                $projectContractJournal->name = $request->name;
+                $projectContractJournal->entry_date = $request->entry_date ;
+                $projectContractJournal->description = $request->description;
+                $projectContractJournal->note = $notes;
+                $projectContractJournal->entry_type = $request->entry_type;
+                $projectContractJournal->amount = $request->amount;
+                $projectContractJournal->slug = SystemConstant::slugGenerator($request->name,200);
+                $projectContractJournal->updated_at = Carbon::now();
+                $updateProjectContractJournal = $projectContractJournal->update();
+            LogBatch::endBatch();
+
+            if($updateProjectContractJournal){
+                $statusInformation["status"] = "status";
+                $statusInformation["message"] = "Journal entry successfully updated.";
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"] = "Fail to update journal entry.";
             }
         }
         else{

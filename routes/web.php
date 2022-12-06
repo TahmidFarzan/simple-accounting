@@ -121,7 +121,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('details/{slug}', [ProjectContractJournalController::class, 'details'])->name('details');
 
             Route::post('save', [ProjectContractJournalController::class, 'save'])->name('save');
-            Route::patch('update/{slug}', [ProjectContractJournalControllerr::class, 'update'])->name('update');
+            Route::patch('update/{slug}', [ProjectContractJournalController::class, 'update'])->name('update');
             Route::delete('delete/{slug}', [ProjectContractJournalController::class, 'delete'])->name('delete');
         });
 
