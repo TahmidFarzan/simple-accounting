@@ -50,7 +50,7 @@ class ProjectContractCategory extends Model
         return LogOptions::defaults()
         ->logOnly(['name','code','slug','parent_id','deleted_at', 'description','created_at','updated_at','created_by_id'])
         ->useLogName('Project contract category')
-        ->setDescriptionForEvent(fn(string $eventName) => "The project contract category has been {$eventName}.")
+        ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id"])
         ->dontSubmitEmptyLogs();

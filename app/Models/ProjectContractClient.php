@@ -52,7 +52,7 @@ class ProjectContractClient extends Model
                     'address','mobile_no','description','created_by_id',
         ])
         ->useLogName('Project contract client')
-        ->setDescriptionForEvent(fn(string $eventName) => "The product has been {$eventName}.")
+        ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id"])
         ->dontSubmitEmptyLogs();

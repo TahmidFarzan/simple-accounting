@@ -42,7 +42,7 @@ class UserPermissionGroupHasUserPermission extends Pivot
             'user_permission_group_id',
         ])
         ->useLogName('User permission group')
-        ->setDescriptionForEvent(fn(string $eventName) => "The product category has been {$eventName}.")
+        ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id",'created_at',])
         ->dontSubmitEmptyLogs();

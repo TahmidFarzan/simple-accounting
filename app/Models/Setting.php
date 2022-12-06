@@ -47,7 +47,7 @@ class Setting extends Model
         return LogOptions::defaults()
         ->logOnly(['fields_with_values','slug',"updated_at"])
         ->useLogName('Setting')
-        ->setDescriptionForEvent(fn(string $eventName) => "The setting has been {$eventName}")
+        ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id",'name', 'code','created_by_id','created_at',"updated_at"])
         ->dontSubmitEmptyLogs();

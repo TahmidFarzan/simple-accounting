@@ -47,7 +47,7 @@ class UserPermissionGroup extends Model
             'created_by_id',
         ])
         ->useLogName('User permission group')
-        ->setDescriptionForEvent(fn(string $eventName) => "The product category has been {$eventName}.")
+        ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id",'created_at',])
         ->dontSubmitEmptyLogs();

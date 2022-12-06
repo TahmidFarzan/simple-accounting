@@ -45,7 +45,7 @@ class ProjectContractPaymentMethod extends Model
         return LogOptions::defaults()
         ->logOnly(['name','slug','description','created_at','updated_at','created_by_id'])
         ->useLogName('Project Contract Payment Type')
-        ->setDescriptionForEvent(fn(string $eventName) => "The project contract payment type has been {$eventName}.")
+        ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id"])
         ->dontSubmitEmptyLogs();

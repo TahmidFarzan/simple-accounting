@@ -69,7 +69,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'is_default_password',
         ])
         ->useLogName('User')
-        ->setDescriptionForEvent(fn(string $eventName) => "The product category has been {$eventName}.")
+        ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id",'created_by_id','created_at','remember_token',])
         ->dontSubmitEmptyLogs();

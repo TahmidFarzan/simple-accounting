@@ -55,7 +55,7 @@ class ProjectContract extends Model
                 'client_id','category_id',
         ])
         ->useLogName('Project contract')
-        ->setDescriptionForEvent(fn(string $eventName) => "The product category has been {$eventName}.")
+        ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id",'created_at',])
         ->dontSubmitEmptyLogs();
