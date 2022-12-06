@@ -79,6 +79,12 @@ class ProjectContractJournalController extends Controller
         return view('internal user.project contract.journal.index',compact("projectContractJournalRevenueEntries","projectContractJournalLossEntries","projectContract","paginations"));
     }
 
+    public function details ($pcSlug,$slug){
+        $projectContract = ProjectContract::where("slug",$pcSlug)->firstOrFail();
+        $projectContractJournal = ProjectContractJournal::where("slug",$slug)->firstOrFail();
+        return view('internal user.project contract.journal.details',compact("projectContract","projectContractJournal"));
+    }
+
     public function create (Request $request,$pcSlug){
         $statusInformation = array("status" => "errors","message" => collect());
 
