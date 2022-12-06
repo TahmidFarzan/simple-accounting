@@ -192,7 +192,6 @@ class ProjectContractController extends Controller
 
     public function create(){
         $statuses = array('Ongoing', 'Upcoming', 'Complete');
-        $receivableStatuses = array('Not started', 'Due', 'Partial', 'Full');
         $clients = ProjectContractClient::orderby("name","asc")->get();
         $categories = ProjectContractCategory::tree()->get()->toTree();
         return view('internal user.project contract.project contract.create',compact("statuses","receivableStatuses","clients","categories"));
@@ -436,7 +435,7 @@ class ProjectContractController extends Controller
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Can not delete completed project contract .");
+            $statusInformation["message"]->push("Can not delete completed project contract.");
         }
     }
 }
