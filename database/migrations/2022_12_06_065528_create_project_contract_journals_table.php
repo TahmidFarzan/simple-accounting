@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('slug',200)->unique();
             $table->dateTime('entry_date')->nullable();
             $table->text('description')->nullable();
-            $table->json('note')->nullable();
+            $table->json('note');
             $table->enum('entry_type', ['Revenue','Loss'])->default('Revenue');
             $table->double('amount', 8, 2)->default(0);
 
