@@ -87,10 +87,10 @@ class AuthenticationLogController extends Controller
         else{
             if($authenticationLog->delete()){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Authentication log successfully deleted.");
+                $statusInformation["message"]->push("Record successfully deleted.");
             }
             else{
-                $statusInformation["message"]->push("Fali to delete the authentication log.");
+                $statusInformation["message"]->push("Fali to delete record.");
             }
         }
 
@@ -114,16 +114,16 @@ class AuthenticationLogController extends Controller
 
                 if($authenticationLogDelete){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push("All authentication log are deleted successfully.");
+                    $statusInformation["message"]->push("All record are deleted successfully.");
                 }
                 else{
                     $statusInformation["status"] = "errors";
-                    $statusInformation["message"]->push("Fail to delete.");
+                    $statusInformation["message"]->push("Fail to delete records.");
                 }
             }
             else{
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("No older authentication log exit to be deleted.");
+                $statusInformation["message"]->push("No older record exit to be deleted.");
             }
         }
         else{

@@ -140,27 +140,27 @@ class UserPermissionSeeder extends Seeder
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "View authentication log details.",
+                'name' => "View details of a record.",
                 'code' => "AULMP02",
                 'type' => "AuthenticationLogModulePermission",
-                'description' => "The internal user can view authentication log details.",
-                'slug' => SystemConstant::slugGenerator("View authentication log  details.",200),
+                'description' => "The internal user can view details of a record.",
+                'slug' => SystemConstant::slugGenerator("View details of a record.",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Delete any authentication log.",
+                'name' => "Delete a record.",
                 'code' => "AULMP03",
                 'type' => "AuthenticationLogModulePermission",
-                'description' => "The internal user can delete any authentication log.",
-                'slug' => SystemConstant::slugGenerator("Delete any authentication log",200),
+                'description' => "The internal user can delete a record.",
+                'slug' => SystemConstant::slugGenerator("Delete a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Delete all authentication log.",
+                'name' => "Delete all record.",
                 'code' => "AULMP04",
                 'type' => "AuthenticationLogModulePermission",
-                'description' => "The internal user can delete all authentication log.",
-                'slug' => SystemConstant::slugGenerator("Delete all authentication log",200),
+                'description' => "The internal user can delete all record.",
+                'slug' => SystemConstant::slugGenerator("Delete all record",200),
             ])->create();
 
         // Setting permission.
