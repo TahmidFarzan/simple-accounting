@@ -196,19 +196,19 @@ class ExtraController extends Controller
             }
 
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("User permission group successfully created.");
+            $statusInformation["message"]->push("Record successfully created.");
 
             if($userPermissionGroup->userPermissions()->count() == count($request->user_permission)){
-                $statusInformation["message"]->push("All selected user permission are added to user permission group.");
+                $statusInformation["message"]->push("All selected user permissions are added to the record.");
             }
             else{
                 $statusInformation["status"] = "warning";
-                $statusInformation["message"]->push("Some selected user permission are fail to add to user permission group.");
+                $statusInformation["message"]->push("Some selected user permission are fail to add to record.");
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to create user permission group.";
+            $statusInformation["message"] = "Fail to create record.";
         }
 
         return redirect()->route("user.permission.group.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -299,19 +299,19 @@ class ExtraController extends Controller
             }
 
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("User permission group successfully updated.");
+            $statusInformation["message"]->push("Record successfully updated.");
 
             if($userPermissionGroup->userPermissions()->count() == count($request->user_permission)){
-                $statusInformation["message"]->push("All selected user permission are updated to user permission group.");
+                $statusInformation["message"]->push("All selected user permission are updated for record.");
             }
             else{
                 $statusInformation["status"] = "warning";
-                $statusInformation["message"]->push("Some selected user permission are fail to updated to user permission group.");
+                $statusInformation["message"]->push("Some selected user permission are fail to updated for record.");
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to updated user permission group.";
+            $statusInformation["message"] = "Fail to updated record.";
         }
 
         return redirect()->route("user.permission.group.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -328,18 +328,18 @@ class ExtraController extends Controller
 
             if($deleteUserPermissionGroup){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("User permission group successfully deleted.");
+                $statusInformation["message"]->push("Record successfully deleted.");
             }
             else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Fail to delete user permission group.");
+                $statusInformation["message"]->push("Fail to delete record.");
             }
         }
         else{
             $statusInformation["status"] = $passedDeleteValidation["status"];
 
-            $statusInformation["message"]->push("You can not delete user permission group.");
-            $statusInformation["message"]->push("Please remove these dependency first.");
+            $statusInformation["message"]->push("You can not delete record.");
+            $statusInformation["message"]->push("Please remove below dependency first.");
 
             foreach($passedDeleteValidation["message"] as $errorMessage){
                 $statusInformation["message"]->push($errorMessage);
@@ -348,6 +348,7 @@ class ExtraController extends Controller
 
         return redirect()->route("user.permission.group.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
+
     public function userPermissionGroupDeleteValidation($slug){
         $userPermissionGroup = UserPermissionGroup::where("slug",$slug)->firstorFail();
 
@@ -355,7 +356,7 @@ class ExtraController extends Controller
 
         if($userPermissionGroup->users->count() > 0){
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Some user are using this user permission group.");
+            $statusInformation["message"]->push("Some user are using this.");
         }
         else{
             $statusInformation["status"] = "status";
