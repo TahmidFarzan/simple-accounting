@@ -496,19 +496,19 @@ class UserPermissionSeeder extends Seeder
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Change status of a record.",
+                'name' => "Change the status of a record to complete..",
                 'code' => "PCMP06",
                 'type' => "ProjectContractModulePermission",
-                'description' => "The internal user can change record status.",
-                'slug' => SystemConstant::slugGenerator("Change status of a record.",200),
+                'description' => "The internal user can change the status of a record to complete.",
+                'slug' => SystemConstant::slugGenerator("Change the status of a record to complete.",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Change receivable status of a record.",
+                'name' => "Start receive payment of a record.",
                 'code' => "PCMP07",
                 'type' => "ProjectContractModulePermission",
-                'description' => "The internal user can change record receivable status.",
-                'slug' => SystemConstant::slugGenerator("Change receivable status of a record.",200),
+                'description' => "The internal user can start receive payment of a record.",
+                'slug' => SystemConstant::slugGenerator("Start receive payment of a record",200),
             ])->create();
 
         // Project contract journal  permission.

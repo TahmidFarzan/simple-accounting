@@ -267,10 +267,10 @@
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["PCMP06"]) == true)
-                                                        <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#ongoingStatusChangeConfirmationModal">
+                                                        <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#ongoingChangeStatusToCompleteConfirmationModal">
                                                             Complete
                                                         </button>
-                                                        <div class="modal fade" id="ongoingStatusChangeConfirmationModal" tabindex="-1">
+                                                        <div class="modal fade" id="ongoingChangeStatusToCompleteConfirmationModal" tabindex="-1">
                                                             <div class="modal-dialog modal-lg">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -287,7 +287,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                        <form action="{{ route("project.contract.change.status",["slug" => $perProjectContract->slug]) }}" method="POST">
+                                                                        <form action="{{ route("project.contract.change.status.to.complete",["slug" => $perProjectContract->slug]) }}" method="POST">
                                                                             @csrf
                                                                             @method("PATCH")
                                                                             <button type="submit" class="btn btn-sm btn-success">Yes,Change</button>
@@ -393,10 +393,10 @@
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["PCMP07"]) == true)
-                                                        <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#completeReceivableStatusChangeConfirmationModal">
-                                                            Start receivable
+                                                        <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#completeReceivePaymentConfirmationModal">
+                                                            Start receive payment
                                                         </button>
-                                                        <div class="modal fade" id="completeReceivableStatusChangeConfirmationModal" tabindex="-1">
+                                                        <div class="modal fade" id="completeReceivePaymentConfirmationModal" tabindex="-1">
                                                             <div class="modal-dialog modal-lg">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -407,13 +407,14 @@
                                                                         <p>
                                                                             <ul>
                                                                                 <li>Receivable status will be due.</li>
+                                                                                <li>Payment can be added.</li>
                                                                                 <li>Can not return to previous receivable status.</li>
                                                                             </ul>
                                                                         </p>
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                        <form action="{{ route("project.contract.change.receivable.status",["slug" => $perProjectContract->slug]) }}" method="POST">
+                                                                        <form action="{{ route("project.contract.start.receive.payment",["slug" => $perProjectContract->slug]) }}" method="POST">
                                                                             @csrf
                                                                             @method("PATCH")
                                                                             <button type="submit" class="btn btn-sm btn-success">Yes,Change</button>

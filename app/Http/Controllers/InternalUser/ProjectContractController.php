@@ -26,8 +26,8 @@ class ProjectContractController extends Controller
         $this->middleware(['user.user.permission.check:PCMP03'])->only(["details"]);
         $this->middleware(['user.user.permission.check:PCMP04'])->only(["edit","update"]);
         $this->middleware(['user.user.permission.check:PCMP05'])->only(["delete"]);
-        $this->middleware(['user.user.permission.check:PCMP06'])->only(["changeStatus"]);
-        $this->middleware(['user.user.permission.check:PCMP07'])->only(["changeReceivableStatus"]);
+        $this->middleware(['user.user.permission.check:PCMP06'])->only(["changeStatusToComplete"]);
+        $this->middleware(['user.user.permission.check:PCMP07'])->only(["startReceivePayment"]);
     }
 
     public function index(Request $request){
@@ -497,7 +497,7 @@ class ProjectContractController extends Controller
         }
     }
 
-    public function changeStatus($slug){
+    public function changeStatusToComplete($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
         if(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Ongoing"){
@@ -525,7 +525,7 @@ class ProjectContractController extends Controller
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
-    public function changeReceivableStatus($slug){
+    public function startReceivePayment($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
         if(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete"){
