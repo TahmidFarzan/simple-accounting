@@ -62,7 +62,7 @@ class ModelsRelationDependencyConstant
             // Dependent category.
             $pCategoryTreeIds = $pCategory->descendants()->pluck("id")->toArray();
             if(count($pCategoryTreeIds) > 0){
-                $pCategoriesTrash=ProjectContractCategory::whereIn("id",$pCategoryTreeIds)->delete();
+                $pCategoriesTrash = ProjectContractCategory::whereIn("id",$pCategoryTreeIds)->delete();
                 if($pCategoriesTrash){
                     $statusInformation["status"] = "status";
                     array_push($statusInformation["message"],count($pCategoryTreeIds)." dependent category(ies) is/are trashed.");
