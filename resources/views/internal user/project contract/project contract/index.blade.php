@@ -274,13 +274,13 @@
                                                             <div class="modal-dialog modal-lg">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h1 class="modal-title fs-5">{{ $perProjectContract->name }} status confirmation model</h1>
+                                                                        <h1 class="modal-title fs-5">{{ $perProjectContract->name }} status change confirmation model</h1>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <p>
                                                                             <ul>
-                                                                                <li>Project contract status will be complete.</li>
+                                                                                <li>Status will be complete.</li>
                                                                                 <li>Can not return to previous status.</li>
                                                                             </ul>
                                                                         </p>

@@ -325,7 +325,7 @@
                         </button>
                     @endif
 
-                    @if (!($projectContract->status == "Complete") && ($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCMP06"]) == true))
+                    @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCMP06"]) == true))
                         <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#ongoingStatusChangeConfirmationModal">
                             Complete
                         </button>
@@ -366,18 +366,18 @@
                 </div>
             @endif
 
-            @if (!($projectContract->status == "Complete") && ($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCMP06"]) == true))
+            @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCMP06"]) == true))
                 <div class="modal fade" id="ongoingStatusChangeConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5">{{ $projectContract->name }} status confirmation model</h1>
+                                <h1 class="modal-title fs-5">{{ $projectContract->name }} status change confirmation model</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p>
                                     <ul>
-                                        <li>Project contract status will be complete.</li>
+                                        <li>Status will be complete.</li>
                                         <li>Can not return to previous status.</li>
                                     </ul>
                                 </p>
