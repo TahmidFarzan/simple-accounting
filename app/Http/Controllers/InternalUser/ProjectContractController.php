@@ -682,26 +682,27 @@ class ProjectContractController extends Controller
     public function changeStatus($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
-        if(!(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete")){
+        if(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Ongoing"){
             $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
-            $updateStatus = ($projectContract->status == "Ongoing") ? "Complete" : "Ongoing";
 
-            $projectContract->status = $updateStatus;
+            $projectContract->status = "Complete";
+            $projectContract->updated_at = Carbon::now();
 
-            $statusUpdateProjectContract =  $projectContract->update();
+            $statusUpdate =  $projectContract->update();
 
-            if($statusUpdateProjectContract){
+            if($statusUpdate){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Project contract status successfully updated.");
+                $statusInformation["message"]->push("Status successfully changed.");
             }
             else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Fail to update project contract status.");
+                $statusInformation["message"]->push("Fail to changed status.");
             }
         }
         else{
-            $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Can not update status of completed project contract.");
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Not need to update status.");
+            $statusInformation["message"]->push("Complete status is already used.");
         }
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
