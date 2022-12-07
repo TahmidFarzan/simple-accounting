@@ -10,6 +10,7 @@ use App\Http\Controllers\InternalUser\ProjectContractController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
 use App\Http\Controllers\InternalUser\ProjectContractClientController;
 use App\Http\Controllers\InternalUser\ProjectContractJournalController;
+use App\Http\Controllers\InternalUser\ProjectContractPaymentController;
 use App\Http\Controllers\InternalUser\ProjectContractCategoryController;
 use App\Http\Controllers\InternalUser\ProjectContractPaymentMethodController;
 
@@ -125,6 +126,18 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::post('save', [ProjectContractJournalController::class, 'save'])->name('save');
             Route::patch('update/{slug}', [ProjectContractJournalController::class, 'update'])->name('update');
             Route::delete('delete/{slug}', [ProjectContractJournalController::class, 'delete'])->name('delete');
+        });
+
+        // Payment
+        Route::prefix('{pcSlug}/payment')->name('payment.')->group(function(){
+            Route::get('/', [ProjectContractPaymentController::class, 'index'])->name('index');
+            Route::get('edit/{slug}', [ProjectContractPaymentController::class, 'edit'])->name('edit');
+            Route::get('create', [ProjectContractPaymentController::class, 'create'])->name('create');
+            Route::get('details/{slug}', [ProjectContractPaymentController::class, 'details'])->name('details');
+
+            Route::post('save', [ProjectContractPaymentController::class, 'save'])->name('save');
+            Route::patch('update/{slug}', [ProjectContractPaymentController::class, 'update'])->name('update');
+            Route::delete('delete/{slug}', [ProjectContractPaymentController::class, 'delete'])->name('delete');
         });
 
         // Category

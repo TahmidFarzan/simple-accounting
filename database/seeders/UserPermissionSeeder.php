@@ -552,6 +552,47 @@ class UserPermissionSeeder extends Seeder
                 'slug' => SystemConstant::slugGenerator("Delete a record.",200),
             ])->create();
 
+        // Project contract payment  permission.
+            UserPermission::factory()->state([
+                'name' => "View the records.",
+                'code' => "PCPMP01",
+                'type' => "ProjectContractPaymentModulePermission",
+                'description' => "The internal user can view records.",
+                'slug' => SystemConstant::slugGenerator("View the records",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Create a record.",
+                'code' => "PCPMP02",
+                'type' => "ProjectContractPaymentModulePermission",
+                'description' => "The internal user can create a record.",
+                'slug' => SystemConstant::slugGenerator("Create a record.",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "View details of a record.",
+                'code' => "PCPMP03",
+                'type' => "ProjectContractPaymentModulePermission",
+                'description' => "The internal user can view details of a record.",
+                'slug' => SystemConstant::slugGenerator("View details of a record.",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Update a record.",
+                'code' => "PCPMP04",
+                'type' => "ProjectContractPaymentModulePermission",
+                'description' => "The internal user can update a record.",
+                'slug' => SystemConstant::slugGenerator("Update a record.",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete a record.",
+                'code' => "PCPMP05",
+                'type' => "ProjectContractPaymentModulePermission",
+                'description' => "The internal user can delete a record.",
+                'slug' => SystemConstant::slugGenerator("Delete a record.",200),
+            ])->create();
+
         // Project contract category permission
     }
 }
