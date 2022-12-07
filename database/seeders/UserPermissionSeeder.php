@@ -492,11 +492,11 @@ class UserPermissionSeeder extends Seeder
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update status of a project contract.",
+                    'name' => "Change status of a project contract.",
                     'code' => "PCMP06",
                     'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can update status.",
-                    'slug' => SystemConstant::slugGenerator("Update status of a the project contract.",200),
+                    'description' => "The internal user can change status.",
+                    'slug' => SystemConstant::slugGenerator("Change status of a the project contract.",200),
                 ])->create();
            // Project contract  permission.
                 UserPermission::factory()->state([

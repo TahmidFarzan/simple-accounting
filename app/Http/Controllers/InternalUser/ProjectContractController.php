@@ -24,7 +24,7 @@ class ProjectContractController extends Controller
         $this->middleware(['user.user.permission.check:PCMP03'])->only(["details"]);
         $this->middleware(['user.user.permission.check:PCMP04'])->only(["edit","update"]);
         $this->middleware(['user.user.permission.check:PCMP05'])->only(["delete"]);
-        $this->middleware(['user.user.permission.check:PCMP06'])->only(["statusChange"]);
+        $this->middleware(['user.user.permission.check:PCMP06'])->only(["changeStatus"]);
     }
 
     public function index(Request $request){
@@ -679,7 +679,7 @@ class ProjectContractController extends Controller
         }
     }
 
-    public function statusChange($slug){
+    public function changeStatus($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
         if(!(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete")){

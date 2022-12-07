@@ -384,7 +384,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                <form action="{{ route("project.contract.status.change",["slug" => $projectContract->slug]) }}" method="POST">
+                                <form action="{{ route("project.contract.change.status",["slug" => $projectContract->slug]) }}" method="POST">
                                     @csrf
                                     @method("PATCH")
                                     <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
