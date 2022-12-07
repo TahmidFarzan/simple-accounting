@@ -113,8 +113,8 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::post('save', [ProjectContractController::class, 'save'])->name('save');
         Route::patch('update/{slug}', [ProjectContractController::class, 'update'])->name('update');
         Route::delete('delete/{slug}', [ProjectContractController::class, 'delete'])->name('delete');
-        Route::patch('change-status-to-complete/{slug}', [ProjectContractController::class, 'changeStatusToComplete'])->name('change.status.to.complete');
-        Route::patch('start-receive-payment/{slug}', [ProjectContractController::class, 'startReceivePayment'])->name('start.receive.payment');
+        Route::patch('complete-project-contract/{slug}', [ProjectContractController::class, 'completeProjectContract'])->name('complete.project.contract');
+        Route::patch('start-receiving-payment/{slug}', [ProjectContractController::class, 'startReceivingPayment'])->name('start.receiving.payment');
 
         // Journal
         Route::prefix('{pcSlug}/journal')->name('journal.')->group(function(){

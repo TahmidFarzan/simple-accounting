@@ -26,8 +26,8 @@ class ProjectContractController extends Controller
         $this->middleware(['user.user.permission.check:PCMP03'])->only(["details"]);
         $this->middleware(['user.user.permission.check:PCMP04'])->only(["edit","update"]);
         $this->middleware(['user.user.permission.check:PCMP05'])->only(["delete"]);
-        $this->middleware(['user.user.permission.check:PCMP06'])->only(["changeStatusToComplete"]);
-        $this->middleware(['user.user.permission.check:PCMP07'])->only(["startReceivePayment"]);
+        $this->middleware(['user.user.permission.check:PCMP06'])->only(["completeProjectContract"]);
+        $this->middleware(['user.user.permission.check:PCMP07'])->only(["startReceivingPayment"]);
     }
 
     public function index(Request $request){
@@ -305,12 +305,11 @@ class ProjectContractController extends Controller
 
         if($saveProjectContract){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Record successfully created.";
+            $statusInformation["message"] = "Successfully created.";
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("The status is completed.");
-            $statusInformation["message"]->push("Can not update the record.");
+            $statusInformation["message"]->push("Can not update.");
         }
 
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -449,17 +448,17 @@ class ProjectContractController extends Controller
 
             if($updateProjectContract){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"] = "Record successfully updated.";
+                $statusInformation["message"] = "Successfully updated.";
             }
             else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"] = "Fail to update record.";
+                $statusInformation["message"] = "Fail to update.";
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("The status is completed.");
-            $statusInformation["message"]->push("Can not update the record.");
+            $statusInformation["message"]->push("Can not update.");
+            $statusInformation["message"]->push("Project contract is completed.");
         }
 
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -483,7 +482,7 @@ class ProjectContractController extends Controller
 
             if($deleteProjectContract){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Record successfully deleted.");
+                $statusInformation["message"]->push("Successfully deleted.");
             }
             else{
                 $statusInformation["status"] = "errors";
@@ -492,12 +491,12 @@ class ProjectContractController extends Controller
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("The status is completed.");
-            $statusInformation["message"]->push("Can not update the record.");
+            $statusInformation["message"]->push("Can not delete the record.");
+            $statusInformation["message"]->push("Project contract is completed.");
         }
     }
 
-    public function changeStatusToComplete($slug){
+    public function completeProjectContract($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
         if(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Ongoing"){
@@ -510,22 +509,22 @@ class ProjectContractController extends Controller
 
             if($statusUpdate){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Record status successfully changed.");
+                $statusInformation["message"]->push("Successfully completed.");
             }
             else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Fail to changed record status.");
+                $statusInformation["message"]->push("Fail to complete project contract.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Not need to update status.");
-            $statusInformation["message"]->push("Record status is complete status.");
+            $statusInformation["message"]->push("Not need to completed.");
+            $statusInformation["message"]->push("Project contract is completed.");
         }
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
-    public function startReceivePayment($slug){
+    public function startReceivingPayment($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
         if(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete"){
@@ -538,23 +537,23 @@ class ProjectContractController extends Controller
 
                 if($receivableStatusUpdate){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push("Record receivable status successfully updated.");
+                    $statusInformation["message"]->push("Receiving payment start successfully.");
                 }
                 else{
                     $statusInformation["status"] = "errors";
-                    $statusInformation["message"]->push("Fail to update record receivable status.");
+                    $statusInformation["message"]->push("Fail to start receiving payment.");
                 }
             }
             else{
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Record receivable status is not 'Not started'.");
-                $statusInformation["message"]->push("No need to change status.");
+                $statusInformation["message"]->push("Payment can be received.");
+                $statusInformation["message"]->push("No need to start receiving payment.");
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Status is ongoing.");
-            $statusInformation["message"]->push("Can not update record receivable status.");
+            $statusInformation["message"]->push("Project contract is ongoing.");
+            $statusInformation["message"]->push("Can not start receiving payment.");
         }
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
