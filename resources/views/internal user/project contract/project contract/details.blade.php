@@ -114,7 +114,7 @@
                                             <th style="width: 30%;">Status</th>
                                             <th style="width: 1%;">:</th>
                                             <td>
-                                                <span class="badge p-2 @if($projectContract->status == "Ongoing") text-bg-primary @endif @if($projectContract->status == "Upcoming") text-bg-secondary @endif @if($projectContract->status == "Complete") text-bg-success @endif" style="font-size: 13px;"> {{ $projectContract->status }}</span>
+                                                <span class="badge p-2 @if($projectContract->status == "Ongoing") text-bg-primary @endif @if($projectContract->status == "Complete") text-bg-success @endif" style="font-size: 13px;"> {{ $projectContract->status }}</span>
                                             </td>
                                         </tr>
                                         <tr>

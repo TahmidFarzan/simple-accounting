@@ -26,7 +26,7 @@
             <div class="row mb-2">
                 <p>
                     @if (Auth::user()->hasUserPermission(["PCMP02"]) == true)
-                        <a href="{{ route("project.contract.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create project contract</a>
+                        <a href="{{ route("project.contract.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create record</a>
                     @endif
 
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sortingCollapseDiv" aria-expanded="false" aria-controls="sortingCollapseDiv">
@@ -34,6 +34,7 @@
                     </button>
                 </p>
             </div>
+
             <div class="row mb-2" id="extraErrorMessageDiv" style="display: none;"></div>
 
             <div class="row mb-2">
@@ -163,7 +164,6 @@
                     <div class="nav nav-tabs" id="tabGroup" role="tabList">
                         <button class="nav-link active" id="ongoingNavTab" data-bs-toggle="tab" data-bs-target="#ongoingNavTabDiv" type="button" role="tab">Ongoing</button>
                         <button class="nav-link" id="completeNavTab" data-bs-toggle="tab" data-bs-target="#completeNavTabDiv" type="button" role="tab">Complete</button>
-                        <button class="nav-link" id="upcomingNavTab" data-bs-toggle="tab" data-bs-target="#upcomingNavTabDiv" type="button" role="tab">Upcoming</button>
                     </div>
                 </nav>
                 <div class="tab-content" id="tabGroupDivContent">
@@ -267,7 +267,7 @@
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["PCMP06"]) == true)
-                                                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#ongoingStatusChangeConfirmationModal">
+                                                        <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#ongoingStatusChangeConfirmationModal">
                                                             Complete
                                                         </button>
                                                         <div class="modal fade" id="ongoingStatusChangeConfirmationModal" tabindex="-1">
@@ -388,7 +388,7 @@
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["PCMP07"]) == true)
-                                                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#completeReceivableStatusChangeConfirmationModal">
+                                                        <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#completeReceivableStatusChangeConfirmationModal">
                                                             Start receivable
                                                         </button>
                                                         <div class="modal fade" id="completeReceivableStatusChangeConfirmationModal" tabindex="-1">
@@ -442,123 +442,6 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade" id="upcomingNavTabDiv" role="tabpanel">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Client</th>
-                                            <th>Category</th>
-                                            <th>Date range</th>
-                                            <th>Receivable ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
-                                            <th>Receivable status</th>
-                                            <th>Link</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($upcomingProjectContracts as $perProjectContractIndex => $perProjectContract)
-                                            <tr>
-                                                <td>{{ $perProjectContractIndex + 1 }}</td>
-                                                <td>{{ $perProjectContract->name }}</td>
-                                                <td>{{ $perProjectContract->client->name }}</td>
-                                                <td>{{ $perProjectContract->category->name }}</td>
-                                                <td>
-                                                    @php
-                                                        $dateRange = "<p>";
-                                                        $dateRange = $dateRange.'<b>Start date :</b> '.( ($perProjectContract->start_date == null) ? "Not added." : date('d-M-Y',strtotime($perProjectContract->start_date)) ).'<br/>';
-                                                        $dateRange = $dateRange.'<b>End date :</b> '.( ($perProjectContract->end_date == null) ? "Not added." : date('d-M-Y',strtotime($perProjectContract->end_date)) ).'<br/>';
-                                                        $dateRange = $dateRange."</p>";
-                                                    @endphp
-
-                                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="date-range-popover" data-bs-title="Date range information" data-bs-content="{{ $dateRange }}">
-                                                        {{ ( ($perProjectContract->start_date == null) ? "Not added." : date('d-M-Y',strtotime($perProjectContract->start_date)) ) }} - {{ ( ($perProjectContract->end_date == null) ? "Not added." : date('d-M-Y',strtotime($perProjectContract->end_date)) ) }}
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    @php
-                                                        $investedAmount = $perProjectContract->invested_amount;
-
-                                                        $totalRevenueAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Revenue")->sum("amount");
-                                                        $totalLossAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Loss")->sum("amount");
-                                                        $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
-
-                                                        $investedPopOver = "<p>";
-                                                        $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total receivable :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
-                                                        $investedPopOver = $investedPopOver."</p>";
-                                                    @endphp
-
-                                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="invested-amount-popover" data-bs-title="Invented amount information" data-bs-content="{{ $investedPopOver }}">
-                                                        {{ $totalReceivableAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <span class="badge p-2 @if($perProjectContract->receivable_status == "NotStarted") text-bg-primary @endif @if($perProjectContract->receivable_status == "Due") text-bg-warning @endif @if($perProjectContract->receivable_status == "Partial") text-bg-secondary @endif @if($perProjectContract->receivable_status == "Full") text-bg-success @endif" style="font-size: 13px;"> {{ ($perProjectContract->receivable_status == "NotStarted") ? "Not started" : $perProjectContract->receivable_status }}</span>
-                                                </td>
-                                                <td>
-                                                    @if (Auth::user()->hasUserPermission(["PCMP03"]) == true)
-                                                        <a href="{{ route("project.contract.details",["slug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
-                                                    @endif
-
-                                                    @if (Auth::user()->hasUserPermission(["PCMP04"]) == true)
-                                                        <a href="{{ route("project.contract.edit",["slug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
-                                                    @endif
-
-                                                    @if (Auth::user()->hasUserPermission(["PCMP05"]) == true)
-                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#upcomingDeleteConfirmationModal">
-                                                            Delete
-                                                        </button>
-                                                        <div class="modal fade" id="upcomingDeleteConfirmationModal" tabindex="-1">
-                                                            <div class="modal-dialog modal-lg">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h1 class="modal-title fs-5">{{ $perProjectContract->name }} delete confirmation model</h1>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p>
-                                                                            <ul>
-                                                                                <li>Project contract will not show dependency.</li>
-                                                                                <li>Can not recover record.</li>
-                                                                            </ul>
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                        <form action="{{ route("project.contract.delete",["slug" => $perProjectContract->slug]) }}" method="POST">
-                                                                            @csrf
-                                                                            @method("DELETE")
-                                                                            <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="8">
-                                                    <b class="d-flex justify-content-center text-warning">No project contract found.</b>
-                                                </td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div id="upcomingNavTabPaginationDiv" class="mb-1">
-                                {{ $upcomingProjectContracts->links() }}
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -580,15 +463,6 @@
                 dataTableLoad(paginationParameter);
             });
 
-            $(document).on('click', "#upcomingNavTabPaginationDiv .pagination .page-item a", function () {
-                event.preventDefault();
-                var paginationiteUrl = $(this).attr('href');
-                var paginationUrlArray = paginationiteUrl.split("?");
-                parameterString = parameterGenerate();
-                var paginationParameter = (parameterString == null) ? paginationUrlArray[1] : parameterString + "&" + paginationUrlArray[1];
-                dataTableLoad(paginationParameter);
-            });
-
             $(document).on('click', "#completeNavTabPaginationDiv .pagination .page-item a", function () {
                 event.preventDefault();
                 var paginationiteUrl = $(this).attr('href');
@@ -601,11 +475,6 @@
             $(document).on('click', "#ongoingNavTab", function () {
                 $("#selectedNavTabForSorting").val(null);
                 $("#selectedNavTabForSorting").val("Ongoing");
-            });
-
-            $(document).on('click', "#upcomingNavTab", function () {
-                $("#selectedNavTabForSorting").val(null);
-                $("#selectedNavTabForSorting").val("Upcoming");
             });
 
             $(document).on('click', "#completeNavTab", function () {
@@ -755,12 +624,8 @@
                             $("#ongoingNavTabDiv").html($(result).find("#ongoingNavTabDiv").html());
                         break;
 
-                        case "Complete":
-                            $("#completeNavTabDiv").html($(result).find("#completeNavTabDiv").html());
-                        break;
-
                         default:
-                            $("#upcomingNavTabDiv").html($(result).find("#upcomingNavTabDiv").html());
+                            $("#completeNavTabDiv").html($(result).find("#completeNavTabDiv").html());
                         break;
                     }
                 },

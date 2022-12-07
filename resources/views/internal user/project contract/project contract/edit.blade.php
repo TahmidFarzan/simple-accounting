@@ -18,47 +18,10 @@
 @endsection
 
 @section('authContentOne')
+
     @php
-        $disabledStatus = array();
-        $disabledReceivableStatus = array();
-
-        $currentDate = (old("start_date") == null) ? (($projectContract->start_date == null) ? now() : $projectContract->start_date) : old("start_date");
-
-        $currentDateToTime = strtotime($currentDate);
-        $currentStatus = (old("status") == null) ? $projectContract->status : old("status");
         $currentClient = (old("client") == null) ? $projectContract->client->slug : old("client");
         $currentCategory = (old("category") == null) ? $projectContract->category->slug : old("category");
-        $currentEndToTime = (old("end_date") == null) ? ( ($projectContract->end_date == null) ? null : strtotime($projectContract->end_date)) : strtotime(old("end_date"));
-        $currentStartDateToTime = (old("start_date") == null) ? ((strtotime($projectContract->start_date) == null) ? null : strtotime($projectContract->start_date) ) : strtotime(old("start_date"));
-        $currentReceivableStatus = (old("receivable_status") == null) ? $projectContract->receivable_status : old("receivable_status");
-
-        if(!($currentStartDateToTime == null)){
-            if($currentStartDateToTime <= $currentDateToTime){
-                if(($currentEndToTime == $currentDateToTime) || ($currentEndToTime > $currentDateToTime)){
-                    if($currentEndToTime == $currentDateToTime){
-                        $disabledStatus = array("Upcoming");
-                    }
-                    else{
-                        $disabledStatus = array("Comelete","Upcoming");
-                    }
-                }
-                else{
-                    $disabledStatus = array("Ongoing","Upcoming");
-                }
-            }
-            else{
-                $disabledStatus = array("Comelete","Ongoing");
-            }
-        }
-
-        if(!($currentStatus == null)){
-            if(in_array($currentStatus,array("Ongoing","Upcoming"))){
-                $disabledReceivableStatus = array("Due","Partial","Full");
-            }
-            else{
-                $disabledReceivableStatus = array();
-            }
-        }
     @endphp
 
     <div class="card border-dark mb-2">
@@ -101,7 +64,7 @@
                             <div class="row">
                                 <label class="col-md-4 col-form-label col-form-label-sm text-bold">Start date </label>
                                 <div class="col-md-8">
-                                    <input id="startDateInput" name="start_date" type="date" class="form-control form-control-sm @error('start_date') is-invalid @enderror" value="{{ (old('start_date') == null) ? $projectContract->start_date : old('start_date') }}" >
+                                    <input id="startDateInput" name="start_date" type="date" class="form-control form-control-sm @error('start_date') is-invalid @enderror" value="{{ (old('start_date') == null) ? $projectContract->start_date : old('start_date') }}">
                                     @error('start_date')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
@@ -125,55 +88,11 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 mb-2">
-                            <div class="row">
-                                <div class="col-md-6 mb-2">
-                                    <div class="row">
-                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Status <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
-                                        <div class="col-md-8">
-                                            <select class="form-control form-control-sm @error('status') is-invalid @enderror" id="statusInput" name="status">
-                                                <option value="">Select</option>
-                                                @foreach ( $statuses as $perStatus)
-                                                    <option value="{{ $perStatus }}" {{ ($currentStatus == $perStatus ) ? "selected" : null }} {{ (in_array(Str::studly($perStatus),$disabledStatus)) ? "disabled" : null }}>{{ $perStatus}}</option>
-                                                @endforeach
-                                            </select>
-
-                                            @error('status')
-                                                <span class="invalid-feedback" role="alert" style="display: block;">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Receivable status <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
-                                        <div class="col-md-8">
-                                            <select class="form-control form-control-sm @error('receivable_status') is-invalid @enderror" id="receivableStatusInput" name="receivable_status">
-                                                <option value="">Select</option>
-                                                @foreach ( $receivableStatuses as $perStatus)
-                                                    <option value="{{ Str::studly($perStatus) }}" {{ ($currentReceivableStatus == Str::studly($perStatus) ) ? "selected" : null }}  {{ (in_array(Str::studly($perStatus),$disabledReceivableStatus)) ? "disabled" : null }}>{{ $perStatus}}</option>
-                                                @endforeach
-                                            </select>
-
-                                            @error('receivable_status')
-                                                <span class="invalid-feedback" role="alert" style="display: block;">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="col-md-6 mb-2">
                             <div class="row">
                                 <label class="col-md-4 col-form-label col-form-label-sm text-bold">Category <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-8">
-                                    <select class="form-control form-control-sm @error('category') is-invalid @enderror" id="categoryInput" name="category">
+                                    <select class="form-control form-control-sm @error('category') is-invalid @enderror" id="categoryInput" name="category" required>
                                         <option value="">Select</option>
                                         <x-project_contract.project_contract.form.categories :categories="$categories" :activeCategorySlug="$currentCategory"/>
                                     </select>
@@ -191,7 +110,7 @@
                             <div class="row">
                                 <label class="col-md-4 col-form-label col-form-label-sm text-bold">Client <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-8">
-                                    <select class="form-control form-control-sm @error('client') is-invalid @enderror" id="clientInput" name="client">
+                                    <select class="form-control form-control-sm @error('client') is-invalid @enderror" id="clientInput" name="client" required>
                                         <option value="">Select</option>
                                         @foreach ( $clients as $perClient)
                                             <option value="{{ $perClient->slug }}" {{ ($currentClient == $perClient->slug ) ? "selected" : null }}>{{ $perClient->name }}</option>
@@ -282,72 +201,30 @@
 @endsection
 
 @push('onPageExtraScript')
-    <script src="{{ asset("jquery/jquery-dateformat.min.js") }}"></script>
     <script>
         $(document).ready(function(){
             $(document).on('change', "#startDateInput", function () {
-                statusUpdateAccrodingDate();
+                startAndEndDateRangeValidate();
             });
 
             $(document).on('change', "#endDateInput", function () {
-                statusUpdateAccrodingDate();
+                startAndEndDateRangeValidate();
             });
 
-            $(document).on('change', "#statusInput", function () {
-                receiveStatusUpdateAccrodingStatus();
-            });
         });
 
-        function statusUpdateAccrodingDate(){
+        function startAndEndDateRangeValidate(){
             var selectedEndDate = $("#endDateInput").val();
             var selectedStartDate = $("#startDateInput").val();
-            var currentDate = $.format.date(new Date(), "yyyy-MM-dd");
 
-            $("#statusInput option:disabled").prop('disabled',false);
+            if(selectedEndDate.length > 0){
 
-            if(selectedStartDate.length > 0){
-                if(new Date(selectedStartDate) <= new Date(currentDate))
-                {
-                    $("#statusInput").val(null);
-                    $("#statusInput option[value='Upcoming']").prop('disabled',true);
-                    $("#statusInput option[value='Upcoming']").siblings().prop('disabled',false);
-
-                    if(selectedEndDate.length > 0){
-                        if((new Date(selectedEndDate) > new Date(currentDate)) || (new Date(selectedEndDate) == new Date(currentDate))){
-                            $("#statusInput").val("Ongoing");
-                            $("#statusInput option:selected").siblings().prop('disabled',true);
-                        }
-                        if(new Date(selectedEndDate) < new Date(currentDate)){
-                            $("#statusInput").val("Complete");
-                            $("#statusInput option:selected").siblings().prop('disabled',true);
-                        }
-                    }
-                }
-
-                if(new Date(selectedStartDate) > new Date(currentDate)){
-                    $("#statusInput").val("Upcoming");
-                    $("#statusInput option:selected").siblings().prop('disabled',true);
-                }
+                $("#startDateInput").attr("max", $("#endDateInput").val());
             }
-            receiveStatusUpdateAccrodingStatus();
-        }
 
-        function receiveStatusUpdateAccrodingStatus(){
-            var statusInput = $("#statusInput").val();
-            if(statusInput.length > 0){
-                    if(statusInput == "Complete"){
-                        $("#receivableStatusInput").val(null);
-                        $("#receivableStatusInput option:disabled").prop('disabled',false);
-                    }
-                    else{
-                        $("#receivableStatusInput").val("NotStarted");
-                        $("#receivableStatusInput option:selected").siblings().prop('disabled',true);
-                    }
-                }
-                else{
-                    $("#receivableStatusInput").val(null);
-                    $("#receivableStatusInput option:disabled").prop('disabled',false);
-                }
+            if( selectedStartDate.length > 0){
+                $("#endDateInput").attr("min", $("#startDateInput").val());
+            }
         }
     </script>
 @endpush

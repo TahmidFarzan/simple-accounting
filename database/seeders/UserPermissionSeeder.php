@@ -452,59 +452,59 @@ class UserPermissionSeeder extends Seeder
 
             // Project contract  permission.
                 UserPermission::factory()->state([
-                    'name' => "View the project contract.",
+                    'name' => "View the records.",
                     'code' => "PCMP01",
                     'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View project contract",200),
+                    'description' => "The internal user can view records.",
+                    'slug' => SystemConstant::slugGenerator("View the records",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Create a project contract.",
+                    'name' => "Create a record.",
                     'code' => "PCMP02",
                     'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can create.",
-                    'slug' => SystemConstant::slugGenerator("Create a project contract.",200),
+                    'description' => "The internal user can create record.",
+                    'slug' => SystemConstant::slugGenerator("Create a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View details of the project contract..",
+                    'name' => "View a record detials.",
                     'code' => "PCMP03",
                     'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View details of the project contract.",200),
+                    'description' => "The internal user can view record details.",
+                    'slug' => SystemConstant::slugGenerator("View details of a record",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update a project contract.",
+                    'name' => "Update a record.",
                     'code' => "PCMP04",
                     'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can update.",
-                    'slug' => SystemConstant::slugGenerator("Update a the project contract.",200),
+                    'description' => "The internal user can update a record.",
+                    'slug' => SystemConstant::slugGenerator("Update a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Delete a project contract.",
+                    'name' => "Delete a record.",
                     'code' => "PCMP05",
                     'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can Delete.",
-                    'slug' => SystemConstant::slugGenerator("Delete a the project contract.",200),
+                    'description' => "The internal user can delete a record.",
+                    'slug' => SystemConstant::slugGenerator("Delete a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Change status of a project contract.",
+                    'name' => "Change status of a record.",
                     'code' => "PCMP06",
                     'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can change status.",
-                    'slug' => SystemConstant::slugGenerator("Change status of a the project contract.",200),
+                    'description' => "The internal user can change record status.",
+                    'slug' => SystemConstant::slugGenerator("Change status of a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Change receivable status of a project contract.",
+                    'name' => "Change receivable status of a record.",
                     'code' => "PCMP07",
                     'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can change receivable status.",
-                    'slug' => SystemConstant::slugGenerator("Change receivable status of a the project contract.",200),
+                    'description' => "The internal user can change record receivable status.",
+                    'slug' => SystemConstant::slugGenerator("Change receivable status of a record.",200),
                 ])->create();
            // Project contract  permission.
                 UserPermission::factory()->state([
