@@ -325,6 +325,12 @@
                         </button>
                     @endif
 
+                    @if (!($projectContract->status == "Complete") && ($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCMP06"]) == true))
+                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#ongoingStatusChangeConfirmationModal">
+                            Complete
+                        </button>
+                    @endif
+
                     @if (!($projectContract->status == "Upcomming") && (Auth::user()->hasUserPermission(["PCJMP01"]) == true))
                         <a href="{{ route("project.contract.journal.index",["pcSlug" => $projectContract->slug]) }}" class="btn btn-info">Journals</a>
                     @endif
@@ -352,6 +358,35 @@
                                 <form action="{{ route("project.contract.delete",["slug" => $projectContract->slug]) }}" method="POST">
                                     @csrf
                                     @method("DELETE")
+                                    <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if (!($projectContract->status == "Complete") && ($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCMP06"]) == true))
+                <div class="modal fade" id="ongoingStatusChangeConfirmationModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">{{ $projectContract->name }} status confirmation model</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <ul>
+                                        <li>Project contract status will be complete.</li>
+                                        <li>Can not return to previous status.</li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                <form action="{{ route("project.contract.status.change",["slug" => $projectContract->slug]) }}" method="POST">
+                                    @csrf
+                                    @method("PATCH")
                                     <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
                                 </form>
                             </div>

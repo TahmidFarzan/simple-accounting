@@ -490,6 +490,14 @@ class UserPermissionSeeder extends Seeder
                     'description' => "The internal user can Delete.",
                     'slug' => SystemConstant::slugGenerator("Delete a the project contract.",200),
                 ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update status of a project contract.",
+                    'code' => "PCMP06",
+                    'type' => "ProjectContractModulePermission",
+                    'description' => "The internal user can update status.",
+                    'slug' => SystemConstant::slugGenerator("Update status of a the project contract.",200),
+                ])->create();
            // Project contract  permission.
                 UserPermission::factory()->state([
                     'name' => "View the project contract journal.",

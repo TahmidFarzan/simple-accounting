@@ -677,4 +677,31 @@ class ProjectContractController extends Controller
             $statusInformation["message"]->push("Can not delete completed project contract.");
         }
     }
+
+    public function updateStatus($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        if(!(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete")){
+            $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+            $updateStatus = ($projectContract->status == "Ongoing") ? "Complete" : "Ongoing";
+
+            $projectContract->status = $updateStatus;
+
+            $statusUpdateProjectContract =  $projectContract->update();
+
+            if($statusUpdateProjectContract){
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Project contract status successfully updated.");
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Fail to update project contract status.");
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Can not update status of completed project contract.");
+        }
+        return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
 }
