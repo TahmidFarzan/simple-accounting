@@ -57,21 +57,21 @@ class ProjectContractPaymentMethodController extends Controller
         $trashContractPaymentMethods = $trashContractPaymentMethods->paginate($pagination);
         $activeContractPaymentMethods = $activeContractPaymentMethods->paginate($pagination);
 
-        return view('internal user.project contract.payment type.index',compact("activeContractPaymentMethods","trashContractPaymentMethods","paginations"));
+        return view('internal user.project contract.payment method.index',compact("activeContractPaymentMethods","trashContractPaymentMethods","paginations"));
     }
 
     public function create(){
-        return view('internal user.project contract.payment type.create');
+        return view('internal user.project contract.payment method.create');
     }
 
     public function details($slug){
         $projectContractPaymentMethod = ProjectContractPaymentMethod::withTrashed()->where("slug",$slug)->firstOrFail();
-        return view('internal user.project contract.payment type.details',compact("projectContractPaymentMethod"));
+        return view('internal user.project contract.payment method.details',compact("projectContractPaymentMethod"));
     }
 
     public function edit($slug){
         $projectContractPaymentMethod = ProjectContractPaymentMethod::withTrashed()->where("slug",$slug)->firstOrFail();
-        return view('internal user.project contract.payment type.edit',compact("projectContractPaymentMethod"));
+        return view('internal user.project contract.payment method.edit',compact("projectContractPaymentMethod"));
     }
 
     public function save(Request $request){
