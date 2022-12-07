@@ -247,6 +247,7 @@ class UserPermissionSeeder extends Seeder
                     'slug' => SystemConstant::slugGenerator("Update a record.",200),
                 ])->create();
 
+    // -----------------------------------------------------------
         // Extra modul permission.
             // User permission.
                 UserPermission::factory()->state([
@@ -305,249 +306,252 @@ class UserPermissionSeeder extends Seeder
                     'description' => "The internal user can delete a record.",
                     'slug' => SystemConstant::slugGenerator("Delete a record",200),
                 ])->create();
+    // -----------------------------------------------------------
+        // Project contract category permission.
+            UserPermission::factory()->state([
+                'name' => "View the records.",
+                'code' => "PCCAMP01",
+                'type' => "ProjectContractCategoryModulePermission",
+                'description' => "The internal user can view records.",
+                'slug' => SystemConstant::slugGenerator("View the records",200),
+            ])->create();
 
-            // Project contract category permission.
-                UserPermission::factory()->state([
-                    'name' => "View the records.",
-                    'code' => "PCCAMP01",
-                    'type' => "ProjectContractCategoryModulePermission",
-                    'description' => "The internal user can view records.",
-                    'slug' => SystemConstant::slugGenerator("View the records",200),
-                ])->create();
-                UserPermission::factory()->state([
-                    'name' => "Create record.",
-                    'code' => "PCCAMP02",
-                    'type' => "ProjectContractCategoryModulePermission",
-                    'description' => "The internal user can create.",
-                    'slug' => SystemConstant::slugGenerator("Create record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Create record.",
+                'code' => "PCCAMP02",
+                'type' => "ProjectContractCategoryModulePermission",
+                'description' => "The internal user can create.",
+                'slug' => SystemConstant::slugGenerator("Create record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "View details of a record.",
-                    'code' => "PCCAMP03",
-                    'type' => "ProjectContractCategoryModulePermission",
-                    'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View details of a record",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "View details of a record.",
+                'code' => "PCCAMP03",
+                'type' => "ProjectContractCategoryModulePermission",
+                'description' => "The internal user can view.",
+                'slug' => SystemConstant::slugGenerator("View details of a record",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Update a record.",
-                    'code' => "PCCAMP04",
-                    'type' => "ProjectContractCategoryModulePermission",
-                    'description' => "The internal user can update.",
-                    'slug' => SystemConstant::slugGenerator("Update a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Update a record.",
+                'code' => "PCCAMP04",
+                'type' => "ProjectContractCategoryModulePermission",
+                'description' => "The internal user can update.",
+                'slug' => SystemConstant::slugGenerator("Update a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Trash a record.",
-                    'code' => "PCCAMP05",
-                    'type' => "ProjectContractCategoryModulePermission",
-                    'description' => "The internal user can trash.",
-                    'slug' => SystemConstant::slugGenerator("Trash a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Trash a record.",
+                'code' => "PCCAMP05",
+                'type' => "ProjectContractCategoryModulePermission",
+                'description' => "The internal user can trash.",
+                'slug' => SystemConstant::slugGenerator("Trash a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Restore a record.",
-                    'code' => "PCCAMP06",
-                    'type' => "ProjectContractCategoryModulePermission",
-                    'description' => "The internal user can restore.",
-                    'slug' => SystemConstant::slugGenerator("Restore record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Restore a record.",
+                'code' => "PCCAMP06",
+                'type' => "ProjectContractCategoryModulePermission",
+                'description' => "The internal user can restore.",
+                'slug' => SystemConstant::slugGenerator("Restore record.",200),
+            ])->create();
 
-            // Project contract payment method permission.
-                UserPermission::factory()->state([
-                    'name' => "View records.",
-                    'code' => "PCPMMP01",
-                    'type' => "ProjectContractPaymentMethodModulePermission",
-                    'description' => "The internal user can view records.",
-                    'slug' => SystemConstant::slugGenerator("View the records",200),
-                ])->create();
+        // Project contract payment method permission.
+            UserPermission::factory()->state([
+                'name' => "View records.",
+                'code' => "PCPMMP01",
+                'type' => "ProjectContractPaymentMethodModulePermission",
+                'description' => "The internal user can view records.",
+                'slug' => SystemConstant::slugGenerator("View the records",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Create a record.",
-                    'code' => "PCPMMP02",
-                    'type' => "ProjectContractPaymentMethodModulePermission",
-                    'description' => "The internal user can create a record.",
-                    'slug' => SystemConstant::slugGenerator("Create a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Create a record.",
+                'code' => "PCPMMP02",
+                'type' => "ProjectContractPaymentMethodModulePermission",
+                'description' => "The internal user can create a record.",
+                'slug' => SystemConstant::slugGenerator("Create a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "View details of a record.",
-                    'code' => "PCPMMP03",
-                    'type' => "ProjectContractPaymentMethodModulePermission",
-                    'description' => "The internal user can view details of a record.",
-                    'slug' => SystemConstant::slugGenerator("View details of a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "View details of a record.",
+                'code' => "PCPMMP03",
+                'type' => "ProjectContractPaymentMethodModulePermission",
+                'description' => "The internal user can view details of a record.",
+                'slug' => SystemConstant::slugGenerator("View details of a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Update a record.",
-                    'code' => "PCPMMP04",
-                    'type' => "ProjectContractPaymentMethodModulePermission",
-                    'description' => "The internal user can update a record.",
-                    'slug' => SystemConstant::slugGenerator("Update a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Update a record.",
+                'code' => "PCPMMP04",
+                'type' => "ProjectContractPaymentMethodModulePermission",
+                'description' => "The internal user can update a record.",
+                'slug' => SystemConstant::slugGenerator("Update a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Trash a record.",
-                    'code' => "PCPMMP05",
-                    'type' => "ProjectContractPaymentMethodModulePermission",
-                    'description' => "The internal user can trash a record.",
-                    'slug' => SystemConstant::slugGenerator("Trash a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Trash a record.",
+                'code' => "PCPMMP05",
+                'type' => "ProjectContractPaymentMethodModulePermission",
+                'description' => "The internal user can trash a record.",
+                'slug' => SystemConstant::slugGenerator("Trash a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Restore a record.",
-                    'code' => "PCPMMP06",
-                    'type' => "ProjectContractPaymentMethodModulePermission",
-                    'description' => "The internal user can restore a record.",
-                    'slug' => SystemConstant::slugGenerator("Restore a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Restore a record.",
+                'code' => "PCPMMP06",
+                'type' => "ProjectContractPaymentMethodModulePermission",
+                'description' => "The internal user can restore a record.",
+                'slug' => SystemConstant::slugGenerator("Restore a record.",200),
+            ])->create();
 
-            // Project contract client permission.
-                UserPermission::factory()->state([
-                    'name' => "View the records.",
-                    'code' => "PCCLMP01",
-                    'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can view records.",
-                    'slug' => SystemConstant::slugGenerator("View the records",200),
-                ])->create();
+        // Project contract client permission.
+            UserPermission::factory()->state([
+                'name' => "View the records.",
+                'code' => "PCCLMP01",
+                'type' => "ProjectContractClientModulePermission",
+                'description' => "The internal user can view records.",
+                'slug' => SystemConstant::slugGenerator("View the records",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Create a record.",
-                    'code' => "PCCLMP02",
-                    'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can create a record.",
-                    'slug' => SystemConstant::slugGenerator("Create a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Create a record.",
+                'code' => "PCCLMP02",
+                'type' => "ProjectContractClientModulePermission",
+                'description' => "The internal user can create a record.",
+                'slug' => SystemConstant::slugGenerator("Create a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "View the details of a record.",
-                    'code' => "PCCLMP03",
-                    'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can view details of a record.",
-                    'slug' => SystemConstant::slugGenerator("View the details of a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "View the details of a record.",
+                'code' => "PCCLMP03",
+                'type' => "ProjectContractClientModulePermission",
+                'description' => "The internal user can view details of a record.",
+                'slug' => SystemConstant::slugGenerator("View the details of a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Update a record.",
-                    'code' => "PCCLMP04",
-                    'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can update a record.",
-                    'slug' => SystemConstant::slugGenerator("Update a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Update a record.",
+                'code' => "PCCLMP04",
+                'type' => "ProjectContractClientModulePermission",
+                'description' => "The internal user can update a record.",
+                'slug' => SystemConstant::slugGenerator("Update a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Trash a record.",
-                    'code' => "PCCLMP05",
-                    'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can trash a record.",
-                    'slug' => SystemConstant::slugGenerator("Trash a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Trash a record.",
+                'code' => "PCCLMP05",
+                'type' => "ProjectContractClientModulePermission",
+                'description' => "The internal user can trash a record.",
+                'slug' => SystemConstant::slugGenerator("Trash a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Restore a record.",
-                    'code' => "PCCLMP06",
-                    'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can restore a record.",
-                    'slug' => SystemConstant::slugGenerator("Restore a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Restore a record.",
+                'code' => "PCCLMP06",
+                'type' => "ProjectContractClientModulePermission",
+                'description' => "The internal user can restore a record.",
+                'slug' => SystemConstant::slugGenerator("Restore a record.",200),
+            ])->create();
 
-            // Project contract  permission.
-                UserPermission::factory()->state([
-                    'name' => "View the records.",
-                    'code' => "PCMP01",
-                    'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can view records.",
-                    'slug' => SystemConstant::slugGenerator("View the records",200),
-                ])->create();
+        // Project contract  permission.
+            UserPermission::factory()->state([
+                'name' => "View the records.",
+                'code' => "PCMP01",
+                'type' => "ProjectContractModulePermission",
+                'description' => "The internal user can view records.",
+                'slug' => SystemConstant::slugGenerator("View the records",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Create a record.",
-                    'code' => "PCMP02",
-                    'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can create record.",
-                    'slug' => SystemConstant::slugGenerator("Create a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Create a record.",
+                'code' => "PCMP02",
+                'type' => "ProjectContractModulePermission",
+                'description' => "The internal user can create record.",
+                'slug' => SystemConstant::slugGenerator("Create a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "View a record detials.",
-                    'code' => "PCMP03",
-                    'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can view record details.",
-                    'slug' => SystemConstant::slugGenerator("View details of a record",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "View a record detials.",
+                'code' => "PCMP03",
+                'type' => "ProjectContractModulePermission",
+                'description' => "The internal user can view record details.",
+                'slug' => SystemConstant::slugGenerator("View details of a record",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Update a record.",
-                    'code' => "PCMP04",
-                    'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can update a record.",
-                    'slug' => SystemConstant::slugGenerator("Update a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Update a record.",
+                'code' => "PCMP04",
+                'type' => "ProjectContractModulePermission",
+                'description' => "The internal user can update a record.",
+                'slug' => SystemConstant::slugGenerator("Update a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Delete a record.",
-                    'code' => "PCMP05",
-                    'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can delete a record.",
-                    'slug' => SystemConstant::slugGenerator("Delete a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Delete a record.",
+                'code' => "PCMP05",
+                'type' => "ProjectContractModulePermission",
+                'description' => "The internal user can delete a record.",
+                'slug' => SystemConstant::slugGenerator("Delete a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Change status of a record.",
-                    'code' => "PCMP06",
-                    'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can change record status.",
-                    'slug' => SystemConstant::slugGenerator("Change status of a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Change status of a record.",
+                'code' => "PCMP06",
+                'type' => "ProjectContractModulePermission",
+                'description' => "The internal user can change record status.",
+                'slug' => SystemConstant::slugGenerator("Change status of a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Change receivable status of a record.",
-                    'code' => "PCMP07",
-                    'type' => "ProjectContractModulePermission",
-                    'description' => "The internal user can change record receivable status.",
-                    'slug' => SystemConstant::slugGenerator("Change receivable status of a record.",200),
-                ])->create();
-           // Project contract  permission.
-                UserPermission::factory()->state([
-                    'name' => "View the records.",
-                    'code' => "PCJMP01",
-                    'type' => "ProjectContractJournalModulePermission",
-                    'description' => "The internal user can view records.",
-                    'slug' => SystemConstant::slugGenerator("View the records",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Change receivable status of a record.",
+                'code' => "PCMP07",
+                'type' => "ProjectContractModulePermission",
+                'description' => "The internal user can change record receivable status.",
+                'slug' => SystemConstant::slugGenerator("Change receivable status of a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Create a record.",
-                    'code' => "PCJMP02",
-                    'type' => "ProjectContractJournalModulePermission",
-                    'description' => "The internal user can create a record.",
-                    'slug' => SystemConstant::slugGenerator("Create a record.",200),
-                ])->create();
+        // Project contract journal  permission.
+            UserPermission::factory()->state([
+                'name' => "View the records.",
+                'code' => "PCJMP01",
+                'type' => "ProjectContractJournalModulePermission",
+                'description' => "The internal user can view records.",
+                'slug' => SystemConstant::slugGenerator("View the records",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "View details of a record.",
-                    'code' => "PCJMP03",
-                    'type' => "ProjectContractJournalModulePermission",
-                    'description' => "The internal user can view details of a record.",
-                    'slug' => SystemConstant::slugGenerator("View details of a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "Create a record.",
+                'code' => "PCJMP02",
+                'type' => "ProjectContractJournalModulePermission",
+                'description' => "The internal user can create a record.",
+                'slug' => SystemConstant::slugGenerator("Create a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Update a record.",
-                    'code' => "PCJMP04",
-                    'type' => "ProjectContractJournalModulePermission",
-                    'description' => "The internal user can update a record.",
-                    'slug' => SystemConstant::slugGenerator("Update a record.",200),
-                ])->create();
+            UserPermission::factory()->state([
+                'name' => "View details of a record.",
+                'code' => "PCJMP03",
+                'type' => "ProjectContractJournalModulePermission",
+                'description' => "The internal user can view details of a record.",
+                'slug' => SystemConstant::slugGenerator("View details of a record.",200),
+            ])->create();
 
-                UserPermission::factory()->state([
-                    'name' => "Delete a record.",
-                    'code' => "PCJMP05",
-                    'type' => "ProjectContractJournalModulePermission",
-                    'description' => "The internal user can delete a record.",
-                    'slug' => SystemConstant::slugGenerator("Delete a record.",200),
-                ])->create();
-           // Project contract category permission
+            UserPermission::factory()->state([
+                'name' => "Update a record.",
+                'code' => "PCJMP04",
+                'type' => "ProjectContractJournalModulePermission",
+                'description' => "The internal user can update a record.",
+                'slug' => SystemConstant::slugGenerator("Update a record.",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete a record.",
+                'code' => "PCJMP05",
+                'type' => "ProjectContractJournalModulePermission",
+                'description' => "The internal user can delete a record.",
+                'slug' => SystemConstant::slugGenerator("Delete a record.",200),
+            ])->create();
+
+        // Project contract category permission
     }
 }
