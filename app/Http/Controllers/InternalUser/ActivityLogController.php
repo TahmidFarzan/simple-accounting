@@ -96,10 +96,10 @@ class ActivityLogController extends Controller
         else{
             if($activitLog->delete()){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Activity log successfully deleted.");
+                $statusInformation["message"]->push("Record successfully deleted.");
             }
             else{
-                $statusInformation["message"]->push("Fali to delete the activity log.");
+                $statusInformation["message"]->push("Fali to delete record.");
             }
         }
 
@@ -122,16 +122,16 @@ class ActivityLogController extends Controller
                 $activitLogsDelete = Activity::whereIn("id",$activitLogsId)->delete();
                 if($activitLogsDelete){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push( "All activity log are deleted successfully.");
+                    $statusInformation["message"]->push( "All record are deleted successfully.");
                 }
                 else{
                     $statusInformation["status"] = "errors";
-                    $statusInformation["message"]->push("Fail to delete.");
+                    $statusInformation["message"]->push("Fail to delete records.");
                 }
             }
             else{
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("No older activity log exit to be deleted.");
+                $statusInformation["message"]->push("No older record exit to be deleted.");
             }
         }
         else{

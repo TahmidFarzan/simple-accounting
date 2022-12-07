@@ -99,35 +99,35 @@ class UserPermissionSeeder extends Seeder
 
         // Activity Log permission.
             UserPermission::factory()->state([
-                'name' => "View activity log controller.",
+                'name' => "View records.",
                 'code' => "ACLMP01",
                 'type' => "ActivityLogModulePermission",
-                'description' => "The internal user can view controller.",
-                'slug' => SystemConstant::slugGenerator("View activity log controller",200),
+                'description' => "The internal user can view records.",
+                'slug' => SystemConstant::slugGenerator("View  records",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "View activity log details.",
+                'name' => "View details of a record.",
                 'code' => "ACLMP02",
                 'type' => "ActivityLogModulePermission",
-                'description' => "The internal user can view activity log details.",
-                'slug' => SystemConstant::slugGenerator("View activity log controller details",200),
+                'description' => "The internal user can view details of a record.",
+                'slug' => SystemConstant::slugGenerator("View details of a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Delete activity log.",
+                'name' => "Delete a record.",
                 'code' => "ACLMP03",
                 'type' => "ActivityLogModulePermission",
-                'description' => "The internal user can delete any activity log.",
-                'slug' => SystemConstant::slugGenerator("Delete any activity log",200),
+                'description' => "The internal user can delete a record.",
+                'slug' => SystemConstant::slugGenerator("Delete a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Delete all activity log.",
+                'name' => "Delete records.",
                 'code' => "ACLMP04",
                 'type' => "ActivityLogModulePermission",
-                'description' => "The internal user can delete all activity log.",
-                'slug' => SystemConstant::slugGenerator("Delete all activity log",200),
+                'description' => "The internal user can delete records.",
+                'slug' => SystemConstant::slugGenerator("Delete records",200),
             ])->create();
 
         // Authentication log permission.
