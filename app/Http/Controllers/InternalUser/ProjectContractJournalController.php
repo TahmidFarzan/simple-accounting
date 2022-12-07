@@ -166,16 +166,16 @@ class ProjectContractJournalController extends Controller
 
             if($saveProjectContractJournal){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"] = "Journal entry successfully created.";
+                $statusInformation["message"] = "Record successfully created.";
             }
             else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"] = "Fail to create journal entry.";
+                $statusInformation["message"] = "Fail to create record.";
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Project contract is not in ongoing.");
+            $statusInformation["message"]->push("Project contract record status is not ongoing.");
         }
 
         return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -234,16 +234,16 @@ class ProjectContractJournalController extends Controller
 
             if($updateProjectContractJournal){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"] = "Journal entry successfully updated.";
+                $statusInformation["message"] = "Record successfully updated.";
             }
             else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"] = "Fail to update journal entry.";
+                $statusInformation["message"] = "Fail to update record.";
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Project contract is not in ongoing.");
+            $statusInformation["message"]->push("Project contract record status is not ongoing.");
         }
 
         return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -258,16 +258,16 @@ class ProjectContractJournalController extends Controller
 
             if($deleteProjectContractJournal){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Journal entry successfully deleted.");
+                $statusInformation["message"]->push("Record successfully deleted.");
             }
             else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Fail to delete journal entry.");
+                $statusInformation["message"]->push("Fail to delete record.");
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Project contract is not in ongoing.");
+            $statusInformation["message"]->push("Project contract record status is not ongoing.");
         }
 
         return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
