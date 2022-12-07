@@ -76,7 +76,7 @@ class ProjectContractJournal extends Model
     }
 
     public function activityLogs(){
-        return Activity::orderBy("id","desc")->where("subject_type","App\Models\ProjectContractpJournal")->where("subject_id",$this->id)->get();
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\ProjectContractJournal")->where("subject_id",$this->id)->get();
     }
 
     public function modifiedActivityLogs($limit){
