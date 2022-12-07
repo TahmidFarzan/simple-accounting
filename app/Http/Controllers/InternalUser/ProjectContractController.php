@@ -25,6 +25,7 @@ class ProjectContractController extends Controller
         $this->middleware(['user.user.permission.check:PCMP04'])->only(["edit","update"]);
         $this->middleware(['user.user.permission.check:PCMP05'])->only(["delete"]);
         $this->middleware(['user.user.permission.check:PCMP06'])->only(["changeStatus"]);
+        $this->middleware(['user.user.permission.check:PCMP07'])->only(["changeReceivableStatus"]);
     }
 
     public function index(Request $request){
@@ -703,6 +704,40 @@ class ProjectContractController extends Controller
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Not need to update status.");
             $statusInformation["message"]->push("Complete status is already used.");
+        }
+        return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    public function changeReceivableStatus($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        if(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete"){
+            if((ProjectContract::where("slug",$slug)->firstOrFail()->receivable_status == "NotStarted")){
+                $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+                $projectContract->receivable_status = "Due";
+                $projectContract->updated_at = Carbon::now();
+
+                $receivableStatusUpdate =  $projectContract->update();
+
+                if($receivableStatusUpdate){
+                    $statusInformation["status"] = "status";
+                    $statusInformation["message"]->push("Receivable status successfully updated.");
+                }
+                else{
+                    $statusInformation["status"] = "errors";
+                    $statusInformation["message"]->push("Fail to update receivable status.");
+                }
+            }
+            else{
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Receivable is already started.");
+                $statusInformation["message"]->push("No need to change status.");
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Status is ongoing.");
+            $statusInformation["message"]->push("Can not update receivable status.");
         }
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }

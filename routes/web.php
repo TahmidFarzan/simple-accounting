@@ -113,6 +113,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::patch('update/{slug}', [ProjectContractController::class, 'update'])->name('update');
         Route::delete('delete/{slug}', [ProjectContractController::class, 'delete'])->name('delete');
         Route::patch('change-status/{slug}', [ProjectContractController::class, 'changeStatus'])->name('change.status');
+        Route::patch('change-receivable-status/{slug}', [ProjectContractController::class, 'changeReceivableStatus'])->name('change.receivable.status');
 
         // Journal
         Route::prefix('{pcSlug}/journal')->name('journal.')->group(function(){

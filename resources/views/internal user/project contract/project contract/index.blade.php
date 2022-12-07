@@ -387,6 +387,38 @@
                                                         <a href="{{ route("project.contract.edit",["slug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
+                                                    @if (Auth::user()->hasUserPermission(["PCMP07"]) == true)
+                                                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#completeReceivableStatusChangeConfirmationModal">
+                                                            Start receivable
+                                                        </button>
+                                                        <div class="modal fade" id="completeReceivableStatusChangeConfirmationModal" tabindex="-1">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h1 class="modal-title fs-5">{{ $perProjectContract->name }} receivable status change confirmation model</h1>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>
+                                                                            <ul>
+                                                                                <li>Receivable status will be due.</li>
+                                                                                <li>Can not return to previous receivable status.</li>
+                                                                            </ul>
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                        <form action="{{ route("project.contract.change.receivable.status",["slug" => $perProjectContract->slug]) }}" method="POST">
+                                                                            @csrf
+                                                                            @method("PATCH")
+                                                                            <button type="submit" class="btn btn-sm btn-success">Yes,Change</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
                                                     @if (Auth::user()->hasUserPermission(["PCJMP01"]) == true)
                                                         <a href="{{ route("project.contract.journal.index",["pcSlug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-secondary m-1">Journals</a>
                                                     @endif
