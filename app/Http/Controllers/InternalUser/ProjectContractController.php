@@ -28,6 +28,7 @@ class ProjectContractController extends Controller
         $this->middleware(['user.user.permission.check:PCMP05'])->only(["delete"]);
         $this->middleware(['user.user.permission.check:PCMP06'])->only(["completeProjectContract"]);
         $this->middleware(['user.user.permission.check:PCMP07'])->only(["startReceivingPayment"]);
+        $this->middleware(['user.user.permission.check:PCMP08'])->only(["completeReceivingPayment"]);
     }
 
     public function index(Request $request){
@@ -559,4 +560,49 @@ class ProjectContractController extends Controller
         }
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
+
+    public function completeReceivingPayment($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $currentProjectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+
+        if($currentProjectContract->status == "Complete"){
+            if(!($currentProjectContract->receivable_status == "NotStarted")){
+                if($currentProjectContract->totalDueAmount() == 0){
+                    $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+                    $projectContract->receivable_status = "Complete";
+                    $projectContract->updated_at = Carbon::now();
+
+                    $receivableStatusUpdate =  $projectContract->update();
+
+                    if($receivableStatusUpdate){
+                        $statusInformation["status"] = "status";
+                        $statusInformation["message"]->push("Receiving payment successfully completed.");
+                    }
+                    else{
+                        $statusInformation["status"] = "errors";
+                        $statusInformation["message"]->push("Fail to complete receiving payment.");
+                    }
+                }
+                else{
+                    $statusInformation["status"] = "errors";
+                    $statusInformation["message"]->push("Fail to complete receiving payment.");
+                    $statusInformation["message"]->push("Some due amount are needed to pay.");
+                }
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Fail to complete receiving payment.");
+                $statusInformation["message"]->push("Receving payment is not started.");
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Project contract is ongoing.");
+            $statusInformation["message"]->push("Can not start receiving payment.");
+        }
+
+        return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
 }

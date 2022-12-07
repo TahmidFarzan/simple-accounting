@@ -324,25 +324,31 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
-                    @if (Auth::user()->hasUserPermission(["PCMP04"]) == true)
+                    @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCMP04"]) == true))
                         <a href="{{ route("project.contract.edit",["slug"=>$projectContract->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
                     @if (!($projectContract->status == "Complete") && (Auth::user()->hasUserPermission(["PCMP05"]) == true))
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ongoingDelete{{str_replace("-","",$projectContract->slug) }}ConfirmationModal">
                             Delete
                         </button>
                     @endif
 
                     @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCMP06"]) == true))
-                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#ongoingCompleteProjectContractConfirmationModal">
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ongoing{{str_replace("-","",$projectContract->slug) }}CompleteProjectContractConfirmationModal">
                             Complete
                         </button>
                     @endif
 
-                    @if (($projectContract->status == "Complete") && (Auth::user()->hasUserPermission(["PCMP07"]) == true))
-                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#completeReceivingPaymentConfirmationModal">
+                    @if (($projectContract->status == "Complete") && ($projectContract->receivable_status == "NotStarted") && (Auth::user()->hasUserPermission(["PCMP07"]) == true))
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#complete{{str_replace("-","",$projectContract->slug) }}StartReceivingPaymentConfirmationModal">
                             Start receive payment
+                        </button>
+                    @endif
+
+                    @if (!($projectContract->receivable_status == "NotStarted") && !($projectContract->receivable_status == "Complete") && ($projectContract->totalDueAmount() == 0) && (Auth::user()->hasUserPermission(["PCMP08"]) == true))
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#complete{{str_replace("-","",$projectContract->slug)}}CompleteReceivingPaymentConfirmationModal">
+                            Complete receive payment
                         </button>
                     @endif
 
@@ -354,7 +360,7 @@
             </div>
 
             @if (!($projectContract->status == "Complete") && (Auth::user()->hasUserPermission(["PCMP05"]) == true))
-                <div class="modal fade" id="deleteConfirmationModal" tabindex="-1">
+                <div class="modal fade" id="ongoingDelete{{str_replace("-","",$projectContract->slug) }}ConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -364,7 +370,8 @@
                             <div class="modal-body">
                                 <p>
                                     <ul>
-                                        <li>Client will not show dependency.</li>
+                                        <li>Project contract will be deleted.</li>
+                                        <li>Can not recover rroject contract.</li>
                                     </ul>
                                 </p>
                             </div>
@@ -373,7 +380,7 @@
                                 <form action="{{ route("project.contract.delete",["slug" => $projectContract->slug]) }}" method="POST">
                                     @csrf
                                     @method("DELETE")
-                                    <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Yes, delete it.</button>
                                 </form>
                             </div>
                         </div>
@@ -382,7 +389,7 @@
             @endif
 
             @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCMP06"]) == true))
-                <div class="modal fade" id="ongoingCompleteProjectContractConfirmationModal" tabindex="-1">
+                <div class="modal fade" id="ongoing{{str_replace("-","",$projectContract->slug) }}CompleteProjectContractConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -402,7 +409,7 @@
                                 <form action="{{ route("project.contract.complete.project.contract",["slug" => $projectContract->slug]) }}" method="POST">
                                     @csrf
                                     @method("PATCH")
-                                    <button type="submit" class="btn btn-sm btn-success">Yes,Change</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Yes, complete project contract.</button>
                                 </form>
                             </div>
                         </div>
@@ -410,8 +417,8 @@
                 </div>
             @endif
 
-            @if ((($projectContract->receivable_status == "NotStarted")) &&($projectContract->status == "Complete") && (Auth::user()->hasUserPermission(["PCMP07"]) == true))
-                <div class="modal fade" id="completeReceivingPaymentConfirmationModal" tabindex="-1">
+            @if (($projectContract->status == "Complete") && ($projectContract->receivable_status == "NotStarted") && (Auth::user()->hasUserPermission(["PCMP07"]) == true))
+                <div class="modal fade" id="complete{{str_replace("-","",$projectContract->slug) }}StartReceivingPaymentConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -421,8 +428,8 @@
                             <div class="modal-body">
                                 <p>
                                     <ul>
-                                        <li>Receivable status will be due.</li>
                                         <li>Payment can be added.</li>
+                                        <li>Receivable status will be due.</li>
                                         <li>Can not return to previous receivable status.</li>
                                     </ul>
                                 </p>
@@ -432,7 +439,37 @@
                                 <form action="{{ route("project.contract.start.receiving.payment",["slug" => $projectContract->slug]) }}" method="POST">
                                     @csrf
                                     @method("PATCH")
-                                    <button type="submit" class="btn btn-sm btn-success">Yes,Change</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Yes, start payment receiving.</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if (!($projectContract->receivable_status == "NotStarted") && !($projectContract->receivable_status == "Complete") && ($projectContract->totalDueAmount() == 0) && (Auth::user()->hasUserPermission(["PCMP08"]) == true))
+                <div class="modal fade" id="complete{{str_replace("-","",$projectContract->slug) }}CompleteReceivingPaymentConfirmationModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">{{ $projectContract->name }} complete receiving payment confirmation model</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <ul>
+                                        <li>Payment can not be added.</li>
+                                        <li>Receivable status will be complete.</li>
+                                        <li>Can not return to previous receivable status.</li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                <form action="{{ route("project.contract.complete.receiving.payment",["slug" => $projectContract->slug]) }}" method="POST">
+                                    @csrf
+                                    @method("PATCH")
+                                    <button type="submit" class="btn btn-sm btn-success">Yes, complete payment receiving.</button>
                                 </form>
                             </div>
                         </div>

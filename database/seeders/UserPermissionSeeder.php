@@ -511,6 +511,14 @@ class UserPermissionSeeder extends Seeder
                 'slug' => SystemConstant::slugGenerator("Start receiving payment for project contract",200),
             ])->create();
 
+            UserPermission::factory()->state([
+                'name' => "Complete receive payment for project contract.",
+                'code' => "PCMP08",
+                'type' => "ProjectContractModulePermission",
+                'description' => "The internal user can complete receive payment for project contract.",
+                'slug' => SystemConstant::slugGenerator("Complete receive payment for project contract",200),
+            ])->create();
+
         // Project contract journal  permission.
             UserPermission::factory()->state([
                 'name' => "View the records.",

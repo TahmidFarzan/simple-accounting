@@ -115,6 +115,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::delete('delete/{slug}', [ProjectContractController::class, 'delete'])->name('delete');
         Route::patch('complete-project-contract/{slug}', [ProjectContractController::class, 'completeProjectContract'])->name('complete.project.contract');
         Route::patch('start-receiving-payment/{slug}', [ProjectContractController::class, 'startReceivingPayment'])->name('start.receiving.payment');
+        Route::patch('complete-receiving-payment/{slug}', [ProjectContractController::class, 'completeReceivingPayment'])->name('complete.receiving.payment');
 
         // Journal
         Route::prefix('{pcSlug}/journal')->name('journal.')->group(function(){
