@@ -18,16 +18,6 @@
 @endsection
 
 @section('authContentOne')
-    @php
-        $investedAmount = $projectContract->invested_amount;
-
-        $totalRevenueAmount = ($projectContract->journals->count() == 0 ) ? 0 : $projectContract->journals()->where("entry_type","Revenue")->sum("amount");
-        $totalLossAmount = ($projectContract->journals->count() == 0 ) ? 0 : $projectContract->journals()->where("entry_type","Loss")->sum("amount");
-        $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
-        $totalReceiveAmount = ($projectContract->payments->count() == 0 ) ? 0 : $projectContract->payments()->whereNotNull("id")->sum("amount");
-        $totalDueAmount = $totalReceivableAmount - $totalReceiveAmount;
-    @endphp
-
     <div class="card border-dark mb-2">
         <h5 class="card-header">General information</h5>
         <div class="card-body text-dark mb-2">
@@ -141,20 +131,20 @@
                                         <tr>
                                             <th style="width: 35%;">Invested amount</th>
                                             <th style="width: 1%;">:</th>
-                                            <td>{{ $investedAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                            <td>{{ $projectContract->invested_amount }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                         </tr>
                                         <tr>
                                             <th>Total revenue</th>
                                             <th>:</th>
                                             <td>
-                                                {{ $totalRevenueAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                {{ $projectContract->totalRevenueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>Total loss</th>
                                             <th>:</th>
                                             <td>
-                                                {{ $totalLossAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                {{ $projectContract->totalLossAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                             </td>
                                         </tr>
 
@@ -162,7 +152,7 @@
                                             <th>Receivable</th>
                                             <th>:</th>
                                             <td>
-                                                {{ $totalReceivableAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                {{ $projectContract->totalReceivableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                             </td>
                                         </tr>
 
@@ -171,7 +161,7 @@
                                                 <th>Receive</th>
                                                 <th>:</th>
                                                 <td>
-                                                    {{ $totalReceiveAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                    {{ $projectContract->totalReceiveAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                                 </td>
                                             </tr>
 
@@ -179,7 +169,7 @@
                                                 <th>Due</th>
                                                 <th>:</th>
                                                 <td>
-                                                    {{ $totalDueAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                    {{ $projectContract->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                                 </td>
                                             </tr>
                                         @endif

@@ -204,22 +204,16 @@
                                                 </td>
                                                 <td>
                                                     @php
-                                                        $investedAmount = $perProjectContract->invested_amount;
-
-                                                        $totalRevenueAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Revenue")->sum("amount");
-                                                        $totalLossAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Loss")->sum("amount");
-                                                        $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
-
                                                         $investedPopOver = "<p>";
-                                                        $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total receivable :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$perProjectContract->invested_amount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '.$perProjectContract->totalRevenueAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$perProjectContract->totalLossAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $investedPopOver = $investedPopOver.'<b>Total receivable :</b> '.$perProjectContract->totalReceivableAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="invested-amount-popover" data-bs-title="Invented amount information" data-bs-content="{{ $investedPopOver }}">
-                                                        {{ $totalReceivableAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $perProjectContract->totalReceivableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
                                                 <td>
@@ -357,27 +351,18 @@
                                                 </td>
                                                 <td>
                                                     @php
-                                                        $investedAmount = $perProjectContract->invested_amount;
-
-                                                        $totalRevenueAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Revenue")->sum("amount");
-                                                        $totalLossAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Loss")->sum("amount");
-                                                        $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
-
-                                                        $totalReceiveAmount = ($perProjectContract->payments->count() == 0 ) ? 0 : $perProjectContract->payments()->whereNotNull("id")->sum("amount");
-                                                        $totalDueAmount = $totalReceivableAmount - $totalReceiveAmount;
-
                                                         $investedPopOver = "<p>";
-                                                        $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $investedPopOver = $investedPopOver.'<b>Total receivable :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
-                                                        $investedPopOver = $investedPopOver.'<b>Total receive :</b> '.$totalReceiveAmount." ".$setting["businessSetting"]["currency_symbol"];
-                                                        $investedPopOver = $investedPopOver.'<b>Total due :</b> '.$totalDueAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$perProjectContract->invested_amount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '.$perProjectContract->totalRevenueAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$perProjectContract->totalLossAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $investedPopOver = $investedPopOver.'<b>Total receivable :</b> '.$perProjectContract->totalReceivableAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $investedPopOver = $investedPopOver.'<b>Total receive :</b> '.$perProjectContract->totalReceiveAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $investedPopOver = $investedPopOver.'<b>Total due :</b> '.$perProjectContract->totalDueAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="invested-amount-popover" data-bs-title="Invented amount information" data-bs-content="{{ $investedPopOver }}">
-                                                        {{ $totalReceivableAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $perProjectContract->totalRevenueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
                                                 <td>

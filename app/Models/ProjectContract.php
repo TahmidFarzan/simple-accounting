@@ -95,6 +95,43 @@ class ProjectContract extends Model
         return $causer;
     }
 
+    public function totalRevenueAmount()
+    {
+        $totalRevenueAmount = 0;
+
+        $totalRevenueAmount = ($this->journals->count() == 0 ) ? 0 : $this->journals()->where("entry_type","Revenue")->sum("amount");
+
+        return $totalRevenueAmount;
+    }
+
+    public function totalLossAmount()
+    {
+        $totalLossAmount = 0;
+
+        $totalLossAmount = ($this->journals->count() == 0 ) ? 0 : $this->journals()->where("entry_type","Loss")->sum("amount");
+
+        return $totalLossAmount;
+    }
+
+    public function totalReceivableAmount()
+    {
+        return ($this->invested_amount + $this->totalRevenueAmount()) - $this->totalLossAmount();
+    }
+
+    public function totalReceiveAmount()
+    {
+        $totalReceiveAmount = 0;
+
+        $totalReceiveAmount = ($this->payments->count() == 0 ) ? 0 : $this->payments()->whereNotNull("id")->sum("amount");
+
+        return $totalReceiveAmount;
+    }
+
+    public function totalDueAmount()
+    {
+        return  $this->totalReceivableAmount() - $this->totalReceiveAmount();
+    }
+
     public function activityLogs(){
         return Activity::orderBy("id","desc")->where("subject_type","App\Models\ProjectContract")->where("subject_id",$this->id)->get();
     }
