@@ -190,11 +190,11 @@ class ProjectContractCategoryController extends Controller
 
         if($saveProjectContractCategory){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Category successfully created.";
+            $statusInformation["message"] = "Record successfully created.";
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to create category.";
+            $statusInformation["message"] = "Fail to create record.";
         }
 
         return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -280,11 +280,11 @@ class ProjectContractCategoryController extends Controller
 
         if($updateProjectContractCategory){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Category successfully updated.";
+            $statusInformation["message"] = "Record successfully updated.";
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to update category.";
+            $statusInformation["message"] = "Fail to update record.";
         }
 
         return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -304,7 +304,7 @@ class ProjectContractCategoryController extends Controller
 
             if($trashedProjectContractCategory){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Category successfully trashed.");
+                $statusInformation["message"]->push("Record successfully trashed.");
 
                 $statusInformation["status"] = $trashDependencyStatusInformation["status"];
                 foreach($trashDependencyStatusInformation["message"] as $perMessages){
@@ -312,12 +312,12 @@ class ProjectContractCategoryController extends Controller
                 }
             }
             else{
-                $statusInformation["message"]->push("Category fail to trash.");
+                $statusInformation["message"]->push("Record fail to trash.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Category already trashed.");
+            $statusInformation["message"]->push("Record already trashed.");
         }
 
         return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -339,7 +339,7 @@ class ProjectContractCategoryController extends Controller
 
                 if($restoreProjectContractCategory){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push("Category successfully restored.");
+                    $statusInformation["message"]->push("Record successfully restored.");
 
                     $statusInformation["status"] = $restoreDependencyStatusInformation["status"];
                     foreach($restoreDependencyStatusInformation["message"] as $perMessages){
@@ -347,7 +347,7 @@ class ProjectContractCategoryController extends Controller
                     }
                 }
                 else{
-                    $statusInformation["message"]->push("Category fail to restore.");
+                    $statusInformation["message"]->push("Record fail to restore.");
                 }
 
             }
@@ -358,7 +358,7 @@ class ProjectContractCategoryController extends Controller
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Category already actived.");
+            $statusInformation["message"]->push("Record already actived.");
         }
 
         return redirect()->route("project.contract.category.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -374,17 +374,20 @@ class ProjectContractCategoryController extends Controller
 
             if( $pCAncestors->count() > 0){
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Restore validation fail. Some ancestors category ".$pCAncestors->pluck("name")." are trashed.");
+                $statusInformation["message"]->push("Record restore validation fail.");
+                $statusInformation["message"]->push("Some ancestors category ".$pCAncestors->pluck("name")." are trashed.");
             }
             else{
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Restore validation pass. All ancestors category are active.");
+                $statusInformation["message"]->push("Record restore validation pass.");
+                $statusInformation["message"]->push("All ancestors category are active.");
             }
 
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Restore validation pass. This category is one of the root category.");
+            $statusInformation["message"]->push("Record restore validation pass.");
+            $statusInformation["message"]->push("This category is one of the root category.");
         }
 
         return $statusInformation;

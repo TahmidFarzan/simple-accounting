@@ -307,50 +307,50 @@ class UserPermissionSeeder extends Seeder
 
             // Project contract category permission.
                 UserPermission::factory()->state([
-                    'name' => "View the category of project contract.",
+                    'name' => "View the records.",
                     'code' => "PCCAMP01",
                     'type' => "ProjectContractCategoryModulePermission",
-                    'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View the category of project contract",200),
+                    'description' => "The internal user can view records.",
+                    'slug' => SystemConstant::slugGenerator("View the records",200),
                 ])->create();
                 UserPermission::factory()->state([
-                    'name' => "Create a category for the project contract.",
+                    'name' => "Create record.",
                     'code' => "PCCAMP02",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can create.",
-                    'slug' => SystemConstant::slugGenerator("Create a category for the project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("Create record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View the category details of the project contract..",
+                    'name' => "View details of a record.",
                     'code' => "PCCAMP03",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View the category details of the project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("View details of a record",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update a category of the project contract.",
+                    'name' => "Update a record.",
                     'code' => "PCCAMP04",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can update.",
-                    'slug' => SystemConstant::slugGenerator("Update a category of the project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("Update a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Trash a category of the project contract.",
+                    'name' => "Trash a record.",
                     'code' => "PCCAMP05",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can trash.",
-                    'slug' => SystemConstant::slugGenerator("Trash a category of the project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("Trash a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Restore a category of the project contract.",
+                    'name' => "Restore a record.",
                     'code' => "PCCAMP06",
                     'type' => "ProjectContractCategoryModulePermission",
                     'description' => "The internal user can restore.",
-                    'slug' => SystemConstant::slugGenerator("Restore category of project contract.",200),
+                    'slug' => SystemConstant::slugGenerator("Restore record.",200),
                 ])->create();
 
             // Project contract payment method permission.
