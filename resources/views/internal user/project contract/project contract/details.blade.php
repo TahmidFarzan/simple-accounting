@@ -387,7 +387,7 @@
                                 <form action="{{ route("project.contract.change.status",["slug" => $projectContract->slug]) }}" method="POST">
                                     @csrf
                                     @method("PATCH")
-                                    <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Yes,Change</button>
                                 </form>
                             </div>
                         </div>
