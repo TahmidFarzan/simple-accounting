@@ -527,8 +527,10 @@ class ProjectContractController extends Controller
     public function startReceivingPayment($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
-        if(ProjectContract::where("slug",$slug)->firstOrFail()->status == "Complete"){
-            if((ProjectContract::where("slug",$slug)->firstOrFail()->receivable_status == "NotStarted")){
+        $currentProjectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+
+        if($currentProjectContract->status == "Complete"){
+            if(($currentProjectContract->receivable_status == "NotStarted")){
                 $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
                 $projectContract->receivable_status = "Due";
                 $projectContract->updated_at = Carbon::now();
