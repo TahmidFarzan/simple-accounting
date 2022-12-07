@@ -223,7 +223,7 @@
                                                     </button>
                                                 </td>
                                                 <td>
-                                                    <span class="badge p-2 @if($perProjectContract->receivable_status == "NotStarted") text-bg-primary @endif @if($perProjectContract->receivable_status == "Due") text-bg-warning @endif @if($perProjectContract->receivable_status == "Partial") text-bg-secondary @endif @if($perProjectContract->receivable_status == "Full") text-bg-success @endif" style="font-size: 13px;"> {{ ($perProjectContract->receivable_status == "NotStarted") ? "Not started" : $perProjectContract->receivable_status }}</span>
+                                                    <span class="badge p-2 @if($perProjectContract->receivable_status == "NotStarted") text-bg-primary @endif @if($perProjectContract->receivable_status == "Due") text-bg-warning @endif @if($perProjectContract->receivable_status == "Partial") text-bg-secondary @endif @if($perProjectContract->receivable_status == "Complete") text-bg-success @endif" style="font-size: 13px;"> {{ ($perProjectContract->receivable_status == "NotStarted") ? "Not started" : $perProjectContract->receivable_status }}</span>
                                                 </td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["PCMP03"]) == true)
@@ -363,11 +363,16 @@
                                                         $totalLossAmount = ($perProjectContract->journals->count() == 0 ) ? 0 : $perProjectContract->journals()->where("entry_type","Loss")->sum("amount");
                                                         $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
 
+                                                        $totalReceiveAmount = ($perProjectContract->payments->count() == 0 ) ? 0 : $perProjectContract->payments()->whereNotNull("id")->sum("amount");
+                                                        $totalDueAmount = $totalReceivableAmount - $totalReceiveAmount;
+
                                                         $investedPopOver = "<p>";
                                                         $investedPopOver = $investedPopOver.'<b>Invested :</b> '.$investedAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total revenue :</b> '. $totalRevenueAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total loss :</b> '.$totalLossAmount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $investedPopOver = $investedPopOver.'<b>Total receivable :</b> '.$totalReceivableAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Total receive :</b> '.$totalReceiveAmount." ".$setting["businessSetting"]["currency_symbol"];
+                                                        $investedPopOver = $investedPopOver.'<b>Total due :</b> '.$totalDueAmount." ".$setting["businessSetting"]["currency_symbol"];
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
@@ -376,7 +381,7 @@
                                                     </button>
                                                 </td>
                                                 <td>
-                                                    <span class="badge p-2 @if($perProjectContract->receivable_status == "NotStarted") text-bg-primary @endif @if($perProjectContract->receivable_status == "Due") text-bg-warning @endif @if($perProjectContract->receivable_status == "Partial") text-bg-secondary @endif @if($perProjectContract->receivable_status == "Full") text-bg-success @endif" style="font-size: 13px;"> {{ ($perProjectContract->receivable_status == "NotStarted") ? "Not started" : $perProjectContract->receivable_status }}</span>
+                                                    <span class="badge p-2 @if($perProjectContract->receivable_status == "NotStarted") text-bg-primary @endif @if($perProjectContract->receivable_status == "Due") text-bg-warning @endif @if($perProjectContract->receivable_status == "Partial") text-bg-secondary @endif @if($perProjectContract->receivable_status == "Complete") text-bg-success @endif" style="font-size: 13px;"> {{ ($perProjectContract->receivable_status == "NotStarted") ? "Not started" : $perProjectContract->receivable_status }}</span>
                                                 </td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["PCMP03"]) == true)

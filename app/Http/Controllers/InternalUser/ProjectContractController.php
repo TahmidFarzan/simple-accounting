@@ -33,7 +33,7 @@ class ProjectContractController extends Controller
     public function index(Request $request){
         $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,105,120);
-        $receivableStatuses = array('Not started', 'Due', 'Partial', 'Full');
+        $receivableStatuses = array('Not started', 'Due', 'Partial', 'Complete');
         $projectContractClients = ProjectContractClient::orderby("name","asc")->get();
         $projectContractCategories = ProjectContractCategory::tree()->get()->toTree();
 

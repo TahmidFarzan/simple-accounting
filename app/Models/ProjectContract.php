@@ -81,6 +81,11 @@ class ProjectContract extends Model
         return $this->hasMany(ProjectContractJournal::class,'project_contract_id','id');
     }
 
+    public function payments()
+    {
+        return $this->hasMany(ProjectContractPayment::class,'project_contract_id','id');
+    }
+
     public function updatedBy()
     {
         $causer = null;

@@ -24,7 +24,8 @@
         $totalRevenueAmount = ($projectContract->journals->count() == 0 ) ? 0 : $projectContract->journals()->where("entry_type","Revenue")->sum("amount");
         $totalLossAmount = ($projectContract->journals->count() == 0 ) ? 0 : $projectContract->journals()->where("entry_type","Loss")->sum("amount");
         $totalReceivableAmount = ($investedAmount + $totalRevenueAmount) - $totalLossAmount;
-
+        $totalReceiveAmount = ($projectContract->payments->count() == 0 ) ? 0 : $projectContract->payments()->whereNotNull("id")->sum("amount");
+        $totalDueAmount = $totalReceivableAmount - $totalReceiveAmount;
     @endphp
 
     <div class="card border-dark mb-2">
@@ -121,7 +122,7 @@
                                             <th>Receivable status</th>
                                             <th>:</th>
                                             <td>
-                                                <span class="badge p-2 @if($projectContract->receivable_status == "NotStarted") text-bg-primary @endif @if($projectContract->receivable_status == "Due") text-bg-warning @endif @if($projectContract->receivable_status == "Partial") text-bg-secondary @endif @if($projectContract->receivable_status == "Full") text-bg-success @endif" style="font-size: 13px;"> {{ ($projectContract->receivable_status == "NotStarted") ? "Not started" : $projectContract->receivable_status }}</span>
+                                                <span class="badge p-2 @if($projectContract->receivable_status == "NotStarted") text-bg-primary @endif @if($projectContract->receivable_status == "Due") text-bg-warning @endif @if($projectContract->receivable_status == "Partial") text-bg-secondary @endif @if($projectContract->receivable_status == "Complete") text-bg-success @endif" style="font-size: 13px;"> {{ ($projectContract->receivable_status == "NotStarted") ? "Not started" : $projectContract->receivable_status }}</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -164,6 +165,24 @@
                                                 {{ $totalReceivableAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                             </td>
                                         </tr>
+
+                                        @if ($projectContract->status == "Complete")
+                                            <tr>
+                                                <th>Receive</th>
+                                                <th>:</th>
+                                                <td>
+                                                    {{ $totalReceiveAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Due</th>
+                                                <th>:</th>
+                                                <td>
+                                                    {{ $totalDueAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

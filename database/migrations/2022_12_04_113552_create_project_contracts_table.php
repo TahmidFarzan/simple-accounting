@@ -19,7 +19,7 @@ return new class extends Migration
             $table->json('note');
             $table->enum('status', ['Ongoing','Complete'])->default('Ongoing');
             $table->double('invested_amount', 8, 2)->default(0);
-            $table->enum('receivable_status', ['NotStarted','Due',"Partial","Full"])->default('NotStarted');
+            $table->enum('receivable_status', ['NotStarted','Due',"Partial","Complete"])->default('NotStarted');
 
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('category_id');
