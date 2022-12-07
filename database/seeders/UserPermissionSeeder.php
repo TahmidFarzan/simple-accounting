@@ -404,50 +404,51 @@ class UserPermissionSeeder extends Seeder
 
             // Project contract client permission.
                 UserPermission::factory()->state([
-                    'name' => "View the client of project contract.",
+                    'name' => "View the records.",
                     'code' => "PCCLMP01",
                     'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View the client of project contract",200),
+                    'description' => "The internal user can view records.",
+                    'slug' => SystemConstant::slugGenerator("View the records",200),
                 ])->create();
+
                 UserPermission::factory()->state([
-                    'name' => "Create a client for the project contract.",
+                    'name' => "Create a record.",
                     'code' => "PCCLMP02",
                     'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can create.",
-                    'slug' => SystemConstant::slugGenerator("Create a client for the project contract.",200),
+                    'description' => "The internal user can create a record.",
+                    'slug' => SystemConstant::slugGenerator("Create a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View the client details of the project contract..",
+                    'name' => "View the details of a record.",
                     'code' => "PCCLMP03",
                     'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View the client details of the project contract.",200),
+                    'description' => "The internal user can view details of a record.",
+                    'slug' => SystemConstant::slugGenerator("View the details of a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update a client of the project contract.",
+                    'name' => "Update a record.",
                     'code' => "PCCLMP04",
                     'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can update.",
-                    'slug' => SystemConstant::slugGenerator("Update a client of the project contract.",200),
+                    'description' => "The internal user can update a record.",
+                    'slug' => SystemConstant::slugGenerator("Update a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Trash a client of the project contract.",
+                    'name' => "Trash a record.",
                     'code' => "PCCLMP05",
                     'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can trash.",
-                    'slug' => SystemConstant::slugGenerator("Trash a client of the project contract.",200),
+                    'description' => "The internal user can trash a record.",
+                    'slug' => SystemConstant::slugGenerator("Trash a record.",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Restore a client of the project contract.",
+                    'name' => "Restore a record.",
                     'code' => "PCCLMP06",
                     'type' => "ProjectContractClientModulePermission",
-                    'description' => "The internal user can restore.",
-                    'slug' => SystemConstant::slugGenerator("Restore client of project contract.",200),
+                    'description' => "The internal user can restore a record.",
+                    'slug' => SystemConstant::slugGenerator("Restore a record.",200),
                 ])->create();
 
             // Project contract  permission.

@@ -133,11 +133,11 @@ class ProjectContractClientController extends Controller
 
         if($saveProjectContractClient){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Client successfully created.";
+            $statusInformation["message"] = "Record successfully created.";
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to create client.";
+            $statusInformation["message"] = "Fail to create record.";
         }
 
         return redirect()->route("project.contract.client.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -195,11 +195,11 @@ class ProjectContractClientController extends Controller
 
         if($updateProjectContractClient){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Client successfully updated.";
+            $statusInformation["message"] = "Record successfully updated.";
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to update contract category.";
+            $statusInformation["message"] = "Fail to update record.";
         }
 
         return redirect()->route("project.contract.client.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -217,15 +217,15 @@ class ProjectContractClientController extends Controller
 
             if($trashedProjectContractClient){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Client successfully trashed.");
+                $statusInformation["message"]->push("Record successfully trashed.");
             }
             else{
-                $statusInformation["message"]->push("Client fail to trash.");
+                $statusInformation["message"]->push("Record fail to trash.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Client already trashed.");
+            $statusInformation["message"]->push("Record already trashed.");
         }
 
         return redirect()->route("project.contract.client.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -242,15 +242,15 @@ class ProjectContractClientController extends Controller
 
             if($restoreProjectContractClient){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Client successfully restored.");
+                $statusInformation["message"]->push("Record successfully restored.");
             }
             else{
-                $statusInformation["message"]->push("Client fail to restore.");
+                $statusInformation["message"]->push("Record fail to restore.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Client already actived.");
+            $statusInformation["message"]->push("Record already actived.");
         }
 
         return redirect()->route("project.contract.client.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
