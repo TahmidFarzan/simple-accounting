@@ -173,10 +173,12 @@ class SettingController extends Controller
 
         if($updateBusinessSetting){
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("All business setting successfully updated.");
+            $statusInformation["message"]->push("Record successfully updated.");
         }
         else{
-            $statusInformation["message"]->push("Fail to update some field. Please update business setting again");
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Fail to update some record.");
+            $statusInformation["message"]->push("Please update record again.");
         }
 
         // Redirect logic.
@@ -239,10 +241,12 @@ class SettingController extends Controller
 
         if($updateActivityLogSetting){
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("All activity log setting successfully updated.");
+            $statusInformation["message"]->push("Record successfully updated.");
         }
         else{
-            $statusInformation["message"]->push("Fail to update some field. Please update activity log setting again");
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Fail to update some record.");
+            $statusInformation["message"]->push("Please update record again.");
         }
 
         // Redirect logic.
@@ -298,8 +302,6 @@ class SettingController extends Controller
             $authenticationLogSettingFieldsWithValues['delete_records_older_than'] = $request->delete_records_older_than;
             $authenticationLogSettingFieldsWithValues['auto_delete'] = $request->auto_delete;
 
-
-
             $authenticationLogSetting->fields_with_values = $authenticationLogSettingFieldsWithValues;
             $authenticationLogSetting->updated_at = Carbon::now();
             $updateActivityLogSetting = $authenticationLogSetting->update();
@@ -307,10 +309,12 @@ class SettingController extends Controller
 
         if($updateActivityLogSetting){
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("All authentication log setting successfully updated.");
+            $statusInformation["message"]->push("Record successfully updated.");
         }
         else{
-            $statusInformation["message"]->push("Fail to update some field. Please update authentication log setting again");
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Fail to update some record.");
+            $statusInformation["message"]->push("Please update record again.");
         }
 
         // Redirect logic.
