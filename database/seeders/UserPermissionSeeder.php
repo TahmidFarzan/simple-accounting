@@ -18,83 +18,83 @@ class UserPermissionSeeder extends Seeder
 
         // User permission.
             UserPermission::factory()->state([
-                'name' => "View user.",
+                'name' => "View records.",
                 'code' => "UMP01",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can view user.",
-                'slug' => SystemConstant::slugGenerator("View setting",200),
+                'description' => "The internal user can view records.",
+                'slug' => SystemConstant::slugGenerator("View records",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Create user (Owner).",
+                'name' => "Create a record (Owner).",
                 'code' => "UMP02",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can create user (Owner).",
-                'slug' => SystemConstant::slugGenerator("Create user",200),
+                'description' => "The internal user can create a record (Owner).",
+                'slug' => SystemConstant::slugGenerator("Create a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Create user (Subordinate).",
+                'name' => "Create a record (Subordinate).",
                 'code' => "UMP03",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can create user (Subordinate).",
-                'slug' => SystemConstant::slugGenerator("Create user",200),
+                'description' => "The internal user can create a record (Subordinate).",
+                'slug' => SystemConstant::slugGenerator("Create a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "View user details.",
+                'name' => "View details of a record.",
                 'code' => "UMP04",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can view user details.",
-                'slug' => SystemConstant::slugGenerator("View user details",200),
+                'description' => "The internal user can view details of a record.",
+                'slug' => SystemConstant::slugGenerator("View details of a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Update user (Owner).",
+                'name' => "Update a record (Owner).",
                 'code' => "UMP05",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can update user (Owner).",
-                'slug' => SystemConstant::slugGenerator("Update user",200),
+                'description' => "The internal user can update a record (Owner).",
+                'slug' => SystemConstant::slugGenerator("Update a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Update user (Subordinate).",
+                'name' => "Update a record (Subordinate).",
                 'code' => "UMP06",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can create user (Subordinate).",
-                'slug' => SystemConstant::slugGenerator("Update user",200),
+                'description' => "The internal user can update a record (Subordinate).",
+                'slug' => SystemConstant::slugGenerator("Update a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Trash user (Owner).",
+                'name' => "Trash a record (Owner).",
                 'code' => "UMP07",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can trash user (Owner).",
-                'slug' => SystemConstant::slugGenerator("Trash user",200),
+                'description' => "The internal user can trash a record (Owner).",
+                'slug' => SystemConstant::slugGenerator("Trash a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Trash user (Subordinate).",
+                'name' => "Trash a record (Subordinate).",
                 'code' => "UMP08",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can trash user (Subordinate).",
-                'slug' => SystemConstant::slugGenerator("Trash user",200),
+                'description' => "The internal user can trash a record (Subordinate).",
+                'slug' => SystemConstant::slugGenerator("Trash a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Restore user (Owner).",
+                'name' => "Restore a record (Owner).",
                 'code' => "UMP09",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can restore user (Owner).",
-                'slug' => SystemConstant::slugGenerator("Restore user",200),
+                'description' => "The internal user can restore a record (Owner).",
+                'slug' => SystemConstant::slugGenerator("Restore a record",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Restore user (Subordinate).",
+                'name' => "Restore a record (Subordinate).",
                 'code' => "UMP10",
                 'type' => "UserModulePermission",
-                'description' => "The internal user can restore user (Subordinate).",
-                'slug' => SystemConstant::slugGenerator("Restore user",200),
+                'description' => "The internal user can restore a record (Subordinate).",
+                'slug' => SystemConstant::slugGenerator("Restore a record",200),
             ])->create();
 
         // Activity Log permission.

@@ -268,11 +268,11 @@ class UserController extends Controller
                 }
 
                 if($user->userPermissionGroups()->count() == count($request->user_permission_group)){
-                    $statusInformation["message"]->push("All selected user permission group are added to user.");
+                    $statusInformation["message"]->push("All selected user permission group are added to record.");
                 }
                 else{
                     $statusInformation["status"] = "warning";
-                    $statusInformation["message"]->push("Some selected user permission group are fail to add to user.");
+                    $statusInformation["message"]->push("Some selected user permission group are fail to add to record.");
                 }
             }
 
@@ -281,16 +281,16 @@ class UserController extends Controller
 
             if($request->auto_email_verify == "No"){
                 $user->sendEmailVerificationNotification();
-                $statusInformation["message"]->push("Please asked user to verify email before is expired.");
+                $statusInformation["message"]->push("Please asked to verify email before is expired.");
             }
 
             if($request->default_password == "Yes"){
-                $statusInformation["message"]->push("Default pasword (123456789) is used for user password.");
+                $statusInformation["message"]->push("Default pasword (123456789) is used for password.");
             }
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to create user.";
+            $statusInformation["message"] = "Fail to create record.";
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -438,16 +438,16 @@ class UserController extends Controller
                 }
 
                 if($user->userPermissionGroups()->count() == count($request->user_permission_group)){
-                    $statusInformation["message"]->push("All selected user permission group are syn to user.");
+                    $statusInformation["message"]->push("All selected user permission group are syn to record.");
                 }
                 else{
                     $statusInformation["status"] = "warning";
-                    $statusInformation["message"]->push("Some selected user permission group are fail to syn to user.");
+                    $statusInformation["message"]->push("Some selected user permission group are fail to syn to record.");
                 }
             }
 
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("User successfully updated.");
+            $statusInformation["message"]->push("Record successfully updated.");
 
             if(($request->user_role == "Owner")){
                 foreach($user->userPermissionGroups as $perUPG){
@@ -456,11 +456,11 @@ class UserController extends Controller
             }
 
             if(($request->update_email == "Yes") && ($doneUpdateEmail == true)){
-                $statusInformation["message"]->push("User email has been updated.");
+                $statusInformation["message"]->push("Record email has been updated.");
 
                 if($request->auto_email_verify == "No"){
                     $user->sendEmailVerificationNotification();
-                    $statusInformation["message"]->push("Please asked user to verify email before is expired.");
+                    $statusInformation["message"]->push("Please asked to verify email before is expired.");
                 }
             }
 
@@ -468,14 +468,14 @@ class UserController extends Controller
                 $statusInformation["message"]->push("Reset password is done.");
 
                 if($request->default_password == "Yes"){
-                    $statusInformation["message"]->push("Default pasword (123456789) is used for user password.");
+                    $statusInformation["message"]->push("Default pasword (123456789) is used for password.");
                 }
             }
 
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to update user.";
+            $statusInformation["message"] = "Fail to update record.";
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -494,20 +494,20 @@ class UserController extends Controller
 
                 if($trashedUser){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push( "User successfully trashed.");
+                    $statusInformation["message"]->push( "Record successfully trashed.");
                 }
                 else{
-                    $statusInformation["message"]->push("User fail to trash.");
+                    $statusInformation["message"]->push("Record fail to trash.");
                 }
             }
             else{
-                $statusInformation["message"]->push( "You does not have parmission to trash user.");
+                $statusInformation["message"]->push( "You does not have parmission to trash record.");
             }
 
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("User already trashed.");
+            $statusInformation["message"]->push("Record already trashed.");
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -526,19 +526,19 @@ class UserController extends Controller
 
                 if($restoreUser){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push( "User successfully restore.");
+                    $statusInformation["message"]->push( "Record successfully restore.");
                 }
                 else{
-                    $statusInformation["message"]->push( "User fail to restore.");
+                    $statusInformation["message"]->push( "Record fail to restore.");
                 }
             }
             else{
-                $statusInformation["message"]->push( "You does not have parmission to restore user.");
+                $statusInformation["message"]->push( "You does not have parmission to restore record.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push( "User already active.");
+            $statusInformation["message"]->push( "Record already active.");
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
