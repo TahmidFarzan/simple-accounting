@@ -10,6 +10,8 @@ use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectContractClient;
+use App\Models\ProjectContractJournal;
+use App\Models\ProjectContractPayment;
 use App\Models\ProjectContractCategory;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
@@ -472,11 +474,20 @@ class ProjectContractController extends Controller
             $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
 
             if($projectContract->journals->count() > 0){
-                //
+                $journalEntriesDelete = ProjectContractJournal::whereIn("id",$projectContract->journals->pluck("id"))->delete();
+
+                if($journalEntriesDelete){
+                    $statusInformation["status"] = "status";
+                    $statusInformation["message"]->push("Journal entries has been successfully deleted.");
+                }
             }
 
             if($projectContract->payments->count() > 0){
-                //
+                $paymentsDelete = ProjectContractPayment::whereIn("id",$projectContract->payments->pluck("id"))->delete();
+                if($paymentsDelete){
+                    $statusInformation["status"] = "status";
+                    $statusInformation["message"]->push("Payments has been successfully deleted.");
+                }
             }
 
             $deleteProjectContract =  $projectContract->delete();
