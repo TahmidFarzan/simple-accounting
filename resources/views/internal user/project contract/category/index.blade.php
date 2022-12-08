@@ -27,7 +27,7 @@
             <div class="row mb-2">
                 <p>
                     @if (Auth::user()->hasUserPermission(["PCCAMP02"]) == true)
-                        <a href="{{ route("project.contract.category.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create record</a>
+                        <a href="{{ route("project.contract.category.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create category</a>
                     @endif
 
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sortingCollapseDiv" aria-expanded="false" aria-controls="sortingCollapseDiv">
