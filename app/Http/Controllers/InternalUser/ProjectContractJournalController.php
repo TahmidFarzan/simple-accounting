@@ -315,8 +315,8 @@ class ProjectContractJournalController extends Controller
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Project contract is not in ongoing.");
-            $statusInformation["message"]->push("Project contract payment must be not started.");
+            $statusInformation["message"]->push("Project contract is not ongoing.");
+            $statusInformation["message"]->push("Project contract payment must not started.");
         }
 
         return $statusInformation;
