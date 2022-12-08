@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProjectContract;
 use App\Utilities\SystemConstant;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectContractJournal;
@@ -41,11 +41,11 @@ class ProjectContractJournalController extends Controller
             if($request->has('entry_date') && !($request->entry_date == null) && $request->has('entry_date_condition') && !($request->entry_date_condition == null) && in_array($request->entry_date_condition, array("=",">","<",">=","<="))){
                 switch ($request->selected_nav_tab) {
                     case 'Revenue':
-                        $projectContractJournalRevenueEntries = $projectContractJournalRevenueEntries->where("entry_date",$request->entry_date_condition,$request->entry_date);
+                        $projectContractJournalRevenueEntries = $projectContractJournalRevenueEntries->where(DB::raw("(STR_TO_DATE(entry_date,'%Y-%m-%d'))"),$request->entry_date_condition,date('Y-m-d',strtotime($request->entry_date)) );
                     break;
 
                     case 'Loss':
-                        $projectContractJournalLossEntries = $projectContractJournalLossEntries->where("entry_date",$request->entry_date_condition,$request->entry_date);
+                        $projectContractJournalLossEntries = $projectContractJournalLossEntries->where(DB::raw("(STR_TO_DATE(entry_date,'%Y-%m-%d'))"),$request->entry_date_condition,date('Y-m-d',strtotime($request->entry_date)));
                     break;
 
                     default:
@@ -88,27 +88,40 @@ class ProjectContractJournalController extends Controller
     public function create (Request $request,$pcSlug){
         $statusInformation = array("status" => "errors","message" => collect());
 
-        if(ProjectContract::where("slug",$pcSlug)->firstOrFail()->status == "Ongoing"){
+        $projectContractValidationStatus = $this->projectContractValidation($pcSlug);
+
+        if($projectContractValidationStatus["status"] == "status"){
             $projectContract = ProjectContract::where("slug",$pcSlug)->firstOrFail();
             return view('internal user.project contract.journal.create',compact("projectContract"));
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Project contract is not in ongoing.");
+
+            foreach($projectContractValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
+
             return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
         }
     }
 
     public function edit ($pcSlug,$slug){
         $statusInformation = array("status" => "errors","message" => collect());
-        if(ProjectContract::where("slug",$pcSlug)->firstOrFail()->status == "Ongoing"){
+
+        $projectContractValidationStatus = $this->projectContractValidation($pcSlug);
+
+        if($projectContractValidationStatus["status"] == "status"){
             $projectContract = ProjectContract::where("slug",$pcSlug)->firstOrFail();
             $projectContractJournal = ProjectContractJournal::where("slug",$slug)->firstOrFail();
             return view('internal user.project contract.journal.edit',compact("projectContract","projectContractJournal"));
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Project contract is not in ongoing.");
+
+            foreach($projectContractValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
+
             return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
         }
     }
@@ -147,7 +160,9 @@ class ProjectContractJournalController extends Controller
 
         $statusInformation = array("status" => "errors","message" => collect());
 
-        if(ProjectContract::where("slug",$pcSlug)->firstOrFail()->status == "Ongoing"){
+        $projectContractValidationStatus = $this->projectContractValidation($pcSlug);
+
+        if($projectContractValidationStatus["status"] == "status"){
             LogBatch::startBatch();
                 $projectContractJournal = new ProjectContractJournal();
                 $projectContractJournal->name = $request->name;
@@ -176,7 +191,10 @@ class ProjectContractJournalController extends Controller
         else{
             $statusInformation["status"] = "errors";
             $statusInformation["message"]->push("Fail to create.");
-            $statusInformation["message"]->push("Project contract is complete.");
+
+            foreach($projectContractValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
         }
 
         return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -216,7 +234,9 @@ class ProjectContractJournalController extends Controller
 
         $statusInformation = array("status" => "errors","message" => collect());
 
-        if(ProjectContract::where("slug",$pcSlug)->firstOrFail()->status == "Ongoing"){
+        $projectContractValidationStatus = $this->projectContractValidation($pcSlug);
+
+        if($projectContractValidationStatus["status"] == "status"){
             LogBatch::startBatch();
                 $projectContractJournal =ProjectContractJournal::where("slug",$slug)->firstOrFail();
                 $notes = $projectContractJournal->note;
@@ -245,7 +265,10 @@ class ProjectContractJournalController extends Controller
         else{
             $statusInformation["status"] = "errors";
             $statusInformation["message"]->push("Fail to update.");
-            $statusInformation["message"]->push("Project contract is complete.");
+
+            foreach($projectContractValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
         }
 
         return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -254,7 +277,9 @@ class ProjectContractJournalController extends Controller
     public function delete($pcSlug,$slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
-        if(ProjectContract::where("slug",$pcSlug)->firstOrFail()->status == "Ongoing"){
+        $projectContractValidationStatus = $this->projectContractValidation($pcSlug);
+
+        if($projectContractValidationStatus["status"] == "status"){
             $projectContractJournal = ProjectContractJournal::where("slug",$slug)->firstOrFail();
             $deleteProjectContractJournal = $projectContractJournal->delete();
 
@@ -269,9 +294,31 @@ class ProjectContractJournalController extends Controller
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Project contract is not ongoing.");
+            $statusInformation["message"]->push("Fail to delete.");
+
+            foreach($projectContractValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
         }
 
         return redirect()->route("project.contract.journal.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function projectContractValidation($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+
+        if(($projectContract->status == "Ongoing") && ($projectContract->receivable_status == "NotStarted")){
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Passed the validation.");
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Project contract is not in ongoing.");
+            $statusInformation["message"]->push("Project contract payment must be not started.");
+        }
+
+        return $statusInformation;
     }
 }

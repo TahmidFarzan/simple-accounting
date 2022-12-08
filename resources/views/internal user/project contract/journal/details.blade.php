@@ -19,6 +19,17 @@
 @endsection
 
 @section('authContentOne')
+
+    @php
+        $passProjectContactValidation = false;
+
+        if(($projectContract->status == "Ongoing") && ($projectContract->receivable_status == "NotStarted")){
+            $passProjectContactValidation = true;
+        }
+        else{
+            $passProjectContactValidation = false;
+        }
+    @endphp
     <div class="card border-dark mb-2">
         <h5 class="card-header">General information</h5>
         <div class="card-body text-dark mb-2">
@@ -218,11 +229,11 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
-                    @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCJMP04"]) == true))
+                    @if (($passProjectContactValidation == true) && (Auth::user()->hasUserPermission(["PCJMP04"]) == true))
                         <a href="{{ route("project.contract.journal.edit",["pcSlug" => $projectContract->slug,"slug" => $projectContractJournal->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
-                    @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
+                    @if (($passProjectContactValidation == true) && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
                             Delete
                         </button>
@@ -230,7 +241,7 @@
                 </div>
             </div>
 
-            @if (($projectContract->status == "Ongoing") && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
+            @if (($passProjectContactValidation == true) && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
                 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">

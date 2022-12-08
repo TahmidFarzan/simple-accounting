@@ -22,11 +22,23 @@
 @endsection
 
 @section('authContentOne')
+
+    @php
+        $passProjectContactValidation = false;
+
+        if(($projectContract->status == "Ongoing") && ($projectContract->receivable_status == "NotStarted")){
+            $passProjectContactValidation = true;
+        }
+        else{
+            $passProjectContactValidation = false;
+        }
+    @endphp
+
     <div class="card border-dark mb-2">
         <div class="card-body text-dark mt-0">
             <div class="row mb-2">
                 <p>
-                    @if (($projectContract->status == "Ongoing") && ($projectContract->receivable_status == "NotStarted") && (Auth::user()->hasUserPermission(["PCJMP02"]) == true))
+                    @if (($passProjectContactValidation == true) && (Auth::user()->hasUserPermission(["PCJMP02"]) == true))
                         <a href="{{ route("project.contract.journal.create",["pcSlug" => $projectContract->slug]) }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create journal entry</a>
                     @endif
 
@@ -128,11 +140,11 @@
                                                         <a href="{{ route("project.contract.journal.details",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
-                                                    @if (($projectContract->status =="Ongoing") &&  (Auth::user()->hasUserPermission(["PCJMP04"]) == true))
+                                                    @if (($passProjectContactValidation == true) &&  (Auth::user()->hasUserPermission(["PCJMP04"]) == true))
                                                         <a href="{{ route("project.contract.journal.edit",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
-                                                    @if (($projectContract->status =="Ongoing") && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
+                                                    @if (($passProjectContactValidation == true) && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
                                                         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#revenue{{str_replace("-","",$perProjectContractJournal->slug) }}DeleteConfirmationModal">
                                                             Delete
                                                         </button>
@@ -208,11 +220,11 @@
                                                         <a href="{{ route("project.contract.journal.details",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                                     @endif
 
-                                                    @if (($projectContract->status =="Ongoing") &&  (Auth::user()->hasUserPermission(["PCJMP04"]) == true))
+                                                    @if (($passProjectContactValidation == true) &&  (Auth::user()->hasUserPermission(["PCJMP04"]) == true))
                                                         <a href="{{ route("project.contract.journal.edit",["pcSlug" => $projectContract->slug,"slug" => $perProjectContractJournal->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                                     @endif
 
-                                                    @if (($projectContract->status =="Ongoing") && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
+                                                    @if (($passProjectContactValidation == true) && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
                                                         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#loss{{str_replace("-","",$perProjectContractJournal->slug) }}DeleteConfirmationModal">
                                                             Delete
                                                         </button>
