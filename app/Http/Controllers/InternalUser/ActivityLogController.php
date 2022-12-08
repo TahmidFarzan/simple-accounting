@@ -96,10 +96,10 @@ class ActivityLogController extends Controller
         else{
             if($activitLog->delete()){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Record successfully deleted.");
+                $statusInformation["message"]->push("Successfully deleted.");
             }
             else{
-                $statusInformation["message"]->push("Fali to delete record.");
+                $statusInformation["message"]->push("Fali to delete.");
             }
         }
 
@@ -122,23 +122,23 @@ class ActivityLogController extends Controller
                 $activitLogsDelete = Activity::whereIn("id",$activitLogsId)->delete();
                 if($activitLogsDelete){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push( "All record are deleted successfully.");
+                    $statusInformation["message"]->push( "Selected logs successfully deleted.");
                 }
                 else{
                     $statusInformation["status"] = "errors";
-                    $statusInformation["message"]->push("Fail to delete records.");
+                    $statusInformation["message"]->push("Fail to delete.");
                 }
             }
             else{
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("No older record exit to be deleted.");
+                $statusInformation["message"]->push("No older log exit to be deleted.");
             }
         }
         else{
             $statusInformation["status"]="errors";
             $statusInformation["message"]->push("Please enter valid day count.");
-            $statusInformation["message"]->push("The delete records older than must equal or greater then ".$activityLogSetting["delete_records_older_than"]." days");
-            $statusInformation["message"]->push("The delete records older than must equal or less than 365.");
+            $statusInformation["message"]->push("Selected logs must older than equal or greater then ".$activityLogSetting["delete_records_older_than"]." days");
+            $statusInformation["message"]->push("Selected logs must older than equal or less than 365.");
         }
 
         return redirect()->back()->with([$statusInformation["status"] => $statusInformation["message"]]);
