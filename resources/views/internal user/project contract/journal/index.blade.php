@@ -133,11 +133,11 @@
                                                     @endif
 
                                                     @if (($projectContract->status =="Ongoing") && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
-                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#ongoingDeleteConfirmationModal">
+                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#revenue{{str_replace("-","",$perProjectContractJournal->slug) }}DeleteConfirmationModal">
                                                             Delete
                                                         </button>
 
-                                                        <div class="modal fade" id="ongoingDeleteConfirmationModal" tabindex="-1">
+                                                        <div class="modal fade" id="revenue{{str_replace("-","",$perProjectContractJournal->slug) }}DeleteConfirmationModal" tabindex="-1">
                                                             <div class="modal-dialog modal-lg">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -213,10 +213,10 @@
                                                     @endif
 
                                                     @if (($projectContract->status =="Ongoing") && (Auth::user()->hasUserPermission(["PCJMP05"]) == true))
-                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#ongoingDeleteConfirmationModal">
+                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#loss{{str_replace("-","",$perProjectContractJournal->slug) }}DeleteConfirmationModal">
                                                             Delete
                                                         </button>
-                                                        <div class="modal fade" id="ongoingDeleteConfirmationModal" tabindex="-1">
+                                                        <div class="modal fade" id="loss{{str_replace("-","",$perProjectContractJournal->slug) }}DeleteConfirmationModal" tabindex="-1">
                                                             <div class="modal-dialog modal-lg">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
