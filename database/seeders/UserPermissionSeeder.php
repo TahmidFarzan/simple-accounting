@@ -259,11 +259,11 @@ class UserPermissionSeeder extends Seeder
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View details of a record.",
+                    'name' => "View details of a user permission.",
                     'code' => "UPMP02",
                     'type' => "UserPermissionModulePermission",
-                    'description' => "The internal user can view details of a record",
-                    'slug' => SystemConstant::slugGenerator("View details of a record.",200),
+                    'description' => "The internal user can view details of a user permission",
+                    'slug' => SystemConstant::slugGenerator("View details of a user permission.",200),
                 ])->create();
 
             // User permission group permission.
