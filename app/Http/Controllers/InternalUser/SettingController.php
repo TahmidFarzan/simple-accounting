@@ -173,12 +173,12 @@ class SettingController extends Controller
 
         if($updateBusinessSetting){
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Record successfully updated.");
+            $statusInformation["message"]->push("Successfully updated.");
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Fail to update some record.");
-            $statusInformation["message"]->push("Please update record again.");
+            $statusInformation["message"]->push("Please update again.");
+            $statusInformation["message"]->push("Fail to update some setting.");
         }
 
         // Redirect logic.
@@ -241,12 +241,13 @@ class SettingController extends Controller
 
         if($updateActivityLogSetting){
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Record successfully updated.");
+            $statusInformation["message"]->push("Successfully updated.");
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Fail to update some record.");
-            $statusInformation["message"]->push("Please update record again.");
+            $statusInformation["message"]->push("Please update again.");
+            $statusInformation["message"]->push("Fail to update some setting.");
+
         }
 
         // Redirect logic.
@@ -309,12 +310,12 @@ class SettingController extends Controller
 
         if($updateActivityLogSetting){
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Record successfully updated.");
+            $statusInformation["message"]->push("Successfully updated.");
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Fail to update some record.");
-            $statusInformation["message"]->push("Please update record again.");
+            $statusInformation["message"]->push("Please update again.");
+            $statusInformation["message"]->push("Fail to update some setting.");
         }
 
         // Redirect logic.

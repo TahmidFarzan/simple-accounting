@@ -174,77 +174,77 @@ class UserPermissionSeeder extends Seeder
 
             // Business setting permissions.
                 UserPermission::factory()->state([
-                    'name' => "View records.",
+                    'name' => "View business settings.",
                     'code' => "SMP02.01",
                     'type' => "BusinessSettingModulePermission",
-                    'description' => "The internal user can view records.",
-                    'slug' => SystemConstant::slugGenerator("View records",200),
+                    'description' => "The internal user can view business settings.",
+                    'slug' => SystemConstant::slugGenerator("View business settings",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View details of a record.",
+                    'name' => "View details of a business setting.",
                     'code' => "SMP02.02",
                     'type' => "BusinessSettingModulePermission",
-                    'description' => "The internal user can view details of a record",
-                    'slug' => SystemConstant::slugGenerator("View details of a record",200),
+                    'description' => "The internal user can view details of a business setting",
+                    'slug' => SystemConstant::slugGenerator("View details of a business setting",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update a record.",
+                    'name' => "Update a business setting.",
                     'code' => "SMP02.03",
                     'type' => "BusinessSettingModulePermission",
-                    'description' => "The internal user can update a record.",
-                    'slug' => SystemConstant::slugGenerator("Update a record",200),
+                    'description' => "The internal user can update a business setting.",
+                    'slug' => SystemConstant::slugGenerator("Update a business setting",200),
                 ])->create();
 
             // Activity log setting permissions.
                 UserPermission::factory()->state([
-                    'name' => "View records.",
+                    'name' => "View activity log settings.",
                     'code' => "SMP03.01",
                     'type' => "ActivityLogSettingModulePermission",
-                    'description' => "The internal user can view records.",
-                    'slug' => SystemConstant::slugGenerator("View records",200),
+                    'description' => "The internal user can view activity log settings.",
+                    'slug' => SystemConstant::slugGenerator("View activity log settings",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View details of a record.",
+                    'name' => "View details of a activity log setting.",
                     'code' => "SMP03.02",
                     'type' => "ActivityLogSettingModulePermission",
-                    'description' => "The internal user can view details of a record.",
-                    'slug' => SystemConstant::slugGenerator("View details of a record",200),
+                    'description' => "The internal user can view details of a activity log setting.",
+                    'slug' => SystemConstant::slugGenerator("View details of a activity log setting",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update a record.",
+                    'name' => "Update a activity log setting.",
                     'code' => "SMP03.03",
                     'type' => "ActivityLogSettingModulePermission",
-                    'description' => "The internal user can update a record.",
-                    'slug' => SystemConstant::slugGenerator("Update a record",200),
+                    'description' => "The internal user can update a activity log setting.",
+                    'slug' => SystemConstant::slugGenerator("Update a activity log setting",200),
                 ])->create();
 
             // Authentication log setting permissions.
                 UserPermission::factory()->state([
-                    'name' => "View records",
+                    'name' => "View authentication log settings",
                     'code' => "SMP04.01",
                     'type' => "AuthenticationLogSettingModulePermission",
-                    'description' => "The internal user can view records",
-                    'slug' => SystemConstant::slugGenerator("View records",200),
+                    'description' => "The internal user can view authentication log settings",
+                    'slug' => SystemConstant::slugGenerator("View authentication log settings",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View details of a record.",
+                    'name' => "View details of a authentication log.",
                     'code' => "SMP04.02",
                     'type' => "AuthenticationLogSettingModulePermission",
-                    'description' => "The internal user can view details of a record",
-                    'slug' => SystemConstant::slugGenerator("View details of a record",200),
+                    'description' => "The internal user can view details of a authentication log",
+                    'slug' => SystemConstant::slugGenerator("View details of a authentication log",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update a record.",
+                    'name' => "Update a authentication log setting.",
                     'code' => "SMP04.03",
                     'type' => "AuthenticationLogSettingModulePermission",
-                    'description' => "The internal user can update a record.",
-                    'slug' => SystemConstant::slugGenerator("Update a record.",200),
+                    'description' => "The internal user can update a authentication log setting.",
+                    'slug' => SystemConstant::slugGenerator("Update a authentication log setting.",200),
                 ])->create();
 
     // -----------------------------------------------------------
