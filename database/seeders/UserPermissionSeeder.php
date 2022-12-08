@@ -251,11 +251,11 @@ class UserPermissionSeeder extends Seeder
         // Extra modul permission.
             // User permission.
                 UserPermission::factory()->state([
-                    'name' => "View user records",
+                    'name' => "View user permissions",
                     'code' => "UPMP01",
                     'type' => "UserPermissionModulePermission",
-                    'description' => "The internal user can view records",
-                    'slug' => SystemConstant::slugGenerator("View user records",200),
+                    'description' => "The internal user can view user permissions",
+                    'slug' => SystemConstant::slugGenerator("View user user permissions",200),
                 ])->create();
 
                 UserPermission::factory()->state([
