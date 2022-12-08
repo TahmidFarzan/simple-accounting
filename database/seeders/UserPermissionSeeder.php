@@ -521,43 +521,43 @@ class UserPermissionSeeder extends Seeder
 
         // Project contract journal  permission.
             UserPermission::factory()->state([
-                'name' => "View the records.",
+                'name' => "View the journal.",
                 'code' => "PCJMP01",
                 'type' => "ProjectContractJournalModulePermission",
-                'description' => "The internal user can view records.",
-                'slug' => SystemConstant::slugGenerator("View the records",200),
+                'description' => "The internal user can view the journal.",
+                'slug' => SystemConstant::slugGenerator("View the journal",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Create a record.",
+                'name' => "Create a journal entry.",
                 'code' => "PCJMP02",
                 'type' => "ProjectContractJournalModulePermission",
-                'description' => "The internal user can create a record.",
-                'slug' => SystemConstant::slugGenerator("Create a record.",200),
+                'description' => "The internal user can create a a journal entry.",
+                'slug' => SystemConstant::slugGenerator("Create a a journal entry.",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "View details of a record.",
+                'name' => "View details of a journal entry.",
                 'code' => "PCJMP03",
                 'type' => "ProjectContractJournalModulePermission",
-                'description' => "The internal user can view details of a record.",
-                'slug' => SystemConstant::slugGenerator("View details of a record.",200),
+                'description' => "The internal user can view details of a journal entry.",
+                'slug' => SystemConstant::slugGenerator("View details of a journal entry.",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Update a record.",
+                'name' => "Update a journal entry.",
                 'code' => "PCJMP04",
                 'type' => "ProjectContractJournalModulePermission",
-                'description' => "The internal user can update a record.",
-                'slug' => SystemConstant::slugGenerator("Update a record.",200),
+                'description' => "The internal user can update a journal entry.",
+                'slug' => SystemConstant::slugGenerator("Update a journal entry.",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Delete a record.",
+                'name' => "Delete a journal entry.",
                 'code' => "PCJMP05",
                 'type' => "ProjectContractJournalModulePermission",
-                'description' => "The internal user can delete a record.",
-                'slug' => SystemConstant::slugGenerator("Delete a record.",200),
+                'description' => "The internal user can delete a journal entry.",
+                'slug' => SystemConstant::slugGenerator("Delete a journal entry.",200),
             ])->create();
 
         // Project contract payment  permission.

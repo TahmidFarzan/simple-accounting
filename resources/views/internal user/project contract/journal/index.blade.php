@@ -27,7 +27,7 @@
             <div class="row mb-2">
                 <p>
                     @if (($projectContract->status == "Ongoing") || (Auth::user()->hasUserPermission(["PCJMP02"]) == true))
-                        <a href="{{ route("project.contract.journal.create",["pcSlug" => $projectContract->slug]) }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create record</a>
+                        <a href="{{ route("project.contract.journal.create",["pcSlug" => $projectContract->slug]) }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create journal entry</a>
                     @endif
 
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sortingCollapseDiv" aria-expanded="false" aria-controls="sortingCollapseDiv">
