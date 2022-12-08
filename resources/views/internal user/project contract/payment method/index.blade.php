@@ -27,7 +27,7 @@
             <div class="row mb-2">
                 <p>
                     @if (Auth::user()->hasUserPermission(["PCPMMP02"]) == true)
-                        <a href="{{ route("project.contract.payment.method.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create record</a>
+                        <a href="{{ route("project.contract.payment.method.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create payment method</a>
                     @endif
 
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sortingCollapseDiv" aria-expanded="false" aria-controls="sortingCollapseDiv">

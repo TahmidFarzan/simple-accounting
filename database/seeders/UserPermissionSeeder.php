@@ -358,51 +358,51 @@ class UserPermissionSeeder extends Seeder
 
         // Project contract payment method permission.
             UserPermission::factory()->state([
-                'name' => "View records.",
+                'name' => "View payment methods.",
                 'code' => "PCPMMP01",
                 'type' => "ProjectContractPaymentMethodModulePermission",
-                'description' => "The internal user can view records.",
-                'slug' => SystemConstant::slugGenerator("View the records",200),
+                'description' => "The internal user can view payment methods.",
+                'slug' => SystemConstant::slugGenerator("View the payment methods",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Create a record.",
+                'name' => "Create a payment method.",
                 'code' => "PCPMMP02",
                 'type' => "ProjectContractPaymentMethodModulePermission",
-                'description' => "The internal user can create a record.",
-                'slug' => SystemConstant::slugGenerator("Create a record.",200),
+                'description' => "The internal user can create a payment method.",
+                'slug' => SystemConstant::slugGenerator("Create a payment method",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "View details of a record.",
+                'name' => "View details of a payment method.",
                 'code' => "PCPMMP03",
                 'type' => "ProjectContractPaymentMethodModulePermission",
-                'description' => "The internal user can view details of a record.",
-                'slug' => SystemConstant::slugGenerator("View details of a record.",200),
+                'description' => "The internal user can view details of a payment method.",
+                'slug' => SystemConstant::slugGenerator("View details of a payment method",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Update a record.",
+                'name' => "Update a payment method.",
                 'code' => "PCPMMP04",
                 'type' => "ProjectContractPaymentMethodModulePermission",
-                'description' => "The internal user can update a record.",
-                'slug' => SystemConstant::slugGenerator("Update a record.",200),
+                'description' => "The internal user can update a payment method.",
+                'slug' => SystemConstant::slugGenerator("Update a payment method",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Trash a record.",
+                'name' => "Trash a payment method.",
                 'code' => "PCPMMP05",
                 'type' => "ProjectContractPaymentMethodModulePermission",
-                'description' => "The internal user can trash a record.",
-                'slug' => SystemConstant::slugGenerator("Trash a record.",200),
+                'description' => "The internal user can trash a payment method.",
+                'slug' => SystemConstant::slugGenerator("Trash a payment method",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Restore a record.",
+                'name' => "Restore a payment method.",
                 'code' => "PCPMMP06",
                 'type' => "ProjectContractPaymentMethodModulePermission",
-                'description' => "The internal user can restore a record.",
-                'slug' => SystemConstant::slugGenerator("Restore a record.",200),
+                'description' => "The internal user can restore a payment method.",
+                'slug' => SystemConstant::slugGenerator("Restore a payment method",200),
             ])->create();
 
         // Project contract client permission.

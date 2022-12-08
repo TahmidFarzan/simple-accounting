@@ -148,11 +148,11 @@ class ProjectContractPaymentMethodController extends Controller
 
         if($updateProjectContractPaymentMethod){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Record successfully updated.";
+            $statusInformation["message"] = "Successfully updated.";
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to update record.";
+            $statusInformation["message"] = "Fail to update.";
         }
 
         return redirect()->route("project.contract.payment.method.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -170,15 +170,15 @@ class ProjectContractPaymentMethodController extends Controller
 
             if($trashedProjectContractPaymentMethod){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Record successfully trashed.");
+                $statusInformation["message"]->push("Successfully trashed.");
             }
             else{
-                $statusInformation["message"]->push("Record fail to trash.");
+                $statusInformation["message"]->push("Fail to trash.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Record already trashed.");
+            $statusInformation["message"]->push("Already trashed.");
         }
 
         return redirect()->route("project.contract.payment.method.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -195,15 +195,15 @@ class ProjectContractPaymentMethodController extends Controller
 
             if($restoreProjectContractPaymentMethod){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Record successfully restored.");
+                $statusInformation["message"]->push("Successfully restored.");
             }
             else{
-                $statusInformation["message"]->push("Record fail to restore.");
+                $statusInformation["message"]->push("Fail to restore.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Record already actived.");
+            $statusInformation["message"]->push("Already actived.");
         }
 
         return redirect()->route("project.contract.payment.method.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
