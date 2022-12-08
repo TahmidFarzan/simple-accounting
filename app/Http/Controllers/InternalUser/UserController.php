@@ -268,16 +268,16 @@ class UserController extends Controller
                 }
 
                 if($user->userPermissionGroups()->count() == count($request->user_permission_group)){
-                    $statusInformation["message"]->push("All selected user permission group are added to record.");
+                    $statusInformation["message"]->push("All selected user permission groups are sync.");
                 }
                 else{
                     $statusInformation["status"] = "warning";
-                    $statusInformation["message"]->push("Some selected user permission group are fail to add to record.");
+                    $statusInformation["message"]->push("Selected user permission groups are fail to sync.");
                 }
             }
 
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("User successfully created.");
+            $statusInformation["message"]->push("Successfully created.");
 
             if($request->auto_email_verify == "No"){
                 $user->sendEmailVerificationNotification();
@@ -290,7 +290,7 @@ class UserController extends Controller
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to create record.";
+            $statusInformation["message"] = "Fail to create.";
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -438,16 +438,16 @@ class UserController extends Controller
                 }
 
                 if($user->userPermissionGroups()->count() == count($request->user_permission_group)){
-                    $statusInformation["message"]->push("All selected user permission group are syn to record.");
+                    $statusInformation["message"]->push("Selected user permission groups are syn.");
                 }
                 else{
                     $statusInformation["status"] = "warning";
-                    $statusInformation["message"]->push("Some selected user permission group are fail to syn to record.");
+                    $statusInformation["message"]->push("Some selected user permission groups are fail to syn.");
                 }
             }
 
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Record successfully updated.");
+            $statusInformation["message"]->push("Successfully updated.");
 
             if(($request->user_role == "Owner")){
                 foreach($user->userPermissionGroups as $perUPG){
@@ -456,7 +456,7 @@ class UserController extends Controller
             }
 
             if(($request->update_email == "Yes") && ($doneUpdateEmail == true)){
-                $statusInformation["message"]->push("Record email has been updated.");
+                $statusInformation["message"]->push("Email has been updated.");
 
                 if($request->auto_email_verify == "No"){
                     $user->sendEmailVerificationNotification();
@@ -465,7 +465,7 @@ class UserController extends Controller
             }
 
             if($request->reset_password == "Yes"){
-                $statusInformation["message"]->push("Reset password is done.");
+                $statusInformation["message"]->push("Password reset is done.");
 
                 if($request->default_password == "Yes"){
                     $statusInformation["message"]->push("Default pasword (123456789) is used for password.");
@@ -475,7 +475,7 @@ class UserController extends Controller
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to update record.";
+            $statusInformation["message"] = "Fail to update.";
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -494,20 +494,20 @@ class UserController extends Controller
 
                 if($trashedUser){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push( "Record successfully trashed.");
+                    $statusInformation["message"]->push( "Successfully trashed.");
                 }
                 else{
-                    $statusInformation["message"]->push("Record fail to trash.");
+                    $statusInformation["message"]->push("Fail to trash.");
                 }
             }
             else{
-                $statusInformation["message"]->push( "You does not have parmission to trash record.");
+                $statusInformation["message"]->push( "You does not have parmission to trash.");
             }
 
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Record already trashed.");
+            $statusInformation["message"]->push("Already trashed.");
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -526,19 +526,19 @@ class UserController extends Controller
 
                 if($restoreUser){
                     $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push( "Record successfully restore.");
+                    $statusInformation["message"]->push( "Successfully restore.");
                 }
                 else{
-                    $statusInformation["message"]->push( "Record fail to restore.");
+                    $statusInformation["message"]->push( "Fail to restore.");
                 }
             }
             else{
-                $statusInformation["message"]->push( "You does not have parmission to restore record.");
+                $statusInformation["message"]->push( "You does not have parmission to restore.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push( "Record already active.");
+            $statusInformation["message"]->push( "Already active.");
         }
 
         return redirect()->route("user.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
