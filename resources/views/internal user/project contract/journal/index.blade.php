@@ -26,7 +26,7 @@
         <div class="card-body text-dark mt-0">
             <div class="row mb-2">
                 <p>
-                    @if (($projectContract->status == "Ongoing") || (Auth::user()->hasUserPermission(["PCJMP02"]) == true))
+                    @if (($projectContract->status == "Ongoing") && ($projectContract->receivable_status == "NotStarted") && (Auth::user()->hasUserPermission(["PCJMP02"]) == true))
                         <a href="{{ route("project.contract.journal.create",["pcSlug" => $projectContract->slug]) }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create journal entry</a>
                     @endif
 
