@@ -407,51 +407,51 @@ class UserPermissionSeeder extends Seeder
 
         // Project contract client permission.
             UserPermission::factory()->state([
-                'name' => "View the records.",
+                'name' => "View the clients.",
                 'code' => "PCCLMP01",
                 'type' => "ProjectContractClientModulePermission",
-                'description' => "The internal user can view records.",
-                'slug' => SystemConstant::slugGenerator("View the records",200),
+                'description' => "The internal user can view clients.",
+                'slug' => SystemConstant::slugGenerator("View the clients",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Create a record.",
+                'name' => "Create a client.",
                 'code' => "PCCLMP02",
                 'type' => "ProjectContractClientModulePermission",
-                'description' => "The internal user can create a record.",
-                'slug' => SystemConstant::slugGenerator("Create a record.",200),
+                'description' => "The internal user can create a client.",
+                'slug' => SystemConstant::slugGenerator("Create a client.",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "View the details of a record.",
+                'name' => "View the details of a client.",
                 'code' => "PCCLMP03",
                 'type' => "ProjectContractClientModulePermission",
-                'description' => "The internal user can view details of a record.",
-                'slug' => SystemConstant::slugGenerator("View the details of a record.",200),
+                'description' => "The internal user can view details of a client.",
+                'slug' => SystemConstant::slugGenerator("View the details of a client.",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Update a record.",
+                'name' => "Update a client.",
                 'code' => "PCCLMP04",
                 'type' => "ProjectContractClientModulePermission",
-                'description' => "The internal user can update a record.",
-                'slug' => SystemConstant::slugGenerator("Update a record.",200),
+                'description' => "The internal user can update a client.",
+                'slug' => SystemConstant::slugGenerator("Update a client.",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Trash a record.",
+                'name' => "Trash a client.",
                 'code' => "PCCLMP05",
                 'type' => "ProjectContractClientModulePermission",
-                'description' => "The internal user can trash a record.",
-                'slug' => SystemConstant::slugGenerator("Trash a record.",200),
+                'description' => "The internal user can trash a client.",
+                'slug' => SystemConstant::slugGenerator("Trash a client.",200),
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Restore a record.",
+                'name' => "Restore a client.",
                 'code' => "PCCLMP06",
                 'type' => "ProjectContractClientModulePermission",
-                'description' => "The internal user can restore a record.",
-                'slug' => SystemConstant::slugGenerator("Restore a record.",200),
+                'description' => "The internal user can restore a client.",
+                'slug' => SystemConstant::slugGenerator("Restore a client.",200),
             ])->create();
 
         // Project contract  permission.

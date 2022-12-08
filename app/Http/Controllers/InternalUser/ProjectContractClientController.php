@@ -11,7 +11,6 @@ use App\Models\ProjectContractClient;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
 
-
 class ProjectContractClientController extends Controller
 {
     public function __construct()
@@ -133,11 +132,11 @@ class ProjectContractClientController extends Controller
 
         if($saveProjectContractClient){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Record successfully created.";
+            $statusInformation["message"]->push("Successfully created.");
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to create record.";
+            $statusInformation["message"]->push("Fail to create.");
         }
 
         return redirect()->route("project.contract.client.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -195,11 +194,11 @@ class ProjectContractClientController extends Controller
 
         if($updateProjectContractClient){
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Record successfully updated.";
+            $statusInformation["message"]->push("Successfully updated.");
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"] = "Fail to update record.";
+            $statusInformation["message"]->push("Fail to update.");
         }
 
         return redirect()->route("project.contract.client.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -217,15 +216,15 @@ class ProjectContractClientController extends Controller
 
             if($trashedProjectContractClient){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Record successfully trashed.");
+                $statusInformation["message"]->push("Successfully trashed.");
             }
             else{
-                $statusInformation["message"]->push("Record fail to trash.");
+                $statusInformation["message"]->push("Fail to trash.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Record already trashed.");
+            $statusInformation["message"]->push("Already trashed.");
         }
 
         return redirect()->route("project.contract.client.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -242,15 +241,15 @@ class ProjectContractClientController extends Controller
 
             if($restoreProjectContractClient){
                 $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Record successfully restored.");
+                $statusInformation["message"]->push("Successfully restored.");
             }
             else{
-                $statusInformation["message"]->push("Record fail to restore.");
+                $statusInformation["message"]->push("Fail to restore.");
             }
         }
         else{
             $statusInformation["status"] = "status";
-            $statusInformation["message"]->push("Record already actived.");
+            $statusInformation["message"]->push("Already actived.");
         }
 
         return redirect()->route("project.contract.client.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
