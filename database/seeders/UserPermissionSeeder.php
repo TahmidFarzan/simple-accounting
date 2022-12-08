@@ -268,43 +268,43 @@ class UserPermissionSeeder extends Seeder
 
             // User permission group permission.
                 UserPermission::factory()->state([
-                    'name' => "View records.",
+                    'name' => "View user permission groups.",
                     'code' => "UPGMP01",
                     'type' => "UserPermissionGroupModulePermission",
                     'description' => "The internal user can view.",
-                    'slug' => SystemConstant::slugGenerator("View records",200),
+                    'slug' => SystemConstant::slugGenerator("View user permission groups",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Create a record.",
+                    'name' => "Create a user permission group.",
                     'code' => "UPGMP02",
                     'type' => "UserPermissionGroupModulePermission",
-                    'description' => "The internal user can create a record.",
-                    'slug' => SystemConstant::slugGenerator("Create a record",200),
+                    'description' => "The internal user can create a user permission group.",
+                    'slug' => SystemConstant::slugGenerator("Create a user permission group",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "View details of a record.",
+                    'name' => "View details of a user permission group.",
                     'code' => "UPGMP03",
                     'type' => "UserPermissionGroupModulePermission",
-                    'description' => "The internal user can view authentication log details.",
-                    'slug' => SystemConstant::slugGenerator("View details of a record",200),
+                    'description' => "The internal user can view details of a user permission group.",
+                    'slug' => SystemConstant::slugGenerator("View details of a user permission group",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Update a record.",
+                    'name' => "Update a user permission group.",
                     'code' => "UPGMP04",
                     'type' => "UserPermissionGroupModulePermission",
-                    'description' => "The internal user can update a record.",
-                    'slug' => SystemConstant::slugGenerator("Update a record",200),
+                    'description' => "The internal user can update a user permission group.",
+                    'slug' => SystemConstant::slugGenerator("Update a user permission group",200),
                 ])->create();
 
                 UserPermission::factory()->state([
-                    'name' => "Delete a record.",
+                    'name' => "Delete a user permission group.",
                     'code' => "UPGMP05",
                     'type' => "UserPermissionGroupModulePermission",
-                    'description' => "The internal user can delete a record.",
-                    'slug' => SystemConstant::slugGenerator("Delete a record",200),
+                    'description' => "The internal user can delete a user permission group.",
+                    'slug' => SystemConstant::slugGenerator("Delete a user permission group",200),
                 ])->create();
     // -----------------------------------------------------------
         // Project contract category permission.
