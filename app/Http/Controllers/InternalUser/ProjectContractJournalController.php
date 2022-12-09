@@ -147,7 +147,7 @@ class ProjectContractJournalController extends Controller
                 'entry_type.in' => 'Entry type must be one out of [Revenue,Loss].',
 
                 'amount.required' => 'Amount is required.',
-                'amount.min' => 'Amount must be at lease 0.',
+                'amount.min' => 'Amount must be at least 0.',
                 'amount.numeric' => 'Amount must be numeric.',
 
                 'note.required' => 'Note is required.',
@@ -221,7 +221,7 @@ class ProjectContractJournalController extends Controller
                 'entry_type.in' => 'Entry type must be one out of [Revenue,Loss].',
 
                 'amount.required' => 'Amount is required.',
-                'amount.min' => 'Amount must be at lease 0.',
+                'amount.min' => 'Amount must be at least 0.',
                 'amount.numeric' => 'Amount must be numeric.',
 
                 'note.required' => 'Note is required.',
