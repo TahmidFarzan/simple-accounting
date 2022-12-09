@@ -148,7 +148,7 @@ class ProjectContractJournalController extends Controller
 
                 'amount.required' => 'Amount is required.',
                 'amount.min' => 'Amount must be at lease 0.',
-                'amount.numeric' => 'Amount must be unumeric.',
+                'amount.numeric' => 'Amount must be numeric.',
 
                 'note.required' => 'Note is required.',
             ]
@@ -222,7 +222,7 @@ class ProjectContractJournalController extends Controller
 
                 'amount.required' => 'Amount is required.',
                 'amount.min' => 'Amount must be at lease 0.',
-                'amount.numeric' => 'Amount must be unumeric.',
+                'amount.numeric' => 'Amount must be numeric.',
 
                 'note.required' => 'Note is required.',
             ]
