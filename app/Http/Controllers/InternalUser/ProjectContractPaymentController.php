@@ -134,9 +134,9 @@ class ProjectContractPaymentController extends Controller
             if( $projectContract){
                 $pcTotalReceiveAmount = $projectContract->totalReceiveAmount() + $afterValidatorData["amount"];
 
-                if($afterValidatorData["amount"] > $projectContract->totalDueAmount()){
+                if($afterValidatorData["amount"] > $projectContract->totalReceivableAmount()){
                     $validator->errors()->add(
-                        'amount', "Amount can not bigger then due amount."
+                        'amount', "Amount can not bigger then receivable amount."
                     );
                 }
 
