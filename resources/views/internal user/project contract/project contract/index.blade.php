@@ -212,7 +212,7 @@
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
-                                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="invested-amount-popover" data-bs-title="Invented amount information" data-bs-content="{{ $investedPopOver }}">
+                                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="receivable-amount-popover" data-bs-title="Receivable amount information" data-bs-content="{{ $investedPopOver }}">
                                                         {{ $perProjectContract->totalReceivableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
@@ -361,7 +361,7 @@
                                                         $investedPopOver = $investedPopOver."</p>";
                                                     @endphp
 
-                                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="invested-amount-popover" data-bs-title="Invented amount information" data-bs-content="{{ $investedPopOver }}">
+                                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="receivable-amount-popover" data-bs-title="Receivable amount information" data-bs-content="{{ $investedPopOver }}">
                                                         {{ $perProjectContract->totalReceivableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
@@ -696,7 +696,7 @@
 
 @push('onPageExtraCss')
     <style>
-        .invested-amount-popover {
+        .receivable-amount-popover {
             --bs-popover-max-width: auto;
             --bs-popover-border-color: var(--bs-primary);
             --bs-popover-header-bg: var(--bs-primary);
