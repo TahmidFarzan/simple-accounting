@@ -443,6 +443,10 @@
                                                         <a href="{{ route("project.contract.journal.index",["pcSlug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-secondary m-1">Journals</a>
                                                     @endif
 
+                                                    @if (!($perProjectContract->receivable_status == "NotStarted") && (Auth::user()->hasUserPermission(["PCPMP01"]) == true))
+                                                        <a href="{{ route("project.contract.payment.index",["pcSlug" => $perProjectContract->slug]) }}" class="btn btn-sm btn-light m-1">Payments</a>
+                                                    @endif
+
                                                 </td>
                                             </tr>
                                         @empty

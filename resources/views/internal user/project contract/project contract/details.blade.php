@@ -352,8 +352,12 @@
                         </button>
                     @endif
 
-                    @if (!($projectContract->status == "Upcomming") && (Auth::user()->hasUserPermission(["PCJMP01"]) == true))
+                    @if (Auth::user()->hasUserPermission(["PCJMP01"]) == true)
                         <a href="{{ route("project.contract.journal.index",["pcSlug" => $projectContract->slug]) }}" class="btn btn-info">Journals</a>
+                    @endif
+
+                    @if (($projectContract->status == "Complete") && !($projectContract->receivable_status == "NotStarted") && (Auth::user()->hasUserPermission(["PCPMP01"]) == true))
+                        <a href="{{ route("project.contract.journal.index",["pcSlug" => $projectContract->slug]) }}" class="btn btn-light">Payments</a>
                     @endif
 
                 </div>
