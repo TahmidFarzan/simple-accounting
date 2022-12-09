@@ -152,26 +152,6 @@
                         </div>
                     </div>
                 </div>
-
-                @if (!($projectContractJournal->deleted_at == null))
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <th style="width: 25%;">Deleted at</th>
-                                                <th style="width: 1%;">:</th>
-                                                <td>{{ ($projectContractJournal->deleted_at == null) ? "Not added yet." : date('d-M-Y',strtotime($projectContractJournal->deleted_at))." at ".date('h:i:s a',strtotime($projectContractJournal->deleted_at)) }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
             </div>
         </div>
     </div>
