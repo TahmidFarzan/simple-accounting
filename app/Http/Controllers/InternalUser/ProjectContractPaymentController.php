@@ -200,6 +200,37 @@ class ProjectContractPaymentController extends Controller
         return redirect()->route("project.contract.payment.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
+
+    public function delete($pcSlug,$slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $projectContractValidationStatus = $this->projectContractValidation($pcSlug);
+
+        if($projectContractValidationStatus["status"] == "status"){
+            $projectContractPayment = ProjectContractPayment::where("slug",$slug)->firstOrFail();
+            $deleteProjectContractPayment = $projectContractPayment->delete();
+
+            if($deleteProjectContractPayment){
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Successfully deleted.");
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Fail to delete.");
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Fail to delete.");
+
+            foreach($projectContractValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
+        }
+
+        return redirect()->route("project.contract.payment.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
     private function projectContractValidation($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
