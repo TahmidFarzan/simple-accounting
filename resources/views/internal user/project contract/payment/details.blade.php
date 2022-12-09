@@ -50,6 +50,11 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>Payment method</th>
+                            <th>:</th>
+                            <td>{{ $projectContractPayment->paymentMethod->name }}</td>
+                        </tr>
+                        <tr>
                             <th>Amount</th>
                             <th>:</th>
                             <td>{{ $projectContractPayment->amount }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>

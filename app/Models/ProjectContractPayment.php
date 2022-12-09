@@ -66,6 +66,11 @@ class ProjectContractPayment extends Model
         return $this->belongsTo(ProjectContract::class,'project_contract_id','id');
     }
 
+    public function paymentMethod()
+    {
+        return $this->belongsTo(ProjectContractPaymentMethod::class,'payment_method_id','id')->withTrashed();
+    }
+
     public function updatedBy()
     {
         $causer = null;
