@@ -362,8 +362,8 @@ class ProjectContractController extends Controller
         $validator->after(function ($validator) {
             $afterValidatorData = $validator->getData();
             $projectContract = ProjectContract::where("id",$this->projectContractId)->firstOrFail();
-            $clientFound = ProjectContractClient::where("slug",$afterValidatorData["client"])->count();
-            $categoryFound = ProjectContractCategory::where("slug",$afterValidatorData["category"])->count();
+            $clientFound = ProjectContractClient::withTrashed()->where("slug",$afterValidatorData["client"])->count();
+            $categoryFound = ProjectContractCategory::withTrashed()->where("slug",$afterValidatorData["category"])->count();
 
             $currentEndDateToTime = strtotime($projectContract->end_date);
             $currentStartDateToTime = strtotime($projectContract->start_date);
