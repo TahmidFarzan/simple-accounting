@@ -182,6 +182,13 @@ class ProjectContractPaymentController extends Controller
             if($saveProjectContractPayment){
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully created.");
+
+                $projectContractReceivableStatusUpdateStatus = $this->projectContractPaymentReceivableUpdate($pcSlug);
+
+                $statusInformation["status"] = $projectContractReceivableStatusUpdateStatus["status"];
+                foreach($projectContractReceivableStatusUpdateStatus["message"] as $perMessage){
+                    $statusInformation["message"]->push($perMessage);
+                }
             }
             else{
                 $statusInformation["status"] = "errors";
@@ -239,6 +246,59 @@ class ProjectContractPaymentController extends Controller
         if(($projectContract->status == "Complete") && !($projectContract->receivable_status == "NotStarted") && !($projectContract->receivable_status == "Complete")){
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Passed the validation.");
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Project contract is not complete.");
+            $statusInformation["message"]->push("Project contract payment must be not started.");
+        }
+
+        return $statusInformation;
+    }
+
+    private function projectContractPaymentReceivableUpdate($pcSlug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $projectContractValidationStatus = $this->projectContractValidation($pcSlug);
+
+        if($projectContractValidationStatus["status"] == "status"){
+
+            $projectContractReceivableStatus = "Due";
+
+            $sProjectContract = ProjectContract::where("slug", $pcSlug)->firstOrFail();
+            $projectContractNotes = $sProjectContract->note;
+
+            if($sProjectContract->totalReceivableAmount() == $sProjectContract->totalReceiveAmount()){
+                $projectContractReceivableStatus = "Complete";
+            }
+            else{
+                if($sProjectContract->totalReceiveAmount() < $sProjectContract->totalReceivableAmount()){
+                    $projectContractReceivableStatus = "Partial";
+                }
+                else{
+                    $projectContractReceivableStatus = "Due";
+                }
+            }
+
+            array_push($projectContractNotes, "Update project contract receivable status to ".$projectContractReceivableStatus." .");
+
+            $projectContract = ProjectContract::where("slug", $pcSlug)->firstOrFail();
+            $projectContract->receivable_status =  $projectContractReceivableStatus;
+            $projectContract->note = $projectContractNotes;
+            $projectContract->updated_at = Carbon::now();
+
+            $updateProjectContract = $projectContract->update();
+            if( $updateProjectContract){
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Project contract successfully update.");
+
+                $statusInformation["message"]->push( ( $projectContract->receivable_status == "Complete") ? "Receiving payment successfully completed." : "Current receivable status is '".$projectContract->receivable_status."'.");
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Fail to update project contract.");
+                $statusInformation["message"]->push("Fail to update project contrac receivable status.");
+            }
         }
         else{
             $statusInformation["status"] = "errors";
