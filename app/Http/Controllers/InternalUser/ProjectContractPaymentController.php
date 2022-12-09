@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers\InternalUser;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\ProjectContract;
+use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectContractPayment;
+use Spatie\Activitylog\Facades\LogBatch;
+use Illuminate\Support\Facades\Validator;
+use App\Models\ProjectContractPaymentMethod;
 
 class ProjectContractPaymentController extends Controller
 {
+    private $pcSlug = null;
+
     public function __construct()
     {
         $this->middleware(['auth','verified']);
@@ -53,4 +61,160 @@ class ProjectContractPaymentController extends Controller
         return view('internal user.project contract.payment.details',compact("projectContract","projectContractPayment"));
     }
 
+    public function create($pcSlug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $projectContractValidationStatus = $this->projectContractValidation($pcSlug);
+
+        if($projectContractValidationStatus["status"] == "status"){
+            $projectContract = ProjectContract::where("slug",$pcSlug)->firstOrFail();
+            $projectContractPaymentMethods = ProjectContractPaymentMethod::orderby("name","asc")->get();
+            return view('internal user.project contract.payment.create',compact("projectContract","projectContractPaymentMethods"));
+        }
+        else{
+            $statusInformation["status"] = "errors";
+
+            foreach($projectContractValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
+
+            return redirect()->route("project.contract.payment.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+        }
+    }
+
+
+    public function save(Request $request,$pcSlug){
+        $this->pcSlug = $pcSlug;
+
+        $validator = Validator::make($request->all(),
+            [
+                'name' => 'required|max:200',
+                'payment_date' => 'required|date',
+                'note' => 'required',
+                'description' => 'nullable',
+                'payment_method' => 'required',
+                'amount' => 'required|numeric|min:0',
+                'due' => 'required|numeric|min:0',
+            ],
+            [
+                'name.required' => 'Name is required.',
+                'name.max' => 'Name length can not greater then 200 chars.',
+
+                'payment_date.required' => 'Payment date is required.',
+                'payment_date.date' => 'Payment date must be a date.',
+
+                'payment_method.required' => 'Payment method is required.',
+
+                'amount.required' => 'Amount is required.',
+                'amount.min' => 'Amount must be at least 0.',
+                'amount.numeric' => 'Amount must be numeric.',
+
+                'due.required' => 'Amount is required.',
+                'due.min' => 'Amount must be at least 0.',
+                'due.numeric' => 'Amount must be unumeric.',
+
+                'note.required' => 'Note is required.',
+            ]
+        );
+
+        $validator->after(function ($validator) {
+            $afterValidatorData = $validator->getData();
+            $projectContract = ProjectContract::where("slug", $this->pcSlug)->firstOrFail();
+
+            if(array_key_exists('payment_method', $afterValidatorData) && !($afterValidatorData["payment_method"] == null)){
+                $projectContractPaymentMethodFound = ProjectContractPaymentMethod::where("slug",$afterValidatorData["payment_method"])->count();
+
+                if($projectContractPaymentMethodFound == 0 ){
+                    $validator->errors()->add(
+                        'payment_method', "Unknown payment method."
+                    );
+                }
+            }
+
+            if( $projectContract){
+                $pcTotalReceiveAmount = $projectContract->totalReceiveAmount() + $afterValidatorData["amount"];
+
+                if($afterValidatorData["amount"] > $projectContract->totalDueAmount()){
+                    $validator->errors()->add(
+                        'amount', "Amount can not bigger then due amount."
+                    );
+                }
+
+                if($pcTotalReceiveAmount > $projectContract->totalReceivableAmount()){
+                    $validator->errors()->add(
+                        'amount', "Total receive amount can not bigger then total receivable amount."
+                    );
+                }
+
+                if(($afterValidatorData["amount"] + $afterValidatorData["due"]) > $projectContract->totalReceivableAmount()){
+                    $validator->errors()->add(
+                        'amount', "Sum of amount and due can not bigger then total receivable amount."
+                    );
+                }
+            }
+        });
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $projectContractValidationStatus = $this->projectContractValidation($pcSlug);
+
+        if($projectContractValidationStatus["status"] == "status"){
+            LogBatch::startBatch();
+                $projectContractPayment = new ProjectContractPayment();
+                $projectContractPayment->name = $request->name;
+                $projectContractPayment->payment_date = $request->payment_date ;
+                $projectContractPayment->description = $request->description;
+                $projectContractPayment->note = array($request->note);
+                $projectContractPayment->payment_method_id = ProjectContractPaymentMethod::where("slug",$request->payment_method)->firstOrFail()->id;
+                $projectContractPayment->amount = $request->amount;
+                $projectContractPayment->project_contract_id = ProjectContract::where("slug",$pcSlug)->firstOrFail()->id;
+                $projectContractPayment->slug = SystemConstant::slugGenerator($request->name,200);
+                $projectContractPayment->created_at = Carbon::now();
+                $projectContractPayment->created_by_id = Auth::user()->id;
+                $projectContractPayment->updated_at = null;
+                $saveProjectContractPayment = $projectContractPayment->save();
+            LogBatch::endBatch();
+
+            if($saveProjectContractPayment){
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Successfully created.");
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Fail to create.");
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Fail to create.");
+
+            foreach($projectContractValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
+        }
+
+        return redirect()->route("project.contract.payment.index",["pcSlug" => $pcSlug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function projectContractValidation($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+
+        if(($projectContract->status == "Complete") && !($projectContract->receivable_status == "NotStarted") && !($projectContract->receivable_status == "Complete")){
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Passed the validation.");
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Project contract is not complete.");
+            $statusInformation["message"]->push("Project contract payment must be not started.");
+        }
+
+        return $statusInformation;
+    }
 }
