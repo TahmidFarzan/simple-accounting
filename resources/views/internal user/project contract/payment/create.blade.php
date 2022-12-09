@@ -68,7 +68,7 @@
                                     <select name="payment_method" id="paymentMethodInput" class="form-control form-control-sm @error('payment_method') is-invalid @enderror">
                                         <option value="">Select</option>
                                         @foreach ($projectContractPaymentMethods as $perPCPaymentMethod)
-                                            <option value="{{ $perPCPaymentMethod->slug }}" @if($perPCPaymentMethod->slug == old("payment_method")) selected @endif>{{ $perPCPaymentMethod->name }}</option>
+                                            <option value="{{ $perPCPaymentMethod->slug }}" @if($perPCPaymentMethod->slug == $currentPaymentMethodOption) selected @endif>{{ $perPCPaymentMethod->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('payment_method')
