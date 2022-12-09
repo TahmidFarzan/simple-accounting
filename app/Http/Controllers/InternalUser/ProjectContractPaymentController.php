@@ -21,8 +21,8 @@ class ProjectContractPaymentController extends Controller
     }
 
     public function index(Request $request,$pcSlug){
-        $pagination = 1;
-        $paginations = array(1,5,15,30,45,60,75,90,105,120);
+        $pagination = 5;
+        $paginations = array(5,15,30,45,60,75,90,105,120);
         $projectContract = ProjectContract::where("slug",$pcSlug)->firstOrFail();
 
         $projectContractPayments = ProjectContractPayment::orderby("created_at","desc")->orderby("name","asc")->where("project_contract_id",$projectContract->id);
@@ -47,5 +47,10 @@ class ProjectContractPaymentController extends Controller
         return view('internal user.project contract.payment.index',compact("projectContractPayments","projectContract","paginations"));
     }
 
+    public function details ($pcSlug,$slug){
+        $projectContract = ProjectContract::where("slug",$pcSlug)->firstOrFail();
+        $projectContractPayment = ProjectContractPayment::where("slug",$slug)->firstOrFail();
+        return view('internal user.project contract.payment.details',compact("projectContract","projectContractPayment"));
+    }
 
 }
