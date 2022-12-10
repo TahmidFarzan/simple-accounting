@@ -44,63 +44,63 @@
     @endphp
     <div class="card border-dark mb-3">
         <div class="card-body text-dark">
-            <h5 class="card-title">Business quick view</h5>
+            <h5 class="card-title">Project contract quick view</h5>
         </div>
         <div class="card-body text-dark">
             <nav>
-                <div class="nav nav-tabs" id="businessQuickViewNavTabList" role="tablist">
-                    <button class="nav-link active" id="businessQuickViewProjectContractNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractNavContent" type="button" role="tab" aria-controls="businessQuickViewProjectContractNavContent" aria-selected="true">Project contract</button>
+                <div class="nav nav-tabs" id="projectContractQuickViewNavTabList" role="tablist">
+                    <button class="nav-link active" id="projectContractQuickViewNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewNavContent" type="button" role="tab" aria-controls="projectContractQuickViewNavContent" aria-selected="true">Project contract</button>
                     <button class="nav-link" id="patnershipBusinessNavTab" data-bs-toggle="tab" data-bs-target="#patnershipBusinessNavContent" type="button" role="tab" aria-controls="patnershipBusinessNavContent" aria-selected="false">Patnership Business</button>
                 </div>
             </nav>
-            <div class="tab-content" id="businessQuickViewNavTabContent">
-                <div class="tab-pane fade show active" id="businessQuickViewProjectContractNavContent" role="tabpanel" aria-labelledby="businessQuickViewProjectContractNavTab" tabindex="0">
+            <div class="tab-content" id="projectContractQuickViewNavTabContent">
+                <div class="tab-pane fade show active" id="projectContractQuickViewNavContent" role="tabpanel" aria-labelledby="projectContractQuickViewNavTab" tabindex="0">
                     <div class="card-body">
                         <nav>
-                            <div class="nav nav-tabs" id="businessQuickViewProjectContractNavGroupTab" role="tablist">
-                                <button class="nav-link active" id="businessQuickViewProjectContractCurrentNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractCurrentNavContent" type="button" role="tab" aria-controls="businessQuickViewProjectContractCurrentNavContent" aria-selected="true">Current</button>
-                                <button class="nav-link" id="businessQuickViewProjectContractPreviousNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractPreviousNavContent" type="button" role="tab" aria-controls="businessQuickViewProjectContractPreviousNavContent" aria-selected="false">Previous</button>
+                            <div class="nav nav-tabs" id="projectContractQuickViewNavGroupTab" role="tablist">
+                                <button class="nav-link active" id="projectContractQuickViewCurrentNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewCurrentNavContent" type="button" role="tab" aria-controls="projectContractQuickViewCurrentNavContent" aria-selected="true">Current</button>
+                                <button class="nav-link" id="projectContractQuickViewPreviousNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewPreviousNavContent" type="button" role="tab" aria-controls="projectContractQuickViewPreviousNavContent" aria-selected="false">Previous</button>
                             </div>
                         </nav>
 
-                        <div class="tab-content" id="businessQuickViewProjectContractNavGroupTabContent">
-                            <div class="tab-pane fade show active" id="businessQuickViewProjectContractCurrentNavContent" role="tabpanel" aria-labelledby="businessQuickViewProjectContractCurrentNavTab" tabindex="0">
+                        <div class="tab-content" id="projectContractQuickViewNavGroupTabContent">
+                            <div class="tab-pane fade show active" id="projectContractQuickViewCurrentNavContent" role="tabpanel" aria-labelledby="projectContractQuickViewCurrentNavTab" tabindex="0">
                                 <div class="card-body">
                                     <nav>
-                                        <div class="nav nav-tabs" id="businessQuickViewProjectContractCurrentGroupTab" role="tablist">
-                                            <button class="nav-link active" id="businessQuickViewProjectContractCurrentDateNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractCurrentDateNavContant" type="button" role="tab" aria-controls="businessQuickViewProjectContractCurrentDateNavContant" aria-selected="true">Day</button>
-                                            <button class="nav-link" id="businessQuickViewProjectContractCurrentWeekNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractCurrentWeekNavContent" type="button" role="tab" aria-controls="businessQuickViewProjectContractCurrentWeekNavContent" aria-selected="false">Week</button>
-                                            <button class="nav-link" id="businessQuickViewProjectContractCurrentMonthNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractCurrentMonthNavContent" type="button" role="tab" aria-controls="businessQuickViewProjectContractCurrentMonthNavContent" aria-selected="false">Month</button>
-                                            <button class="nav-link" id="businessQuickViewProjectContractCurrentYearNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractCurrentYearNavContent" type="button" role="tab" aria-controls="businessQuickViewProjectContractCurrentYearNavContent" aria-selected="false">Year</button>
+                                        <div class="nav nav-tabs" id="projectContractQuickViewCurrentGroupTab" role="tablist">
+                                            <button class="nav-link active" id="projectContractQuickViewCurrentDateNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewCurrentDateNavContant" type="button" role="tab" aria-controls="projectContractQuickViewCurrentDateNavContant" aria-selected="true">Day</button>
+                                            <button class="nav-link" id="projectContractQuickViewCurrentWeekNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewCurrentWeekNavContent" type="button" role="tab" aria-controls="projectContractQuickViewCurrentWeekNavContent" aria-selected="false">Week</button>
+                                            <button class="nav-link" id="projectContractQuickViewCurrentMonthNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewCurrentMonthNavContent" type="button" role="tab" aria-controls="projectContractQuickViewCurrentMonthNavContent" aria-selected="false">Month</button>
+                                            <button class="nav-link" id="projectContractQuickViewCurrentYearNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewCurrentYearNavContent" type="button" role="tab" aria-controls="projectContractQuickViewCurrentYearNavContent" aria-selected="false">Year</button>
                                         </div>
                                     </nav>
-                                    <div class="tab-content" id="businessQuickViewProjectContractCurrentGroupTabContent">
-                                        <div class="tab-pane fade show active" id="businessQuickViewProjectContractCurrentDateNavContant" role="tabpanel" aria-labelledby="businessQuickViewProjectContractCurrentDateNavTab" tabindex="0">
+                                    <div class="tab-content" id="projectContractQuickViewCurrentGroupTabContent">
+                                        <div class="tab-pane fade show active" id="projectContractQuickViewCurrentDateNavContant" role="tabpanel" aria-labelledby="projectContractQuickViewCurrentDateNavTab" tabindex="0">
                                             <div class="card-body">
 
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="businessQuickViewProjectContractCurrentWeekNavContent" role="tabpanel" aria-labelledby="businessQuickViewProjectContractCurrentWeekNavTab" tabindex="0">...</div>
-                                        <div class="tab-pane fade" id="businessQuickViewProjectContractCurrentMonthNavContent" role="tabpanel" aria-labelledby="businessQuickViewProjectContractCurrentMonthNavTab" tabindex="0">...</div>
-                                        <div class="tab-pane fade" id="businessQuickViewProjectContractCurrentYearNavContent" role="tabpanel" aria-labelledby="businessQuickViewProjectContractCurrentYearNavTab" tabindex="0">...</div>
+                                        <div class="tab-pane fade" id="projectContractQuickViewCurrentWeekNavContent" role="tabpanel" aria-labelledby="projectContractQuickViewCurrentWeekNavTab" tabindex="0">...</div>
+                                        <div class="tab-pane fade" id="projectContractQuickViewCurrentMonthNavContent" role="tabpanel" aria-labelledby="projectContractQuickViewCurrentMonthNavTab" tabindex="0">...</div>
+                                        <div class="tab-pane fade" id="projectContractQuickViewCurrentYearNavContent" role="tabpanel" aria-labelledby="projectContractQuickViewCurrentYearNavTab" tabindex="0">...</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="businessQuickViewProjectContractPreviousNavContent" role="tabpanel" aria-labelledby="businessQuickViewProjectContractPreviousNavTab" tabindex="0">
+                            <div class="tab-pane fade" id="projectContractQuickViewPreviousNavContent" role="tabpanel" aria-labelledby="projectContractQuickViewPreviousNavTab" tabindex="0">
                                 <div class="card-body">
                                     <nav>
-                                        <div class="nav nav-tabs" id="businessQuickViewProjectContractPreviousGroupTab" role="tablist">
-                                            <button class="nav-link active" id="businessQuickViewProjectContractPreviousDateNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractPreviousDateNavContant" type="button" role="tab" aria-controls="businessQuickViewProjectContractPreviousDateNavContant" aria-selected="true">Day</button>
-                                            <button class="nav-link" id="businessQuickViewProjectContractPreviousWeekNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractPreviousWeekNavContent" type="button" role="tab" aria-controls="businessQuickViewProjectContractPreviousWeekNavContent" aria-selected="false">Week</button>
-                                            <button class="nav-link" id="businessQuickViewProjectContractPreviousMonthNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractPreviousMonthNavContent" type="button" role="tab" aria-controls="businessQuickViewProjectContractPreviousMonthNavContent" aria-selected="false">Month</button>
-                                            <button class="nav-link" id="businessQuickViewProjectContractPreviousYearNavTab" data-bs-toggle="tab" data-bs-target="#businessQuickViewProjectContractPreviousYearNavContent" type="button" role="tab" aria-controls="businessQuickViewProjectContractPreviousYearNavContent" aria-selected="false">Year</button>
+                                        <div class="nav nav-tabs" id="projectContractQuickViewPreviousGroupTab" role="tablist">
+                                            <button class="nav-link active" id="projectContractQuickViewPreviousDateNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewPreviousDateNavContant" type="button" role="tab" aria-controls="projectContractQuickViewPreviousDateNavContant" aria-selected="true">Day</button>
+                                            <button class="nav-link" id="projectContractQuickViewPreviousWeekNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewPreviousWeekNavContent" type="button" role="tab" aria-controls="projectContractQuickViewPreviousWeekNavContent" aria-selected="false">Week</button>
+                                            <button class="nav-link" id="projectContractQuickViewPreviousMonthNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewPreviousMonthNavContent" type="button" role="tab" aria-controls="projectContractQuickViewPreviousMonthNavContent" aria-selected="false">Month</button>
+                                            <button class="nav-link" id="projectContractQuickViewPreviousYearNavTab" data-bs-toggle="tab" data-bs-target="#projectContractQuickViewPreviousYearNavContent" type="button" role="tab" aria-controls="projectContractQuickViewPreviousYearNavContent" aria-selected="false">Year</button>
                                         </div>
                                     </nav>
-                                    <div class="tab-content" id="businessQuickViewProjectContractPreviousGroupTabContent">
-                                        <div class="tab-pane fade show active" id="businessQuickViewProjectContractPreviousDateNavContant" role="tabpanel" aria-labelledby="businessQuickViewProjectContractPreviousDateNavTab" tabindex="0">...</div>
-                                        <div class="tab-pane fade" id="businessQuickViewProjectContractPreviousWeekNavContent" role="tabpanel" aria-labelledby="businessQuickViewProjectContractPreviousWeekNavTab" tabindex="0">...</div>
-                                        <div class="tab-pane fade" id="businessQuickViewProjectContractPreviousMonthNavContent" role="tabpanel" aria-labelledby="businessQuickViewProjectContractPreviousMonthNavTab" tabindex="0">...</div>
-                                        <div class="tab-pane fade" id="businessQuickViewProjectContractPreviousYearNavContent" role="tabpanel" aria-labelledby="businessQuickViewProjectContractPreviousYearNavTab" tabindex="0">...</div>
+                                    <div class="tab-content" id="projectContractQuickViewPreviousGroupTabContent">
+                                        <div class="tab-pane fade show active" id="projectContractQuickViewPreviousDateNavContant" role="tabpanel" aria-labelledby="projectContractQuickViewPreviousDateNavTab" tabindex="0">...</div>
+                                        <div class="tab-pane fade" id="projectContractQuickViewPreviousWeekNavContent" role="tabpanel" aria-labelledby="projectContractQuickViewPreviousWeekNavTab" tabindex="0">...</div>
+                                        <div class="tab-pane fade" id="projectContractQuickViewPreviousMonthNavContent" role="tabpanel" aria-labelledby="projectContractQuickViewPreviousMonthNavTab" tabindex="0">...</div>
+                                        <div class="tab-pane fade" id="projectContractQuickViewPreviousYearNavContent" role="tabpanel" aria-labelledby="projectContractQuickViewPreviousYearNavTab" tabindex="0">...</div>
                                     </div>
                                 </div>
                             </div>
