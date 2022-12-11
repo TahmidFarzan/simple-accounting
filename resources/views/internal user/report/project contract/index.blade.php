@@ -42,22 +42,6 @@
 
                 <div class="col-md-6 mb-2">
                     <div class="row">
-                        <label class="col-md-4 col-form-label col-form-label-sm">Receivable status</label>
-                        <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="receivableStatusInputForSorting" name="receivable_status">
-                                <option value="">Select</option>
-                                <option value="All">All</option>
-                                @foreach ( $receivableStatuses as $perStatus)
-                                    <option value="{{ $perStatus }}">{{ $perStatus }}</option>
-                                @endforeach
-                            </select>
-                            <div id="receivableStatusInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 mb-2">
-                    <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Status</label>
                         <div class="col-md-8">
                             <select class="form-control form-control-sm" id="statusInputForSorting" name="status">
@@ -68,6 +52,22 @@
                                 @endforeach
                             </select>
                             <div id="statusInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-2">
+                    <div class="row">
+                        <label class="col-md-4 col-form-label col-form-label-sm">Receivable status</label>
+                        <div class="col-md-8">
+                            <select class="form-control form-control-sm" id="receivableStatusInputForSorting" name="receivable_status">
+                                <option value="">Select</option>
+                                <option value="All">All</option>
+                                @foreach ( $receivableStatuses as $perStatus)
+                                    <option value="{{ $perStatus }}">{{ $perStatus }}</option>
+                                @endforeach
+                            </select>
+                            <div id="receivableStatusInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
