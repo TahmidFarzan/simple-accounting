@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ProjectContract;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-
+use App\Models\ProjectContractCategory;
 
 class ReportController extends Controller
 {
@@ -21,14 +21,12 @@ class ReportController extends Controller
         $paginations = array(1,5,15,30,45,60,75,90,105,120);
         $statuses = array('Ongoing', 'Complete');
         $receivableStatuses = array('Not started', 'Due', 'Partial', 'Complete');
-        $projectContracts = ProjectContract::orderBy("created_at","desc")->orderBy("name","asc");
+        $projectContractCategories = ProjectContractCategory::tree()->get()->toTree();
+
+        $projectContracts = collect();
 
         if(count($request->input()) > 0){
-            // $pagination = 1;
-            // $paginations = array(1,5,15,30,45,60,75,90,105,120);
-            // $statuses = array('Ongoing', 'Complete');
-            // $receivableStatuses = array('Not started', 'Due', 'Partial', 'Complete');
-            // $projectContracts = ProjectContract::orderBy("created_by","desc")->orderBy("name","asc");
+            $projectContracts = ProjectContract::orderBy("created_at","desc")->orderBy("name","asc");
 
             if($request->has('pagination')){
                 $pagination = (in_array($request->pagination,$paginations)) ? $request->pagination : $pagination;
@@ -36,6 +34,17 @@ class ReportController extends Controller
 
             if($request->has('status') && !($request->status == null) && (in_array($request->status,$statuses) == true)){
                 $projectContracts = $projectContracts->where("status",$request->status);
+            }
+
+            if($request->has('category') && !($request->category == null) && !($request->category == "All")){
+                $projectContractCategory = ProjectContractCategory::where("slug",$request->category)->first();
+
+                if($projectContractCategory){
+                    $allCategoryIds =  $projectContractCategory->descendants()->pluck("id")->toArray();
+                    array_push($allCategoryIds,$projectContractCategory->id);
+
+                    $projectContracts = $projectContracts->whereIn("category_id",$allCategoryIds);
+                }
             }
 
             if($request->has('receivable_status') && !($request->receivable_status == null) && (in_array($request->receivable_status,$receivableStatuses) == true)){
@@ -56,10 +65,9 @@ class ReportController extends Controller
                                                                         ->orWhere("code","like","%".$request->search."%")
                                                                         ->orWhere("note","like","%".$request->search."%");
             }
-            //$projectContracts = $projectContracts->paginate($pagination);
+            $projectContracts = $projectContracts->paginate($pagination);
         }
-        $projectContracts = $projectContracts->paginate($pagination);
 
-        return view('internal user.report.project contract.index', compact('projectContracts'));
+        return view('internal user.report.project contract.index', compact('projectContracts',"paginations","statuses","receivableStatuses","projectContractCategories"));
     }
 }
