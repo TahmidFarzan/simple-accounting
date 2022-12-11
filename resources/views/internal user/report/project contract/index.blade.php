@@ -29,13 +29,13 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Pagination</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="paginationInputForFilter" name="pagination">
+                            <select class="form-control form-control-sm" id="paginationInputForGenerateReport" name="pagination">
                                 <option value="">Select</option>
                                 @foreach ( $paginations as $perPagination)
                                     <option value="{{ $perPagination }}">{{ $perPagination }}</option>
                                 @endforeach
                             </select>
-                            <div id="paginationInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="paginationInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -44,14 +44,14 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Status</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="statusInputForFilter" name="status">
+                            <select class="form-control form-control-sm" id="statusInputForGenerateReport" name="status">
                                 <option value="">Select</option>
                                 <option value="All">All</option>
                                 @foreach ( $statuses as $perStatus)
                                     <option value="{{ $perStatus }}">{{ $perStatus }}</option>
                                 @endforeach
                             </select>
-                            <div id="statusInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="statusInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -60,14 +60,14 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Receivable status</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="receivableStatusInputForFilter" name="receivable_status">
+                            <select class="form-control form-control-sm" id="receivableStatusInputForGenerateReport" name="receivable_status">
                                 <option value="">Select</option>
                                 <option value="All">All</option>
                                 @foreach ( $receivableStatuses as $perStatus)
                                     <option value="{{ $perStatus }}">{{ $perStatus }}</option>
                                 @endforeach
                             </select>
-                            <div id="receivableStatusInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="receivableStatusInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -76,12 +76,12 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Category</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="categoryInputForFilter" name="category">
+                            <select class="form-control form-control-sm" id="categoryInputForGenerateReport" name="category">
                                 <option value="">Select</option>
                                 <option value="All">All</option>
                                 <x-report.project_contract.form.categories :categories="$projectContractCategories" :activeCategorySlug="null"/>
                             </select>
-                            <div id="categoryInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="categoryInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -90,8 +90,8 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Start date</label>
                         <div class="col-md-8">
-                            <input type="date" class="form-control form-control-sm" id="startDateInputForFilter" name="start_date">
-                            <div id="startDateInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <input type="date" class="form-control form-control-sm" id="startDateInputForGenerateReport" name="start_date">
+                            <div id="startDateInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -100,8 +100,8 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">End date</label>
                         <div class="col-md-8">
-                            <input type="date" class="form-control form-control-sm" id="endDateInputForFilter" name="end_date">
-                            <div id="endDateInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <input type="date" class="form-control form-control-sm" id="endDateInputForGenerateReport" name="end_date">
+                            <div id="endDateInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -110,14 +110,14 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Client</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="clientInputForFilter" name="client">
+                            <select class="form-control form-control-sm" id="clientInputForGenerateReport" name="client">
                                 <option value="">Select</option>
                                 <option value="All">All</option>
                                 @foreach ( $projectContractClients as $perClient)
                                     <option value="{{ $perClient->slug }}">{{ $perClient->name }}</option>
                                 @endforeach
                             </select>
-                            <div id="clientInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="clientInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -126,21 +126,21 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Search</label>
                         <div class="col-md-8">
-                            <input type="search" class="form-control form-control-sm" placeholder="Search value." name="search" id="searchInputForFilter">
-                            <div id="searchInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <input type="search" class="form-control form-control-sm" placeholder="Search value." name="search" id="searchInputForGenerateReport">
+                            <div id="searchInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center">
-                        <button type="button" id="filterDataTableGridViewButton" class="btn btn-success"><i class="fa-solid fa-list"></i> Filter</button>
+                        <button type="button" id="generateReportDataTableGridViewButton" class="btn btn-success"><i class="fa-solid fa-list"></i> Generate report</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card-body text-dark" id="dataTableGridView">
+        <div class="card-body text-dark" id="generateReportDataTableGridView">
             @if ($projectContracts->count() > 0)
                 <div class="table-responsive">
                     <table class="table table-sm table-bordered table-striped">
