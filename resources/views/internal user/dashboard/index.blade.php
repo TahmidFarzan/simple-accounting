@@ -21,21 +21,6 @@
 @endsection
 
 @section('authContentOne')
-    @php
-        $projectContractPopOver = "<p>";
-        $projectContractPopOver = $projectContractPopOver."<b>Ongoing :</b> ".$projectContractQuickView["ongoing"]."</br>";
-        $projectContractPopOver = $projectContractPopOver."<b>Complete :</b> ".$projectContractQuickView["complete"]."</br>";
-        $projectContractPopOver = $projectContractPopOver."<b>Total :</b> ".($projectContractQuickView["ongoing"] + $projectContractQuickView["complete"])."</br>";
-        $projectContractPopOver = $projectContractPopOver."</p>";
-
-        $projectContractJournalPopOver = "<p>";
-        $projectContractJournalPopOver = $projectContractJournalPopOver."<b>Revenue :</b> ".$projectContractJournalQuickView["revenue"]." ".$setting["businessSetting"]["currency_symbol"]."</br>";
-        $projectContractJournalPopOver = $projectContractJournalPopOver."<b>Loss :</b> ".$projectContractJournalQuickView["loss"]." ".$setting["businessSetting"]["currency_symbol"]."</br>";
-        $projectContractJournalPopOver = $projectContractJournalPopOver."<b>Balance :</b> ".($projectContractJournalQuickView["revenue"] - $projectContractJournalQuickView["loss"])." ".$setting["businessSetting"]["currency_symbol"]."</br>";
-        $projectContractJournalPopOver = $projectContractJournalPopOver."</p>";
-
-    @endphp
-
     <div class="card border-dark mb-3">
         <div class="card-body text-dark">
             <div class="d-flex justify-content-center">
@@ -43,18 +28,135 @@
             </div>
 
             <div class="row">
-                <div class="card-body">
-                    <button type="button" class="btn btn-sm btn-primary col-md-4 m-1" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="project-contract-popover" data-bs-title="Receivable amount information" data-bs-content="{{ $projectContractPopOver }}">
-                        <b>Total project contract: </b> {{ $projectContractQuickView["ongoing"] + $projectContractQuickView["complete"] }}
-                    </button>
+                <div class="col-md-6 mb-2">
+                    <p>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#ongoingProjectContractCollapse" aria-expanded="false" aria-controls="ongoingProjectContractCollapse">
+                            Ongoing project contract : {{ $ongoingProjectContractQuickView["projectContract"] }}
+                        </button>
+                    </p>
+                    <div class="collapse" id="ongoingProjectContractCollapse">
+                        <div class="card card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered ">
+                                    <tbody>
+                                        <tr>
+                                            <th>Project contract</th>
+                                            <td>:</td>
+                                            <td>{{ $ongoingProjectContractQuickView["projectContract"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Journal entry</th>
+                                            <td>:</td>
+                                            <td>{{ $ongoingProjectContractQuickView["journalEntry"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Journal entry (Revenue)</th>
+                                            <td>:</td>
+                                            <td>{{ $ongoingProjectContractQuickView["journalRevenueEntry"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Journal entry (Loss)</th>
+                                            <td>:</td>
+                                            <td>{{ $ongoingProjectContractQuickView["journalLossEntry"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Invested amount</th>
+                                            <td>:</td>
+                                            <td>{{ $ongoingProjectContractQuickView["investedAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Revenue amount</th>
+                                            <td>:</td>
+                                            <td>{{ $ongoingProjectContractQuickView["revenueAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Loss amount</th>
+                                            <td>:</td>
+                                            <td>{{ $ongoingProjectContractQuickView["lossAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Receivable amount</th>
+                                            <td>:</td>
+                                            <td>{{ $ongoingProjectContractQuickView["receivableAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                    <button type="button" class="btn btn-sm btn-primary col-md-4 m-1" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="project-contract-popover" data-bs-title="Receivable amount information" data-bs-content="{{ $projectContractJournalPopOver }}">
-                        <b>Total journal balance :</b>  {{ $projectContractJournalQuickView["revenue"] - $projectContractJournalQuickView["loss"] }} {{ $setting["businessSetting"]["currency_symbol"] }}
-                    </button>
-
-                    <button type="button" class="btn btn-sm btn-primary col-md-4 m-1" >
-                        <b>Total payment :</b>  {{ $projectContractPaymentQuickView["payment"] }} {{ $setting["businessSetting"]["currency_symbol"] }}
-                    </button>
+                <div class="col-md-6 mb-2">
+                    <p>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#completeProjectContractCollapse" aria-expanded="false" aria-controls="completeProjectContractCollapse">
+                            Complete project contract : {{ $completeProjectContractQuickView["projectContract"] }}
+                        </button>
+                    </p>
+                    <div class="collapse" id="completeProjectContractCollapse">
+                        <div class="card card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered ">
+                                    <tbody>
+                                        <tr>
+                                            <th>Project contract</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["projectContract"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Journal entry</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["journalEntry"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Journal entry (Revenue)</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["journalRevenueEntry"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Journal entry (Loss)</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["journalLossEntry"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Payment</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["payment"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Invested amount</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["investedAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Revenue amount</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["revenueAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Loss amount</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["lossAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Receivable amount</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["receivableAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Receive amount</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["receiveAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Due amount</th>
+                                            <td>:</td>
+                                            <td>{{ $completeProjectContractQuickView["dueAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,45 +171,3 @@
         </div>
     </div>
 @endsection
-
-
-@push("onPageExtraScript")
-    <script>
-        $(document).ready(function(){
-            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-        });
-    </script>
-@endpush
-
-
-@push('onPageExtraCss')
-    <style>
-        .project-contract-popover {
-            --bs-popover-max-width: auto;
-            --bs-popover-border-color: var(--bs-primary);
-            --bs-popover-header-bg: var(--bs-primary);
-            --bs-popover-header-color: var(--bs-white);
-            --bs-popover-body-padding-x: 1rem;
-            --bs-popover-body-padding-y: .5rem;
-        }
-
-        .project-contract-journal-popover {
-            --bs-popover-max-width: auto;
-            --bs-popover-border-color: var(--bs-primary);
-            --bs-popover-header-bg: var(--bs-primary);
-            --bs-popover-header-color: var(--bs-white);
-            --bs-popover-body-padding-x: 1rem;
-            --bs-popover-body-padding-y: .5rem;
-        }
-
-        .project-contract-journal-payment {
-            --bs-popover-max-width: auto;
-            --bs-popover-border-color: var(--bs-primary);
-            --bs-popover-header-bg: var(--bs-primary);
-            --bs-popover-header-color: var(--bs-white);
-            --bs-popover-body-padding-x: 1rem;
-            --bs-popover-body-padding-y: .5rem;
-        }
-    </style>
-@endpush

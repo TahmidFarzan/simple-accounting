@@ -22,40 +22,62 @@ class DashboardController extends Controller
         $startDate = $currentDate->startOfMonth()->format('Y-m-d');
         $endDate = $currentDate->endOfMonth()->format('Y-m-d');
 
-
-        $projectContractJournalEntries = ProjectContractJournal::orderBy("created_at","desc")->orderBy("name","asc")->get();
-        $projectContractPayments = ProjectContractPayment::orderBy("created_at","desc")->orderBy("name","asc")->get();
-
-        $ongoingProjectContractCount = ProjectContract::where("status","Ongoing")
+        $ongoingPC = ProjectContract::where("status","Ongoing")
                                                         ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'>=', $startDate)
-                                                        ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'<=', $endDate)
-                                                        ->count();
+                                                        ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'<=', $endDate);
+
+        $ongoingPCCount = $ongoingPC->count();
+        $ongoingPCInvestedAmount = $ongoingPC->sum("invested_amount");
+        $ongoingPCPCJEntryCount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->count();
+        $ongoingPCPCJRevenueEntryCount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->where("entry_type","Revenue")->count();
+        $ongoingPCPCJLossEntryCount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->where("entry_type","Loss")->count();
+        $ongoingPCPCJRevenueAmount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->where("entry_type","Revenue")->sum("amount");
+        $ongoingPCPCJLossAmount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->where("entry_type","Loss")->sum("amount");
 
 
-        $completeProjectContractCount = ProjectContract::where("status","Complete")
-                                                        ->where(DB::raw("(STR_TO_DATE(end_date,'%Y-%m-%d'))"),'>=', $startDate)
-                                                        ->where(DB::raw("(STR_TO_DATE(end_date,'%Y-%m-%d'))"),'<=', $endDate)
-                                                        ->count();
+        $completePC = ProjectContract::where("status","Complete")
+                                        ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'>=', $startDate)
+                                        ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'<=', $endDate);
+        $completePCPCJ =  ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"));
+        $completePCPCP =  ProjectContractPayment::whereIn("project_contract_id",$completePC->pluck("id"));
 
-        $revenueAmountProjectContractJournal = ProjectContractJournal::where("entry_type","Revenue")
-                                                        ->where(DB::raw("(STR_TO_DATE(entry_date,'%Y-%m-%d'))"),'>=', $startDate)
-                                                        ->where(DB::raw("(STR_TO_DATE(entry_date,'%Y-%m-%d'))"),'<=', $endDate)
-                                                        ->sum("amount");
-
-
-        $lossAmountProjectContractJournal = ProjectContractJournal::where("entry_type","Loss")
-                                                        ->where(DB::raw("(STR_TO_DATE(entry_date,'%Y-%m-%d'))"),'>=', $startDate)
-                                                        ->where(DB::raw("(STR_TO_DATE(entry_date,'%Y-%m-%d'))"),'<=', $endDate)
-                                                        ->sum("amount");
-        $paymentProjectContractPayment = ProjectContractPayment::where(DB::raw("(STR_TO_DATE(payment_date,'%Y-%m-%d'))"),'>=', $startDate)
-                                                            ->where(DB::raw("(STR_TO_DATE(payment_date,'%Y-%m-%d'))"),'<=', $endDate)
-                                                            ->sum("amount");
-
-        $projectContractQuickView = array("ongoing" => $ongoingProjectContractCount,"complete" => $completeProjectContractCount);
-        $projectContractJournalQuickView = array("revenue" => $revenueAmountProjectContractJournal,"loss" => $lossAmountProjectContractJournal);
-        $projectContractPaymentQuickView = array("payment" => $paymentProjectContractPayment);
+        $completePCCount = $completePC->count();
+        $completePCInvested = $completePC->sum("invested_amount");
+        $completePCPCJEntryCount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->count();
+        $completeTotalPCPCPCount = ProjectContractPayment::whereIn("project_contract_id",$completePC->pluck("id"))->count();
+        $completePCPCJLossEntryCount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->where("entry_type","Loss")->count();
+        $completePCPCJRevenueEntryCount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->where("entry_type","Revenue")->count();
+        $completePCPCJRevenueAmount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->where("entry_type","Revenue")->sum("amount");
+        $completePCPCJLossAmount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->where("entry_type","Loss")->sum("amount");
+        $completePCReceivableAmount = (($completePCInvested + $completePCPCJRevenueAmount) - $completePCPCJLossAmount);
+        $completePCReceiveAmount = ProjectContractPayment::whereIn("project_contract_id",$completePC->pluck("id"))->sum("amount");
 
 
-        return view('internal user.dashboard.index',compact("projectContractQuickView","projectContractJournalQuickView","projectContractPaymentQuickView"));
+        $ongoingProjectContractQuickView = array(
+            "projectContract" => $ongoingPCCount,
+            "journalEntry" => $ongoingPCPCJEntryCount,
+            "journalRevenueEntry" => $ongoingPCPCJRevenueEntryCount,
+            "journalLossEntry" => $ongoingPCPCJLossEntryCount,
+            "investedAmount" => $ongoingPCInvestedAmount,
+            "revenueAmount" => $ongoingPCPCJRevenueAmount,
+            "lossAmount" => $ongoingPCPCJLossAmount,
+            "receivableAmount" => (($ongoingPCInvestedAmount + $ongoingPCPCJRevenueAmount) - $ongoingPCPCJLossAmount),
+        );
+
+        $completeProjectContractQuickView = array(
+            "projectContract" => $completePCCount,
+            "journalEntry" => $completePCPCJEntryCount,
+            "payment" =>  $completeTotalPCPCPCount,
+            "journalRevenueEntry" => $completePCPCJRevenueEntryCount,
+            "journalLossEntry" => $completePCPCJLossEntryCount,
+            "investedAmount" => $completePCInvested,
+            "revenueAmount" => $completePCPCJRevenueAmount,
+            "lossAmount" => $completePCPCJLossAmount,
+            "receivableAmount" => $completePCReceivableAmount,
+            "receiveAmount" => $completePCReceiveAmount,
+            "dueAmount" => $completePCReceivableAmount - $completePCReceiveAmount,
+        );
+
+        return view('internal user.dashboard.index',compact("ongoingProjectContractQuickView","completeProjectContractQuickView"));
     }
 }
