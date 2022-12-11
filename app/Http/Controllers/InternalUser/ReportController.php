@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ProjectContract;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ProjectContractClient;
 use App\Models\ProjectContractCategory;
 
 class ReportController extends Controller
@@ -21,6 +22,7 @@ class ReportController extends Controller
         $paginations = array(1,5,15,30,45,60,75,90,105,120);
         $statuses = array('Ongoing', 'Complete');
         $receivableStatuses = array('Not started', 'Due', 'Partial', 'Complete');
+        $projectContractClients = ProjectContractClient::orderby("name","asc")->get();
         $projectContractCategories = ProjectContractCategory::tree()->get()->toTree();
 
         $projectContracts = collect();
@@ -68,6 +70,6 @@ class ReportController extends Controller
             $projectContracts = $projectContracts->paginate($pagination);
         }
 
-        return view('internal user.report.project contract.index', compact('projectContracts',"paginations","statuses","receivableStatuses","projectContractCategories"));
+        return view('internal user.report.project contract.index', compact('projectContracts',"paginations","statuses","receivableStatuses","projectContractCategories","projectContractClients"));
     }
 }
