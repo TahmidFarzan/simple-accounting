@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\InternalUser;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProjectContract;
 use Illuminate\Support\Facades\DB;
@@ -34,10 +35,6 @@ class ReportController extends Controller
                 $pagination = (in_array($request->pagination,$paginations)) ? $request->pagination : $pagination;
             }
 
-            if($request->has('status') && !($request->status == null) && (in_array($request->status,$statuses) == true)){
-                $projectContracts = $projectContracts->where("status",$request->status);
-            }
-
             if($request->has('category') && !($request->category == null) && !($request->category == "All")){
                 $projectContractCategory = ProjectContractCategory::where("slug",$request->category)->first();
 
@@ -49,8 +46,13 @@ class ReportController extends Controller
                 }
             }
 
+            if($request->has('status') && !($request->status == null) && (in_array($request->status,$statuses) == true)){
+                $projectContracts = $projectContracts->where("status",Str::studly($request->status));
+            }
+
+
             if($request->has('receivable_status') && !($request->receivable_status == null) && (in_array($request->receivable_status,$receivableStatuses) == true)){
-                $projectContracts = $projectContracts->where("receivable_status",$request->receivable_status);
+                $projectContracts = $projectContracts->where("receivable_status",Str::studly($request->receivable_status));
             }
 
 
