@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InternalUser\UserController;
 use App\Http\Controllers\InternalUser\ExtraController;
+use App\Http\Controllers\InternalUser\ReportController;
 use App\Http\Controllers\InternalUser\SettingController;
 use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
@@ -178,6 +179,14 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::patch('update/{slug}', [ProjectContractPaymentMethodController::class, 'update'])->name('update');
             Route::delete('trash/{slug}', [ProjectContractPaymentMethodController::class, 'trash'])->name('trash');
             Route::patch('restore/{slug}', [ProjectContractPaymentMethodController::class, 'restore'])->name('restore');
+        });
+    });
+
+    // Report
+    Route::prefix('report')->name('report.')->group(function(){
+        Route::prefix('project-contract')->name('project.contract.')->group(function(){
+            Route::get('/', [ReportController::class, 'projectContractIndex'])->name('index');
+            Route::get('/{slug}', [ReportController::class, 'projectContractDetails'])->name('details');
         });
     });
 });
