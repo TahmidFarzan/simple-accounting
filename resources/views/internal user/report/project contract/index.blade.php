@@ -25,6 +25,10 @@
     <div class="card border-dark mb-3">
         <div class="card-body text-dark mb-2">
             <div class="row mb-2">
+                <div class="row mb-2" id="extraErrorMessageDiv" style="display: none;"></div>
+            </div>
+
+            <div class="row mb-2">
                 <div class="col-md-6 mb-2">
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Pagination</label>
@@ -35,7 +39,6 @@
                                     <option value="{{ $perPagination }}">{{ $perPagination }}</option>
                                 @endforeach
                             </select>
-                            <div id="paginationInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -51,7 +54,6 @@
                                     <option value="{{ $perStatus }}">{{ $perStatus }}</option>
                                 @endforeach
                             </select>
-                            <div id="statusInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -67,7 +69,6 @@
                                     <option value="{{ $perStatus }}">{{ $perStatus }}</option>
                                 @endforeach
                             </select>
-                            <div id="receivableStatusInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -81,7 +82,6 @@
                                 <option value="All">All</option>
                                 <x-report.project_contract.form.categories :categories="$projectContractCategories" :activeCategorySlug="null"/>
                             </select>
-                            <div id="categoryInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,6 @@
                         <label class="col-md-4 col-form-label col-form-label-sm">Start date</label>
                         <div class="col-md-8">
                             <input type="date" class="form-control form-control-sm" id="startDateInputForGenerateReport" name="start_date">
-                            <div id="startDateInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -101,7 +100,6 @@
                         <label class="col-md-4 col-form-label col-form-label-sm">End date</label>
                         <div class="col-md-8">
                             <input type="date" class="form-control form-control-sm" id="endDateInputForGenerateReport" name="end_date">
-                            <div id="endDateInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -117,7 +115,6 @@
                                     <option value="{{ $perClient->slug }}">{{ $perClient->name }}</option>
                                 @endforeach
                             </select>
-                            <div id="clientInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -127,7 +124,6 @@
                         <label class="col-md-4 col-form-label col-form-label-sm">Search</label>
                         <div class="col-md-8">
                             <input type="search" class="form-control form-control-sm" placeholder="Search value." name="search" id="searchInputForGenerateReport">
-                            <div id="searchInputForGenerateReportErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -140,7 +136,7 @@
             </div>
         </div>
 
-        <div class="card-body text-dark" id="generateReportDataTableGridView">
+        <div class="card-body text-dark" id="generateReportDataTableGridViewDiv">
             @if ($projectContracts->count() > 0)
                 <div class="table-responsive">
                     <table class="table table-sm table-bordered table-striped">
