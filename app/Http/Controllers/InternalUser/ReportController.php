@@ -56,11 +56,14 @@ class ReportController extends Controller
             }
 
 
-            if( ($request->has('start_date') && !($request->start_date == null)) && ($request->has('end_date') && !($request->end_date == null))){
+            if( ($request->has('start_date') && !($request->start_date == null))){
                 $projectContracts = $projectContracts->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'>=', $request->start_date->format('Y-m-d'))
-                                                    ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'<=', $request->end_date->format('Y-m-d'))
-                                                    ->where(DB::raw("(STR_TO_DATE(end_date,'%Y-%m-%d'))"),'<=', $request->end_date->format('Y-m-d'))
                                                     ->where(DB::raw("(STR_TO_DATE(end_date,'%Y-%m-%d'))"),'>=', $request->start_date->format('Y-m-d'));
+            }
+
+            if(($request->has('end_date') && !($request->end_date == null))){
+                $projectContracts = $projectContracts->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'<=', $request->end_date->format('Y-m-d'))
+                                                    ->where(DB::raw("(STR_TO_DATE(end_date,'%Y-%m-%d'))"),'<=', $request->end_date->format('Y-m-d'));
             }
 
             if($request->has('search') && !($request->search == null)){

@@ -29,13 +29,13 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Pagination</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="paginationInputForSorting" name="pagination">
+                            <select class="form-control form-control-sm" id="paginationInputForFilter" name="pagination">
                                 <option value="">Select</option>
                                 @foreach ( $paginations as $perPagination)
                                     <option value="{{ $perPagination }}">{{ $perPagination }}</option>
                                 @endforeach
                             </select>
-                            <div id="paginationInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="paginationInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -44,14 +44,14 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Status</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="statusInputForSorting" name="status">
+                            <select class="form-control form-control-sm" id="statusInputForFilter" name="status">
                                 <option value="">Select</option>
                                 <option value="All">All</option>
                                 @foreach ( $statuses as $perStatus)
                                     <option value="{{ $perStatus }}">{{ $perStatus }}</option>
                                 @endforeach
                             </select>
-                            <div id="statusInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="statusInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -60,14 +60,14 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Receivable status</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="receivableStatusInputForSorting" name="receivable_status">
+                            <select class="form-control form-control-sm" id="receivableStatusInputForFilter" name="receivable_status">
                                 <option value="">Select</option>
                                 <option value="All">All</option>
                                 @foreach ( $receivableStatuses as $perStatus)
                                     <option value="{{ $perStatus }}">{{ $perStatus }}</option>
                                 @endforeach
                             </select>
-                            <div id="receivableStatusInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="receivableStatusInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -76,12 +76,12 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Category</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="categoryInputForSorting" name="category">
+                            <select class="form-control form-control-sm" id="categoryInputForFilter" name="category">
                                 <option value="">Select</option>
                                 <option value="All">All</option>
                                 <x-report.project_contract.form.categories :categories="$projectContractCategories" :activeCategorySlug="null"/>
                             </select>
-                            <div id="categoryInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="categoryInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -90,16 +90,8 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Start date</label>
                         <div class="col-md-8">
-                            <div class="input-group mb-3">
-                                <input type="date" class="form-control form-control-sm" id="startDateInputForSorting" name="start_date">
-                                <select id="startDateConditionInputForSorting" name="start_date_condition" class="form-control form-control-sm">
-                                    @foreach (array(""=>"Select","="=>"Equal",">"=>"Less than","<"=>"Greater than",">="=>"Equal or less than","<="=>"Equal or greater than") as $perConditionIndex => $perCondition)
-                                        <option value="{{ $perConditionIndex }}">{{ $perCondition }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div id="startDateInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
-                            <div id="startDateConditionInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <input type="date" class="form-control form-control-sm" id="startDateInputForFilter" name="start_date">
+                            <div id="startDateInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -108,16 +100,8 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">End date</label>
                         <div class="col-md-8">
-                            <div class="input-group mb-3">
-                                <input type="date" class="form-control form-control-sm" id="endDateInputForSorting" name="end_date">
-                                <select id="endDateConditionInputForSorting" name="end_date_condition" class="form-control form-control-sm">
-                                    @foreach (array(""=>"Select","="=>"Equal",">"=>"Less than","<"=>"Greater than",">="=>"Equal or less than","<="=>"Equal or greater than") as $perConditionIndex => $perCondition)
-                                        <option value="{{ $perConditionIndex }}">{{ $perCondition }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div id="endDateInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
-                            <div id="endDateConditionInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <input type="date" class="form-control form-control-sm" id="endDateInputForFilter" name="end_date">
+                            <div id="endDateInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -126,14 +110,14 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Client</label>
                         <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="clientInputForSorting" name="client">
+                            <select class="form-control form-control-sm" id="clientInputForFilter" name="client">
                                 <option value="">Select</option>
                                 <option value="All">All</option>
                                 @foreach ( $projectContractClients as $perClient)
                                     <option value="{{ $perClient->slug }}">{{ $perClient->name }}</option>
                                 @endforeach
                             </select>
-                            <div id="clientInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <div id="clientInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -142,8 +126,8 @@
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Search</label>
                         <div class="col-md-8">
-                            <input type="search" class="form-control form-control-sm" placeholder="Search value." name="search" id="searchInputForSorting">
-                            <div id="searchInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                            <input type="search" class="form-control form-control-sm" placeholder="Search value." name="search" id="searchInputForFilter">
+                            <div id="searchInputForFilterErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
