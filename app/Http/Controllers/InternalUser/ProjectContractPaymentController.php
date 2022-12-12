@@ -273,7 +273,7 @@ class ProjectContractPaymentController extends Controller
             $projectContract = ProjectContract::where("slug", $this->pcSlug)->firstOrFail();
 
             if(array_key_exists('payment_method', $afterValidatorData) && !($afterValidatorData["payment_method"] == null)){
-                $projectContractPaymentMethodFound = ProjectContractPaymentMethod::where("slug",$afterValidatorData["payment_method"])->count();
+                $projectContractPaymentMethodFound = ProjectContractPaymentMethod::withTrashed()->where("slug",$afterValidatorData["payment_method"])->count();
 
                 if($projectContractPaymentMethodFound == 0 ){
                     $validator->errors()->add(
@@ -323,7 +323,7 @@ class ProjectContractPaymentController extends Controller
                 $projectContractPayment->payment_date = $request->payment_date ;
                 $projectContractPayment->description = $request->description;
                 $projectContractPayment->note = $projectContractPaymentNotes;
-                $projectContractPayment->payment_method_id = ProjectContractPaymentMethod::where("slug",$request->payment_method)->firstOrFail()->id;
+                $projectContractPayment->payment_method_id = ProjectContractPaymentMethod::withTrashed()->where("slug",$request->payment_method)->firstOrFail()->id;
                 $projectContractPayment->amount = $projectContractPayment->amount + $request->amount;
                 $projectContractPayment->project_contract_id = ProjectContract::where("slug",$pcSlug)->firstOrFail()->id;
                 $projectContractPayment->slug = SystemConstant::slugGenerator($request->name,200);
