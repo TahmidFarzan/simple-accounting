@@ -65,7 +65,7 @@
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Payment method <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
-                                    <select name="payment_method" id="paymentMethodInput" class="form-control form-control-sm @error('payment_method') is-invalid @enderror">
+                                    <select name="payment_method" id="paymentMethodInput" class="form-control form-control-sm @error('payment_method') is-invalid @enderror" required>
                                         <option value="">Select</option>
                                         @foreach ($projectContractPaymentMethods as $perPCPaymentMethod)
                                             <option value="{{ $perPCPaymentMethod->slug }}" @if($perPCPaymentMethod->slug == $currentPaymentMethodOption) selected @endif>{{ $perPCPaymentMethod->name }}</option>
