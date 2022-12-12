@@ -43,7 +43,7 @@
                             <td>{{ $projectContractPayment->name }}</td>
                         </tr>
                         <tr>
-                            <th>Entry date</th>
+                            <th>Payment date</th>
                             <th>:</th>
                             <td>
                                 {{ date('d-M-Y',strtotime($projectContractPayment->payment_date))." at ".date('h:i:s a',strtotime($projectContractPayment->payment_date)) }}
