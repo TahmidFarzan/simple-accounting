@@ -14,7 +14,7 @@
             <li class="breadcrumb-item"><a href="{{ route("project.contract.index") }}">Project contract</a></li>
             <li class="breadcrumb-item"><a href="{{ route("project.contract.details",["slug" => $projectContract->slug]) }}">{{ $projectContract->name }}</a></li>
             <li class="breadcrumb-item"><a href="{{ route("project.contract.journal.index",["pcSlug" => $projectContract->slug]) }}">Journal</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Create</li>
+            <li class="breadcrumb-item active" aria-current="page">Details</li>
         </ol>
     </nav>
 @endsection
