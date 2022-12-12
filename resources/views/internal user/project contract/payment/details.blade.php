@@ -5,7 +5,7 @@
 @endsection
 
 @section('mainCardTitle')
-    Index
+    Details
 @endsection
 
 @section('navBreadcrumbSection')
