@@ -324,11 +324,30 @@
                                             <div class="card card-body bg-light border-0 p-0 m-0 px-2 mx-2 ">
                                                 <ul class="nav flex-column">
                                                     <li class="nav-item">
-                                                        <a class="nav-link {{(Request::is('report/project-contract') || (Request::is('report/project-contract/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.project.contract.index") }}">
+                                                        <a class="nav-link {{(Request::is('report/project-contract') || (Request::is('report/project-contract/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#projectContractReportCollapseDiv" role="button" aria-expanded="false" aria-controls="projectContractReportCollapseDiv">
                                                             <i class="fa-solid fa-clipboard-list"></i>
-                                                            Project contract
+                                                            Project contract <i class="fa-solid fa-angle-down"></i>
                                                         </a>
+                                                        <div class="collapse bg-light" id="projectContractReportCollapseDiv">
+                                                            <div class="card card-body bg-light border-0 p-0 m-0 px-1 mx-1 ">
+                                                                <ul class="nav flex-column">
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link {{(Request::is('report/project-contract') || (Request::is('report/project-contract/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.project.contract.index") }}">
+                                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                                            Project contract
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link {{(Request::is('report/project-contract-journal') || (Request::is('report/project-contract-journal/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.project.contract.journal.index") }}">
+                                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                                            Journal
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
                                                     </li>
+
                                                 </ul>
                                             </div>
                                         </div>

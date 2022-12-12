@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ProjectContract;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ProjectContractJournal;
 use App\Models\ProjectContractCategory;
 
 class ReportController extends Controller
@@ -79,5 +80,50 @@ class ReportController extends Controller
     {
         $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
         return view('internal user.report.project contract.details', compact('projectContract'));
+    }
+
+    public function projectContractJournalIndex(Request $request){
+        $pagination = 5;
+        $entryTypes = array('Revenue', 'Loss');
+        $statuses = array('Ongoing', 'Complete');
+        $paginations = array(5,15,30,45,60,75,90,105,120);
+        $receivableStatuses = array('Not started', 'Due', 'Partial', 'Complete');
+
+        $projectContractJournalEntries = collect();
+
+        if(count($request->input()) > 0){
+            $projectContractIds = array();
+
+            $projectContractJournalEntries = ProjectContractJournal::orderBy("created_at","desc")->orderBy("name","asc");
+
+            if($request->has('pagination')){
+                $pagination = (in_array($request->pagination,$paginations)) ? $request->pagination : $pagination;
+            }
+
+            if($request->has('entry_type') && !($request->entry_type == null) && !($request->entry_type == "All")){
+                $projectContractJournalEntries = $projectContractJournalEntries->where("entry_type",Str::studly($request->entry_type));
+            }
+
+            if($request->has('entry_date') && !($request->entry_date == null) && $request->has('entry_date_condition') && !($request->entry_date_condition == null) && in_array($request->entry_date_condition, array("=",">","<",">=","<="))){
+                $projectContractJournalEntries = $projectContractJournalEntries->where(DB::raw("(STR_TO_DATE(entry_date,'%Y-%m-%d'))"),$request->entry_date_condition,date('Y-m-d',strtotime($request->entry_date)) );
+            }
+
+            if($request->has('search') && !($request->search == null)){
+                $projectContractJournalEntries = $projectContractJournalEntries->where("name","like","%".$request->search."%")
+                                                                        ->orWhere("description","like","%".$request->search."%")
+                                                                        ->orWhere("code","like","%".$request->search."%")
+                                                                        ->orWhere("note","like","%".$request->search."%");
+            }
+
+            $projectContractJournalEntries = $projectContractJournalEntries->paginate($pagination);
+        }
+
+        return view('internal user.report.project contract journal.index', compact("projectContractJournalEntries","paginations",'entryTypes'));
+    }
+
+    public function projectContractJournalDetails($slug)
+    {
+        $projectContractJournalEntry = ProjectContractJournal::where("slug",$slug)->firstOrFail();
+        return view('internal user.report.project contract journal.details', compact('projectContractJournalEntry'));
     }
 }

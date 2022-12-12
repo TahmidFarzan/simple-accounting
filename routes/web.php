@@ -188,5 +188,10 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('/', [ReportController::class, 'projectContractIndex'])->name('index');
             Route::get('/{slug}', [ReportController::class, 'projectContractDetails'])->name('details');
         });
+
+        Route::prefix('project-contract-journal')->name('project.contract.journal.')->group(function(){
+            Route::get('/', [ReportController::class, 'projectContractJournalIndex'])->name('index');
+            Route::get('/{slug}', [ReportController::class, 'projectContractJournalDetails'])->name('details');
+        });
     });
 });
