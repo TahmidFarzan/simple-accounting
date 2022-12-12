@@ -132,7 +132,7 @@
                             @empty
                                 <tr>
                                     <td colspan="8">
-                                        <b class="d-flex justify-content-center text-warning">No project contract found.</b>
+                                        <b class="d-flex justify-content-center text-warning">No project contract journal found.</b>
                                     </td>
                                 </tr>
                             @endforelse
