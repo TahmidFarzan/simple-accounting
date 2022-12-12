@@ -11,8 +11,8 @@
 @section('navBreadcrumbSection')
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
-            <li class="breadcrumb-item"><a href="{{ route("report.project.contract.index") }}">Report</a></li>
-            <li class="breadcrumb-item"><a href="{{ route("project.contract.index") }}">Project contract</a></li>
+            <li class="breadcrumb-item">Report</li>
+            <li class="breadcrumb-item"><a href="{{ route("report.project.contract.index") }}">Project contract</a></li>
             <li class="breadcrumb-item active" aria-current="page">Details</li>
         </ol>
     </nav>
