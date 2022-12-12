@@ -217,7 +217,127 @@
         $(document).ready(function(){
             const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
             const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+
+            $(document).on('click', "#paginationDiv .pagination .page-item a", function () {
+                event.preventDefault();
+                var paginationiteUrl = $(this).attr('href');
+                var paginationUrlArray = paginationiteUrl.split("?");
+                parameterString = parameterGenerate();
+                var paginationParameter = (parameterString == null) ? paginationUrlArray[1] : parameterString + "&" + paginationUrlArray[1];
+                dataTableLoad(paginationParameter);
+            });
+
+            $(document).on('change', "#statusInputForGenerateReport", function () {
+                if($(this).val().length > 0){
+                    $("#receivableStatusInputForGenerateReport").val(null);
+
+                    if($(this).val() == "All"){
+                        $("#receivableStatusInputForGenerateReport option").prop('disabled',false);
+                    }
+
+                    if($(this).val() == "Ongoing"){
+                        $("#receivableStatusInputForGenerateReport option").prop('disabled',true);
+
+                        $("#receivableStatusInputForGenerateReport option[value='']").prop('disabled',false);
+                        $("#receivableStatusInputForGenerateReport option[value='Not started']").prop('disabled',false);
+                    }
+
+                    if($(this).val() == "Complete"){
+                        $("#receivableStatusInputForGenerateReport option").prop('disabled',false);
+
+                        $("#receivableStatusInputForGenerateReport option[value='Not started']").prop('disabled',true);
+                    }
+                }
+            });
+
+            $(document).on('change', "#receivableStatusInputForGenerateReport", function () {
+                if($(this).val().length > 0){
+
+                    if($(this).val() == "All"){
+                        $("#statusInputForGenerateReport option").prop('disabled',false);
+                    }
+
+                    if($(this).val() == "Not started"){
+                        $("#statusInputForGenerateReport option[value='All']").prop('disabled',true);
+                        $("#statusInputForGenerateReport option[value='Complete']").prop('disabled',true);
+
+                        $("#statusInputForGenerateReport option[value='']").prop('disabled',false);
+                        $("#statusInputForGenerateReport option[value='Ongoing']").prop('disabled',false);
+                    }
+
+                    if(($(this).val() == "Due") || ($(this).val() == "Partial") || ($(this).val() == "Complete")){
+                        $("#statusInputForGenerateReport option[value='All']").prop('disabled',true);
+                        $("#statusInputForGenerateReport option[value='Ongoing']").prop('disabled',true);
+
+                        $("#statusInputForGenerateReport option[value='']").prop('disabled',false);
+                        $("#statusInputForGenerateReport option[value='Complete']").prop('disabled',false);
+                    }
+                }
+                else{
+                    $("#statusInputForGenerateReport option").prop('disabled',false);
+                }
+            });
+
+            $(document).on('click', "#generateReportDataTableGridViewButton", function () {
+                dataTableLoad(parameterGenerate());
+            });
         });
+
+        function parameterGenerate(){
+            var parameterString = null;
+            $.each( [
+                    "paginationInputForGenerateReport",
+                    "statusInputForGenerateReport",
+                    "receivableStatusInputForGenerateReport",
+                    "categoryInputForGenerateReport",
+                    "startDateInputForGenerateReport",
+                    "endDateInputForGenerateReport",
+                    "clientInputForGenerateReport",
+                    "searchInputForGenerateReport",
+                ], function( key, perInput ) {
+                if(($("#" + perInput).val().length > 0)){
+                    var inputFieldValue = $("#" + perInput).val();
+                    var inputFieldName = $("#" + perInput).attr('name');
+                    var curentParameterString = inputFieldName + "=" + inputFieldValue;
+                    parameterString = (parameterString==null) ? curentParameterString : parameterString + "&" + curentParameterString;
+                }
+            });
+            return parameterString;
+        }
+
+        function dataTableLoad(parameterString){
+            $.ajax({
+                type: "get",
+                url: "{{ route('report.project.contract.index') }}" + "?" + parameterString,
+                success: function(result) {
+                    $("#extraErrorMessageDiv").hide();
+                    $("#extraErrorMessageDiv").html("");;
+
+                    $("#generateReportDataTableGridViewDiv").html($(result).find("#generateReportDataTableGridViewDiv").html());
+                },
+                error: function(errorResponse) {
+                    showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
+                }
+            });
+        }
+
+        function showExtraErrorMessages(errorMessages){
+            if(errorMessages.length > 0){
+                $("#extraErrorMessageDiv").show();
+                $("#extraErrorMessageDiv").html('<div class="p-3"><div class="alert-messages alert alert-danger" role="alert"><div class="row"><div class="col-11 col-lg-11 col-md-11 col-sm-11" id="apiErrorMessageDiv"></div><div class="p-1 col-1 col-lg-1 col-md-1 col-sm-1"><button type="button" class="btn-sm btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div></div></div>');
+                var errorMessageDiv = "#extraErrorMessageDiv .p-3 .alert-danger .row .col-md-11";
+
+                $(errorMessageDiv).html("");
+                $(errorMessageDiv).html("<ul></ul>");
+                $( errorMessages).each(function( index,perError ) {
+                    $(errorMessageDiv + " ul").append( "<li>"+perError+"</li>");
+                });
+            }
+            else{
+                $("#extraErrorMessageDiv").hide();
+                $("#extraErrorMessageDiv").html("");
+            }
+        }
     </script>
 @endpush
 

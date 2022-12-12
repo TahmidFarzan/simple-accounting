@@ -19,8 +19,8 @@ class ReportController extends Controller
 
     public function projectContractIndex(Request $request)
     {
-        $pagination = 1;
-        $paginations = array(1,5,15,30,45,60,75,90,105,120);
+        $pagination = 5;
+        $paginations = array(5,15,30,45,60,75,90,105,120);
         $statuses = array('Ongoing', 'Complete');
         $receivableStatuses = array('Not started', 'Due', 'Partial', 'Complete');
         $projectContractClients = ProjectContractClient::orderby("name","asc")->get();
