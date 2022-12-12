@@ -8,7 +8,9 @@ use App\Models\ProjectContract;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectContractJournal;
+use App\Models\ProjectContractPayment;
 use App\Models\ProjectContractCategory;
+use App\Models\ProjectContractPaymentMethod;
 
 class ReportController extends Controller
 {
@@ -125,5 +127,44 @@ class ReportController extends Controller
     {
         $projectContractJournalEntry = ProjectContractJournal::where("slug",$slug)->firstOrFail();
         return view('internal user.report.project contract journal.details', compact('projectContractJournalEntry'));
+    }
+
+    public function projectContractPaymentIndex(Request $request){
+        $pagination = 5;
+        $paginations = array(5,15,30,45,60,75,90,105,120);
+        $projectContractPaymentMethods = ProjectContractPaymentMethod::orderby("name","asc")->get();
+
+        $projectContractPayments = collect();
+
+        if(count($request->input()) > 0){
+            $projectContractPayments = ProjectContractPayment::orderby("created_at","desc")->orderby("name","asc");
+
+            if($request->has('pagination')){
+                $pagination = (in_array($request->pagination,$paginations)) ? $request->pagination : $pagination;
+            }
+
+            if($request->has('payment_date') && !($request->payment_date == null) && $request->has('payment_date_condition') && !($request->payment_date_condition == null) && in_array($request->payment_date_condition, array("=",">","<",">=","<="))){
+                $projectContractPayments = $projectContractPayments->where(DB::raw("(STR_TO_DATE(payment_date,'%Y-%m-%d'))"),$request->payment_date_condition,date('Y-m-d',strtotime($request->payment_date)) );
+            }
+
+            if($request->has('payment_method') && !($request->payment_method == null) && !($request->payment_method == "All") ){
+                $projectContractPayments = $projectContractPayments->where('payment_method_id', ProjectContractPaymentMethod::where("slug",$request->payment_method)->firstOrFail()->id );
+            }
+
+            if($request->has('search') && !($request->search == null)){
+                $projectContractPayments = $projectContractPayments->where("name","like","%".$request->search."%")
+                                                                    ->orWhere("description","like","%".$request->search."%");
+            }
+
+            $projectContractPayments = $projectContractPayments->paginate($pagination);
+        }
+
+        return view('internal user.report.project contract payment.index', compact("projectContractPayments","paginations",'projectContractPaymentMethods'));
+    }
+
+    public function projectContractPaymentDetails($slug)
+    {
+        $projectContractPayment = ProjectContractPayment::where("slug",$slug)->firstOrFail();
+        return view('internal user.report.project contract payment.details', compact('projectContractPayment'));
     }
 }

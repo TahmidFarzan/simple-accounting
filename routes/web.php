@@ -186,12 +186,17 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
     Route::prefix('report')->name('report.')->group(function(){
         Route::prefix('project-contract')->name('project.contract.')->group(function(){
             Route::get('/', [ReportController::class, 'projectContractIndex'])->name('index');
-            Route::get('/{slug}', [ReportController::class, 'projectContractDetails'])->name('details');
+            Route::get('{slug}', [ReportController::class, 'projectContractDetails'])->name('details');
         });
 
         Route::prefix('project-contract-journal')->name('project.contract.journal.')->group(function(){
             Route::get('/', [ReportController::class, 'projectContractJournalIndex'])->name('index');
-            Route::get('/{slug}', [ReportController::class, 'projectContractJournalDetails'])->name('details');
+            Route::get('{slug}', [ReportController::class, 'projectContractJournalDetails'])->name('details');
+        });
+
+        Route::prefix('project-contract-payment')->name('project.contract.payment.')->group(function(){
+            Route::get('/', [ReportController::class, 'projectContractPaymentIndex'])->name('index');
+            Route::get('{slug}', [ReportController::class, 'projectContractPaymentDetails'])->name('details');
         });
     });
 });
