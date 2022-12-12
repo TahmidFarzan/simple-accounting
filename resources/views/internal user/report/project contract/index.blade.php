@@ -106,21 +106,6 @@
 
                 <div class="col-md-6 mb-2">
                     <div class="row">
-                        <label class="col-md-4 col-form-label col-form-label-sm">Client</label>
-                        <div class="col-md-8">
-                            <select class="form-control form-control-sm" id="clientInputForGenerateReport" name="client">
-                                <option value="">Select</option>
-                                <option value="All">All</option>
-                                @foreach ( $projectContractClients as $perClient)
-                                    <option value="{{ $perClient->slug }}">{{ $perClient->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 mb-2">
-                    <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Search</label>
                         <div class="col-md-8">
                             <input type="search" class="form-control form-control-sm" placeholder="Search value." name="search" id="searchInputForGenerateReport">
@@ -292,7 +277,6 @@
                     "categoryInputForGenerateReport",
                     "startDateInputForGenerateReport",
                     "endDateInputForGenerateReport",
-                    "clientInputForGenerateReport",
                     "searchInputForGenerateReport",
                 ], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
