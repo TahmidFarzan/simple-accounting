@@ -46,10 +46,17 @@ class ReportController extends Controller
                 }
             }
 
+            if($request->has('client') && !($request->client == null) && !($request->client == "All")){
+                $projectContractClient = ProjectContractClient::where("slug",$request->client)->first();
+
+                if($projectContractClient){
+                    $projectContracts = $projectContracts->whereIn("client_id",$projectContractClient->id);
+                }
+            }
+
             if($request->has('status') && !($request->status == null) && (in_array($request->status,$statuses) == true)){
                 $projectContracts = $projectContracts->where("status",Str::studly($request->status));
             }
-
 
             if($request->has('receivable_status') && !($request->receivable_status == null) && (in_array($request->receivable_status,$receivableStatuses) == true)){
                 $projectContracts = $projectContracts->where("receivable_status",Str::studly($request->receivable_status));
