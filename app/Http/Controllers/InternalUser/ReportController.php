@@ -77,4 +77,10 @@ class ReportController extends Controller
 
         return view('internal user.report.project contract.index', compact('projectContracts',"paginations","statuses","receivableStatuses","projectContractCategories","projectContractClients"));
     }
+
+    public function projectContractDetails($slug)
+    {
+        $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
+        return view('internal user.report.project contract.details', compact('projectContract'));
+    }
 }
