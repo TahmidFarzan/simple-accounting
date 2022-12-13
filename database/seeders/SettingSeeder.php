@@ -69,5 +69,74 @@ class SettingSeeder extends Seeder
             'updated_at' =>  null,
             'created_by_id' =>  1,
         ])->create();
+
+        // Notification setting
+        Setting::factory()->state([
+            'name' => "Notification setting",
+            'code' => 'NotificationSetting',
+            'slug' => SystemConstant::slugGenerator("Notification setting",200),
+            'fields_with_values' => array(
+                "User" => array(
+                    "event" => "All", // Create,Edit,Trash,Restore.
+                    "send" => true,
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
+                "ActivityLog" => array(
+                    "event" => "All", // View.
+                    "send" => true,
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
+                "AuthenticationLog" => array(
+                    "event" => "All", // View.
+                    "send" => true,
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
+                "ProjectContract" => array(
+                    "event" => "All", // Create,Edit,Trash,Restore.
+                    "send" => true,
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
+                "ProjectJournal" => array(
+                    "event" => "All", // Create,Edit,Trash,Restore.
+                    "send" => true,
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
+                "ProjectPayment" => array(
+                    "event" => "All", // Create,Edit,Trash,Restore.
+                    "send" => true,
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
+                "Report" => array(
+                    "event" => "All", // Create,Edit,Trash,Restore.
+                    "send" => true,
+                    "frequency" => "Daily",
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
+            ),
+            'created_at' =>  Carbon::now(),
+            'updated_at' =>  null,
+            'created_by_id' =>  1,
+        ])->create();
     }
 }

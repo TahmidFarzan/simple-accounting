@@ -4,6 +4,7 @@ namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Utilities\SystemConstant;
@@ -11,6 +12,8 @@ use App\Models\UserPermissionGroup;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\NotificationSendForUser;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
 
@@ -276,6 +279,7 @@ class UserController extends Controller
                 }
             }
 
+            $this->sendNotification("Create","A new user has been created by ".Auth::user()->name.".",$user);
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully created.");
 
@@ -446,6 +450,7 @@ class UserController extends Controller
                 }
             }
 
+            $this->sendNotification("Update","A user has been updated by ".Auth::user()->name.".",$user);
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully updated.");
 
@@ -493,6 +498,8 @@ class UserController extends Controller
                 LogBatch::endBatch();
 
                 if($trashedUser){
+                    $this->sendNotification("Trash","A user has been updated by ".Auth::user()->name.".",$user);
+
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push( "Successfully trashed.");
                 }
@@ -525,6 +532,8 @@ class UserController extends Controller
                 LogBatch::endBatch();
 
                 if($restoreUser){
+                    $this->sendNotification("Trash","A user has been updated by ".Auth::user()->name.".",$user);
+
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push( "Successfully restore.");
                 }
@@ -572,5 +581,20 @@ class UserController extends Controller
         }
 
         return $restoreAableUser;
+    }
+
+    private function sendNotification($event,$subject,User $user){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new NotificationSendForUser($envelope,$subject,$user));
+        }
     }
 }
