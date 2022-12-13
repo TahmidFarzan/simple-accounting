@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NotificationSendForUser extends Mailable
+class EmailSendForUser extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -56,7 +56,7 @@ class NotificationSendForUser extends Mailable
     public function content()
     {
         return new Content(
-            view: 'internal user.user.notification',
+            view: 'internal user.user.email',
             with: [
                 'user' => $this->user,
             ],

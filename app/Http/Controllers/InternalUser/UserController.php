@@ -12,7 +12,7 @@ use App\Models\UserPermissionGroup;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use App\Mail\NotificationSendForUser;
+use App\Mail\EmailSendForUser;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
@@ -594,7 +594,7 @@ class UserController extends Controller
         $envelope["reply"] = $notificationSetting["reply"];
 
         if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
-            Mail::send(new NotificationSendForUser($envelope,$subject,$user));
+            Mail::send(new EmailSendForUser($envelope,$subject,$user));
         }
     }
 }
