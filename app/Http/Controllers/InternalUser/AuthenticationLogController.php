@@ -4,12 +4,17 @@ namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
+use App\Mail\EmailSendForAuthenticationLog;
 use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
+
 
 class AuthenticationLogController extends Controller
 {
@@ -86,6 +91,9 @@ class AuthenticationLogController extends Controller
         }
         else{
             if($authenticationLog->delete()){
+
+                $this->sendEmail("Delete","Authenticate log has been deleted by ".Auth::user()->name.".",$authenticationLog);
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully deleted.");
             }
@@ -109,10 +117,21 @@ class AuthenticationLogController extends Controller
             $cutOffDate = Carbon::now()->subDays($deleteRecordsOlderThan)->format('Y-m-d H:i:s');
 
             if(AuthenticationLog::where('login_at', '<', $cutOffDate)->count() > 0){
-                $authenticationLogId = AuthenticationLog::where('login_at', '<', $cutOffDate)->pluck("id");
-                $authenticationLogDelete = AuthenticationLog::whereIn("id",$authenticationLogId)->delete();
+                $authenticationLogDelete = 0;
 
-                if($authenticationLogDelete){
+                $authenticationLogId = AuthenticationLog::where('login_at', '<', $cutOffDate)->pluck("id");
+                $authenticationLogs = AuthenticationLog::whereIn("id",$authenticationLogId)->get();
+
+                foreach($authenticationLogs as $perAuthticationLog){
+                    $authenticationLog = AuthenticationLog::where("id",$perAuthticationLog->id)->firstOrFail();
+                    if($authenticationLog->delete()){
+                        $authenticationLogDelete = $authenticationLogDelete + 1;
+                    }
+                }
+
+                if($authenticationLogDelete == $authenticationLogs->count()){
+                    $this->sendEmail("DeleteAll","Authenticate logs has been deleted by ".Auth::user()->name.".",$authenticationLogs);
+
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push("Selected logs successfully deleted.");
                 }
@@ -134,5 +153,20 @@ class AuthenticationLogController extends Controller
         }
 
         return redirect()->back()->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function sendEmail($event,$subject,$authenticationLogs){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["AuthenticationLog"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForAuthenticationLog($envelope,$subject,$authenticationLogs));
+        }
     }
 }

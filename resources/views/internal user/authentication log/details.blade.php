@@ -112,8 +112,6 @@
                                 <b>Location</b>
                             </p>
 
-                            {{ $authenticationLog->description }}
-
                             @if ($authenticationLog->location == null)
                                 <p>No location found</p>
                             @endif

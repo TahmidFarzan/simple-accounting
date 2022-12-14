@@ -186,7 +186,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="6">
-                                            <b class="d-flex justify-content-center text-warning">No activity log found.</b>
+                                            <b class="d-flex justify-content-center text-warning">No authentication log found.</b>
                                         </td>
                                     </tr>
                                 @endforelse

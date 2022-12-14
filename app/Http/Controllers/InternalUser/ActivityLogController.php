@@ -4,12 +4,17 @@ namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
+use App\Mail\EmailSendForActivityLog;
 use Spatie\Activitylog\Models\Activity;
+
 
 class ActivityLogController extends Controller
 {
@@ -95,6 +100,8 @@ class ActivityLogController extends Controller
         }
         else{
             if($activitLog->delete()){
+                $this->sendEmail("Delete","Activity log has been deleted by ".Auth::user()->name.".",$activitLog);
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully deleted.");
             }
@@ -118,9 +125,22 @@ class ActivityLogController extends Controller
             $cutOffDate = Carbon::now()->subDays($deleteRecordsOlderThan)->format('Y-m-d H:i:s');
 
             if(Activity::where('created_at', '<', $cutOffDate)->count() > 0){
+                $activitLogsDeleted = 0;
+
                 $activitLogsId = Activity::where('created_at', '<', $cutOffDate)->pluck("id");
-                $activitLogsDelete = Activity::whereIn("id",$activitLogsId)->delete();
-                if($activitLogsDelete){
+
+                $activitLogs = Activity::whereIn("id",$activitLogsId)->get();
+
+                foreach($activitLogs as $perActivityLog){
+                    $activitLog = Activity::where("id",$perActivityLog->id)->firstOrFail();
+                    if($activitLog->delete()){
+                        $activitLogsDeleted = $activitLogsDeleted +1;
+                    }
+                }
+
+                if($activitLogsDeleted == $activitLogs->count()){
+                    $this->sendEmail("Delete","Activity log has been deleted by ".Auth::user()->name.".",$activitLogs);
+
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push( "Selected logs successfully deleted.");
                 }
@@ -142,5 +162,20 @@ class ActivityLogController extends Controller
         }
 
         return redirect()->back()->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function sendEmail($event,$subject,$activitLogs){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["ActivityLog"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForActivityLog($envelope,$subject,$activitLogs));
+        }
     }
 }
