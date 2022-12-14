@@ -54,7 +54,7 @@
                                         <tr>
                                             <th style="width: 35%;">Mobile no</th>
                                             <th style="width: 1%;">:</th>
-                                            <td>{{ $user->mobile_no }}</td>
+                                            <td>{{ ($user->mobile_no == null) ? "Not added yet." : $user->mobile_no }}</td>
                                         </tr>
                                         <tr>
                                             <th>Email</th>
