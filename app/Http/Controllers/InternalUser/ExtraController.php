@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
+use App\Models\Setting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\UserPermission;
@@ -10,8 +11,10 @@ use App\Utilities\SystemConstant;
 use App\Models\UserPermissionGroup;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\EmailSendForUserPermissionGroup;
 
 class ExtraController extends Controller
 {
@@ -182,6 +185,8 @@ class ExtraController extends Controller
 
         if($saveUserPermissionGroup){
 
+            $this->userPermissionGroupSendEmail("Create","A new group (User permission) has been created by ".Auth::user()->name.".",$userPermissionGroup );
+
             foreach($request->user_permission as $perUserPermission){
                 $userPermission = UserPermission::where("slug",$perUserPermission)->firstOrFail();
                 array_push($userPermissionIds,$userPermission->id);
@@ -298,6 +303,8 @@ class ExtraController extends Controller
 
             }
 
+            $this->userPermissionGroupSendEmail("Update","Group (User permission) has been updated by ".Auth::user()->name.".",$userPermissionGroup );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully updated.");
 
@@ -327,6 +334,8 @@ class ExtraController extends Controller
             $deleteUserPermissionGroup =  $userPermissionGroup->delete();
 
             if($deleteUserPermissionGroup){
+                $this->userPermissionGroupSendEmail("Delete","Group (User permission) has been created by ".Auth::user()->name.".",$userPermissionGroup );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully deleted.");
             }
@@ -363,5 +372,20 @@ class ExtraController extends Controller
             $statusInformation["message"]->push("Pass the validation.");
         }
         return $statusInformation;
+    }
+
+    private function userPermissionGroupSendEmail($event,$subject,UserPermissionGroup $userPermissionGroup ){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["UserPermissionGroup"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForUserPermissionGroup($event,$envelope,$subject,$userPermissionGroup));
+        }
     }
 }
