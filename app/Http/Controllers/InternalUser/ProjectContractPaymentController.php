@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\ProjectContract;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectContractPayment;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ProjectContractPaymentMethod;
+use App\Mail\EmailSendForProjectContractPayment;
 
 class ProjectContractPaymentController extends Controller
 {
@@ -202,6 +205,8 @@ class ProjectContractPaymentController extends Controller
             LogBatch::endBatch();
 
             if($saveProjectContractPayment){
+                $this->sendEmail("Create","A new project contract payment has been created by ".Auth::user()->name.".",$projectContractPayment );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully created.");
 
@@ -332,6 +337,8 @@ class ProjectContractPaymentController extends Controller
             LogBatch::endBatch();
 
             if($updateProjectContractPayment){
+                $this->sendEmail("Update","Project contract payment has been updated by ".Auth::user()->name.".",$projectContractPayment );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully updated.");
 
@@ -370,6 +377,8 @@ class ProjectContractPaymentController extends Controller
             $deleteProjectContractPayment = $projectContractPayment->delete();
 
             if($deleteProjectContractPayment){
+                $this->sendEmail("Delete","Project contract payment has been delete by ".Auth::user()->name.".",$projectContractPayment );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully deleted.");
             }
@@ -459,5 +468,20 @@ class ProjectContractPaymentController extends Controller
         }
 
         return $statusInformation;
+    }
+
+    private function sendEmail($event,$subject,ProjectContractPayment $projectContractPayment ){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForProjectContractPayment($event,$envelope,$subject,$projectContractPayment));
+        }
     }
 }
