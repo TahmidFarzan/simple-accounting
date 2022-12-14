@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\ProjectContract;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectContractJournal;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\EmailSendForProjectContractJournal;
 
 class ProjectContractJournalController extends Controller
 {
@@ -180,6 +183,8 @@ class ProjectContractJournalController extends Controller
             LogBatch::endBatch();
 
             if($saveProjectContractJournal){
+                $this->sendEmail("Create","A new project contract journal has been created by ".Auth::user()->name.".",$projectContractJournal );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully created.");
             }
@@ -254,6 +259,8 @@ class ProjectContractJournalController extends Controller
             LogBatch::endBatch();
 
             if($updateProjectContractJournal){
+                $this->sendEmail("Update","A new project contract journal has been updated by ".Auth::user()->name.".",$projectContractJournal );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully updated.");
             }
@@ -284,6 +291,8 @@ class ProjectContractJournalController extends Controller
             $deleteProjectContractJournal = $projectContractJournal->delete();
 
             if($deleteProjectContractJournal){
+                $this->sendEmail("Delete","A new project contract journal has been deleted by ".Auth::user()->name.".",$projectContractJournal );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully deleted.");
             }
@@ -320,5 +329,20 @@ class ProjectContractJournalController extends Controller
         }
 
         return $statusInformation;
+    }
+
+    private function sendEmail($event,$subject,ProjectContractJournal $projectContractJournal ){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForProjectContractJournal($event,$envelope,$subject,$projectContractJournal));
+        }
     }
 }
