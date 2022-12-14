@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectContractClient;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\EmailSendForProjectContractClient;
 
 class ProjectContractClientController extends Controller
 {
@@ -131,6 +134,8 @@ class ProjectContractClientController extends Controller
         LogBatch::endBatch();
 
         if($saveProjectContractClient){
+            $this->sendEmail("Create","A new project contract client has been created by ".Auth::user()->name.".",$projectContractClient );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully created.");
         }
@@ -193,6 +198,8 @@ class ProjectContractClientController extends Controller
         LogBatch::endBatch();
 
         if($updateProjectContractClient){
+            $this->sendEmail("Update","Project contract client has been updated by ".Auth::user()->name.".",$projectContractClient );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully updated.");
         }
@@ -215,6 +222,8 @@ class ProjectContractClientController extends Controller
             LogBatch::endBatch();
 
             if($trashedProjectContractClient){
+                $this->sendEmail("Trash","Project contract client has been trashed by ".Auth::user()->name.".",$projectContractClient );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully trashed.");
             }
@@ -240,6 +249,8 @@ class ProjectContractClientController extends Controller
             LogBatch::endBatch();
 
             if($restoreProjectContractClient){
+                $this->sendEmail("Restore","Project contract client has been restored by ".Auth::user()->name.".",$projectContractClient );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully restored.");
             }
@@ -253,5 +264,20 @@ class ProjectContractClientController extends Controller
         }
 
         return redirect()->route("project.contract.client.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function sendEmail($event,$subject,ProjectContractClient $projectContractClient ){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForProjectContractClient($event,$envelope,$subject,$projectContractClient));
+        }
     }
 }
