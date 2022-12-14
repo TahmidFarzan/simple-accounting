@@ -183,7 +183,7 @@ class ProjectContractJournalController extends Controller
             LogBatch::endBatch();
 
             if($saveProjectContractJournal){
-                $this->sendEmail("Create","A new project contract journal has been created by ".Auth::user()->name.".",$projectContractJournal );
+                $this->sendEmail("Create","A new journal (project contract) has been created by ".Auth::user()->name.".",$projectContractJournal );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully created.");
@@ -259,7 +259,7 @@ class ProjectContractJournalController extends Controller
             LogBatch::endBatch();
 
             if($updateProjectContractJournal){
-                $this->sendEmail("Update","A new project contract journal has been updated by ".Auth::user()->name.".",$projectContractJournal );
+                $this->sendEmail("Update","Journal (Project contract) has been updated by ".Auth::user()->name.".",$projectContractJournal );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully updated.");
@@ -291,7 +291,7 @@ class ProjectContractJournalController extends Controller
             $deleteProjectContractJournal = $projectContractJournal->delete();
 
             if($deleteProjectContractJournal){
-                $this->sendEmail("Delete","A new project contract journal has been deleted by ".Auth::user()->name.".",$projectContractJournal );
+                $this->sendEmail("Delete","Journal (Project contract) has been deleted by ".Auth::user()->name.".",$projectContractJournal );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully deleted.");

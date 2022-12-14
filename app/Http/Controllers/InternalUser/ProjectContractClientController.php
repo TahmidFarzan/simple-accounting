@@ -134,7 +134,7 @@ class ProjectContractClientController extends Controller
         LogBatch::endBatch();
 
         if($saveProjectContractClient){
-            $this->sendEmail("Create","A new project contract client has been created by ".Auth::user()->name.".",$projectContractClient );
+            $this->sendEmail("Create","A new client (project contract) has been created by ".Auth::user()->name.".",$projectContractClient );
 
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully created.");
@@ -198,7 +198,7 @@ class ProjectContractClientController extends Controller
         LogBatch::endBatch();
 
         if($updateProjectContractClient){
-            $this->sendEmail("Update","Project contract client has been updated by ".Auth::user()->name.".",$projectContractClient );
+            $this->sendEmail("Update","Client (Project contract) has been updated by ".Auth::user()->name.".",$projectContractClient );
 
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully updated.");
@@ -222,7 +222,7 @@ class ProjectContractClientController extends Controller
             LogBatch::endBatch();
 
             if($trashedProjectContractClient){
-                $this->sendEmail("Trash","Project contract client has been trashed by ".Auth::user()->name.".",$projectContractClient );
+                $this->sendEmail("Trash","Client (Project contract) has been trashed by ".Auth::user()->name.".",$projectContractClient );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully trashed.");
@@ -249,7 +249,7 @@ class ProjectContractClientController extends Controller
             LogBatch::endBatch();
 
             if($restoreProjectContractClient){
-                $this->sendEmail("Restore","Project contract client has been restored by ".Auth::user()->name.".",$projectContractClient );
+                $this->sendEmail("Restore","Client (Project contract) has been restored by ".Auth::user()->name.".",$projectContractClient );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully restored.");

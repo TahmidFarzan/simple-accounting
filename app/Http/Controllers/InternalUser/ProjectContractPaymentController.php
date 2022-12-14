@@ -206,7 +206,7 @@ class ProjectContractPaymentController extends Controller
             LogBatch::endBatch();
 
             if($saveProjectContractPayment){
-                $this->sendEmail("Create","A new project contract payment has been created by ".Auth::user()->name.".",$projectContractPayment );
+                $this->sendEmail("Create","A new payment (project contract) has been created by ".Auth::user()->name.".",$projectContractPayment );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully created.");
@@ -338,7 +338,7 @@ class ProjectContractPaymentController extends Controller
             LogBatch::endBatch();
 
             if($updateProjectContractPayment){
-                $this->sendEmail("Update","Project contract payment has been updated by ".Auth::user()->name.".",$projectContractPayment );
+                $this->sendEmail("Update","Payment (Project contract) has been updated by ".Auth::user()->name.".",$projectContractPayment );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully updated.");
@@ -378,7 +378,7 @@ class ProjectContractPaymentController extends Controller
             $deleteProjectContractPayment = $projectContractPayment->delete();
 
             if($deleteProjectContractPayment){
-                $this->sendEmail("Delete","Project contract payment has been delete by ".Auth::user()->name.".",$projectContractPayment );
+                $this->sendEmail("Delete","Payment (Project contract) has been delete by ".Auth::user()->name.".",$projectContractPayment );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully deleted.");
@@ -412,7 +412,7 @@ class ProjectContractPaymentController extends Controller
         else{
             $statusInformation["status"] = "errors";
             $statusInformation["message"]->push("Project contract is not complete.");
-            $statusInformation["message"]->push("Project contract payment must be not started.");
+            $statusInformation["message"]->push("Payment (Project contract) must be not started.");
         }
 
         return $statusInformation;
@@ -465,7 +465,7 @@ class ProjectContractPaymentController extends Controller
         else{
             $statusInformation["status"] = "errors";
             $statusInformation["message"]->push("Project contract is not complete.");
-            $statusInformation["message"]->push("Project contract payment must be not started.");
+            $statusInformation["message"]->push("Payment (Project contract) must be not started.");
         }
 
         return $statusInformation;

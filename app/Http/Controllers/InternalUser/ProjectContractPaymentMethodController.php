@@ -108,7 +108,7 @@ class ProjectContractPaymentMethodController extends Controller
         LogBatch::endBatch();
 
         if($saveProjectContractPaymentMethod){
-            $this->sendEmail("Create","A new project contract payment method has been created by ".Auth::user()->name.".",$projectContractPaymentMethod );
+            $this->sendEmail("Create","A new payment method (project contract) has been created by ".Auth::user()->name.".",$projectContractPaymentMethod );
 
             $statusInformation["status"] = "status";
             $statusInformation["message"] = "Record successfully created.";
@@ -155,7 +155,7 @@ class ProjectContractPaymentMethodController extends Controller
             $statusInformation["status"] = "status";
             $statusInformation["message"] = "Successfully updated.";
 
-            $this->sendEmail("Update","Project contract payment method has been updated by ".Auth::user()->name.".",$projectContractPaymentMethod );
+            $this->sendEmail("Update","Payment method (Project contract) has been updated by ".Auth::user()->name.".",$projectContractPaymentMethod );
         }
         else{
             $statusInformation["status"] = "errors";
@@ -176,7 +176,7 @@ class ProjectContractPaymentMethodController extends Controller
             LogBatch::endBatch();
 
             if($trashedProjectContractPaymentMethod){
-                $this->sendEmail("Trash","Project contract payment method has been trashed by ".Auth::user()->name.".",$projectContractPaymentMethod );
+                $this->sendEmail("Trash","Payment method (Project contract) has been trashed by ".Auth::user()->name.".",$projectContractPaymentMethod );
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully trashed.");
             }
@@ -202,7 +202,7 @@ class ProjectContractPaymentMethodController extends Controller
             LogBatch::endBatch();
 
             if($restoreProjectContractPaymentMethod){
-                $this->sendEmail("Restore","Project contract payment method has been restored by ".Auth::user()->name.".",$projectContractPaymentMethod );
+                $this->sendEmail("Restore","Payment method (Project contract) has been restored by ".Auth::user()->name.".",$projectContractPaymentMethod );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully restored.");

@@ -194,7 +194,7 @@ class ProjectContractCategoryController extends Controller
         LogBatch::endBatch();
 
         if($saveProjectContractCategory){
-            $this->sendEmail("Create","A new project contract category has been created by ".Auth::user()->name.".",$projectContractCategory );
+            $this->sendEmail("Create","A new category (project contract) has been created by ".Auth::user()->name.".",$projectContractCategory );
 
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully created.");
@@ -286,7 +286,7 @@ class ProjectContractCategoryController extends Controller
         LogBatch::endBatch();
 
         if($updateProjectContractCategory){
-            $this->sendEmail("Update","Project contract category has been updated by ".Auth::user()->name.".",$projectContractCategory );
+            $this->sendEmail("Update","Category (Project contract) has been updated by ".Auth::user()->name.".",$projectContractCategory );
 
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully updated.");
@@ -312,7 +312,7 @@ class ProjectContractCategoryController extends Controller
             LogBatch::endBatch();
 
             if($trashedProjectContractCategory){
-                $this->sendEmail("Trash","Project contract category has been trashed by ".Auth::user()->name.".",$projectContractCategory );
+                $this->sendEmail("Trash","Category (Project contract) has been trashed by ".Auth::user()->name.".",$projectContractCategory );
 
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully trashed.");
@@ -349,7 +349,7 @@ class ProjectContractCategoryController extends Controller
                 LogBatch::endBatch();
 
                 if($restoreProjectContractCategory){
-                    $this->sendEmail("Restore","Project contract category has been restored by ".Auth::user()->name.".",$projectContractCategory );
+                    $this->sendEmail("Restore","Category (Project contract) has been restored by ".Auth::user()->name.".",$projectContractCategory );
 
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push("Successfully restored.");
