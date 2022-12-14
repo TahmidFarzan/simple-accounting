@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ProjectContractPaymentMethod;
+use App\Mail\EmailSendForProjectContractPaymentMethod;
 
 class ProjectContractPaymentMethodController extends Controller
 {
@@ -105,6 +108,8 @@ class ProjectContractPaymentMethodController extends Controller
         LogBatch::endBatch();
 
         if($saveProjectContractPaymentMethod){
+            $this->sendEmail("Create","A new project contract payment method has been created by ".Auth::user()->name.".",$projectContractPaymentMethod );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"] = "Record successfully created.";
         }
@@ -149,6 +154,8 @@ class ProjectContractPaymentMethodController extends Controller
         if($updateProjectContractPaymentMethod){
             $statusInformation["status"] = "status";
             $statusInformation["message"] = "Successfully updated.";
+
+            $this->sendEmail("Update","Project contract payment method has been updated by ".Auth::user()->name.".",$projectContractPaymentMethod );
         }
         else{
             $statusInformation["status"] = "errors";
@@ -169,6 +176,7 @@ class ProjectContractPaymentMethodController extends Controller
             LogBatch::endBatch();
 
             if($trashedProjectContractPaymentMethod){
+                $this->sendEmail("Trash","Project contract payment method has been trashed by ".Auth::user()->name.".",$projectContractPaymentMethod );
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully trashed.");
             }
@@ -194,6 +202,8 @@ class ProjectContractPaymentMethodController extends Controller
             LogBatch::endBatch();
 
             if($restoreProjectContractPaymentMethod){
+                $this->sendEmail("Restore","Project contract payment method has been restored by ".Auth::user()->name.".",$projectContractPaymentMethod );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully restored.");
             }
@@ -207,5 +217,20 @@ class ProjectContractPaymentMethodController extends Controller
         }
 
         return redirect()->route("project.contract.payment.method.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function sendEmail($event,$subject,ProjectContractPaymentMethod $projectContractPaymentMethod ){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForProjectContractPaymentMethod($event,$envelope,$subject,$projectContractPaymentMethod));
+        }
     }
 }
