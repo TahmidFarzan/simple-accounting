@@ -34,7 +34,7 @@
                                             <td>{{ $userPermissionGroup->name }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Type</th>
+                                            <th>Code</th>
                                             <th>:</th>
                                             <td>{{ $userPermissionGroup->code }}</td>
                                         </tr>
