@@ -3,19 +3,21 @@
 namespace App\Http\Controllers\Internaluser;
 
 use Carbon\Carbon;
+use App\Models\Setting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProjectContract;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Models\ProjectContractClient;
 use App\Models\ProjectContractJournal;
 use App\Models\ProjectContractPayment;
 use App\Models\ProjectContractCategory;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
-
+use App\Mail\EmailSendForProjectContract;
 class ProjectContractController extends Controller
 {
     private $projectContractId = null;
@@ -307,6 +309,8 @@ class ProjectContractController extends Controller
         LogBatch::endBatch();
 
         if($saveProjectContract){
+            $this->sendEmail("Create","A new project contract has been created by ".Auth::user()->name.".",$projectContract );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"] = "Successfully created.";
         }
@@ -450,6 +454,8 @@ class ProjectContractController extends Controller
             LogBatch::endBatch();
 
             if($updateProjectContract){
+                $this->sendEmail("Update","Project contract has been updated by ".Auth::user()->name.".",$projectContract );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"] = "Successfully updated.";
             }
@@ -493,6 +499,8 @@ class ProjectContractController extends Controller
             $deleteProjectContract =  $projectContract->delete();
 
             if($deleteProjectContract){
+                $this->sendEmail("Delete","Project contract has been deleted by ".Auth::user()->name.".",$projectContract );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully deleted.");
             }
@@ -520,6 +528,8 @@ class ProjectContractController extends Controller
             $statusUpdate =  $projectContract->update();
 
             if($statusUpdate){
+                $this->sendEmail("Complete","Project contract has been completed by ".Auth::user()->name.".",$projectContract );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully completed.");
             }
@@ -550,6 +560,8 @@ class ProjectContractController extends Controller
                 $receivableStatusUpdate =  $projectContract->update();
 
                 if($receivableStatusUpdate){
+                    $this->sendEmail("ReceivingPayment","Project contract can receviing payment is started by ".Auth::user()->name.".",$projectContract );
+
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push("Receiving payment start successfully.");
                 }
@@ -587,6 +599,8 @@ class ProjectContractController extends Controller
                     $receivableStatusUpdate =  $projectContract->update();
 
                     if($receivableStatusUpdate){
+                        $this->sendEmail("CompleteReceivePayment","Project contract payment receive is completed by ".Auth::user()->name.".",$projectContract );
+
                         $statusInformation["status"] = "status";
                         $statusInformation["message"]->push("Receiving payment successfully completed.");
                     }
@@ -614,6 +628,21 @@ class ProjectContractController extends Controller
         }
 
         return redirect()->route("project.contract.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function sendEmail($event,$subject,ProjectContract $projectContract ){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForProjectContract($event,$envelope,$subject,$projectContract));
+        }
     }
 
 }
