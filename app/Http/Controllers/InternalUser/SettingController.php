@@ -5,7 +5,10 @@ namespace App\Http\Controllers\InternalUser;
 use Carbon\Carbon;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use App\Mail\EmailSendForSetting;
 use App\Utilities\SystemConstant;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Facades\LogBatch;
@@ -172,6 +175,8 @@ class SettingController extends Controller
         LogBatch::endBatch();
 
         if($updateBusinessSetting){
+            $this->sendEmail("Update","Business setting has been updated by ".Auth::user()->name.".",$businessSetting );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully updated.");
         }
@@ -240,6 +245,8 @@ class SettingController extends Controller
         LogBatch::endBatch();
 
         if($updateActivityLogSetting){
+            $this->sendEmail("Update","Activity log setting has been updated by ".Auth::user()->name.".",$activityLogSetting );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully updated.");
         }
@@ -309,6 +316,8 @@ class SettingController extends Controller
         LogBatch::endBatch();
 
         if($updateActivityLogSetting){
+            $this->sendEmail("Update","Authentication log setting has been updated by ".Auth::user()->name.".",$authenticationLogSetting );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully updated.");
         }
@@ -320,5 +329,20 @@ class SettingController extends Controller
 
         // Redirect logic.
         return redirect()->route("setting.authentication.log.setting.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function sendEmail($event,$subject,Setting $setting ){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["Setting"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForSetting($envelope,$subject,$setting));
+        }
     }
 }

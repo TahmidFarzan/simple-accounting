@@ -132,6 +132,14 @@ class SettingSeeder extends Seeder
                     "cc" => "tfarzan007@gmail.com",
                     "reply" => "tfarzan007@gmail.com",
                 ),
+                "Setting" => array(
+                    "event" => "All", // Create,Edit,Trash,Restore.
+                    "send" => true,
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
                 "Report" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
                     "send" => true,
