@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
+use App\Models\Setting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\ProjectContractCategory;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Models\ProjectContractCategory;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
+
+use App\Mail\EmailSendForProjectContractCategory;
 use App\Utilities\ModelsRelationDependencyConstant;
+
 
 class ProjectContractCategoryController extends Controller
 {
@@ -189,6 +194,8 @@ class ProjectContractCategoryController extends Controller
         LogBatch::endBatch();
 
         if($saveProjectContractCategory){
+            $this->sendEmail("Create","A new project contract category has been created by ".Auth::user()->name.".",$projectContractCategory );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully created.");
         }
@@ -279,6 +286,8 @@ class ProjectContractCategoryController extends Controller
         LogBatch::endBatch();
 
         if($updateProjectContractCategory){
+            $this->sendEmail("Update","Project contract category has been updated by ".Auth::user()->name.".",$projectContractCategory );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully updated.");
         }
@@ -303,6 +312,8 @@ class ProjectContractCategoryController extends Controller
             LogBatch::endBatch();
 
             if($trashedProjectContractCategory){
+                $this->sendEmail("Trash","Project contract category has been trashed by ".Auth::user()->name.".",$projectContractCategory );
+
                 $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Successfully trashed.");
 
@@ -338,6 +349,8 @@ class ProjectContractCategoryController extends Controller
                 LogBatch::endBatch();
 
                 if($restoreProjectContractCategory){
+                    $this->sendEmail("Restore","Project contract category has been restored by ".Auth::user()->name.".",$projectContractCategory );
+
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push("Successfully restored.");
 
@@ -391,5 +404,20 @@ class ProjectContractCategoryController extends Controller
         }
 
         return $statusInformation;
+    }
+
+    private function sendEmail($event,$subject,ProjectContractCategory $projectContractCategory ){
+        $envelope = array();
+
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+
+        $envelope["to"] = $notificationSetting["to"];
+        $envelope["cc"] = $notificationSetting["cc"];
+        $envelope["from"] = $notificationSetting["from"];
+        $envelope["reply"] = $notificationSetting["reply"];
+
+        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+            Mail::send(new EmailSendForProjectContractCategory($event,$envelope,$subject,$projectContractCategory));
+        }
     }
 }
