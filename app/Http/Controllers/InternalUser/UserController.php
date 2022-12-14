@@ -594,7 +594,7 @@ class UserController extends Controller
         $envelope["reply"] = $notificationSetting["reply"];
 
         if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
-            Mail::send(new EmailSendForUser($envelope,$subject,$user));
+            Mail::send(new EmailSendForUser($event,$envelope,$subject,$user));
         }
     }
 }

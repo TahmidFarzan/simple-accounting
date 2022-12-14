@@ -26,7 +26,22 @@
     <body>
         <div class="container">
             <p>Hi Admin,</p>
-            <p>A user record has been modified. Modified user record is given below.</p>
+
+            @if ($event == "Create")
+                <p>A new user has been create. New user record is given below.</p>
+            @endif
+
+            @if ($event == "Update")
+                <p>User has been updated. Updated user record is given below.</p>
+            @endif
+
+            @if ($event == "Trash")
+                <p>User has been trashed. Trashed user record is given below.</p>
+            @endif
+
+            @if ($event == "Restore")
+                <p>A new user has been restored. Restored user record is given below.</p>
+            @endif
 
             <div class="card border-dark mb-2">
                 <h5 class="card-header">User information</h5>

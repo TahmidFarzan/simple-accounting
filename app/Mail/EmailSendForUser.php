@@ -15,9 +15,10 @@ class EmailSendForUser extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct($envelope,$subject,User $user)
+    public function __construct($event,$envelope,$subject,User $user)
     {
         $this->user = $user;
+        $this->event = $event;
         $this->subject = $subject;
         $this->envelope = $envelope;
     }
@@ -59,6 +60,7 @@ class EmailSendForUser extends Mailable
             view: 'internal user.user.email',
             with: [
                 'user' => $this->user,
+                'event' => $this->event,
             ],
         );
     }
