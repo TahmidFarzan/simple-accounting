@@ -108,7 +108,7 @@ class SettingSeeder extends Seeder
                     "cc" => "tfarzan007@gmail.com",
                     "reply" => "tfarzan007@gmail.com",
                 ),
-                "ProjectJournal" => array(
+                "ProjectContractProjectJournal" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
                     "send" => true,
                     "from" => "tfarzan007@gmail.com",
@@ -116,7 +116,7 @@ class SettingSeeder extends Seeder
                     "cc" => "tfarzan007@gmail.com",
                     "reply" => "tfarzan007@gmail.com",
                 ),
-                "ProjectPayment" => array(
+                "ProjectContractPayment" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
                     "send" => true,
                     "from" => "tfarzan007@gmail.com",
