@@ -77,7 +77,7 @@
                                 <table class="table">
                                     <tbody>
                                         <tr>
-                                            <th style="width: 25%;">Etart date</th>
+                                            <th style="width: 25%;">Start date</th>
                                             <th style="width: 1%;">:</th>
                                             <td>{{ ( ($projectContract->start_date == null) ? "Not added." : date('d-M-Y',strtotime($projectContract->start_date)) ) }}</td>
                                         </tr>
