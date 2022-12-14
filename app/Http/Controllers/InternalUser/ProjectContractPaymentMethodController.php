@@ -222,7 +222,7 @@ class ProjectContractPaymentMethodController extends Controller
     private function sendEmail($event,$subject,ProjectContractPaymentMethod $projectContractPaymentMethod ){
         $envelope = array();
 
-        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["ProjectContractPaymentMethod"];
 
         $envelope["to"] = $notificationSetting["to"];
         $envelope["cc"] = $notificationSetting["cc"];

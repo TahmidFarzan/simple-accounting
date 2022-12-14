@@ -334,7 +334,7 @@ class ProjectContractJournalController extends Controller
     private function sendEmail($event,$subject,ProjectContractJournal $projectContractJournal ){
         $envelope = array();
 
-        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["ProjectContractJournal"];
 
         $envelope["to"] = $notificationSetting["to"];
         $envelope["cc"] = $notificationSetting["cc"];

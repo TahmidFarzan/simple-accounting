@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectContractPayment;
+use App\Mail\EmailSendForProjectContract;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ProjectContractPaymentMethod;
@@ -472,8 +473,10 @@ class ProjectContractPaymentController extends Controller
 
     private function sendEmail($event,$subject,ProjectContractPayment $projectContractPayment ){
         $envelope = array();
+        $notificationSettingPC = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["ProjectContract"];
 
-        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["ProjectContractPayment"];
+
 
         $envelope["to"] = $notificationSetting["to"];
         $envelope["cc"] = $notificationSetting["cc"];
@@ -482,6 +485,10 @@ class ProjectContractPaymentController extends Controller
 
         if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
             Mail::send(new EmailSendForProjectContractPayment($event,$envelope,$subject,$projectContractPayment));
+        }
+
+        if(($notificationSettingPC["send"] == true) && (($notificationSettingPC["event"] == "All") || (!($notificationSettingPC["event"] == "All") && ($notificationSettingPC["event"] == "Update")))){
+            Mail::send(new EmailSendForProjectContract("Update",array("to" => $notificationSettingPC["to"],"cc" => $notificationSettingPC["cc"],"from" => $notificationSettingPC["from"],"reply"=>$notificationSettingPC["reply"]),"Project contract has been updated by ".Auth::user()->name.".",$projectContractPayment->projectContract));
         }
     }
 }

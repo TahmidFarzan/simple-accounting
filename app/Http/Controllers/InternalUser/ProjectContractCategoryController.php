@@ -409,7 +409,7 @@ class ProjectContractCategoryController extends Controller
     private function sendEmail($event,$subject,ProjectContractCategory $projectContractCategory ){
         $envelope = array();
 
-        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["User"];
+        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["ProjectContractCategory"];
 
         $envelope["to"] = $notificationSetting["to"];
         $envelope["cc"] = $notificationSetting["cc"];
