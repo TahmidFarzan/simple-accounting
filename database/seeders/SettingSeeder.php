@@ -83,47 +83,47 @@ class SettingSeeder extends Seeder
                 "module" => array(
                     "User" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "ActivityLog" => array(
                         "event" => "All", // View.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "AuthenticationLog" => array(
                         "event" => "All", // View.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "ProjectContract" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "ProjectContractProjectJournal" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "ProjectContractPayment" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "ProjectContractPaymentMethod" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "ProjectContractCategory" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "UserPermissionGroup" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "Setting" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
-                        "send" => "Yes",
+                        "send" => true,
                     ),
                     "Report" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
-                        "send" => "Yes",
+                        "send" => true,
                         "frequency" => "Daily",
                     ),
                 ),
