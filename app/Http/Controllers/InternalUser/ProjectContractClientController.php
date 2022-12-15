@@ -269,14 +269,16 @@ class ProjectContractClientController extends Controller
     private function sendEmail($event,$subject,ProjectContractClient $projectContractClient ){
         $envelope = array();
 
-        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values["ProjectContractClient"];
+        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values;
 
         $envelope["to"] = $emailSendSetting["to"];
         $envelope["cc"] = $emailSendSetting["cc"];
         $envelope["from"] = $emailSendSetting["from"];
         $envelope["reply"] = $emailSendSetting["reply"];
 
-        if(($emailSendSetting["send"] == true) && (($emailSendSetting["event"] == "All") || (!($emailSendSetting["event"] == "All") && ($emailSendSetting["event"] == $event)))){
+        $moduleSetting = $emailSendSetting["module"]["ProjectContractClient"];
+
+        if(($moduleSetting["send"] == true) && (($moduleSetting["event"] == "All") || (!($moduleSetting["event"] == "All") && ($moduleSetting["event"] == $event)))){
             Mail::send(new EmailSendForProjectContractClient($event,$envelope,$subject,$projectContractClient));
         }
     }

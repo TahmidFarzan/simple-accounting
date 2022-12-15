@@ -222,14 +222,16 @@ class ProjectContractPaymentMethodController extends Controller
     private function sendEmail($event,$subject,ProjectContractPaymentMethod $projectContractPaymentMethod ){
         $envelope = array();
 
-        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values["ProjectContractPaymentMethod"];
+        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values;
 
         $envelope["to"] = $emailSendSetting["to"];
         $envelope["cc"] = $emailSendSetting["cc"];
         $envelope["from"] = $emailSendSetting["from"];
         $envelope["reply"] = $emailSendSetting["reply"];
 
-        if(($emailSendSetting["send"] == true) && (($emailSendSetting["event"] == "All") || (!($emailSendSetting["event"] == "All") && ($emailSendSetting["event"] == $event)))){
+        $moduleSetting = $emailSendSetting["module"]["ProjectContractPaymentMethod"];
+
+        if(($moduleSetting["send"] == true) && (($moduleSetting["event"] == "All") || (!($moduleSetting["event"] == "All") && ($moduleSetting["event"] == $event)))){
             Mail::send(new EmailSendForProjectContractPaymentMethod($event,$envelope,$subject,$projectContractPaymentMethod));
         }
     }

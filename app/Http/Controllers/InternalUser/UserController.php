@@ -586,14 +586,16 @@ class UserController extends Controller
     private function sendNotification($event,$subject,User $user){
         $envelope = array();
 
-        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values["User"];
+        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values;
 
         $envelope["to"] = $emailSendSetting["to"];
         $envelope["cc"] = $emailSendSetting["cc"];
         $envelope["from"] = $emailSendSetting["from"];
         $envelope["reply"] = $emailSendSetting["reply"];
 
-        if(($emailSendSetting["send"] == true) && (($emailSendSetting["event"] == "All") || (!($emailSendSetting["event"] == "All") && ($emailSendSetting["event"] == $event)))){
+        $moduleSetting = $emailSendSetting["module"]["User"];
+
+        if(($moduleSetting["send"] == true) && (($moduleSetting["event"] == "All") || (!($moduleSetting["event"] == "All") && ($moduleSetting["event"] == $event)))){
             Mail::send(new EmailSendForUser($event,$envelope,$subject,$user));
         }
     }

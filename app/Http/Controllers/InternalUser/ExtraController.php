@@ -384,7 +384,9 @@ class ExtraController extends Controller
         $envelope["from"] = $emailSendSetting["from"];
         $envelope["reply"] = $emailSendSetting["reply"];
 
-        if(($emailSendSetting["send"] == true) && (($emailSendSetting["event"] == "All") || (!($emailSendSetting["event"] == "All") && ($emailSendSetting["event"] == $event)))){
+        $moduleSetting = $emailSendSetting["module"];
+
+        if(($moduleSetting["send"] == true) && (($moduleSetting["event"] == "All") || (!($moduleSetting["event"] == "All") && ($moduleSetting["event"] == $event)))){
             Mail::send(new EmailSendForUserPermissionGroup($event,$envelope,$subject,$userPermissionGroup));
         }
     }

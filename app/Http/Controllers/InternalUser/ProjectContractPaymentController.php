@@ -473,22 +473,23 @@ class ProjectContractPaymentController extends Controller
 
     private function sendEmail($event,$subject,ProjectContractPayment $projectContractPayment ){
         $envelope = array();
-        $emailSendSettingPC = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values["ProjectContract"];
-
-        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values["ProjectContractPayment"];
-
+        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values;
 
         $envelope["to"] = $emailSendSetting["to"];
         $envelope["cc"] = $emailSendSetting["cc"];
         $envelope["from"] = $emailSendSetting["from"];
         $envelope["reply"] = $emailSendSetting["reply"];
 
-        if(($emailSendSetting["send"] == true) && (($emailSendSetting["event"] == "All") || (!($emailSendSetting["event"] == "All") && ($emailSendSetting["event"] == $event)))){
+        $projectContractModuleSetting = $emailSendSetting["module"]["ProjectContract"];
+        $projectContractPaymentModuleSetting = $emailSendSetting["module"]["ProjectContractPayment"];
+
+
+        if(($projectContractPaymentModuleSetting["send"] == true) && (($projectContractPaymentModuleSetting["event"] == "All") || (!($projectContractPaymentModuleSetting["event"] == "All") && ($projectContractPaymentModuleSetting["event"] == $event)))){
             Mail::send(new EmailSendForProjectContractPayment($event,$envelope,$subject,$projectContractPayment));
         }
 
-        if(($emailSendSettingPC["send"] == true) && (($emailSendSettingPC["event"] == "All") || (!($emailSendSettingPC["event"] == "All") && ($emailSendSettingPC["event"] == "Update")))){
-            Mail::send(new EmailSendForProjectContract("Update",array("to" => $emailSendSettingPC["to"],"cc" => $emailSendSettingPC["cc"],"from" => $emailSendSettingPC["from"],"reply"=>$emailSendSettingPC["reply"]),"Project contract has been updated by ".Auth::user()->name.".",$projectContractPayment->projectContract));
+        if(($projectContractModuleSetting["send"] == true) && (($projectContractModuleSetting["event"] == "All") || (!($projectContractModuleSetting["event"] == "All") && ($projectContractModuleSetting["event"] == "Update")))){
+            Mail::send(new EmailSendForProjectContract("Update",array("to" => $projectContractModuleSetting["to"],"cc" => $projectContractModuleSetting["cc"],"from" => $projectContractModuleSetting["from"],"reply"=>$projectContractModuleSetting["reply"]),"Project contract has been updated by ".Auth::user()->name.".",$projectContractPayment->projectContract));
         }
     }
 }

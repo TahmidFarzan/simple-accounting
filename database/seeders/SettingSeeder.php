@@ -76,94 +76,56 @@ class SettingSeeder extends Seeder
             'code' => 'EmailSendSetting',
             'slug' => SystemConstant::slugGenerator("Email send setting",200),
             'fields_with_values' => array(
-                "User" => array(
-                    "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "ActivityLog" => array(
-                    "event" => "All", // View.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "AuthenticationLog" => array(
-                    "event" => "All", // View.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "ProjectContract" => array(
-                    "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "ProjectContractProjectJournal" => array(
-                    "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "ProjectContractPayment" => array(
-                    "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "ProjectContractPaymentMethod" => array(
-                    "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "ProjectContractCategory" => array(
-                    "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "UserPermissionGroup" => array(
-                    "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "Setting" => array(
-                    "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => "Yes",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
-                ),
-                "Report" => array(
-                    "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => "Yes",
-                    "frequency" => "Daily",
-                    "from" => "tfarzan007@gmail.com",
-                    "to" => "tfarzan007@gmail.com",
-                    "cc" => "tfarzan007@gmail.com",
-                    "reply" => "tfarzan007@gmail.com",
+                "from" => "tfarzan007@gmail.com",
+                "to" => "tfarzan007@gmail.com",
+                "cc" => "tfarzan007@gmail.com",
+                "reply" => "tfarzan007@gmail.com",
+                "module" => array(
+                    "User" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => "Yes",
+                    ),
+                    "ActivityLog" => array(
+                        "event" => "All", // View.
+                        "send" => "Yes",
+                    ),
+                    "AuthenticationLog" => array(
+                        "event" => "All", // View.
+                        "send" => "Yes",
+                    ),
+                    "ProjectContract" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => "Yes",
+                    ),
+                    "ProjectContractProjectJournal" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => "Yes",
+                    ),
+                    "ProjectContractPayment" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => "Yes",
+                    ),
+                    "ProjectContractPaymentMethod" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => "Yes",
+                    ),
+                    "ProjectContractCategory" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => "Yes",
+                    ),
+                    "UserPermissionGroup" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => "Yes",
+                    ),
+                    "Setting" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => "Yes",
+                    ),
+                    "Report" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => "Yes",
+                        "frequency" => "Daily",
+                    ),
                 ),
             ),
             'created_at' =>  Carbon::now(),
