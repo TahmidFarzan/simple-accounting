@@ -27,14 +27,26 @@
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <tbody>
-                    @foreach ($emailSendSetting->fields_with_values["User"] as $perIndex => $perValue )
-                        <tr>
-                            <th>{{ Str::ucfirst(str_replace("_"," ",$perIndex)) }} (User)</th>
-                            <th>:</th>
-                            <td>{{ ($perValue == null) ? "Not added yet." : $perValue }}</td>
-                        </tr>
-                    @endforeach
-
+                    <tr>
+                        <th>From </th>
+                        <th>:</th>
+                        <td>{{ $emailSendSetting->fields_with_values["from"] }}</td>
+                    </tr>
+                    <tr>
+                        <th>To </th>
+                        <th>:</th>
+                        <td>{{ $emailSendSetting->fields_with_values["to"] }}</td>
+                    </tr>
+                    <tr>
+                        <th>CC </th>
+                        <th>:</th>
+                        <td>{{ $emailSendSetting->fields_with_values["cc"] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reply </th>
+                        <th>:</th>
+                        <td>{{ $emailSendSetting->fields_with_values["reply"] }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

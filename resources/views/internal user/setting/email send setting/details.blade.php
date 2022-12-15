@@ -21,9 +21,56 @@
 @section('authContentOne')
     <div class="card border-dark mb-3">
         <h5 class="card-header">General information</h5>
+
         <div class="card-body">
             <div class="row">
-                @foreach ($emailSendSetting->fields_with_values as $perArrayIndex => $perArrayValue)
+                <div class="col-md-6 mb-2">
+                    <div class="card pt-3" style="min-height: 100px !important;">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>From </th>
+                                            <th>:</th>
+                                            <td>{{ $emailSendSetting->fields_with_values["from"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>To </th>
+                                            <th>:</th>
+                                            <td>{{ $emailSendSetting->fields_with_values["to"] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-2">
+                    <div class="card pt-3" style="min-height: 100px !important;">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>CC </th>
+                                            <th>:</th>
+                                            <td>{{ $emailSendSetting->fields_with_values["cc"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Reply </th>
+                                            <th>:</th>
+                                            <td>{{ $emailSendSetting->fields_with_values["reply"] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @foreach ($emailSendSetting->fields_with_values["module"] as $perArrayIndex => $perArrayValue)
                     <div class="col-md-6 mb-2">
                         <div class="card pt-3" style="min-height: 100px !important;">
 

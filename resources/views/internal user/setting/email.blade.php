@@ -41,25 +41,46 @@
                                                 <th style="width: 1%!important;">:</th>
                                                 <td>{{ $setting->name }}</td>
                                             </tr>
-                                            @foreach ($setting->fields_with_values as $perIndex => $perValue)
+                                            @foreach ($setting->fields_with_values as $perRowIndex => $perValueRow)
+
                                                 @if (!($setting->code == "EmailSendSetting"))
                                                     <tr>
-                                                        <th>{{ Str::ucfirst(str_replace("_"," ",$perIndex)) }}</th>
+                                                        <th>{{ Str::ucfirst(str_replace("_"," ",$perRowIndex)) }}</th>
                                                         <th>:</th>
-                                                        @if (!(($setting->code == "BusinessSetting") && ($perIndex == "logo")))
-                                                            <td>{{ $perValue }}</td>
+
+                                                        @if (!(($setting->code == "BusinessSetting") && ($perRowIndex == "logo")))
+                                                            <td>{{ $perValueRow }}</td>
                                                         @endif
 
-                                                        @if (($setting->code == "BusinessSetting") && ($perIndex == "logo"))
+                                                        @if (($setting->code == "BusinessSetting") && ($perRowIndex == "logo"))
                                                             <td>
                                                                 <div class="d-flex justify-content-center">
                                                                     <figure class="figure">
-                                                                        <img src="{{ ($perValue == null) ?  asset("images/setting/default-logo.png") : asset("storage/images/setting/".$perValue) }}" class="img-thumbnail" alt="Business logo">
+                                                                        <img src="{{ ($perValueRow == null) ?  asset("images/setting/default-logo.png") : asset("storage/images/setting/".$perValueRow) }}" class="img-thumbnail" alt="Business logo">
                                                                     </figure>
                                                                 </div>
                                                             </td>
                                                         @endif
+
                                                     </tr>
+                                                @endif
+
+                                                @if ($setting->code == "EmailSendSetting")
+
+                                                    @if (!($perRowIndex == "module"))
+                                                        <th>{{ Str::ucfirst(str_replace("_"," ",$perRowIndex)) }}</th>
+                                                        <th>:</th>
+                                                        <td>{{ $perValueRow }}</td>
+                                                    @endif
+
+                                                    @if ($perRowIndex == "module")
+                                                        @foreach ($perValueRow as $moduleRowIndex => $moduleRowValue)
+                                                            <th>{{ Str::ucfirst(str_replace("_"," ",$moduleRowIndex)) }}</th>
+                                                            <th>:</th>
+                                                            <td>{{$moduleRowValue }}</td>
+                                                        @endforeach
+                                                    @endif
+
                                                 @endif
                                             @endforeach
                                         </tbody>
