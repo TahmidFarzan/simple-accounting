@@ -68,16 +68,40 @@
                                                 @if ($setting->code == "EmailSendSetting")
 
                                                     @if (!($perRowIndex == "module"))
-                                                        <th>{{ Str::ucfirst(str_replace("_"," ",$perRowIndex)) }}</th>
-                                                        <th>:</th>
-                                                        <td>{{ $perValueRow }}</td>
+                                                        <tr>
+                                                            <th>
+                                                                {{ Str::ucfirst(str_replace("_"," ",$perRowIndex)) }}
+                                                            </th>
+                                                            <th>:</th>
+                                                            <td>{{ $perValueRow }}</td>
+                                                        </tr>
                                                     @endif
 
                                                     @if ($perRowIndex == "module")
+
                                                         @foreach ($perValueRow as $moduleRowIndex => $moduleRowValue)
-                                                            <th>{{ Str::ucfirst(str_replace("_"," ",$moduleRowIndex)) }}</th>
-                                                            <th>:</th>
-                                                            <td>{{$moduleRowValue }}</td>
+                                                        <tr>
+                                                            <table class="table table-sm table-bordered">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th colspan="3">
+                                                                            <div class="d-flex justify-content-center">
+                                                                                {{ Str::ucfirst(Str::lower(preg_replace("/([a-z])([A-Z])/", "$1 $2", $moduleRowIndex))) }}
+                                                                            </div>
+                                                                        </th>
+                                                                    </tr>
+                                                                    @foreach ($moduleRowValue as $moduleFieldIndex => $moduleFieldValue)
+                                                                        <tr>
+                                                                            <th>
+                                                                                {{ Str::ucfirst(str_replace("_"," ",$moduleFieldIndex)) }}
+                                                                            </th>
+                                                                            <th style="width: 1%;">:</th>
+                                                                            <td>{{ $moduleFieldValue }}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </tr>
                                                         @endforeach
                                                     @endif
 

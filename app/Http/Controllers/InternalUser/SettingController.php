@@ -514,7 +514,6 @@ class SettingController extends Controller
 
         if($updateEmailSendSetting ){
             $this->sendEmail("Update","Email send setting has been updated by ".Auth::user()->name.".",$emailSendSetting );
-
             $statusInfromation["status"] = "status";
             $statusInfromation["message"]->push("Successfully updated.");
         }
@@ -531,7 +530,7 @@ class SettingController extends Controller
     private function sendEmail($event,$subject,Setting $setting ){
         $envelope = array();
 
-        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values;
+        $emailSendSetting = Setting::where('code','EmailSendSetting')->firstOrFail()->fields_with_values;
 
         $envelope["to"] = $emailSendSetting["to"];
         $envelope["cc"] = $emailSendSetting["cc"];
@@ -539,7 +538,6 @@ class SettingController extends Controller
         $envelope["reply"] = $emailSendSetting["reply"];
 
         $moduleSetting = $emailSendSetting["module"]["Setting"];
-
         if(($moduleSetting["send"] == true) && (($moduleSetting["event"] == "All") || (!($moduleSetting["event"] == "All") && ($moduleSetting["event"] == $event)))){
             Mail::send(new EmailSendForSetting($envelope,$subject,$setting));
         }

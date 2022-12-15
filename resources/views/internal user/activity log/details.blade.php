@@ -91,23 +91,79 @@
                                                     <b>{{ Str::ucfirst($perPropertyIndex) }}</b>
                                                 </p>
                                                 @if (str_replace("App\Models","",$activitLog->subject_type) == "\Setting")
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered">
-                                                            <tbody>
-                                                                @foreach ($perProperty as $perPropertyRecordIndex => $perPropertyRecord)
-                                                                    @if (Str::studly($perPropertyRecordIndex) == "FieldsWithValues")
-                                                                        @foreach ( $perPropertyRecord as $perRecordIndex => $perRecordValue)
-                                                                            <tr>
-                                                                                <td>{{ Str::ucfirst(str_replace("_"," ",$perRecordIndex)) }}</td>
-                                                                                <td>:</td>
-                                                                                <td>{{ $perRecordValue }}</td>
-                                                                            </tr>
-                                                                        @endforeach
-                                                                    @endif
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+
+                                                    @if (!($activitLog->subject->code == "EmailSendSetting"))
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                    @foreach ($perProperty as $perPropertyRecordIndex => $perPropertyRecord)
+                                                                        @if (Str::studly($perPropertyRecordIndex) == "FieldsWithValues")
+                                                                            @foreach ( $perPropertyRecord as $perRecordIndex => $perRecordValue)
+                                                                                <tr>
+                                                                                    <td>{{ Str::ucfirst(str_replace("_"," ",$perRecordIndex)) }}</td>
+                                                                                    <td>:</td>
+                                                                                    <td>{{ $perRecordValue }}</td>
+                                                                                </tr>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    @endif
+
+                                                    @if (($activitLog->subject->code == "EmailSendSetting"))
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                    @foreach ($perProperty as $perPropertyRecordIndex => $perPropertyRecord)
+                                                                        @if (Str::studly($perPropertyRecordIndex) == "FieldsWithValues")
+                                                                            @foreach ( $perPropertyRecord as $perRecordIndex => $perRecordValue)
+
+                                                                                @if (!($perRecordIndex == "module"))
+                                                                                    <tr>
+                                                                                        <th>
+                                                                                            {{ Str::ucfirst(str_replace("_"," ",$perRecordIndex)) }}
+                                                                                        </th>
+                                                                                        <th>:</th>
+                                                                                        <td>{{ $perRecordValue }}</td>
+                                                                                    </tr>
+                                                                                @endif
+
+                                                                                @if ($perRecordIndex == "module")
+
+                                                                                    @foreach ($perRecordValue as $moduleRowIndex => $moduleRowValue)
+                                                                                        <tr>
+                                                                                            <table class="table table-sm table-bordered">
+                                                                                                <tbody>
+                                                                                                    <tr>
+                                                                                                        <th colspan="3">
+                                                                                                            <div class="d-flex justify-content-center">
+                                                                                                                {{ Str::ucfirst(Str::lower(preg_replace("/([a-z])([A-Z])/", "$1 $2", $moduleRowIndex))) }}
+                                                                                                            </div>
+                                                                                                        </th>
+                                                                                                    </tr>
+                                                                                                    @foreach ($moduleRowValue as $moduleFieldIndex => $moduleFieldValue)
+                                                                                                        <tr>
+                                                                                                            <th>
+                                                                                                                {{ Str::ucfirst(str_replace("_"," ",$moduleFieldIndex)) }}
+                                                                                                            </th>
+                                                                                                            <th style="width: 1%;">:</th>
+                                                                                                            <td>{{ $moduleFieldValue }}</td>
+                                                                                                        </tr>
+                                                                                                    @endforeach
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </tr>
+                                                                                    @endforeach
+                                                                                @endif
+                                                                            @endforeach
+                                                                        @endif
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    @endif
                                                 @endif
 
                                                 @if (!(str_replace("App\Models","",$activitLog->subject_type) == "\Setting"))
