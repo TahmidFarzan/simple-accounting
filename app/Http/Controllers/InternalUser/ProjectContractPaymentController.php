@@ -473,22 +473,22 @@ class ProjectContractPaymentController extends Controller
 
     private function sendEmail($event,$subject,ProjectContractPayment $projectContractPayment ){
         $envelope = array();
-        $notificationSettingPC = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["ProjectContract"];
+        $emailSendSettingPC = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values["ProjectContract"];
 
-        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["ProjectContractPayment"];
+        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values["ProjectContractPayment"];
 
 
-        $envelope["to"] = $notificationSetting["to"];
-        $envelope["cc"] = $notificationSetting["cc"];
-        $envelope["from"] = $notificationSetting["from"];
-        $envelope["reply"] = $notificationSetting["reply"];
+        $envelope["to"] = $emailSendSetting["to"];
+        $envelope["cc"] = $emailSendSetting["cc"];
+        $envelope["from"] = $emailSendSetting["from"];
+        $envelope["reply"] = $emailSendSetting["reply"];
 
-        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+        if(($emailSendSetting["send"] == true) && (($emailSendSetting["event"] == "All") || (!($emailSendSetting["event"] == "All") && ($emailSendSetting["event"] == $event)))){
             Mail::send(new EmailSendForProjectContractPayment($event,$envelope,$subject,$projectContractPayment));
         }
 
-        if(($notificationSettingPC["send"] == true) && (($notificationSettingPC["event"] == "All") || (!($notificationSettingPC["event"] == "All") && ($notificationSettingPC["event"] == "Update")))){
-            Mail::send(new EmailSendForProjectContract("Update",array("to" => $notificationSettingPC["to"],"cc" => $notificationSettingPC["cc"],"from" => $notificationSettingPC["from"],"reply"=>$notificationSettingPC["reply"]),"Project contract has been updated by ".Auth::user()->name.".",$projectContractPayment->projectContract));
+        if(($emailSendSettingPC["send"] == true) && (($emailSendSettingPC["event"] == "All") || (!($emailSendSettingPC["event"] == "All") && ($emailSendSettingPC["event"] == "Update")))){
+            Mail::send(new EmailSendForProjectContract("Update",array("to" => $emailSendSettingPC["to"],"cc" => $emailSendSettingPC["cc"],"from" => $emailSendSettingPC["from"],"reply"=>$emailSendSettingPC["reply"]),"Project contract has been updated by ".Auth::user()->name.".",$projectContractPayment->projectContract));
         }
     }
 }

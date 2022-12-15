@@ -334,14 +334,14 @@ class ProjectContractJournalController extends Controller
     private function sendEmail($event,$subject,ProjectContractJournal $projectContractJournal ){
         $envelope = array();
 
-        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["ProjectContractJournal"];
+        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values["ProjectContractJournal"];
 
-        $envelope["to"] = $notificationSetting["to"];
-        $envelope["cc"] = $notificationSetting["cc"];
-        $envelope["from"] = $notificationSetting["from"];
-        $envelope["reply"] = $notificationSetting["reply"];
+        $envelope["to"] = $emailSendSetting["to"];
+        $envelope["cc"] = $emailSendSetting["cc"];
+        $envelope["from"] = $emailSendSetting["from"];
+        $envelope["reply"] = $emailSendSetting["reply"];
 
-        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+        if(($emailSendSetting["send"] == true) && (($emailSendSetting["event"] == "All") || (!($emailSendSetting["event"] == "All") && ($emailSendSetting["event"] == $event)))){
             Mail::send(new EmailSendForProjectContractJournal($event,$envelope,$subject,$projectContractJournal));
         }
     }

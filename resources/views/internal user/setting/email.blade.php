@@ -42,7 +42,7 @@
                                                 <td>{{ $setting->name }}</td>
                                             </tr>
                                             @foreach ($setting->fields_with_values as $perIndex => $perValue)
-                                                @if (!($setting->code == "NotificationSetting"))
+                                                @if (!($setting->code == "EmailSendSetting"))
                                                     <tr>
                                                         <th>{{ Str::ucfirst(str_replace("_"," ",$perIndex)) }}</th>
                                                         <th>:</th>

@@ -70,11 +70,11 @@ class SettingSeeder extends Seeder
             'created_by_id' =>  1,
         ])->create();
 
-        // Notification setting
+        // Email send setting
         Setting::factory()->state([
-            'name' => "Notification setting",
-            'code' => 'NotificationSetting',
-            'slug' => SystemConstant::slugGenerator("Notification setting",200),
+            'name' => "Email send setting",
+            'code' => 'EmailSendSetting',
+            'slug' => SystemConstant::slugGenerator("Email send setting",200),
             'fields_with_values' => array(
                 "User" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.

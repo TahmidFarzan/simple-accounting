@@ -334,14 +334,14 @@ class SettingController extends Controller
     private function sendEmail($event,$subject,Setting $setting ){
         $envelope = array();
 
-        $notificationSetting = Setting::where( 'code','NotificationSetting')->firstOrFail()->fields_with_values["Setting"];
+        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values["Setting"];
 
-        $envelope["to"] = $notificationSetting["to"];
-        $envelope["cc"] = $notificationSetting["cc"];
-        $envelope["from"] = $notificationSetting["from"];
-        $envelope["reply"] = $notificationSetting["reply"];
+        $envelope["to"] = $emailSendSetting["to"];
+        $envelope["cc"] = $emailSendSetting["cc"];
+        $envelope["from"] = $emailSendSetting["from"];
+        $envelope["reply"] = $emailSendSetting["reply"];
 
-        if(($notificationSetting["send"] == true) && (($notificationSetting["event"] == "All") || (!($notificationSetting["event"] == "All") && ($notificationSetting["event"] == $event)))){
+        if(($emailSendSetting["send"] == true) && (($emailSendSetting["event"] == "All") || (!($emailSendSetting["event"] == "All") && ($emailSendSetting["event"] == $event)))){
             Mail::send(new EmailSendForSetting($envelope,$subject,$setting));
         }
     }
