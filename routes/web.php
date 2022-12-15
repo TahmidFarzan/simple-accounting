@@ -49,6 +49,13 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('edit/{slug}', [SettingController::class, 'authenticationLogSettingEdit'])->name('edit');
             Route::patch('update/{slug}', [SettingController::class, 'authenticationLogSettingUpdate'])->name('update');
         });
+
+        Route::prefix('email-send-setting')->name('email.send.setting.')->group(function(){
+            Route::get('/', [SettingController::class, 'emailSendSettingIndex'])->name('index');
+            Route::get('details/{slug}', [SettingController::class, 'emailSendSettingDetails'])->name('details');
+            Route::get('edit/{slug}', [SettingController::class, 'emailSendSettingEdit'])->name('edit');
+            Route::patch('update/{slug}', [SettingController::class, 'emailSendSettingUpdate'])->name('update');
+        });
     });
 
     // Dashboard.

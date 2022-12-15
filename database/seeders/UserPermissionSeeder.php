@@ -247,6 +247,30 @@ class UserPermissionSeeder extends Seeder
                     'slug' => SystemConstant::slugGenerator("Update a authentication log setting.",200),
                 ])->create();
 
+            // Email send setting permissions.
+                UserPermission::factory()->state([
+                    'name' => "View email send settings",
+                    'code' => "SMP05.01",
+                    'type' => "EmailSendSettingModulePermission",
+                    'description' => "The internal user can view email send settings",
+                    'slug' => SystemConstant::slugGenerator("View email send settings",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "View details of a email send setting.",
+                    'code' => "SMP05.02",
+                    'type' => "EmailSendSettingModulePermission",
+                    'description' => "The internal user can view details of a email send setting",
+                    'slug' => SystemConstant::slugGenerator("View details of a email send setting",200),
+                ])->create();
+
+                UserPermission::factory()->state([
+                    'name' => "Update a email send setting.",
+                    'code' => "SMP05.03",
+                    'type' => "EmailSendSettingModulePermission",
+                    'description' => "The internal user can update a email send setting send setting.",
+                    'slug' => SystemConstant::slugGenerator("Update a email send setting send setting.",200),
+                ])->create();
     // -----------------------------------------------------------
         // Extra modul permission.
             // User permission.

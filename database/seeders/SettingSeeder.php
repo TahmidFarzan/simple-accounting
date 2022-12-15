@@ -78,7 +78,7 @@ class SettingSeeder extends Seeder
             'fields_with_values' => array(
                 "User" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => true,
+                    "send" => "Yes",
                     "from" => "tfarzan007@gmail.com",
                     "to" => "tfarzan007@gmail.com",
                     "cc" => "tfarzan007@gmail.com",
@@ -86,7 +86,7 @@ class SettingSeeder extends Seeder
                 ),
                 "ActivityLog" => array(
                     "event" => "All", // View.
-                    "send" => true,
+                    "send" => "Yes",
                     "from" => "tfarzan007@gmail.com",
                     "to" => "tfarzan007@gmail.com",
                     "cc" => "tfarzan007@gmail.com",
@@ -94,7 +94,7 @@ class SettingSeeder extends Seeder
                 ),
                 "AuthenticationLog" => array(
                     "event" => "All", // View.
-                    "send" => true,
+                    "send" => "Yes",
                     "from" => "tfarzan007@gmail.com",
                     "to" => "tfarzan007@gmail.com",
                     "cc" => "tfarzan007@gmail.com",
@@ -102,7 +102,7 @@ class SettingSeeder extends Seeder
                 ),
                 "ProjectContract" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => true,
+                    "send" => "Yes",
                     "from" => "tfarzan007@gmail.com",
                     "to" => "tfarzan007@gmail.com",
                     "cc" => "tfarzan007@gmail.com",
@@ -110,7 +110,7 @@ class SettingSeeder extends Seeder
                 ),
                 "ProjectContractProjectJournal" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => true,
+                    "send" => "Yes",
                     "from" => "tfarzan007@gmail.com",
                     "to" => "tfarzan007@gmail.com",
                     "cc" => "tfarzan007@gmail.com",
@@ -118,7 +118,23 @@ class SettingSeeder extends Seeder
                 ),
                 "ProjectContractPayment" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => true,
+                    "send" => "Yes",
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
+                "ProjectContractPaymentMethod" => array(
+                    "event" => "All", // Create,Edit,Trash,Restore.
+                    "send" => "Yes",
+                    "from" => "tfarzan007@gmail.com",
+                    "to" => "tfarzan007@gmail.com",
+                    "cc" => "tfarzan007@gmail.com",
+                    "reply" => "tfarzan007@gmail.com",
+                ),
+                "ProjectContractCategory" => array(
+                    "event" => "All", // Create,Edit,Trash,Restore.
+                    "send" => "Yes",
                     "from" => "tfarzan007@gmail.com",
                     "to" => "tfarzan007@gmail.com",
                     "cc" => "tfarzan007@gmail.com",
@@ -126,7 +142,7 @@ class SettingSeeder extends Seeder
                 ),
                 "UserPermissionGroup" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => true,
+                    "send" => "Yes",
                     "from" => "tfarzan007@gmail.com",
                     "to" => "tfarzan007@gmail.com",
                     "cc" => "tfarzan007@gmail.com",
@@ -134,7 +150,7 @@ class SettingSeeder extends Seeder
                 ),
                 "Setting" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => true,
+                    "send" => "Yes",
                     "from" => "tfarzan007@gmail.com",
                     "to" => "tfarzan007@gmail.com",
                     "cc" => "tfarzan007@gmail.com",
@@ -142,7 +158,7 @@ class SettingSeeder extends Seeder
                 ),
                 "Report" => array(
                     "event" => "All", // Create,Edit,Trash,Restore.
-                    "send" => true,
+                    "send" => "Yes",
                     "frequency" => "Daily",
                     "from" => "tfarzan007@gmail.com",
                     "to" => "tfarzan007@gmail.com",

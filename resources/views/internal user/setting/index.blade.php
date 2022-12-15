@@ -39,6 +39,17 @@
                         </a>
                     </div>
                 @endif
+
+                @if (Auth::user()->hasUserPermission(["SMP05.01"]) == true)
+                    <div class="col-md-3 mb-2">
+                        <a href="{{ route("setting.email.send.setting.index") }}" class="btn btn-link text-decoration-none">
+                            <img src="{{ asset("images/setting/email-send-setting-logo.png") }}" class="img-thumbnail" alt="Email send setting">
+                            <p>
+                                Email Send setting
+                            </p>
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
