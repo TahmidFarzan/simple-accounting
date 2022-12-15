@@ -136,7 +136,7 @@ class SettingController extends Controller
 
         $newLogoName = null;
         $statusInformation = array("status" => "errors","message" => collect());
-        $oldLogoName = Setting::where("slug",$slug)->firstOrFail()->fields_with_values["logo"];
+        $oldLogoName = Setting::where("slug",$slug)->where("code","BusinessSetting")->firstOrFail()->fields_with_values["logo"];
 
         if(!($request->hasFile('logo'))){
             $newLogoName = $oldLogoName;
@@ -153,7 +153,7 @@ class SettingController extends Controller
         }
 
         LogBatch::startBatch();
-            $businessSetting = Setting::where("slug",$slug)->firstOrFail();
+            $businessSetting = Setting::where("slug",$slug)->where("code","BusinessSetting")->firstOrFail();
             $businessSettingFieldsWithValues = $businessSetting->fields_with_values;
 
             $businessSettingFieldsWithValues['name'] = $request->name;
@@ -234,7 +234,7 @@ class SettingController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
-            $activityLogSetting = Setting::where("slug",$slug)->firstOrFail();
+            $activityLogSetting = Setting::where("slug",$slug)->where("code","ActivityLogSetting")->firstOrFail();
             $activityLogSettingFieldsWithValues = $activityLogSetting->fields_with_values;
 
             $activityLogSettingFieldsWithValues['delete_records_older_than'] = $request->delete_records_older_than;
@@ -305,7 +305,7 @@ class SettingController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
-            $authenticationLogSetting = Setting::where("slug",$slug)->firstOrFail();
+            $authenticationLogSetting = Setting::where("slug",$slug)->where("code","AuthenticationLogSetting")->firstOrFail();
             $authenticationLogSettingFieldsWithValues = $authenticationLogSetting->fields_with_values;
 
             $authenticationLogSettingFieldsWithValues['delete_records_older_than'] = $request->delete_records_older_than;
