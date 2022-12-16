@@ -357,7 +357,7 @@
                     @endif
 
                     @if (($projectContract->status == "Complete") && !($projectContract->receivable_status == "NotStarted") && (Auth::user()->hasUserPermission(["PCPMP01"]) == true))
-                        <a href="{{ route("project.contract.journal.index",["pcSlug" => $projectContract->slug]) }}" class="btn btn-light">Payments</a>
+                        <a href="{{ route("project.contract.payment.index",["pcSlug" => $projectContract->slug]) }}" class="btn btn-light">Payments</a>
                     @endif
 
                 </div>
