@@ -194,6 +194,13 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
     Route::prefix('oil-and-gas-pump')->name('oil.and.gas.pump.')->group(function(){
         // Project contract
         Route::get('/', [OilAndGasPumpController::class, 'index'])->name('index');
+        Route::get('edit/{slug}', [OilAndGasPumpController::class, 'edit'])->name('edit');
+        Route::get('create', [OilAndGasPumpController::class, 'create'])->name('create');
+        Route::get('details/{slug}', [OilAndGasPumpController::class, 'details'])->name('details');
+
+        Route::post('save', [OilAndGasPumpController::class, 'save'])->name('save');
+        Route::patch('update/{slug}', [OilAndGasPumpController::class, 'update'])->name('update');
+        Route::delete('delete/{slug}', [OilAndGasPumpController::class, 'delete'])->name('delete');
     });
 
     // Report

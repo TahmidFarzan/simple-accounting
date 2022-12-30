@@ -27,7 +27,7 @@
             <div class="row mb-2">
                 <p>
                     @if (Auth::user()->hasUserPermission(["OAGPMP02"]) == true)
-                        <a href="{{ route("oil.and.gas.pump.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create Oil and gas pump</a>
+                        <a href="{{ route("oil.and.gas.pump.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create oil and gas pump</a>
                     @endif
 
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sortingCollapseDiv" aria-expanded="false" aria-controls="sortingCollapseDiv">
@@ -119,10 +119,10 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                <form action="{{ route("oil.and.gas.pump.trash",["slug" => $perOilAndGasPump->slug]) }}" method="POST">
+                                                                <form action="{{ route("oil.and.gas.pump.delete",["slug" => $perOilAndGasPump->slug]) }}" method="POST">
                                                                     @csrf
                                                                     @method("DELETE")
-                                                                    <button type="submit" class="btn btn-sm btn-success">Yes,Trash</button>
+                                                                    <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
                                                                 </form>
                                                             </div>
                                                         </div>
