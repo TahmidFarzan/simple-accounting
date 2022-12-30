@@ -7,6 +7,7 @@ use App\Http\Controllers\InternalUser\ReportController;
 use App\Http\Controllers\InternalUser\SettingController;
 use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
+use App\Http\Controllers\InternalUser\OilAndGasPumpController;
 use App\Http\Controllers\InternalUser\ProjectContractController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
 use App\Http\Controllers\InternalUser\ProjectContractClientController;
@@ -187,6 +188,12 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::delete('trash/{slug}', [ProjectContractPaymentMethodController::class, 'trash'])->name('trash');
             Route::patch('restore/{slug}', [ProjectContractPaymentMethodController::class, 'restore'])->name('restore');
         });
+    });
+
+    // Oil and gas pump
+    Route::prefix('oil-and-gas-pump')->name('oil.and.gas.pump.')->group(function(){
+        // Project contract
+        Route::get('/', [OilAndGasPumpController::class, 'index'])->name('index');
     });
 
     // Report

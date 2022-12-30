@@ -625,6 +625,48 @@ class UserPermissionSeeder extends Seeder
                 'slug' => SystemConstant::slugGenerator("Delete a payment.",200),
             ])->create();
 
+        // Oil and gas pump  permission.
+            UserPermission::factory()->state([
+                'name' => "View oil and gas pumps.",
+                'code' => "OAGPMP01",
+                'type' => "OilAndGasPumpModulePermission",
+                'description' => "The internal user can view oil and gas pumps.",
+                'slug' => SystemConstant::slugGenerator("View oil and gas pumps",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Create a oil and gas pumps.",
+                'code' => "OAGPMP02",
+                'type' => "OilAndGasPumpModulePermission",
+                'description' => "The internal user can create a oil and gas pump.",
+                'slug' => SystemConstant::slugGenerator("Create a oil and gas pump",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "View detials of a oil and gas pump.",
+                'code' => "OAGPMP03",
+                'type' => "OilAndGasPumpModulePermission",
+                'description' => "The internal user can view details of a oil and gas pump.",
+                'slug' => SystemConstant::slugGenerator("View detials of a oil and gas pump",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Update a oil and gas pump.",
+                'code' => "OAGPMP04",
+                'type' => "OilAndGasPumpModulePermission",
+                'description' => "The internal user can update a oil and gas pump.",
+                'slug' => SystemConstant::slugGenerator("Update a oil and gas pump",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete a oil and gas pump.",
+                'code' => "OAGPMP05",
+                'type' => "OilAndGasPumpModulePermission",
+                'description' => "The internal user can delete a oil and gas pump.",
+                'slug' => SystemConstant::slugGenerator("Delete a oil and gas pump",200),
+            ])->create();
+
+
         // Project contract category permission
     }
 }

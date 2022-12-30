@@ -117,6 +117,10 @@ class SettingSeeder extends Seeder
                         "event" => "All", // Create,Edit,Trash,Restore.
                         "send" => true,
                     ),
+                    "OilAndGasPump" => array(
+                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "send" => true,
+                    ),
                     "Setting" => array(
                         "event" => "All", // Create,Edit,Trash,Restore.
                         "send" => true,

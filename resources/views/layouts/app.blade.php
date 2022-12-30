@@ -244,6 +244,15 @@
                                         </div>
                                     </li>
 
+                                    @if (Auth::user()->hasUserPermission(["OAGPMP01"]) == true)
+                                        <li class="nav-item">
+                                            <a class="nav-link {{(Request::is('oil-and-gas-pump') || (Request::is('oil-and-gas-pump/*'))) ? 'active' : null}}" href="{{ route("oil.and.gas.pump.index") }}">
+                                                <i class="fa-solid fa-gas-pump"></i>
+                                                Oil and gas pump
+                                            </a>
+                                        </li>
+                                    @endif
+
                                     @if (Auth::user()->hasUserPermission(["SMP01"]) == true)
                                         <li class="nav-item">
                                             <a class="nav-link {{(Request::is('setting') || (Request::is('setting/*'))) ? 'active' : null}}" href="{{ route("setting.index") }}">
