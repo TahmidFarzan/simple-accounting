@@ -28,7 +28,7 @@ class OilAndGasPumpController extends Controller
     }
 
     public function index(Request $request){
-        $pagination = 5;
+        $pagination = 1;
         $paginations = array(5,15,30,45,60,75,90,105,120);
 
         $oilAndGasPumps = OilAndGasPump::orderby("created_at","desc")->orderby("name","asc");
@@ -52,6 +52,11 @@ class OilAndGasPumpController extends Controller
 
     public function create(){
         return view('internal user.oil and gas pump.oil and gas pump.create');
+    }
+
+    public function details($slug){
+        $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
+        return view('internal user.oil and gas pump.oil and gas pump.details',compact("oilAndGasPump"));
     }
 
     public function save(Request $request){
@@ -105,6 +110,58 @@ class OilAndGasPumpController extends Controller
         }
 
         return redirect()->route("oil.and.gas.pump.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    public function delete($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        // $oilAndGasPumpValidationStatus = $this->oilAndGasPumpValidation($slug);
+        $oilAndGasPumpValidationStatus = $this->oilAndGasPumpValidation($slug);
+
+        if(true){
+            $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
+            $deleteOilAndGasPump = $oilAndGasPump->delete();
+
+            if($deleteOilAndGasPump){
+                $this->sendEmail("Delete","Oil and gas pump has been delete by ".Auth::user()->name.".",$oilAndGasPump );
+
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Successfully deleted.");
+            }
+            else{
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Fail to delete.");
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Fail to delete.");
+
+            foreach($oilAndGasPumpValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
+        }
+
+        return redirect()->route("project.contract.payment.index",["pcSlug" => $slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+
+    }
+
+    private function oilAndGasPumpValidation($slug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
+
+        if(($oilAndGasPump->status == "Complete") && !($oilAndGasPump->receivable_status == "NotStarted") && !($oilAndGasPump->receivable_status == "Complete")){
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Passed the validation.");
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Project contract is not complete.");
+            $statusInformation["message"]->push("Payment (Project contract) must be not started.");
+        }
+
+        return $statusInformation;
     }
 
 

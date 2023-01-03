@@ -99,11 +99,11 @@
                                             @endif
 
                                             @if (Auth::user()->hasUserPermission(["OAGPMP05"]) == true)
-                                                <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perOilAndGasPump->slug}}TrashConfirmationModal">
-                                                    Trash
+                                                <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perOilAndGasPump->slug}}DeleteConfirmationModal">
+                                                    Delete
                                                 </button>
 
-                                                <div class="modal fade" id="{{$perOilAndGasPump->slug}}TrashConfirmationModal" tabindex="-1">
+                                                <div class="modal fade" id="{{$perOilAndGasPump->slug}}DeleteConfirmationModal" tabindex="-1">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
