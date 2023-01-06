@@ -59,6 +59,11 @@ class OilAndGasPumpController extends Controller
         return view('internal user.oil and gas pump.oil and gas pump.details',compact("oilAndGasPump"));
     }
 
+    public function edit($slug){
+        $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
+        return view('internal user.oil and gas pump.oil and gas pump.edit',compact("oilAndGasPump"));
+    }
+
     public function save(Request $request){
         $validator = Validator::make($request->all(),
             [
@@ -103,6 +108,61 @@ class OilAndGasPumpController extends Controller
 
             $statusInformation["status"] = "status";
             $statusInformation["message"] = "Successfully created.";
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Can not update.");
+        }
+
+        return redirect()->route("oil.and.gas.pump.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    public function update(Request $request,$slug){
+        $oilAndGasPumpId = OilAndGasPump::where("slug",$slug)->firstOrFail()->id;
+        $validator = Validator::make($request->all(),
+            [
+                'name' => 'required|max:200',
+                'code' => 'required|max:200|unique:oil_and_gas_pumps,code,'.$oilAndGasPumpId,
+                'note' => 'required',
+                'description' => 'nullable',
+            ],
+            [
+                'name.required' => 'Name is required.',
+                'name.max' => 'Name length can not greater then 200 chars.',
+
+                'code.required' => 'Code is required.',
+                'code.max' => 'Code length can not greater then 200 chars.',
+                'code.unique' => 'Code must be unique.',
+
+                'note.required' => 'Note is required.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        LogBatch::startBatch();
+            $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
+            $notes = $oilAndGasPump->note;
+            array_push($notes,$request->note);
+
+            $oilAndGasPump->name = $request->name;
+            $oilAndGasPump->code = $request->code;
+            $oilAndGasPump->description = $request->description;
+            $oilAndGasPump->note = $notes;
+            $oilAndGasPump->slug = SystemConstant::slugGenerator($request->name,200);
+            $oilAndGasPump->updated_at = Carbon::now();
+            $updateOilAndGasPump = $oilAndGasPump->update();
+        LogBatch::endBatch();
+
+        if($updateOilAndGasPump){
+            $this->sendEmail("Update","The oil and gas pump has been updated by ".Auth::user()->name.".",$oilAndGasPump );
+
+            $statusInformation["status"] = "status";
+            $statusInformation["message"] = "Successfully updated.";
         }
         else{
             $statusInformation["status"] = "errors";
