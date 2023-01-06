@@ -175,10 +175,9 @@ class OilAndGasPumpController extends Controller
     public function delete($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
-        // $oilAndGasPumpValidationStatus = $this->oilAndGasPumpValidation($slug);
         $oilAndGasPumpValidationStatus = $this->oilAndGasPumpValidation($slug);
 
-        if(true){
+        if($oilAndGasPumpValidationStatus["status"] == "status"){
             $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
             $deleteOilAndGasPump = $oilAndGasPump->delete();
 
@@ -203,7 +202,6 @@ class OilAndGasPumpController extends Controller
         }
 
         return redirect()->route("project.contract.payment.index",["pcSlug" => $slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
-
     }
 
     private function oilAndGasPumpValidation($slug){
@@ -211,19 +209,18 @@ class OilAndGasPumpController extends Controller
 
         $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
 
-        if(($oilAndGasPump->status == "Complete") && !($oilAndGasPump->receivable_status == "NotStarted") && !($oilAndGasPump->receivable_status == "Complete")){
+        if( $oilAndGasPump->oilAndGasPumpProducts->count() == 0){
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Passed the validation.");
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Project contract is not complete.");
-            $statusInformation["message"]->push("Payment (Project contract) must be not started.");
+            $statusInformation["message"]->push($oilAndGasPump->oilAndGasPumpProducts->count()." product(s) exit.");
+            $statusInformation["message"]->push("The oil and gas pump can not delete.");
         }
 
         return $statusInformation;
     }
-
 
     private function sendEmail($event,$subject,OilAndGasPump $oilAndGasPump ){
         $envelope = array();

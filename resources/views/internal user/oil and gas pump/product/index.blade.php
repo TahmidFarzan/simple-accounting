@@ -11,7 +11,9 @@
 @section('navBreadcrumbSection')
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
-            <li class="breadcrumb-item">Oil and gas pump</li>
+            <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.index") }}">Oil and gas pump</a></li>
+            <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.details",["slug" => $oilAndGasPump->slug]) }}">{{ $oilAndGasPump->name }}</a></li>
+            <li class="breadcrumb-item">Product</li>
             <li class="breadcrumb-item active" aria-current="page">Index</li>
         </ol>
     </nav>
@@ -26,8 +28,8 @@
         <div class="card-body text-dark mt-0">
             <div class="row mb-2">
                 <p>
-                    @if (Auth::user()->hasUserPermission(["OAGPMP02"]) == true)
-                        <a href="{{ route("oil.and.gas.pump.create") }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create oil and gas pump</a>
+                    @if (Auth::user()->hasUserPermission(["OAGPPMP02"]) == true)
+                        <a href="{{ route("oil.and.gas.pump.product.create",["oagpSlug" => $oilAndGasPump->slug]) }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create product</a>
                     @endif
 
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sortingCollapseDiv" aria-expanded="false" aria-controls="sortingCollapseDiv">
@@ -85,41 +87,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($oilAndGasPumps as $perOilAndGasPumpIndex => $perOilAndGasPump)
+                                @forelse ($products as $perProductIndex => $perProduct)
                                     <tr>
-                                        <td>{{ $perOilAndGasPumpIndex+1 }}</td>
-                                        <td>{{ $perOilAndGasPump->name }}</td>
+                                        <td>{{ $perProductIndex+1 }}</td>
+                                        <td>{{ $perProduct->name }}</td>
                                         <td>
-                                            @if (Auth::user()->hasUserPermission(["OAGPMP03"]) == true)
-                                                <a href="{{ route("oil.and.gas.pump.details",["slug" => $perOilAndGasPump->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
+                                            @if (Auth::user()->hasUserPermission(["OAGPPMP03"]) == true)
+                                                <a href="{{ route("oil.and.gas.pump.product.details",["oagpSlug" => $oilAndGasPump->slug,"pSlug" => $perProduct->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
                                             @endif
 
-                                            @if (Auth::user()->hasUserPermission(["OAGPMP04"]) == true)
-                                                <a href="{{ route("oil.and.gas.pump.edit",["slug" => $perOilAndGasPump->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
+                                            @if (Auth::user()->hasUserPermission(["OAGPPMP04"]) == true)
+                                                <a href="{{ route("oil.and.gas.pump.product.edit",["oagpSlug" => $oilAndGasPump->slug,"pSlug" => $perProduct->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                             @endif
 
-                                            @if (Auth::user()->hasUserPermission(["OAGPMP05"]) == true)
-                                                <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perOilAndGasPump->slug}}DeleteConfirmationModal">
+                                            @if (Auth::user()->hasUserPermission(["OAGPPMP05"]) == true)
+                                                <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perProduct->slug}}DeleteConfirmationModal">
                                                     Delete
                                                 </button>
 
-                                                <div class="modal fade" id="{{$perOilAndGasPump->slug}}DeleteConfirmationModal" tabindex="-1">
+                                                <div class="modal fade" id="{{$perProduct->slug}}DeleteConfirmationModal" tabindex="-1">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h1 class="modal-title fs-5">{{ $perOilAndGasPump->name }} delete confirmation.</h1>
+                                                                <h1 class="modal-title fs-5">{{ $perProduct->name }} delete confirmation.</h1>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <p>
                                                                     <ul>
-                                                                        <li>Oil and gas pump will not show dependency.</li>
+                                                                        <li>Product will not show dependency.</li>
                                                                     </ul>
                                                                 </p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                <form action="{{ route("oil.and.gas.pump.delete",["slug" => $perOilAndGasPump->slug]) }}" method="POST">
+                                                                <form action="{{ route("oil.and.gas.pump.product.delete",["oagpSlug" => $oilAndGasPump->slug,"pSlug" => $perProduct->slug]) }}" method="POST">
                                                                     @csrf
                                                                     @method("DELETE")
                                                                     <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
@@ -129,16 +131,12 @@
                                                     </div>
                                                 </div>
                                             @endif
-
-                                            @if (Auth::user()->hasUserPermission(["OAGPPMP01"]) == true)
-                                                <a href="{{ route("oil.and.gas.pump.product.index",["oagpSlug" => $perOilAndGasPump->slug]) }}" class="btn btn-sm btn-info m-1">Products</a>
-                                            @endif
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
                                         <td colspan="3">
-                                            <b class="d-flex justify-content-center text-warning">No oil and gas pump found.</b>
+                                            <b class="d-flex justify-content-center text-warning">No product found.</b>
                                         </td>
                                     </tr>
                                 @endforelse
@@ -146,7 +144,7 @@
                         </table>
                     </div>
                     <div id="paginationDiv" class="mb-1">
-                        {{ $oilAndGasPumps->links() }}
+                        {{ $products->links() }}
                     </div>
                 </div>
             </div>
@@ -204,9 +202,10 @@
         }
 
         function dataTableLoad(parameterString){
+            var oagpSlug = "{{ $oilAndGasPump->slug }}";
             $.ajax({
                 type: "get",
-                url: "{{ route('oil.and.gas.pump.index') }}" + "?" + parameterString,
+                url: "{{ route('oil.and.gas.pump.product.index',['oagpSlug'=>" + oagpSlug + "]) }}" + "?" + parameterString,
                 success: function(result) {
                     $("#extraErrorMessageDiv").hide();
                     $("#extraErrorMessageDiv").html("");;

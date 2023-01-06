@@ -32,7 +32,7 @@ class ActivityLogController extends Controller
         $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,100);
         $causers = User::orderBy("id","asc");
-        $subjectTypes = array("All","User","Setting","User permission group","Oil and gas pump");
+        $subjectTypes = array("All","User","Setting","User permission group","Oil and gas pump","Oil and gas pump produc");
         $events = array("All","Created","Updated","Deleted","Trashed","Restored");
         $activitLogs = Activity::orderBy("id","desc");
 
@@ -42,7 +42,7 @@ class ActivityLogController extends Controller
             }
 
             if($request->has('subject_type')){
-                $request->subject_type=(in_array($request->subject_type,$subjectTypes)) ? $request->subject_type : null;
+                $request->subject_type = (in_array($request->subject_type,$subjectTypes)) ? $request->subject_type : null;
                 if(!($request->subject_type == null) && !($request->subject_type == "All")){
                     $activitLogs = $activitLogs->where("subject_type","like","%".Str::studly($request->subject_type)."%");
                 }

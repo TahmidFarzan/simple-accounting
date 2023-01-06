@@ -8,21 +8,20 @@ use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class OilAndGasPump extends Model
+
+class OilAndGasPumpProduct extends Model
 {
     use HasFactory, LogsActivity;
 
     protected $guard = 'web';
 
-    protected $table = 'oil_and_gas_pumps';
+    protected $table = 'oil_and_gas_pump_products';
 
     protected $fillable = [
         'name',
-        'code',
         'slug',
-        'note',
-        'description',
         'created_by_id',
+        'oil_and_gas_pump_id',
     ];
 
     protected $hidden = [
@@ -30,9 +29,7 @@ class OilAndGasPump extends Model
         'created_by_id',
     ];
 
-    protected $casts = [
-        'note' => 'array',
-    ];
+    protected $casts = [];
 
     protected $dates = [
         'created_at',
@@ -43,10 +40,10 @@ class OilAndGasPump extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-                'name','code','slug','note','
-                description','created_by_id',
+                'name','slug',
+                'oil_and_gas_pump_id','created_by_id',
         ])
-        ->useLogName('Oil and gas pump')
+        ->useLogName('Oil and gas pump product')
         ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id",'created_at',])
@@ -58,9 +55,9 @@ class OilAndGasPump extends Model
         return $this->belongsTo(User::class,'created_by_id','id')->withTrashed();
     }
 
-    public function oilAndGasPumpProducts()
+    public function oilAndGasPump()
     {
-        return $this->hasMany(OilAndGasPumpProduct::class,'oil_and_gas_pump_id','id');
+        return $this->belongsTo(OilAndGasPump::class,'oil_and_gas_pump_id','id');
     }
 
     public function updatedBy()
@@ -73,10 +70,10 @@ class OilAndGasPump extends Model
     }
 
     public function activityLogs(){
-        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPump")->where("subject_id",$this->id)->get();
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPumpProduct")->where("subject_id",$this->id)->get();
     }
 
     public function modifiedActivityLogs($limit){
-        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPump")->where("subject_id",$this->id)->take($limit)->get();
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPumpProduct")->where("subject_id",$this->id)->take($limit)->get();
     }
 }

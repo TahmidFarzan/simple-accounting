@@ -10,6 +10,7 @@ use App\Http\Controllers\InternalUser\ActivityLogController;
 use App\Http\Controllers\InternalUser\OilAndGasPumpController;
 use App\Http\Controllers\InternalUser\ProjectContractController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
+use App\Http\Controllers\InternalUser\OilAndGasPumpProductController;
 use App\Http\Controllers\InternalUser\ProjectContractClientController;
 use App\Http\Controllers\InternalUser\ProjectContractJournalController;
 use App\Http\Controllers\InternalUser\ProjectContractPaymentController;
@@ -192,7 +193,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
 
     // Oil and gas pump
     Route::prefix('oil-and-gas-pump')->name('oil.and.gas.pump.')->group(function(){
-        // Project contract
+        // Oil and gas pump
         Route::get('/', [OilAndGasPumpController::class, 'index'])->name('index');
         Route::get('edit/{slug}', [OilAndGasPumpController::class, 'edit'])->name('edit');
         Route::get('create', [OilAndGasPumpController::class, 'create'])->name('create');
@@ -201,6 +202,18 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::post('save', [OilAndGasPumpController::class, 'save'])->name('save');
         Route::patch('update/{slug}', [OilAndGasPumpController::class, 'update'])->name('update');
         Route::delete('delete/{slug}', [OilAndGasPumpController::class, 'delete'])->name('delete');
+
+        // Oil and gas pump product
+        Route::prefix('{oagpSlug}/product')->name('product.')->group(function(){
+            Route::get('/', [OilAndGasPumpProductController::class, 'index'])->name('index');
+            Route::get('edit/{pSlug}', [OilAndGasPumpProductController::class, 'edit'])->name('edit');
+            Route::get('create', [OilAndGasPumpProductController::class, 'create'])->name('create');
+            Route::get('details/{pSlug}', [OilAndGasPumpProductController::class, 'details'])->name('details');
+
+            Route::post('save', [OilAndGasPumpProductController::class, 'save'])->name('save');
+            Route::patch('update/{pSlug}', [OilAndGasPumpProductController::class, 'update'])->name('update');
+            Route::delete('delete/{pSlug}', [OilAndGasPumpProductController::class, 'delete'])->name('delete');
+        });
     });
 
     // Report
