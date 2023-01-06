@@ -39,24 +39,6 @@
                 <p>A oil and gas pump has been deleted. Deleted oil and gas pump is given below.</p>
             @endif
 
-            @if ($event == "Complete")
-                <p>
-                    Oil and gas pump has been completed. Completed oil and gas pump is given below.
-                </p>
-            @endif
-
-            @if ($event == "ReceivingPayment")
-                <p>
-                    Oil and gas pump can start receiving payment. Oil and gas pump is given below.
-                </p>
-            @endif
-
-            @if ($event == "CompleteReceivePayment")
-                <p>
-                    Oil and gas pump receiving payment has been complete. Oil and gas pump is given below.
-                </p>
-            @endif
-
             <div class="card border-dark mb-2">
                 <h5 class="card-header">Oil and gas pump information</h5>
                 <div class="card-body text-dark mb-2">
