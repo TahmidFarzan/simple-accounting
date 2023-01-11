@@ -82,7 +82,7 @@ class SettingSeeder extends Seeder
                 "reply" => "tfarzan007@gmail.com",
                 "module" => array(
                     "User" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
                     "ActivityLog" => array(
@@ -94,43 +94,43 @@ class SettingSeeder extends Seeder
                         "send" => true,
                     ),
                     "ProjectContract" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
                     "ProjectContractJournal" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
                     "ProjectContractPayment" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
                     "ProjectContractPaymentMethod" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
                     "ProjectContractCategory" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
                     "UserPermissionGroup" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
                     "OilAndGasPump" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
                     "OilAndGasPumpProduct" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Delete.
                         "send" => true,
                     ),
                     "Setting" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
                     "Report" => array(
-                        "event" => "All", // Create,Edit,Trash,Restore.
+                        "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                         "frequency" => "Daily",
                     ),
