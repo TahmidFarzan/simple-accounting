@@ -214,6 +214,16 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::patch('update/{pSlug}', [OilAndGasPumpProductController::class, 'update'])->name('update');
             Route::delete('delete/{pSlug}', [OilAndGasPumpProductController::class, 'delete'])->name('delete');
         });
+
+        // Oil and gas pump inventory
+        Route::prefix('{oagpSlug}/inventory')->name('inventory.')->group(function(){
+            Route::get('/', [OilAndGasPumpInventoryController::class, 'index'])->name('index');
+            Route::get('add', [OilAndGasPumpInventoryController::class, 'add'])->name('add');
+            Route::get('details/{iSlug}', [OilAndGasPumpInventoryController::class, 'details'])->name('details');
+
+            Route::post('save', [OilAndGasPumpInventoryController::class, 'save'])->name('save');
+            Route::delete('delete/{iSlug}', [OilAndGasPumpInventoryController::class, 'delete'])->name('delete');
+        });
     });
 
     // Report

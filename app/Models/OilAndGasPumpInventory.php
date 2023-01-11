@@ -8,20 +8,25 @@ use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
-class OilAndGasPumpProduct extends Model
+class OilAndGasPumpInventory extends Model
 {
     use HasFactory, LogsActivity;
 
     protected $guard = 'web';
 
-    protected $table = 'oil_and_gas_pump_products';
+    protected $table = 'oil_and_gas_pump_inventories';
 
     protected $fillable = [
-        'name',
         'slug',
+        'count',
+        'oagp_product_id',
+        'sell_price',
         'created_by_id',
+        'purchase_price',
+        'previous_count',
+        'previous_sell_price',
         'oil_and_gas_pump_id',
+        'previous_purchase_price'
     ];
 
     protected $hidden = [
@@ -40,10 +45,11 @@ class OilAndGasPumpProduct extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-                'name','slug',
-                'oil_and_gas_pump_id','created_by_id',
+            'slug','count','oagp_product_id','sell_price','created_by_id',
+            'purchase_price','previous_count','previous_sell_price',
+            'oil_and_gas_pump_id','previous_purchase_price'
         ])
-        ->useLogName('Oil and gas pump product')
+        ->useLogName('Oil and gas pump product inventory')
         ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id",'created_at',])
@@ -55,14 +61,9 @@ class OilAndGasPumpProduct extends Model
         return $this->belongsTo(User::class,'created_by_id','id')->withTrashed();
     }
 
-    public function oagpInventory()
+    public function oagpProduct()
     {
-        return $this->belongsTo(OilAndGasPumpInventory::class,'oagp_product_id','id');
-    }
-
-    public function oilAndGasPump()
-    {
-        return $this->hasOne(OilAndGasPump::class,'oil_and_gas_pump_id','id');
+        return $this->hasOne(OilAndGasPumpProduct::class,'oagp_product_id','id');
     }
 
     public function updatedBy()
@@ -75,10 +76,10 @@ class OilAndGasPumpProduct extends Model
     }
 
     public function activityLogs(){
-        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPumpProduct")->where("subject_id",$this->id)->get();
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPumpInventory")->where("subject_id",$this->id)->get();
     }
 
     public function modifiedActivityLogs($limit){
-        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPumpProduct")->where("subject_id",$this->id)->take($limit)->get();
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPumpInventory")->where("subject_id",$this->id)->take($limit)->get();
     }
 }

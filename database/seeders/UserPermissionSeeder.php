@@ -707,7 +707,38 @@ class UserPermissionSeeder extends Seeder
                 'slug' => SystemConstant::slugGenerator("Delete a oil and gas pump",200),
             ])->create();
 
+        // Oil and gas pump product permission.
+            UserPermission::factory()->state([
+                'name' => "View inventory.",
+                'code' => "OAGPIMP01",
+                'type' => "OilAndGasPumpInventoryModulePermission",
+                'description' => "The internal user can view inventory.",
+                'slug' => SystemConstant::slugGenerator("View inventory",200),
+            ])->create();
 
-        // Project contract category permission
+            UserPermission::factory()->state([
+                'name' => "Add a oil or gas pump from inventory.",
+                'code' => "OAGPIMP02",
+                'type' => "OilAndGasPumpInventoryModulePermission",
+                'description' => "The internal user can add a oil or gas pump from inventory.",
+                'slug' => SystemConstant::slugGenerator("Add a oil or gas pump from inventory",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "View detials of a oil or gas pump from inventory.",
+                'code' => "OAGPIMP03",
+                'type' => "OilAndGasPumpInventoryModulePermission",
+                'description' => "The internal user can view details of a oil or gas pump from inventory.",
+                'slug' => SystemConstant::slugGenerator("View detials of a oil or gas pump from inventory",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete a product from inventory.",
+                'code' => "OAGPIMP04",
+                'type' => "OilAndGasPumpInventoryModulePermission",
+                'description' => "The internal user can delete a product from inventory.",
+                'slug' => SystemConstant::slugGenerator("Delete a product from inventory",200),
+            ])->create();
+
     }
 }
