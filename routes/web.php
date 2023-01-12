@@ -12,6 +12,7 @@ use App\Http\Controllers\InternalUser\ProjectContractController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
 use App\Http\Controllers\InternalUser\OilAndGasPumpProductController;
 use App\Http\Controllers\InternalUser\ProjectContractClientController;
+use App\Http\Controllers\InternalUser\OilAndGasPumpInventoryController;
 use App\Http\Controllers\InternalUser\ProjectContractJournalController;
 use App\Http\Controllers\InternalUser\ProjectContractPaymentController;
 use App\Http\Controllers\InternalUser\ProjectContractCategoryController;
@@ -219,7 +220,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::prefix('{oagpSlug}/inventory')->name('inventory.')->group(function(){
             Route::get('/', [OilAndGasPumpInventoryController::class, 'index'])->name('index');
             Route::get('add', [OilAndGasPumpInventoryController::class, 'add'])->name('add');
-            Route::get('details/{iSlug}', [OilAndGasPumpInventoryController::class, 'details'])->name('details');
+            Route::get('details/{inSlug}', [OilAndGasPumpInventoryController::class, 'details'])->name('details');
 
             Route::post('save', [OilAndGasPumpInventoryController::class, 'save'])->name('save');
             Route::delete('delete/{iSlug}', [OilAndGasPumpInventoryController::class, 'delete'])->name('delete');

@@ -37,13 +37,20 @@ class SettingServiceProvider extends ServiceProvider
             "country" => "Bangladesh",
         );
 
+        $defaultOAGPSettingInfo = array(
+            "oil_unit" => "L",
+            "gas_unit" => "L",
+        );
+
         $dbBUSettingInfo = null;
+        $dbOAGPSettingInfo = null;
 
         if (Schema::hasTable('settings')) {
             $dbBUSettingInfo = Setting::where("code","BusinessSetting")->first();
+            $dbOAGPSettingInfo = Setting::where("code","OAGPSetting")->first();
         }
         return array(
-            "businessSetting"=>array(
+            "businessSetting" => array(
                 "name" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["name"]) > 0)) ? $dbBUSettingInfo->fields_with_values["name"] : $defaultBuSettingInfo['name'],
                 "short_name"=> ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["short_name"]) > 0)) ? $dbBUSettingInfo->fields_with_values["short_name"] : $defaultBuSettingInfo['short_name'],
                 "email" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["email"]) > 0)) ? $dbBUSettingInfo->fields_with_values["email"] : $defaultBuSettingInfo['email'],
@@ -59,6 +66,10 @@ class SettingServiceProvider extends ServiceProvider
                 "currency_code" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["country_code"]) > 0) ) ? $dbBUSettingInfo->fields_with_values["currency_code"] : $defaultBuSettingInfo["currency_code"],
                 "currency_symbol" => ($dbBUSettingInfo && (strlen($dbBUSettingInfo->fields_with_values["currency_symbol"]) > 0) ) ? $dbBUSettingInfo->fields_with_values["currency_symbol"] : $defaultBuSettingInfo["currency_symbol"],
             ),
+            "oagpSetting" => array(
+                "oil_unit" => ($dbOAGPSettingInfo && (strlen($dbOAGPSettingInfo->fields_with_values["oil_unit"]) > 0)) ? $dbOAGPSettingInfo->fields_with_values["oil_unit"]: $defaultOAGPSettingInfo["oil_unit"],
+                "gas_unit" => ($dbOAGPSettingInfo && (strlen($dbOAGPSettingInfo->fields_with_values["gas_unit"]) > 0)) ? $dbOAGPSettingInfo->fields_with_values["gas_unit"]: $defaultOAGPSettingInfo["gas_unit"],
+            )
         );
     }
 }

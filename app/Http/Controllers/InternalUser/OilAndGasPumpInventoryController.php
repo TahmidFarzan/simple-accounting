@@ -19,7 +19,7 @@ use App\Mail\EmailSendForOilAndGasPumpProduct;
 class OilAndGasPumpInventoryController extends Controller
 {
     private $oagpSlug = null;
-    private $pSlug = null;
+    private $inSlug = null;
 
     public function __construct()
     {
@@ -32,11 +32,12 @@ class OilAndGasPumpInventoryController extends Controller
 
     public function index($oagpSlug){
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
-        $products = OilAndGasPumpProduct::orderby("name","asc")->get();
-        $inventories = OilAndGasPumpInventory::orderby("created_at","desc")->orderby("name","asc");
+        $inventories = OilAndGasPumpInventory::orderby("id","asc")->orderby("created_at","desc")->whereIn("oagp_product_id",$oilAndGasPump->oilAndGasPumpProducts->pluck("id"))->get();
+        return view('internal user.oil and gas pump.inventory.index',compact("inventories","oilAndGasPump"));
+    }
 
-        $inventories = $inventories->get();
-
-        return view('internal user.oil and gas pump.inventory.index',compact("inventories","products","oilAndGasPump"));
+    public function details($oagpSlug,$inSlug){
+        $inventory = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
+        return view('internal user.oil and gas pump.inventory.details',compact("inventory"));
     }
 }

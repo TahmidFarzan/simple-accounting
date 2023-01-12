@@ -57,12 +57,12 @@ class OilAndGasPumpProduct extends Model
 
     public function oagpInventory()
     {
-        return $this->belongsTo(OilAndGasPumpInventory::class,'oagp_product_id','id');
+        return $this->belongsTo(OilAndGasPumpInventory::class,'id','oagp_product_id');
     }
 
     public function oilAndGasPump()
     {
-        return $this->hasOne(OilAndGasPump::class,'oil_and_gas_pump_id','id');
+        return $this->belongsTo(OilAndGasPump::class,'oil_and_gas_pump_id','id');
     }
 
     public function updatedBy()
