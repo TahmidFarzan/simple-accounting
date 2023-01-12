@@ -196,8 +196,8 @@
     <div class="card border-dark mb-3">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <a role="button" href="{{ route("oil.and.gas.pump.index") }}" class="btn btn-sm btn-secondary">
-                    Go to payment method
+                <a role="button" href="{{ route("oil.and.gas.pump.product.index",["oagpSlug" => $product->oilAndGasPump->slug]) }}" class="btn btn-sm btn-secondary">
+                    Go to product
                 </a>
             </div>
         </div>
