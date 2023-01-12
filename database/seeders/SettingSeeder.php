@@ -42,6 +42,20 @@ class SettingSeeder extends Seeder
             'created_by_id' =>  1,
         ])->create();
 
+        // OAGP setting
+        Setting::factory()->state([
+            'name' => "OAGP setting",
+            'code' => 'OAGPSetting',
+            'slug' => SystemConstant::slugGenerator("OAGP setting",200),
+            'fields_with_values' => array(
+                "oil_unit" => null,
+                "gas_unit" => null,
+            ),
+            'created_at' =>  Carbon::now(),
+            'updated_at' =>  null,
+            'created_by_id' =>  1,
+        ])->create();
+
         // Activity log setting
         Setting::factory()->state([
             'name' => "Activity log setting",
