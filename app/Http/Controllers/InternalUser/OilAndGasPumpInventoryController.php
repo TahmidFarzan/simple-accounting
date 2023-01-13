@@ -158,4 +158,84 @@ class OilAndGasPumpInventoryController extends Controller
 
         return redirect()->route("oil.and.gas.pump.inventory.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
+
+    public function delete($oagpSlug,$inSlug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
+        $productValidationStatus = $this->productValidation($inSlug);
+
+        if(true){
+            try{
+                DB::beginTransaction();
+                LogBatch::startBatch();
+                    $inventoryProduct = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
+                    $deleteOAGPProduct = $inventoryProduct->delete();
+                LogBatch::endBatch();
+
+                if($deleteOAGPProduct){
+                    DB::commit();
+                    $this->sendEmail("Delete","Product has been delete by ".Auth::user()->name.".",$inventoryProduct );
+
+                    $statusInformation["status"] = "status";
+                    $statusInformation["message"]->push("Successfully deleted.");
+                }
+                else{
+                    DB::rollBack();
+                    $statusInformation["status"] = "errors";
+                    $statusInformation["message"]->push("Fail to delete.");
+                }
+            }
+            catch (Exception $e) {
+                DB::rollBack();
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Error info: ".$e);
+            }
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Fail to delete.");
+
+            foreach($productValidationStatus["message"] as $perMessage){
+                $statusInformation["message"]->push($perMessage);
+            }
+        }
+
+        return redirect()->route("oil.and.gas.pump.inventory.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function productValidation($inSlug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $product = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
+
+        // if(($oilAndGasPump->status == "Complete") && !($oilAndGasPump->receivable_status == "NotStarted") && !($oilAndGasPump->receivable_status == "Complete")){
+        //     $statusInformation["status"] = "status";
+        //     $statusInformation["message"]->push("Passed the validation.");
+        // }
+        // else{
+        //     $statusInformation["status"] = "errors";
+        //     $statusInformation["message"]->push("Project contract is not complete.");
+        //     $statusInformation["message"]->push("Payment (Project contract) must be not started.");
+        // }
+
+        return $statusInformation;
+    }
+
+    private function sendEmail($event,$subject,OilAndGasPumpInventory $inventory ){
+        $envelope = array();
+
+        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values;
+
+        $envelope["to"] = $emailSendSetting["to"];
+        $envelope["cc"] = $emailSendSetting["cc"];
+        $envelope["from"] = $emailSendSetting["from"];
+        $envelope["reply"] = $emailSendSetting["reply"];
+
+        $moduleSetting = $emailSendSetting["module"]["OilAndGasPumpInventory"];
+
+        if(($moduleSetting["send"] == true) && (($moduleSetting["event"] == "All") || (!($moduleSetting["event"] == "All") && ($moduleSetting["event"] == $event)))){
+            Mail::send(new EmailSendForOilAndGasPumpInventory($event,$envelope,$subject,$inventory));
+        }
+    }
 }

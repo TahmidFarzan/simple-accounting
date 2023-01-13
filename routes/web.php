@@ -223,7 +223,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('details/{inSlug}', [OilAndGasPumpInventoryController::class, 'details'])->name('details');
 
             Route::post('save', [OilAndGasPumpInventoryController::class, 'save'])->name('save');
-            Route::delete('delete/{iSlug}', [OilAndGasPumpInventoryController::class, 'delete'])->name('delete');
+            Route::delete('delete/{inSlug}', [OilAndGasPumpInventoryController::class, 'delete'])->name('delete');
         });
     });
 
