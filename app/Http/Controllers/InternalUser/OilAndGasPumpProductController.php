@@ -7,6 +7,7 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\OilAndGasPump;
 use App\Utilities\SystemConstant;
+use App\Utilities\InventoryConstant;
 use App\Models\OilAndGasPumpProduct;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -31,7 +32,7 @@ class OilAndGasPumpProductController extends Controller
     }
 
     public function index($oagpSlug,Request $request){
-        $pagination = 1;
+        $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,105,120);
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         $products = OilAndGasPumpProduct::orderby("created_at","desc")->orderby("name","asc");
@@ -78,12 +79,17 @@ class OilAndGasPumpProductController extends Controller
             [
                 'name' => 'required|max:200',
                 'type' => 'required|in:Oil,Gas',
+                'add_to_inventory' => 'required|in:Yes,No',
             ],
             [
                 'name.required' => 'Name is required.',
                 'name.max' => 'Name length can not greater then 200 chars.',
+
                 'type.required' => 'Type is required.',
                 'type.max' => 'Type must be one out of [Oil,Gas].',
+
+                'add_to_inventory.required' => 'Add to inventory is required.',
+                'add_to_inventory.max' => 'Add to inventory must be one out of [No,Yes].',
             ]
         );
 
@@ -123,7 +129,16 @@ class OilAndGasPumpProductController extends Controller
             $this->sendEmail("Create","A new product has been created by ".Auth::user()->name.".",$product );
 
             $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Successfully created.";
+            $statusInformation["message"]->push("Successfully created.");
+
+            if($request->add_to_inventory == "Yes"){
+                $addProductToInventoryStatus = InventoryConstant::addProductToInventory($product->slug);
+                $statusInformation["status"] = $addProductToInventoryStatus["status"];
+
+                foreach( $addProductToInventoryStatus["message"] as $inMessage){
+                    $statusInformation["message"]->push($inMessage);
+                }
+            }
         }
         else{
             $statusInformation["status"] = "errors";

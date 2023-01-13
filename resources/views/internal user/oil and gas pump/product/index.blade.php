@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('mainPageName')
-    Oil and gas pump
+    Oil and gas pump product
 @endsection
 
 @section('mainCardTitle')

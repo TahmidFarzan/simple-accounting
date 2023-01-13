@@ -56,7 +56,16 @@
                                         <tr>
                                             <th style="width: 25%;">Count</th>
                                             <th style="width: 1%;">:</th>
-                                            <td>{{ $inventory->count }}</td>
+                                            <td>
+                                                {{ $inventory->count }}
+                                                @if ( $inventory->oagpProduct->type == "Oil")
+                                                    {{ $setting["oagpSetting"]["oil_unit"] }}
+                                                @endif
+
+                                                @if ( $inventory->oagpProduct->type == "Gas")
+                                                    {{ $setting["oagpSetting"]["gas_unit"] }}
+                                                @endif
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th style="width: 25%;">Sell price</th>
@@ -88,7 +97,16 @@
                                         <tr>
                                             <th style="width: 25%;">Count</th>
                                             <th style="width: 1%;">:</th>
-                                            <td>{{ $inventory->previous_count }}</td>
+                                            <td>
+                                                {{ $inventory->previous_count }}
+                                                @if ( $inventory->oagpProduct->type == "Oil")
+                                                    {{ $setting["oagpSetting"]["oil_unit"] }}
+                                                @endif
+
+                                                @if ( $inventory->oagpProduct->type == "Gas")
+                                                    {{ $setting["oagpSetting"]["gas_unit"] }}
+                                                @endif
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th style="width: 25%;">Sell price</th>

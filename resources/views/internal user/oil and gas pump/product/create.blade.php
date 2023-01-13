@@ -27,6 +27,12 @@
         if($typeOption == null){
             $typeOption = "Oil";
         }
+
+        $addToInventory = old("add_to_inventory");
+
+        if($addToInventory == null){
+            $addToInventory = "No";
+        }
     @endphp
 
     <div class="card border-dark mb-2">
@@ -65,6 +71,29 @@
                                         </div>
                                     </div>
                                     @error('type')
+                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4 col-form-label col-form-label-sm text-bold">Add to inventory <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <div class="col-md-8">
+                                    <div class="mt-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input @error('add_to_inventory') is-invalid @enderror" type="radio" name="add_to_inventory" id="addToInventoryNoOption" value="No" @if ($addToInventory == "No") checked @endif>
+                                            <label class="form-check-label" for="addToInventoryNoOption">No</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input @error('add_to_inventory') is-invalid @enderror" type="radio" name="add_to_inventory" id="addToInventoryYesOption" value="Yes" @if ($addToInventory == "Yes") checked @endif>
+                                            <label class="form-check-label" for="addToInventoryYesOption">Yes</label>
+                                        </div>
+                                    </div>
+                                    @error('add_to_inventory')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>
