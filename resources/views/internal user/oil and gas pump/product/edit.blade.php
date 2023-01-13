@@ -21,6 +21,14 @@
 
 @section('authContentOne')
 
+    @php
+        $typeOption = old("type");
+
+        if($typeOption == null){
+            $typeOption = "Oil";
+        }
+    @endphp
+
     <div class="card border-dark mb-2">
         <div class="card-body text-dark">
             <form action="{{ route("oil.and.gas.pump.product.update",["oagpSlug" => $product->oilAndGasPump->slug,"pSlug" => $product->slug]) }}" method="POST" id="updateForm">
@@ -36,6 +44,29 @@
                                 <div class="col-md-8">
                                     <input id="nameInput" name="name" type="text" class="form-control form-control-sm @error('name') is-invalid @enderror" value="{{ (old('name') == null) ? $product->name : old('name') }}" placeholder="Ex: Hello" maxlength="200" required>
                                     @error('name')
+                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4 col-form-label col-form-label-sm text-bold">Type <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <div class="col-md-8">
+                                    <div class="mt-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input @error('type') is-invalid @enderror" type="radio" name="type" id="typeOilOption" value="Oil" @if ($typeOption == "Oil") checked @endif>
+                                            <label class="form-check-label" for="typeOilOption">Oil</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input @error('type') is-invalid @enderror" type="radio" name="type" id="gasOilOption" value="Gas" @if ($typeOption == "Gas") checked @endif>
+                                            <label class="form-check-label" for="gasOilOption">Gas</label>
+                                        </div>
+                                    </div>
+                                    @error('type')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>

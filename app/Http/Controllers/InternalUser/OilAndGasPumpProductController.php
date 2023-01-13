@@ -73,10 +73,13 @@ class OilAndGasPumpProductController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'name' => 'required|max:200',
+                'type' => 'required|in:Oil,Gas',
             ],
             [
                 'name.required' => 'Name is required.',
                 'name.max' => 'Name length can not greater then 200 chars.',
+                'type.required' => 'Type is required.',
+                'type.max' => 'Type must be one out of [Oil,Gas].',
             ]
         );
 
@@ -103,6 +106,7 @@ class OilAndGasPumpProductController extends Controller
         LogBatch::startBatch();
             $product = new OilAndGasPumpProduct();
             $product->name = $request->name;
+            $product->type = $request->type;
             $product->oil_and_gas_pump_id =  $oilAndGasPump->id;
             $product->slug = SystemConstant::slugGenerator($request->name,200);
             $product->created_at = Carbon::now();
@@ -132,9 +136,14 @@ class OilAndGasPumpProductController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'name' => 'required|max:200',
+                'type' => 'required|in:Oil,Gas',
             ],
             [
                 'name.required' => 'Name is required.',
+                'name.max' => 'Name length can not greater then 200 chars.',
+
+                'type.required' => 'Type is required.',
+                'type.max' => 'Type must be one out of [Oil,Gas].',
             ]
         );
 
@@ -160,6 +169,7 @@ class OilAndGasPumpProductController extends Controller
         LogBatch::startBatch();
             $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
             $product->name = $request->name;
+            $product->type = $request->type;
             $product->slug = SystemConstant::slugGenerator($request->name,200);
             $product->updated_at = Carbon::now();
             $updateProduct = $product->update();

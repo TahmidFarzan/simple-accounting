@@ -32,9 +32,9 @@
                             <td>{{ $product->name }}</td>
                         </tr>
                         <tr>
-                            <th style="width: 25%;">Code</th>
+                            <th style="width: 25%;">Type</th>
                             <th style="width: 1%;">:</th>
-                            <td>{{ $product->oilAndGasPump->name }}</td>
+                            <td>{{ $product->type }}</td>
                         </tr>
                     </tbody>
                 </table>

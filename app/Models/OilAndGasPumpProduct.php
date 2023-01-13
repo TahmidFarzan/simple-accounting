@@ -20,6 +20,7 @@ class OilAndGasPumpProduct extends Model
     protected $fillable = [
         'name',
         'slug',
+        'type',
         'created_by_id',
         'oil_and_gas_pump_id',
     ];
@@ -40,7 +41,7 @@ class OilAndGasPumpProduct extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-                'name','slug',
+                'name','slug','type',
                 'oil_and_gas_pump_id','created_by_id',
         ])
         ->useLogName('Oil and gas pump product')

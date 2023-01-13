@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('oil_and_gas_pump_products', function (Blueprint $table) {
             $table->id();
             $table->string('name',200)->unique();
+            $table->enum('type', ['Oil', 'Gas'])->default("Oil");
             $table->string('slug',255)->unique();
             $table->unsignedBigInteger('oil_and_gas_pump_id');
             $table->unsignedBigInteger('created_by_id');
