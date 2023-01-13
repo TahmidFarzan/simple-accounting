@@ -27,7 +27,7 @@
         <div class="container">
             <p>Hi Admin,</p>
 
-            @if ($event == "Create")
+            @if ($event == "Add")
                 <p>A product has been added for oil and gas pump. Created product is given below.</p>
             @endif
 

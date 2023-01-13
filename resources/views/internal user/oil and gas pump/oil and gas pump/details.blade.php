@@ -194,6 +194,10 @@
                     @if (Auth::user()->hasUserPermission(["OAGPPMP01"]) == true)
                         <a href="{{ route("oil.and.gas.pump.product.index",["oagpSlug" => $oilAndGasPump->slug]) }}" class="btn btn-primary">Products</a>
                     @endif
+
+                    @if (Auth::user()->hasUserPermission(["OAGPIMP01"]) == true)
+                        <a href="{{ route("oil.and.gas.pump.inventory.index",["oagpSlug" => $oilAndGasPump->slug]) }}" class="btn btn-secondary">Inventory</a>
+                    @endif
                 </div>
             </div>
 

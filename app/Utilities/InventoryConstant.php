@@ -36,11 +36,12 @@ class InventoryConstant
 
                 if($saveOAGPIn){
                     DB::commit();
-                    InventoryConstant::sendEmail("Add","Product has been added to inventory.",$oagpInventory );
+                    InventoryConstant::sendEmail("Add","Product has been added to inventory by ".Auth::user()->name.".",$oagpInventory );
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push("Successfully added to inventory.");
                 }
                 else{
+                    DB::rollBack();
                     $statusInformation["status"] = "errors";
                     $statusInformation["message"]->push("Can not added to inventory.");
                 }

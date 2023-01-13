@@ -14,11 +14,11 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by_id');
             $table->unsignedBigInteger('oagp_product_id');
 
-            $table->integer('previous_count')->default(0);
+            $table->double('previous_count')->default(0);
             $table->double('previous_sell_price', 8, 2)->default(0);
             $table->double('previous_purchase_price', 8, 2)->default(0);
 
-            $table->integer('count')->default(0);
+            $table->double('count')->default(0);
             $table->double('sell_price', 8, 2)->default(0);
             $table->double('purchase_price', 8, 2)->default(0);
 
