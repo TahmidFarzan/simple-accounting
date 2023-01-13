@@ -60,6 +60,21 @@
 
                             <div class="col-md-6 mb-2">
                                 <div class="row">
+                                    <label class="col-md-4 col-form-label col-form-label-sm">Type</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control form-control-sm" id="typeInputForSorting" name="type">
+                                            <option value="">Select</option>
+                                            @foreach ( array("Oil","Gas") as $perType)
+                                                <option value="{{ $perType }}">{{ $perType }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div id="typeInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row">
                                     <label class="col-md-4 col-form-label col-form-label-sm">Search</label>
                                     <div class="col-md-8">
                                         <div class="input-group mb-3">
@@ -76,7 +91,7 @@
             </div>
 
             <div class="row">
-                <div class="card-body">
+                <div class="card-body" id="dataTableGrid">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -175,6 +190,17 @@
                 hideOrShowInputFieldErrorMessages(errorMessages,"paginationInputForSorting");
             });
 
+            $(document).on('change', "#typeInputForSorting", function () {
+                var errorMessages = [];
+                if($(this).val().length > 0){
+                    dataTableLoad(parameterGenerate());
+                }
+                else{
+                    errorMessages.push("Type is empty.");
+                }
+                hideOrShowInputFieldErrorMessages(errorMessages,"typeInputForSorting");
+            });
+
             $(document).on('click', "#searchButton", function () {
                 var errorMessages = [];
                 if($("#searchInputForSorting").val().length > 0){
@@ -190,7 +216,7 @@
 
         function parameterGenerate(){
             var parameterString = null;
-            $.each( ["paginationInputForSorting","searchInputForSorting","selectedNavTabForSorting"], function( key, perInput ) {
+            $.each( ["paginationInputForSorting","searchInputForSorting","typeInputForSorting"], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
                     var inputFieldValue = $("#" + perInput).val();
                     var inputFieldName = $("#" + perInput).attr('name');
@@ -202,23 +228,16 @@
         }
 
         function dataTableLoad(parameterString){
-            var oagpSlug = "{{ $oilAndGasPump->slug }}";
+            var routeUrl = "{{ route('oil.and.gas.pump.product.index',['oagpSlug'=> $oilAndGasPump->slug]) }}"
+
             $.ajax({
                 type: "get",
-                url: "{{ route('oil.and.gas.pump.product.index',['oagpSlug'=>" + oagpSlug + "]) }}" + "?" + parameterString,
+                url: routeUrl + "?" + parameterString,
                 success: function(result) {
                     $("#extraErrorMessageDiv").hide();
                     $("#extraErrorMessageDiv").html("");;
 
-                    switch ($("#selectedNavTabForSorting").val()) {
-                        case "Active":
-                            $("#activeNavTabDiv").html($(result).find("#activeNavTabDiv").html());
-                        break;
-
-                        default:
-                            $("#trashNavTabDiv").html($(result).find("#trashNavTabDiv").html());
-                        break;
-                    }
+                    $("#dataTableGrid").html($(result).find("#dataTableGrid").html());
                 },
                 error: function(errorResponse) {
                     showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);

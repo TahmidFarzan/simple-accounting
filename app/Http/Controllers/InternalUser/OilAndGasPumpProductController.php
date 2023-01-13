@@ -41,6 +41,10 @@ class OilAndGasPumpProductController extends Controller
                 $pagination = (in_array($request->pagination,$paginations)) ? $request->pagination : $pagination;
             }
 
+            if($request->has('type') && !($request->type == null)){
+                $products = $products->where("type",$request->type);
+            }
+
             if($request->has('search') && !($request->search == null)){
                 $products = $products->where("name","like","%".$request->search."%")
                                                 ->orWhere("code","like","%".$request->search."%");
