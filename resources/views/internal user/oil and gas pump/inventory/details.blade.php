@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('mainPageName')
-    Oil and gas pump product
+    Oil and gas pump inventory
 @endsection
 
 @section('mainCardTitle')
@@ -34,7 +34,7 @@
                         <tr>
                             <th style="width: 25%;">Type</th>
                             <th style="width: 1%;">:</th>
-                            <td></td>
+                            <td>{{ $inventory->oagpProduct->type }}</td>
                         </tr>
                     </tbody>
                 </table>

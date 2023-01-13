@@ -94,7 +94,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <a role="button" href="{{ route("oil.and.gas.pump.index") }}" class="btn btn-sm btn-secondary">
-                    Go to oil and gas pump
+                    Go to product
                 </a>
             </div>
         </div>
