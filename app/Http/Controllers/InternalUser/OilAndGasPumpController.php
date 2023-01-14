@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\InternalUser;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\OilAndGasPump;
 use App\Utilities\SystemConstant;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EmailSendForOilAndGasPump;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
-
 
 class OilAndGasPumpController extends Controller
 {
@@ -90,28 +91,38 @@ class OilAndGasPumpController extends Controller
 
         $statusInformation = array("status" => "errors","message" => collect());
 
-        LogBatch::startBatch();
-            $oilAndGasPump = new OilAndGasPump();
-            $oilAndGasPump->name = $request->name;
-            $oilAndGasPump->code = $request->code;
-            $oilAndGasPump->description = $request->description;
-            $oilAndGasPump->note = array($request->note);
-            $oilAndGasPump->slug = SystemConstant::slugGenerator($request->name,200);
-            $oilAndGasPump->created_at = Carbon::now();
-            $oilAndGasPump->created_by_id = Auth::user()->id;
-            $oilAndGasPump->updated_at = null;
-            $saveOilAndGasPump = $oilAndGasPump->save();
-        LogBatch::endBatch();
+        try{
+            DB::beginTransaction();
+            LogBatch::startBatch();
+                $oilAndGasPump = new OilAndGasPump();
+                $oilAndGasPump->name = $request->name;
+                $oilAndGasPump->code = $request->code;
+                $oilAndGasPump->description = $request->description;
+                $oilAndGasPump->note = array($request->note);
+                $oilAndGasPump->slug = SystemConstant::slugGenerator($request->name,200);
+                $oilAndGasPump->created_at = Carbon::now();
+                $oilAndGasPump->created_by_id = Auth::user()->id;
+                $oilAndGasPump->updated_at = null;
+                $saveOilAndGasPump = $oilAndGasPump->save();
+            LogBatch::endBatch();
 
-        if($saveOilAndGasPump){
-            $this->sendEmail("Create","A new oil and gas pump has been created by ".Auth::user()->name.".",$oilAndGasPump );
+            if($saveOilAndGasPump){
+                DB::commit();
+                $this->sendEmail("Create","A new oil and gas pump has been created by ".Auth::user()->name.".",$oilAndGasPump );
 
-            $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Successfully created.";
+                $statusInformation["status"] = "status";
+                $statusInformation["message"] = "Successfully created.";
+            }
+            else{
+                DB::rollBack();
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Can not update.");
+            }
         }
-        else{
+        catch (Exception $e) {
+            DB::rollBack();
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Can not update.");
+            $statusInformation["message"]->push("Error info: ".$e);
         }
 
         return redirect()->route("oil.and.gas.pump.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -144,29 +155,39 @@ class OilAndGasPumpController extends Controller
 
         $statusInformation = array("status" => "errors","message" => collect());
 
-        LogBatch::startBatch();
-            $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
-            $notes = $oilAndGasPump->note;
-            array_push($notes,$request->note);
+        try{
+            DB::beginTransaction();
+            LogBatch::startBatch();
+                $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
+                $notes = $oilAndGasPump->note;
+                array_push($notes,$request->note);
 
-            $oilAndGasPump->name = $request->name;
-            $oilAndGasPump->code = $request->code;
-            $oilAndGasPump->description = $request->description;
-            $oilAndGasPump->note = $notes;
-            $oilAndGasPump->slug = SystemConstant::slugGenerator($request->name,200);
-            $oilAndGasPump->updated_at = Carbon::now();
-            $updateOilAndGasPump = $oilAndGasPump->update();
-        LogBatch::endBatch();
+                $oilAndGasPump->name = $request->name;
+                $oilAndGasPump->code = $request->code;
+                $oilAndGasPump->description = $request->description;
+                $oilAndGasPump->note = $notes;
+                $oilAndGasPump->slug = SystemConstant::slugGenerator($request->name,200);
+                $oilAndGasPump->updated_at = Carbon::now();
+                $updateOilAndGasPump = $oilAndGasPump->update();
+            LogBatch::endBatch();
 
-        if($updateOilAndGasPump){
-            $this->sendEmail("Update","The oil and gas pump has been updated by ".Auth::user()->name.".",$oilAndGasPump );
+            if($updateOilAndGasPump){
+                DB::commit();
+                $this->sendEmail("Update","The oil and gas pump has been updated by ".Auth::user()->name.".",$oilAndGasPump );
 
-            $statusInformation["status"] = "status";
-            $statusInformation["message"] = "Successfully updated.";
+                $statusInformation["status"] = "status";
+                $statusInformation["message"] = "Successfully updated.";
+            }
+            else{
+                DB::rollBack();
+                $statusInformation["status"] = "errors";
+                $statusInformation["message"]->push("Can not update.");
+            }
         }
-        else{
+        catch (Exception $e) {
+            DB::rollBack();
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Can not update.");
+            $statusInformation["message"]->push("Error info: ".$e);
         }
 
         return redirect()->route("oil.and.gas.pump.index")->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -178,18 +199,29 @@ class OilAndGasPumpController extends Controller
         $oilAndGasPumpValidationStatus = $this->oilAndGasPumpValidation($slug);
 
         if($oilAndGasPumpValidationStatus["status"] == "status"){
-            $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
-            $deleteOilAndGasPump = $oilAndGasPump->delete();
+            try{
+                DB::beginTransaction();
+                LogBatch::startBatch();
+                    $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
+                    $deleteOilAndGasPump = $oilAndGasPump->delete();
+                LogBatch::endBatch();
+                if($deleteOilAndGasPump){
+                    DB::commit();
+                    $this->sendEmail("Delete","Oil and gas pump has been delete by ".Auth::user()->name.".",$oilAndGasPump );
 
-            if($deleteOilAndGasPump){
-                $this->sendEmail("Delete","Oil and gas pump has been delete by ".Auth::user()->name.".",$oilAndGasPump );
-
-                $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Successfully deleted.");
+                    $statusInformation["status"] = "status";
+                    $statusInformation["message"]->push("Successfully deleted.");
+                }
+                else{
+                    DB::rollBack();
+                    $statusInformation["status"] = "errors";
+                    $statusInformation["message"]->push("Fail to delete.");
+                }
             }
-            else{
+            catch (Exception $e) {
+                DB::rollBack();
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Fail to delete.");
+                $statusInformation["message"]->push("Error info: ".$e);
             }
         }
         else{
