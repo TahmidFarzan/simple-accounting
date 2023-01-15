@@ -235,7 +235,7 @@ class OilAndGasPumpProductController extends Controller
 
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
 
-        $productValidationStatus = $this->productValidation($pSlug);
+        $deleteValidationStatus = $this->deleteValidation($pSlug);
 
         if(true){
             try{
@@ -268,7 +268,7 @@ class OilAndGasPumpProductController extends Controller
             $statusInformation["status"] = "errors";
             $statusInformation["message"]->push("Fail to delete.");
 
-            foreach($productValidationStatus["message"] as $perMessage){
+            foreach($deleteValidationStatus["message"] as $perMessage){
                 $statusInformation["message"]->push($perMessage);
             }
         }
@@ -276,7 +276,7 @@ class OilAndGasPumpProductController extends Controller
         return redirect()->route("oil.and.gas.pump.product.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
-    private function productValidation($pSlug){
+    private function deleteValidation($pSlug){
         $statusInformation = array("status" => "errors","message" => collect());
 
         $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
