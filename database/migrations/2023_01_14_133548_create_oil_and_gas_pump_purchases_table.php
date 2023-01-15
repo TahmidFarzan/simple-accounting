@@ -23,8 +23,8 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by_id');
             $table->timestamps();
 
-            $table->foreign('created_by_id','oil_and_gas_pump_inventories_fk_1')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('oagp_supplier_id','oil_and_gas_pump_inventories_fk_1')->references('id')->on('oil_and_gas_pump_suppliers')->onDelete('cascade');
+            $table->foreign('created_by_id','oil_and_gas_pump_purchases_fk_1')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('oagp_supplier_id','oil_and_gas_pump_purchases_fk_2')->references('id')->on('oil_and_gas_pump_suppliers')->onDelete('cascade');
         });
     }
 
