@@ -22,6 +22,7 @@ class OilAndGasPumpSupplier extends Model
         'note',
         'email',
         'mobile_no',
+        'description',
         'created_by_id',
         'payable_amount',
         'receviable_amount',
@@ -47,7 +48,7 @@ class OilAndGasPumpSupplier extends Model
         return LogOptions::defaults()
         ->logOnly([
             'name','slug','note','email','mobile_no',
-            'created_by_id','payable_amount',
+            'created_by_id','payable_amount','description',
             'receviable_amount','oil_and_gas_pump_id',
         ])
         ->useLogName('Oil and gas pump supplier')
@@ -70,6 +71,11 @@ class OilAndGasPumpSupplier extends Model
     public function oilAndGasPump()
     {
         return $this->belongsTo(OilAndGasPump::class,'oil_and_gas_pump_id','id');
+    }
+
+    public function oagpPurchases()
+    {
+        return $this->hasMany(OilAndGasPumpPurchase::class,'oagp_supplier_id','id');
     }
 
     public function updatedBy()

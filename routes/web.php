@@ -11,6 +11,7 @@ use App\Http\Controllers\InternalUser\OilAndGasPumpController;
 use App\Http\Controllers\InternalUser\ProjectContractController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
 use App\Http\Controllers\InternalUser\OilAndGasPumpProductController;
+use App\Http\Controllers\InternalUser\OilAndGasPumpSupplierController;
 use App\Http\Controllers\InternalUser\ProjectContractClientController;
 use App\Http\Controllers\InternalUser\OilAndGasPumpInventoryController;
 use App\Http\Controllers\InternalUser\ProjectContractJournalController;
@@ -224,6 +225,13 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
 
             Route::post('save', [OilAndGasPumpInventoryController::class, 'save'])->name('save');
             Route::delete('delete/{inSlug}', [OilAndGasPumpInventoryController::class, 'delete'])->name('delete');
+        });
+
+        // Oil and gas pump supplier
+        Route::prefix('{oagpSlug}/supplier')->name('supplier.')->group(function(){
+            Route::get('/', [OilAndGasPumpSupplierController::class, 'index'])->name('index');
+            Route::get('details/{sSlug}', [OilAndGasPumpSupplierController::class, 'details'])->name('details');
+            Route::delete('delete/{sSlug}', [OilAndGasPumpSupplierController::class, 'delete'])->name('delete');
         });
     });
 

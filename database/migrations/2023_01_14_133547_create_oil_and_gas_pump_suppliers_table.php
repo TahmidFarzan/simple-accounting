@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('payable_amount', 8, 2)->default(0);
             $table->unsignedBigInteger('created_by_id');
             $table->json('note')->nullable();
+            $table->json('description')->nullable();
             $table->timestamps();
 
             $table->unique(["name","oil_and_gas_pump_id"],'oil_and_gas_pump_suppliers_uq_1');
