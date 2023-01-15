@@ -196,9 +196,9 @@ class OilAndGasPumpController extends Controller
     public function delete($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
-        $oilAndGasPumpValidationStatus = $this->oilAndGasPumpValidation($slug);
+        $deleteValidationStatus = $this->deleteValidation($slug);
 
-        if($oilAndGasPumpValidationStatus["status"] == "status"){
+        if($deleteValidationStatus["status"] == "status"){
             try{
                 DB::beginTransaction();
                 LogBatch::startBatch();
@@ -228,7 +228,7 @@ class OilAndGasPumpController extends Controller
             $statusInformation["status"] = "errors";
             $statusInformation["message"]->push("Fail to delete.");
 
-            foreach($oilAndGasPumpValidationStatus["message"] as $perMessage){
+            foreach($deleteValidationStatus["message"] as $perMessage){
                 $statusInformation["message"]->push($perMessage);
             }
         }
@@ -236,7 +236,7 @@ class OilAndGasPumpController extends Controller
         return redirect()->route("project.contract.payment.index",["pcSlug" => $slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
-    private function oilAndGasPumpValidation($slug){
+    private function deleteValidation($slug){
         $statusInformation = array("status" => "errors","message" => collect());
 
         $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
