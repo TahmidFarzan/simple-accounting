@@ -32,7 +32,7 @@ class ActivityLogController extends Controller
         $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,100);
         $causers = User::orderBy("id","asc");
-        $subjectTypes = array("All","User","Setting","User permission group","Oil and gas pump","Oil and gas pump product","Oil and gas pump inventory");
+        $subjectTypes = array("All","User","Setting","User permission group","Oil and gas pump","Oil and gas pump product","Oil and gas pump inventory","Oil and gas pump supplier");
         $events = array("All","Created","Updated","Deleted","Trashed","Restored");
         $activitLogs = Activity::orderBy("id","desc");
 

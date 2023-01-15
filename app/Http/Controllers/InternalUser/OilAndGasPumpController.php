@@ -248,7 +248,15 @@ class OilAndGasPumpController extends Controller
         else{
             $statusInformation["status"] = "errors";
             $statusInformation["message"]->push($oilAndGasPump->oilAndGasPumpProducts->count()." product(s) exit.");
-            $statusInformation["message"]->push("The oil and gas pump can not delete.");
+        }
+
+        if( $oilAndGasPump->oilAndGasPumpSuppliers->count() == 0){
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Passed the validation.");
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push($oilAndGasPump->oilAndGasPumpSuppliers->count()." supplier(s) exit.");
         }
 
         return $statusInformation;

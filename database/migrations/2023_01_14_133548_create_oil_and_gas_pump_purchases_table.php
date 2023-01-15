@@ -11,17 +11,20 @@ return new class extends Migration
         Schema::create('oil_and_gas_pump_purchases', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date');
-            $table->string('name',200);
+            $table->unsignedBigInteger('oagp_supplier_id');
             $table->string('slug',200)->unique();
             $table->string('invoice',200)->unique();
             $table->string('email',255)->nullable();
             $table->string('mobile_no',20)->nullable();
             $table->text('description')->nullable();
             $table->json('note')->nullable();
+            $table->double('discount', 8, 2)->default(0);
+            $table->double('paid_amount', 8, 2)->default(0);
             $table->unsignedBigInteger('created_by_id');
             $table->timestamps();
 
             $table->foreign('created_by_id','oil_and_gas_pump_inventories_fk_1')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('oagp_supplier_id','oil_and_gas_pump_inventories_fk_1')->references('id')->on('oil_and_gas_pump_suppliers')->onDelete('cascade');
         });
     }
 

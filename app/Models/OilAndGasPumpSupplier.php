@@ -8,21 +8,24 @@ use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class OilAndGasPump extends Model
+class OilAndGasPumpSupplier extends Model
 {
     use HasFactory, LogsActivity;
 
     protected $guard = 'web';
 
-    protected $table = 'oil_and_gas_pumps';
+    protected $table = 'oil_and_gas_pump_suppliers';
 
     protected $fillable = [
         'name',
-        'code',
         'slug',
         'note',
-        'description',
+        'email',
+        'mobile_no',
         'created_by_id',
+        'payable_amount',
+        'receviable_amount',
+        'oil_and_gas_pump_id',
     ];
 
     protected $hidden = [
@@ -31,7 +34,7 @@ class OilAndGasPump extends Model
     ];
 
     protected $casts = [
-        'note' => 'array',
+        'note' => 'array'
     ];
 
     protected $dates = [
@@ -43,10 +46,11 @@ class OilAndGasPump extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-                'name','code','slug','note','
-                description','created_by_id',
+            'name','slug','note','email','mobile_no',
+            'created_by_id','payable_amount',
+            'receviable_amount','oil_and_gas_pump_id',
         ])
-        ->useLogName('Oil and gas pump')
+        ->useLogName('Oil and gas pump supplier')
         ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
         ->logOnlyDirty()
         ->logExcept(["id",'created_at',])
@@ -58,14 +62,14 @@ class OilAndGasPump extends Model
         return $this->belongsTo(User::class,'created_by_id','id')->withTrashed();
     }
 
-    public function oilAndGasPumpProducts()
+    public function oagpInventory()
     {
-        return $this->hasMany(OilAndGasPumpProduct::class,'oil_and_gas_pump_id','id');
+        return $this->belongsTo(OilAndGasPumpInventory::class,'id','oagp_product_id');
     }
 
-    public function oilAndGasPumpSuppliers()
+    public function oilAndGasPump()
     {
-        return $this->hasMany(OilAndGasPumpSupplier::class,'oil_and_gas_pump_id','id');
+        return $this->belongsTo(OilAndGasPump::class,'oil_and_gas_pump_id','id');
     }
 
     public function updatedBy()
@@ -78,10 +82,10 @@ class OilAndGasPump extends Model
     }
 
     public function activityLogs(){
-        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPump")->where("subject_id",$this->id)->get();
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPumpSupplier")->where("subject_id",$this->id)->get();
     }
 
     public function modifiedActivityLogs($limit){
-        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPump")->where("subject_id",$this->id)->take($limit)->get();
+        return Activity::orderBy("id","desc")->where("subject_type","App\Models\OilAndGasPumpSupplier")->where("subject_id",$this->id)->take($limit)->get();
     }
 }

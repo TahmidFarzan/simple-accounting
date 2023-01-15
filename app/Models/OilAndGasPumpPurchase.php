@@ -23,8 +23,10 @@ class OilAndGasPumpPurchase extends Model
         'sulg',
         'email',
         'invoice',
+        'discount',
         'mobile_no',
         'description',
+        'paid_amount',
         'created_by_id',
     ];
 
@@ -47,7 +49,7 @@ class OilAndGasPumpPurchase extends Model
         ->logOnly([
             'note','date','name','sulg','email',
             'invoice','mobile_no','description',
-            'created_by_id',
+            'created_by_id','paid_amount','discount',
         ])
         ->useLogName('Oil and gas pump purchase')
         ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
@@ -59,6 +61,11 @@ class OilAndGasPumpPurchase extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class,'created_by_id','id')->withTrashed();
+    }
+
+    public function oagpSupplierBy()
+    {
+        return $this->belongsTo(OilAndGasPumpSupplier::class,'oagp_supplier_id','id');
     }
 
     public function oagpPurchaseItems()

@@ -707,7 +707,7 @@ class UserPermissionSeeder extends Seeder
                 'slug' => SystemConstant::slugGenerator("Delete a oil and gas pump",200),
             ])->create();
 
-        // Oil and gas pump product permission.
+        // Oil and gas pump inventory permission.
             UserPermission::factory()->state([
                 'name' => "View inventory.",
                 'code' => "OAGPIMP01",
@@ -739,6 +739,46 @@ class UserPermissionSeeder extends Seeder
                 'description' => "The internal user can delete a product from inventory.",
                 'slug' => SystemConstant::slugGenerator("Delete a product from inventory",200),
             ])->create();
+        // Oil and gas pump supplier permission.
+            UserPermission::factory()->state([
+                'name' => "View oil and gas pump suppliers.",
+                'code' => "OAGPSMP01",
+                'type' => "OilAndGasPumpSupplierModulePermission",
+                'description' => "The internal user can view suppliers.",
+                'slug' => SystemConstant::slugGenerator("View suppliers",200),
+            ])->create();
 
+            UserPermission::factory()->state([
+                'name' => "Create a oil and gas pump supplier.",
+                'code' => "OAGPSMP02",
+                'type' => "OilAndGasPumpSupplierModulePermission",
+                'description' => "The internal user can create a supplier.",
+                'slug' => SystemConstant::slugGenerator("Create a supplier",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "View detials of a oil and gas pump supplier.",
+                'code' => "OAGPSMP03",
+                'type' => "OilAndGasPumpSupplierModulePermission",
+                'description' => "The internal user can view details of a supplier.",
+                'slug' => SystemConstant::slugGenerator("View detials of a supplier",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Update a oil and gas pump supplier.",
+                'code' => "OAGPSMP04",
+                'type' => "OilAndGasPumpSupplierModulePermission",
+                'description' => "The internal user can update a supplier.",
+                'slug' => SystemConstant::slugGenerator("Update a supplier",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete a oil and gas pump supplier.",
+                'code' => "OAGPSMP05",
+                'type' => "OilAndGasPumpSupplierModulePermission",
+                'description' => "The internal user can delete a supplier.",
+                'slug' => SystemConstant::slugGenerator("Delete a supplier",200),
+            ])->create();
+        // Oil and gas pump supplier permission.
     }
 }
