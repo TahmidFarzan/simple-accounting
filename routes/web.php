@@ -230,7 +230,12 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         // Oil and gas pump supplier
         Route::prefix('{oagpSlug}/supplier')->name('supplier.')->group(function(){
             Route::get('/', [OilAndGasPumpSupplierController::class, 'index'])->name('index');
+            Route::get('edit/{sSlug}', [OilAndGasPumpSupplierController::class, 'edit'])->name('edit');
+            Route::get('create', [OilAndGasPumpSupplierController::class, 'create'])->name('create');
             Route::get('details/{sSlug}', [OilAndGasPumpSupplierController::class, 'details'])->name('details');
+
+            Route::post('save', [OilAndGasPumpSupplierController::class, 'save'])->name('save');
+            Route::patch('update/{sSlug}', [OilAndGasPumpSupplierController::class, 'update'])->name('update');
             Route::delete('delete/{sSlug}', [OilAndGasPumpSupplierController::class, 'delete'])->name('delete');
         });
     });

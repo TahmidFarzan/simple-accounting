@@ -58,21 +58,6 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-2">
-                                <div class="row">
-                                    <label class="col-md-4 col-form-label col-form-label-sm">Type</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control form-control-sm" id="typeInputForSorting" name="type">
-                                            <option value="">Select</option>
-                                            @foreach ( array("Oil","Gas") as $perType)
-                                                <option value="{{ $perType }}">{{ $perType }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div id="typeInputForSortingErrorMessageDiv" class="alert alert-danger mt-2 p-1" style="display: none;"></div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="col-md-6">
                                 <div class="row">
                                     <label class="col-md-4 col-form-label col-form-label-sm">Search</label>
@@ -108,8 +93,8 @@
                                     <tr>
                                         <td>{{ $perSupplierIndex+1 }}</td>
                                         <td>{{ $perSupplier->name }}</td>
-                                        <td>{{ $perSupplier->email }}</td>
-                                        <td>{{ $perSupplier->mobile_no }}</td>
+                                        <td>{{ ($perSupplier->email == null) ? "Not yet added." : $perSupplier->email }}</td>
+                                        <td>{{ ($perSupplier->mobile_no == null) ? "Not yet added." : $perSupplier->mobile_no }}</td>
                                         <td>
                                             @if (Auth::user()->hasUserPermission(["OAGPSMP03"]) == true)
                                                 <a href="{{ route("oil.and.gas.pump.supplier.details",["oagpSlug" => $oilAndGasPump->slug,"sSlug" => $perSupplier->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
@@ -220,7 +205,7 @@
 
         function parameterGenerate(){
             var parameterString = null;
-            $.each( ["paginationInputForSorting","searchInputForSorting","typeInputForSorting"], function( key, perInput ) {
+            $.each( ["paginationInputForSorting","searchInputForSorting"], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
                     var inputFieldValue = $("#" + perInput).val();
                     var inputFieldName = $("#" + perInput).attr('name');
