@@ -142,6 +142,9 @@
                                                 <a href="{{ route("oil.and.gas.pump.supplier.index",["oagpSlug" => $perOilAndGasPump->slug]) }}" class="btn btn-sm btn-dark m-1">Supplier</a>
                                             @endif
 
+                                            @if (Auth::user()->hasUserPermission(["OAGPPUMP01"]) == true)
+                                                <a href="{{ route("oil.and.gas.pump.purchase.index",["oagpSlug" => $perOilAndGasPump->slug]) }}" class="btn btn-sm btn-light m-1">Purchase</a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty

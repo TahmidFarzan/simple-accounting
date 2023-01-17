@@ -16,6 +16,7 @@ use App\Http\Controllers\InternalUser\ProjectContractClientController;
 use App\Http\Controllers\InternalUser\OilAndGasPumpInventoryController;
 use App\Http\Controllers\InternalUser\ProjectContractJournalController;
 use App\Http\Controllers\InternalUser\ProjectContractPaymentController;
+use App\Http\Controllers\InternalUser\OilAndGasPumpPurchaseController;
 use App\Http\Controllers\InternalUser\ProjectContractCategoryController;
 use App\Http\Controllers\InternalUser\ProjectContractPaymentMethodController;
 
@@ -237,6 +238,11 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::post('save', [OilAndGasPumpSupplierController::class, 'save'])->name('save');
             Route::patch('update/{sSlug}', [OilAndGasPumpSupplierController::class, 'update'])->name('update');
             Route::delete('delete/{sSlug}', [OilAndGasPumpSupplierController::class, 'delete'])->name('delete');
+        });
+
+        // Oil and gas pump purchase
+        Route::prefix('{oagpSlug}/purchase')->name('purchase.')->group(function(){
+            Route::get('/', [OilAndGasPumpPurchaseController::class, 'index'])->name('index');
         });
     });
 

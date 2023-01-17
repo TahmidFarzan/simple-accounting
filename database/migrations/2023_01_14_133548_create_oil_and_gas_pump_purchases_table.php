@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('oil_and_gas_pump_purchases', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->dateTime('date');
             $table->unsignedBigInteger('oagp_supplier_id');
             $table->string('slug',200)->unique();
+            $table->enum('status', ['Due','Complete'])->default('Due');
             $table->string('invoice',200)->unique();
-            $table->string('email',255)->nullable();
-            $table->string('mobile_no',20)->nullable();
             $table->text('description')->nullable();
             $table->json('note')->nullable();
             $table->double('discount', 8, 2)->default(0);

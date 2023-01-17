@@ -21,13 +21,14 @@ class OilAndGasPumpPurchase extends Model
         'date',
         'name',
         'sulg',
-        'email',
+        'status',
         'invoice',
         'discount',
         'mobile_no',
         'description',
         'paid_amount',
         'created_by_id',
+        'oagp_supplier_id',
     ];
 
     protected $hidden = [
@@ -47,9 +48,9 @@ class OilAndGasPumpPurchase extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-            'note','date','name','sulg','email',
-            'invoice','mobile_no','description',
-            'created_by_id','paid_amount','discount',
+            'note','date','name','sulg',
+            'invoice','mobile_no','description','status',
+            'created_by_id','paid_amount','discount','oagp_supplier_id',
         ])
         ->useLogName('Oil and gas pump purchase')
         ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
@@ -71,6 +72,21 @@ class OilAndGasPumpPurchase extends Model
     public function oagpPurchaseItems()
     {
         return $this->hasMany(OilAndGasPumpPurchaseItem::class,'oagp_purchase_id','id');
+    }
+
+    public function oagpTotalItemsPayableAmount()
+    {
+        return ($this->oagpPurchaseItems->sum('purchase_price') - ( $this->oagpPurchaseItems->sum('purchase_price') * ($this->oagpPurchaseItems->sum('discount') / 100) )) ;
+    }
+
+    public function oagpPayableAmount()
+    {
+        return ($this->oagpTotalItemsPayableAmount() - ( $this->oagpTotalItemsPayableAmount() * ($this->discount / 100) )) ;
+    }
+
+    public function oagpDueAmount()
+    {
+        return ($this->oagpPayableAmount() - $this->paid_amount) ;
     }
 
     public function updatedBy()
