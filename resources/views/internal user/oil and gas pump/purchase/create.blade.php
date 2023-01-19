@@ -116,9 +116,9 @@
                                             <th>Sl</th>
                                             <th>Product</th>
                                             <th>Quantity</th>
-                                            <th>Discount</th>
-                                            <th>Purchase price</th>
-                                            <th>Sell price</th>
+                                            <th>Purchase price ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
+                                            <th>Discount (%)</th>
+                                            <th>Sell price ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
                                             <th>#</th>
                                         </tr>
                                     </thead>
@@ -138,16 +138,16 @@
                                                     <input id="quantityInput1" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required>
                                                 </td>
                                                 <td>
-                                                    <input id="discountInput1" name="discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="purchasePriceInput1" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
-                                                    <input id="purchasePriceInput1" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="discountInput1" name="discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
                                                     <input id="sellPriceInput1" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
-                                                    <input id="rowTotalPurchasePriceInput1" name="row_total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="rowTotalInput1" name="row_total[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly>
                                                 </td>
                                             </tr>
                                         @endif
@@ -179,16 +179,16 @@
                                                         @enderror
                                                     </td>
                                                     <td>
-                                                        <input id="discountInput{{ $i }}" name="discount[]" type="number" class="form-control form-control-sm @error('discount.'.$i) is-invalid @enderror" value="{{ old('discount.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('discount.'.$i)
+                                                        <input id="purchasePriceInput{{ $i }}" name="purchase_price[]" type="number" class="form-control form-control-sm @error('purchase_price.'.$i) is-invalid @enderror" value="{{ old('purchase_price.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('purchase_price.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
                                                         @enderror
                                                     </td>
                                                     <td>
-                                                        <input id="purchasePriceInput{{ $i }}" name="purchase_price[]" type="number" class="form-control form-control-sm @error('purchase_price.'.$i) is-invalid @enderror" value="{{ old('purchase_price.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('purchase_price.'.$i)
+                                                        <input id="discountInput{{ $i }}" name="discount[]" type="number" class="form-control form-control-sm @error('discount.'.$i) is-invalid @enderror" value="{{ old('discount.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('discount.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -203,8 +203,8 @@
                                                         @enderror
                                                     </td>
                                                     <td>
-                                                        <input id="rowTotalPurchasePriceInput{{ $i }}" name="row_total_purchase_price[]" type="number" class="form-control form-control-sm @error('row_total_purchase_price.'.$i) is-invalid @enderror" value="{{ old('row_total_purchase_price.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('row_total_purchase_price.'.$i)
+                                                        <input id="rowTotalInput{{ $i }}" name="row_total[]" type="number" class="form-control form-control-sm @error('row_total.'.$i) is-invalid @enderror" value="{{ old('row_total.'.$i) }}" min="0" step="00.01" required readonly>
+                                                        @error('row_total.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -220,25 +220,10 @@
 
                         <div class="col-md-12 mb-2">
                             <div class="row">
-                                <div class="col-md-6 mb-2"></div>
-                                <div class="col-md-6 mb-2">
+                                <div class="col-md-5 mb-2"></div>
+                                <div class="col-md-7 mb-2">
                                     <div class="row">
-                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Discount <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
-                                        <div class="col-md-8">
-                                            <input id="discountInput" name="discount" type="number" class="form-control form-control-sm @error('discount') is-invalid @enderror" value="{{ (old('discount') == null) ? 0 : old('discount') }}" min="0" step="00.01" required>
-                                            @error('discount')
-                                                <span class="invalid-feedback" role="alert" style="display: block;">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6 mb-2"></div>
-                                <div class="col-md-6 mb-2">
-                                    <div class="row">
-                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Total amount <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Total amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
                                             <input id="totalAmountInput" name="total_amount" type="number" class="form-control form-control-sm @error('total_amount') is-invalid @enderror" value="{{ (old('total_amount') == null) ? 0 : old('total_amount') }}" min="0" step="00.01" required readonly>
                                             @error('total_amount')
@@ -250,10 +235,40 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 mb-2"></div>
-                                <div class="col-md-6 mb-2">
+                                <div class="col-md-5 mb-2"></div>
+                                <div class="col-md-7 mb-2">
                                     <div class="row">
-                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Paid amount <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Discount (%) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                        <div class="col-md-8">
+                                            <input id="discountInput" name="discount" type="number" class="form-control form-control-sm @error('discount') is-invalid @enderror" value="{{ (old('discount') == null) ? 0 : old('discount') }}" min="0" step="00.01" required>
+                                            @error('discount')
+                                                <span class="invalid-feedback" role="alert" style="display: block;">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 mb-2"></div>
+                                <div class="col-md-7 mb-2">
+                                    <div class="row">
+                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Payable amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                        <div class="col-md-8">
+                                            <input id="payableAmountInput" name="payable_amount" type="number" class="form-control form-control-sm @error('payable_amount') is-invalid @enderror" value="{{ (old('payable_amount') == null) ? 0 : old('payable_amount') }}" min="0" step="00.01" required readonly>
+                                            @error('payable_amount')
+                                                <span class="invalid-feedback" role="alert" style="display: block;">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 mb-2"></div>
+                                <div class="col-md-7 mb-2">
+                                    <div class="row">
+                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Paid amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
                                             <input id="paidAmountInput" name="paid_amount" type="number" class="form-control form-control-sm @error('paid_amount') is-invalid @enderror" value="{{ (old('paid_amount') == null) ? 0 : old('paid_amount') }}" min="0" step="00.01" required>
                                             @error('paid_amount')
@@ -265,10 +280,10 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 mb-2"></div>
-                                <div class="col-md-6 mb-2">
+                                <div class="col-md-5 mb-2"></div>
+                                <div class="col-md-7 mb-2">
                                     <div class="row">
-                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Due amount <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Due amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
                                             <input id="dueAmountInput" name="due_amount" type="number" class="form-control form-control-sm @error('due_amount') is-invalid @enderror" value="{{ (old('due_amount') == null) ? 0 : old('due_amount') }}" min="0" step="00.01" required>
                                             @error('due_amount')
@@ -357,10 +372,10 @@
                     row = row + '<td>' + rowCount + '</td>';
                     row = row + '<td><select id="productInput'+ rowCount +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
                     row = row + '<td><input id="quantityInput'+ rowCount +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
-                    row = row + '<td><input id="discountInput'+ rowCount +'" name="discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="purchasePriceInput'+ rowCount +'" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td><input id="discountInput'+ rowCount +'" name="discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="sellPriceInput'+ rowCount +'" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="rowTotalPurchasePriceInput'+ rowCount +'" name="row_total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td><input id="rowTotalInput'+ rowCount +'" name="row_total[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly></td>';
                     row = row + '</tr>';
 
                     $('#dataTable tbody').append(row);
@@ -377,11 +392,17 @@
                     rowCount = parseInt(rowCount) - 1;
                     $("#rowCount").val(rowCount);
                     $('#dataTable tbody tr:last').remove();
+
                     rowButtonStatusChange();
+                    calculateTotalAmount();
                 }
                 else{
                     rowButtonStatusChange();
                 }
+            });
+
+            $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="discount"], input[name^="purchase_price"]', function (event) {
+                calculateRowTotal($(this).closest("tr"));
             });
         });
 
@@ -425,6 +446,31 @@
                 $(errorDivId).hide();
                 $(errorDivId).html("");
             }
+        }
+
+        function calculateRowTotal(row){
+            var rowTotal = 0;
+            var quantity = +row.find('input[name^="quantity"]').val();
+            var discount = +row.find('input[name^="discount"]').val();
+            var purchasePrice = +row.find('input[name^="purchase_price"]').val();
+
+            var totalPurachecPrice = parseFloat(purchasePrice) * parseFloat(quantity);
+            var totalRowDiscount = parseFloat(totalPurachecPrice) * (parseFloat(discount)/100);
+            rowTotal = (totalPurachecPrice - totalRowDiscount).toFixed(2);
+
+            row.find('input[name^="row_total"]').val(rowTotal);
+            calculateTotalAmount();
+        }
+
+        function calculateTotalAmount(){
+            var totalAmount = 0;
+
+            var rowTotalAmount = $('#dataTable').find('input[name^="row_total"]').val();
+
+            $("#dataTable").find('input[name^="row_total"]').each(function () {
+                totalAmount = parseFloat(totalAmount) + parseFloat($(this).val());
+            });
+            $("#totalAmountInput").val(totalAmount.toFixed(2));
         }
     </script>
 @endpush
