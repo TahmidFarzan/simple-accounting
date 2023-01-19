@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\OilAndGasPump;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\DB;
+use App\Models\OilAndGasPumpProduct;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
@@ -108,5 +109,13 @@ class OilAndGasPumpPurchaseController extends Controller
         $dueOAGPPurchases = $dueOAGPPurchases->paginate($pagination);
 
         return view('internal user.oil and gas pump.purchase.index',compact("completeOAGPPurchases","dueOAGPPurchases","oagpSuppliers","oilAndGasPump","paginations"));
+    }
+
+    public function create($oagpSlug){
+        $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
+        $oagpSuppliers = OilAndGasPumpSupplier::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
+        $oilAndGasPumpProducts = OilAndGasPumpProduct::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
+
+        return view('internal user.oil and gas pump.purchase.create',compact("oilAndGasPump","oagpSuppliers","oilAndGasPumpProducts"));
     }
 }

@@ -243,6 +243,8 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         // Oil and gas pump purchase
         Route::prefix('{oagpSlug}/purchase')->name('purchase.')->group(function(){
             Route::get('/', [OilAndGasPumpPurchaseController::class, 'index'])->name('index');
+            Route::get('create', [OilAndGasPumpPurchaseController::class, 'create'])->name('create');
+            Route::post('save', [OilAndGasPumpPurchaseController::class, 'save'])->name('save');
         });
     });
 
