@@ -225,8 +225,8 @@
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Total amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
-                                            <input id="totalAmountInput" name="total_amount" type="number" class="form-control form-control-sm @error('total_amount') is-invalid @enderror" value="{{ (old('total_amount') == null) ? 0 : old('total_amount') }}" min="0" step="00.01" required readonly>
-                                            @error('total_amount')
+                                            <input id="totalPriceInput" name="total_price" type="number" class="form-control form-control-sm @error('total_price') is-invalid @enderror" value="{{ (old('total_price') == null) ? 0 : old('total_price') }}" min="0" step="00.01" required readonly>
+                                            @error('total_price')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -285,7 +285,7 @@
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Due amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
-                                            <input id="dueAmountInput" name="due_amount" type="number" class="form-control form-control-sm @error('due_amount') is-invalid @enderror" value="{{ (old('due_amount') == null) ? 0 : old('due_amount') }}" min="0" step="00.01" required>
+                                            <input id="dueAmountInput" name="due_amount" type="number" class="form-control form-control-sm @error('due_amount') is-invalid @enderror" value="{{ (old('due_amount') == null) ? 0 : old('due_amount') }}" min="0" step="00.01" required readonly>
                                             @error('due_amount')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
@@ -394,7 +394,7 @@
                     $('#dataTable tbody tr:last').remove();
 
                     rowButtonStatusChange();
-                    calculateTotalAmount();
+                    calculateTotalPrice();
                 }
                 else{
                     rowButtonStatusChange();
@@ -403,6 +403,23 @@
 
             $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="discount"], input[name^="purchase_price"]', function (event) {
                 calculateRowTotal($(this).closest("tr"));
+            });
+
+            $(document).on('change', '#discountInput', function () {
+                var totalPrice = $("#totalPriceInput").val();
+                var discount = $("#discountInput").val();
+                var totalDiscount =  parseFloat(totalPrice) * (parseFloat(discount)/100);
+
+                var payableAmount = totalPrice - totalDiscount;
+                $("#payableAmountInput").val(payableAmount.toFixed(2));
+            });
+
+            $(document).on('change', '#paidAmountInput', function () {
+                var payableAmount = $("#payableAmountInput").val();
+                var paidAmount = $("#paidAmountInput").val();
+
+                var dueAmount = parseFloat(payableAmount) - parseFloat(paidAmount);
+                $("#dueAmountInput").val(dueAmount.toFixed(2));
             });
         });
 
@@ -459,18 +476,18 @@
             rowTotal = (totalPurachecPrice - totalRowDiscount).toFixed(2);
 
             row.find('input[name^="row_total"]').val(rowTotal);
-            calculateTotalAmount();
+            calculateTotalPrice();
         }
 
-        function calculateTotalAmount(){
-            var totalAmount = 0;
+        function calculateTotalPrice(){
+            var totalPrice = 0;
 
-            var rowTotalAmount = $('#dataTable').find('input[name^="row_total"]').val();
+            var rowTotalPrice = $('#dataTable').find('input[name^="row_total"]').val();
 
             $("#dataTable").find('input[name^="row_total"]').each(function () {
-                totalAmount = parseFloat(totalAmount) + parseFloat($(this).val());
+                totalPrice = parseFloat(totalPrice) + parseFloat($(this).val());
             });
-            $("#totalAmountInput").val(totalAmount.toFixed(2));
+            $("#totalPriceInput").val(totalPrice.toFixed(2));
         }
     </script>
 @endpush
