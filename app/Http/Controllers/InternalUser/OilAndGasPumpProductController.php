@@ -115,8 +115,9 @@ class OilAndGasPumpProductController extends Controller
 
         $statusInformation = array("status" => "errors","message" => collect());
 
+        DB::beginTransaction();
         try{
-            DB::beginTransaction();
+
             LogBatch::startBatch();
                 $product = new OilAndGasPumpProduct();
                 $product->name = $request->name;
@@ -197,8 +198,8 @@ class OilAndGasPumpProductController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
 
+        DB::beginTransaction();
         try{
-            DB::beginTransaction();
             LogBatch::startBatch();
                 $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
                 $product->name = $request->name;
@@ -237,9 +238,9 @@ class OilAndGasPumpProductController extends Controller
 
         $deleteValidationStatus = $this->deleteValidation($pSlug);
 
+        DB::beginTransaction();
         if(true){
             try{
-                DB::beginTransaction();
                 LogBatch::startBatch();
                     $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
                     $deleteOilAndGasPumpProduct = $product->delete();
