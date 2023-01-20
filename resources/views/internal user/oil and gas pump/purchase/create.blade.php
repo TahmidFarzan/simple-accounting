@@ -141,7 +141,7 @@
                                                     <input id="purchasePriceInput1" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
-                                                    <input id="discountInput1" name="discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="discountInput1" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
                                                     <input id="sellPriceInput1" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
@@ -187,7 +187,7 @@
                                                         @enderror
                                                     </td>
                                                     <td>
-                                                        <input id="discountInput{{ $i }}" name="discount[]" type="number" class="form-control form-control-sm @error('discount.'.$i) is-invalid @enderror" value="{{ old('discount.'.$i) }}" min="0" step="00.01" required>
+                                                        <input id="discountInput{{ $i }}" name="product_discount[]" type="number" class="form-control form-control-sm @error('discount.'.$i) is-invalid @enderror" value="{{ old('discount.'.$i) }}" min="0" step="00.01" required>
                                                         @error('discount.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
@@ -312,13 +312,28 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-2">
                             <div class="row">
                                 <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Note <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-lg-8">
                                     <textarea id="noteInput" name="note" class="form-control form-control-sm @error('note') is-invalid @enderror" placeholder="Ex: Hello" required>{{ old('note') }}</textarea>
 
                                     @error('note')
+                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Status <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <div class="col-lg-8">
+                                    <input id="statusInput" name="status" type="text" class="form-control form-control-sm @error('status') is-invalid @enderror" value="{{ old('status') }}" placeholder="Ex: Due" readonly required>
+
+                                    @error('status')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -373,7 +388,7 @@
                     row = row + '<td><select id="productInput'+ rowCount +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
                     row = row + '<td><input id="quantityInput'+ rowCount +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
                     row = row + '<td><input id="purchasePriceInput'+ rowCount +'" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="discountInput'+ rowCount +'" name="discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td><input id="discountInput'+ rowCount +'" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="sellPriceInput'+ rowCount +'" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="rowTotalInput'+ rowCount +'" name="row_total[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly></td>';
                     row = row + '</tr>';
@@ -401,7 +416,7 @@
                 }
             });
 
-            $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="discount"], input[name^="purchase_price"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="product_discount"], input[name^="purchase_price"]', function (event) {
                 calculateRowTotal($(this).closest("tr"));
             });
 
@@ -415,12 +430,23 @@
             });
 
             $(document).on('change', '#paidAmountInput', function () {
+                var status = "Due";
+
                 var payableAmount = $("#payableAmountInput").val();
                 var paidAmount = $("#paidAmountInput").val();
 
                 var dueAmount = parseFloat(payableAmount) - parseFloat(paidAmount);
                 $("#dueAmountInput").val(dueAmount.toFixed(2));
+
+                if(dueAmount == 0){
+                    status = "Complete";
+                }
+                if(dueAmount > 0){
+                    status = "Due";
+                }
+                $("#statusInput").val(status);
             });
+
         });
 
         function rowButtonStatusChange(){
@@ -468,12 +494,12 @@
         function calculateRowTotal(row){
             var rowTotal = 0;
             var quantity = +row.find('input[name^="quantity"]').val();
-            var discount = +row.find('input[name^="discount"]').val();
+            var productDiscount = +row.find('input[name^="product_discount"]').val();
             var purchasePrice = +row.find('input[name^="purchase_price"]').val();
 
             var totalPurachecPrice = parseFloat(purchasePrice) * parseFloat(quantity);
-            var totalRowDiscount = parseFloat(totalPurachecPrice) * (parseFloat(discount)/100);
-            rowTotal = (totalPurachecPrice - totalRowDiscount).toFixed(2);
+            var totalProductDiscount = parseFloat(totalPurachecPrice) * (parseFloat(productDiscount)/100);
+            rowTotal = (totalPurachecPrice - totalProductDiscount).toFixed(2);
 
             row.find('input[name^="row_total"]').val(rowTotal);
             calculateTotalPrice();
