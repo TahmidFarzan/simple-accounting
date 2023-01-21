@@ -58,19 +58,19 @@ class OilAndGasPumpInventoryController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'product' => 'required',
-                'count' => 'required|numeric',
+                'quantity' => 'required|numeric',
                 'sell_price' => 'required|numeric',
                 'purchase_price' => 'required|numeric',
 
-                'previous_count' => 'required|numeric',
+                'previous_quantity' => 'required|numeric',
                 'previous_sell_price' => 'required|numeric',
                 'previous_purchase_price' => 'required|numeric',
             ],
             [
                 'product.required' => 'Product is required.',
 
-                'count.required' => 'Count is required.',
-                'count.numeric' => 'Count must be numeric.',
+                'quantity.required' => 'Quantity is required.',
+                'quantity.numeric' => 'Qount must be numeric.',
 
                 'sell_price.required' => 'Sell price is required.',
                 'sell_price.numeric' => 'Sell price must be numeric.',
@@ -78,8 +78,8 @@ class OilAndGasPumpInventoryController extends Controller
                 'purchase_price.required' => 'Purchase price is required.',
                 'purchase_price.numeric' => 'Purchase price must be numeric.',
 
-                'previous_count.required' => 'Previous count is required.',
-                'previous_count.numeric' => 'Previous count must be numeric.',
+                'previous_quantity.required' => 'Previous quantity is required.',
+                'previous_quantity.numeric' => 'Previous quantity must be numeric.',
 
                 'previous_sell_price.required' => 'Previous sell price is required.',
                 'previous_sell_price.numeric' => 'Previous sell price must be numeric.',
@@ -126,10 +126,10 @@ class OilAndGasPumpInventoryController extends Controller
             LogBatch::startBatch();
                 $oagpInventory = new OilAndGasPumpInventory();
                 $oagpInventory->oagp_product_id = $osgpProduct->id;
-                $oagpInventory->count = $request->count;
+                $oagpInventory->quantity = $request->quantity;
                 $oagpInventory->sell_price = $request->sell_price;
                 $oagpInventory->purchase_price = $request->purchase_price;
-                $oagpInventory->previous_count = $request->previous_count;
+                $oagpInventory->previous_quantity = $request->previous_quantity;
                 $oagpInventory->previous_sell_price = $request->previous_sell_price;
                 $oagpInventory->previous_purchase_price = $request->previous_purchase_price;
                 $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);

@@ -52,10 +52,10 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Count <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Quantity <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-7">
-                                    <input id="countInput" name="count" type="number" class="form-control form-control-sm @error('count') is-invalid @enderror" value="{{ old('count') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
-                                    @error('count')
+                                    <input id="quantityInput" name="quantity" type="number" class="form-control form-control-sm @error('quantity') is-invalid @enderror" value="{{ old('quantity') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
+                                    @error('quantity')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -94,10 +94,10 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Previous count <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Previous quantity <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-7">
-                                    <input id="previousCountInput" name="previous_count" type="number" class="form-control form-control-sm @error('previous_count') is-invalid @enderror" value="{{ old('previous_count') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
-                                    @error('previous_count')
+                                    <input id="previousQuantityInput" name="previous_quantity" type="number" class="form-control form-control-sm @error('previous_quantity') is-invalid @enderror" value="{{ old('previous_quantity') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
+                                    @error('previous_quantity')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>

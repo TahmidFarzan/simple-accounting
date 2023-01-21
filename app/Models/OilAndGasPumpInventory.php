@@ -18,12 +18,12 @@ class OilAndGasPumpInventory extends Model
 
     protected $fillable = [
         'slug',
-        'count',
+        'quantity',
         'oagp_product_id',
         'sell_price',
         'created_by_id',
         'purchase_price',
-        'previous_count',
+        'previous_quantity',
         'previous_sell_price',
         'oil_and_gas_pump_id',
         'previous_purchase_price'
@@ -45,8 +45,8 @@ class OilAndGasPumpInventory extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-            'slug','count','oagp_product_id','sell_price','created_by_id',
-            'purchase_price','previous_count','previous_sell_price',
+            'slug','quantity','oagp_product_id','sell_price','created_by_id',
+            'purchase_price','previous_quantity','previous_sell_price',
             'oil_and_gas_pump_id','previous_purchase_price'
         ])
         ->useLogName('Oil and gas pump product inventory')

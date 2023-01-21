@@ -79,10 +79,10 @@
                                         <table class="table">
                                             <tbody>
                                                 <tr>
-                                                    <th style="width: 25%;">Count</th>
+                                                    <th style="width: 25%;">Quantity</th>
                                                     <th style="width: 1%;">:</th>
                                                     <td>
-                                                        {{ $inventory->count }}
+                                                        {{ $inventory->quantity }}
                                                         @if ( $inventory->oagpProduct->type == "Oil")
                                                             {{ $setting["oagpSetting"]["oil_unit"] }}
                                                         @endif
@@ -120,9 +120,9 @@
                                         <table class="table">
                                             <tbody>
                                                 <tr>
-                                                    <th style="width: 25%;">Count</th>
+                                                    <th style="width: 25%;">Quantity</th>
                                                     <th style="width: 1%;">:</th>
-                                                    <td>{{ $inventory->previous_count }}
+                                                    <td>{{ $inventory->previous_quantity }}
                                                         @if ( $inventory->oagpProduct->type == "Oil")
                                                             {{ $setting["oagpSetting"]["oil_unit"] }}
                                                         @endif
