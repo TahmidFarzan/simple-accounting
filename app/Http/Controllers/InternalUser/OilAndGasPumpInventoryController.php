@@ -62,9 +62,9 @@ class OilAndGasPumpInventoryController extends Controller
                 'sell_price' => 'required|numeric',
                 'purchase_price' => 'required|numeric',
 
-                'previous_quantity' => 'required|numeric',
-                'previous_sell_price' => 'required|numeric',
-                'previous_purchase_price' => 'required|numeric',
+                'old_quantity' => 'required|numeric',
+                'old_sell_price' => 'required|numeric',
+                'old_purchase_price' => 'required|numeric',
             ],
             [
                 'product.required' => 'Product is required.',
@@ -78,14 +78,14 @@ class OilAndGasPumpInventoryController extends Controller
                 'purchase_price.required' => 'Purchase price is required.',
                 'purchase_price.numeric' => 'Purchase price must be numeric.',
 
-                'previous_quantity.required' => 'Previous quantity is required.',
-                'previous_quantity.numeric' => 'Previous quantity must be numeric.',
+                'old_quantity.required' => 'Old quantity is required.',
+                'old_quantity.numeric' => 'Old quantity must be numeric.',
 
-                'previous_sell_price.required' => 'Previous sell price is required.',
-                'previous_sell_price.numeric' => 'Previous sell price must be numeric.',
+                'old_sell_price.required' => 'Old sell price is required.',
+                'old_sell_price.numeric' => 'Old sell price must be numeric.',
 
-                'previous_purchase_price.required' => 'Previous purchase price is required.',
-                'previous_purchase_price.numeric' => 'Previous purchase price must be numeric.',
+                'old_purchase_price.required' => 'Old purchase price is required.',
+                'old_purchase_price.numeric' => 'Old purchase price must be numeric.',
             ]
         );
 
@@ -129,9 +129,9 @@ class OilAndGasPumpInventoryController extends Controller
                 $oagpInventory->quantity = $request->quantity;
                 $oagpInventory->sell_price = $request->sell_price;
                 $oagpInventory->purchase_price = $request->purchase_price;
-                $oagpInventory->previous_quantity = $request->previous_quantity;
-                $oagpInventory->previous_sell_price = $request->previous_sell_price;
-                $oagpInventory->previous_purchase_price = $request->previous_purchase_price;
+                $oagpInventory->old_quantity = $request->old_quantity;
+                $oagpInventory->old_sell_price = $request->old_sell_price;
+                $oagpInventory->old_purchase_price = $request->old_purchase_price;
                 $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);
                 $oagpInventory->created_at = Carbon::now();
                 $oagpInventory->created_by_id = Auth::user()->id;

@@ -94,10 +94,10 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Previous quantity <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Old quantity <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-7">
-                                    <input id="previousQuantityInput" name="previous_quantity" type="number" class="form-control form-control-sm @error('previous_quantity') is-invalid @enderror" value="{{ old('previous_quantity') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
-                                    @error('previous_quantity')
+                                    <input id="oldQuantityInput" name="old_quantity" type="number" class="form-control form-control-sm @error('old_quantity') is-invalid @enderror" value="{{ old('old_quantity') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
+                                    @error('old_quantity')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -108,10 +108,10 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Previous sell price <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Old sell price <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-7">
-                                    <input id="previousSellPriceInput" name="previous_sell_price" type="number" class="form-control form-control-sm @error('previous_sell_price') is-invalid @enderror" value="{{ old('previous_sell_price') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
-                                    @error('previous_sell_price')
+                                    <input id="oldSellPriceInput" name="old_sell_price" type="number" class="form-control form-control-sm @error('old_sell_price') is-invalid @enderror" value="{{ old('old_sell_price') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
+                                    @error('old_sell_price')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -122,10 +122,10 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Previous purchase price <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <label class="col-md-5 col-form-label col-form-label-sm text-bold">Old purchase price <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-7">
-                                    <input id="previousPurchasePriceInput" name="previous_purchase_price" type="number" class="form-control form-control-sm @error('previous_purchase_price') is-invalid @enderror" value="{{ old('previous_purchase_price') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
-                                    @error('previous_purchase_price')
+                                    <input id="oldPurchasePriceInput" name="old_purchase_price" type="number" class="form-control form-control-sm @error('old_purchase_price') is-invalid @enderror" value="{{ old('old_purchase_price') }}" placeholder="Ex: Hello" min="0" step="0.01" required>
+                                    @error('old_purchase_price')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>

@@ -112,7 +112,7 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="d-flex justify-content-center mt-2">
-                                    <h5>Previous</h5>
+                                    <h5>Old</h5>
                                 </div>
 
                                 <div class="card-body">
@@ -122,7 +122,7 @@
                                                 <tr>
                                                     <th style="width: 25%;">Quantity</th>
                                                     <th style="width: 1%;">:</th>
-                                                    <td>{{ $inventory->previous_quantity }}
+                                                    <td>{{ $inventory->old_quantity }}
                                                         @if ( $inventory->oagpProduct->type == "Oil")
                                                             {{ $setting["oagpSetting"]["oil_unit"] }}
                                                         @endif
@@ -135,12 +135,12 @@
                                                 <tr>
                                                     <th style="width: 25%;">Sell price</th>
                                                     <th style="width: 1%;">:</th>
-                                                    <td>{{ $inventory->previous_sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                    <td>{{ $inventory->old_sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th style="width: 25%;">Purchase price</th>
                                                     <th style="width: 1%;">:</th>
-                                                    <td>{{ $inventory->previous_purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                    <td>{{ $inventory->old_purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

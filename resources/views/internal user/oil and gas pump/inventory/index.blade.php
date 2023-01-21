@@ -55,7 +55,7 @@
                                     <tr>
                                         <td>{{ $perInventoryIndex + 1 }}</td>
                                         <td>{{ $perInventory->oagpProduct->name }}</td>
-                                        <td>{{ $perInventory->count }}</td>
+                                        <td>{{ $perInventory->quantity }}</td>
                                         <td>{{ $perInventory->sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                         <td>{{ $perInventory->purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                         <td>
