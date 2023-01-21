@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\InternalUser;
 
-use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\OilAndGasPump;
 use App\Utilities\SystemConstant;
-use Illuminate\Support\Facades\DB;
 use App\Utilities\InventoryConstant;
 use App\Models\OilAndGasPumpProduct;
 use Illuminate\Support\Facades\Auth;
@@ -315,76 +313,64 @@ class OilAndGasPumpPurchaseController extends Controller
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         return $request;
 
-        DB::beginTransaction();
+        $oilAndGasPumpPurchase = new OilAndGasPumpPurchase();
+        $oilAndGasPumpPurchase->updated_at = null;
+        $oilAndGasPumpPurchase->name = $request->name;
+        $oilAndGasPumpPurchase->date = $request->date;
+        $oilAndGasPumpPurchase->status = $request->status;
+        $oilAndGasPumpPurchase->created_at = Carbon::now();
+        $oilAndGasPumpPurchase->invoice = $request->invoice;
+        $oilAndGasPumpPurchase->note = array($request->note);
+        $oilAndGasPumpPurchase->discount = $request->discount;
+        $oilAndGasPumpPurchase->created_by_id = Auth::user()->id;
+        $oilAndGasPumpPurchase->paid_amount = $request->paid_amount;
+        $oilAndGasPumpPurchase->description = $request->description;
+        $oilAndGasPumpPurchase->slug = SystemConstant::slugGenerator($request->name,200);
+        $oilAndGasPumpPurchase->oagp_supplier_id = OilAndGasPumpSupplier::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->supplier)->firstOrFail()->id;
 
-        try{
-            $oilAndGasPumpPurchase = new OilAndGasPumpPurchase();
-            $oilAndGasPumpPurchase->updated_at = null;
-            $oilAndGasPumpPurchase->name = $request->name;
-            $oilAndGasPumpPurchase->date = $request->date;
-            $oilAndGasPumpPurchase->status = $request->status;
-            $oilAndGasPumpPurchase->created_at = Carbon::now();
-            $oilAndGasPumpPurchase->invoice = $request->invoice;
-            $oilAndGasPumpPurchase->note = array($request->note);
-            $oilAndGasPumpPurchase->discount = $request->discount;
-            $oilAndGasPumpPurchase->created_by_id = Auth::user()->id;
-            $oilAndGasPumpPurchase->paid_amount = $request->paid_amount;
-            $oilAndGasPumpPurchase->description = $request->description;
-            $oilAndGasPumpPurchase->slug = SystemConstant::slugGenerator($request->name,200);
-            $oilAndGasPumpPurchase->oagp_supplier_id = OilAndGasPumpSupplier::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->supplier)->firstOrFail()->id;
+        $savePurchase = $oilAndGasPumpPurchase->save();
 
-            $savePurchase = $oilAndGasPumpPurchase->save();
+        if($savePurchase){
+            $oilAndGasPumpPurchaseItemCount = 0;
+            $statusInformation["status"] = "success";
+            $statusInformation["message"]->push("Purchase has been done.");
+            for($i = 0; $i < $request->table_row; $i++){
+                $product = OilAndGasPumpProduct::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->product[$i])->firstOrFail();
 
-            if($savePurchase){
-                DB::commit();
-                $oilAndGasPumpPurchaseItemCount = 0;
-                $statusInformation["status"] = "success";
-                $statusInformation["message"]->push("Purchase has been done.");
+                $oilAndGasPumpPurchaseItem = new OilAndGasPumpPurchaseItem();
+                $oilAndGasPumpPurchaseItem->updated_at = null;
+                $oilAndGasPumpPurchaseItem->created_at = Carbon::now();
+                $oilAndGasPumpPurchaseItem->oagp_product_id = $product->id;
+                $oilAndGasPumpPurchaseItem->created_by_id = Auth::user()->id;
+                $oilAndGasPumpPurchaseItem->quantity = $request->quantity[$i];
+                $oilAndGasPumpPurchaseItem->sell_price = $request->sell_price[$i];
+                $oilAndGasPumpPurchaseItem->purchase_price = $request->purchase_price[$i];
+                $oilAndGasPumpPurchaseItem->oagp_purchase_id = $oilAndGasPumpPurchase->id;
+                $oilAndGasPumpPurchaseItem->slug = SystemConstant::slugGenerator($request->name." Item",200);
 
-                for($i = 0; $i < $request->table_row; $i++){
-                    $product = OilAndGasPumpProduct::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->product[$i])->firstOrFail();
+                $oilAndGasPumpPurchaseItem = $oilAndGasPumpPurchaseItem->save();
 
-                    $oilAndGasPumpPurchaseItem = new OilAndGasPumpPurchaseItem();
-                    $oilAndGasPumpPurchaseItem->updated_at = null;
-                    $oilAndGasPumpPurchaseItem->created_at = Carbon::now();
-                    $oilAndGasPumpPurchaseItem->oagp_product_id = $product->id;
-                    $oilAndGasPumpPurchaseItem->created_by_id = Auth::user()->id;
-                    $oilAndGasPumpPurchaseItem->quantity = $request->quantity[$i];
-                    $oilAndGasPumpPurchaseItem->sell_price = $request->sell_price[$i];
-                    $oilAndGasPumpPurchaseItem->purchase_price = $request->purchase_price[$i];
-                    $oilAndGasPumpPurchaseItem->oagp_purchase_id = $oilAndGasPumpPurchase->id;
-                    $oilAndGasPumpPurchaseItem->slug = SystemConstant::slugGenerator($request->name." Item",200);
-
-                    $oilAndGasPumpPurchaseItem = $oilAndGasPumpPurchaseItem->save();
-
-                    if($oilAndGasPumpPurchaseItem){
-                        $oilAndGasPumpPurchaseItemCount = $oilAndGasPumpPurchaseItemCount + 1;
-                    }
-                    else{
-                        $statusInformation["message"]->push("Fail to save product(".$product.").");
-                    }
-                }
-
-                if($oilAndGasPumpPurchaseItemCount == count($request->product)){
-                    $inventoryStatus = InventoryConstant::updateProductToInventoryForPurachase($oilAndGasPumpPurchase->slug);
-
-                    foreach($inventoryStatus["message"] as $perMessage){
-                        $statusInformation["message"]->push($perMessage);
-                    }
+                if($oilAndGasPumpPurchaseItem){
+                    $oilAndGasPumpPurchaseItemCount = $oilAndGasPumpPurchaseItemCount + 1;
                 }
                 else{
-                    $statusInformation["message"]->push("Can not update inventory.Please update the inventory manually.");
+                    $statusInformation["message"]->push("Fail to save product(".$product.").");
+                }
+            }
+
+            if($oilAndGasPumpPurchaseItemCount == count($request->product)){
+                $inventoryStatus = InventoryConstant::updateProductToInventoryForPurachase($oilAndGasPumpPurchase->slug);
+
+                foreach($inventoryStatus["message"] as $perMessage){
+                    $statusInformation["message"]->push($perMessage);
                 }
             }
             else{
-                DB::rollBack();
-                $statusInformation["message"]->push("Fail to save.");
+                $statusInformation["message"]->push("Can not update inventory.Please update the inventory manually.");
             }
         }
-        catch (Exception $e) {
-            DB::rollBack();
-            $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Error info: ".$e);
+        else{
+            $statusInformation["message"]->push("Fail to save.");
         }
 
         return redirect()->route("oil.and.gas.pump.purchase.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);

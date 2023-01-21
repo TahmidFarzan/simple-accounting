@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use App\Models\Setting;
 use Illuminate\Support\Str;
 use App\Utilities\SystemConstant;
-use Illuminate\Support\Facades\DB;
 use App\Models\OilAndGasPumpProduct;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -23,7 +22,7 @@ class InventoryConstant
         $statusInformation = array("status" => "errors","message" => collect());
         if(Auth::user()->hasUserPermission(["OAGPIMP02"]) == true){
             $osgpProduct = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
-            DB::beginTransaction();
+
             try{
                 LogBatch::startBatch();
                     $oagpInventory = new OilAndGasPumpInventory();
@@ -36,19 +35,16 @@ class InventoryConstant
                 LogBatch::endBatch();
 
                 if($saveOAGPIn){
-                    DB::commit();
                     InventoryConstant::sendEmail("Add","Product has been added to inventory by ".Auth::user()->name.".",$oagpInventory );
                     $statusInformation["status"] = "status";
                     $statusInformation["message"]->push("Successfully added to inventory.");
                 }
                 else{
-                    DB::rollBack();
                     $statusInformation["status"] = "errors";
                     $statusInformation["message"]->push("Can not added to inventory.");
                 }
             }
             catch (Exception $e) {
-                DB::rollBack();
                 $statusInformation["status"] = "errors";
                 $statusInformation["message"]->push("Error info: ".$e);
             }

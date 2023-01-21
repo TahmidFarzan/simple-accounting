@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\InternalUser;
 
-use Exception;
 use Carbon\Carbon;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\OilAndGasPump;
 use App\Utilities\SystemConstant;
-use Illuminate\Support\Facades\DB;
 use App\Utilities\InventoryConstant;
 use App\Models\OilAndGasPumpProduct;
 use Illuminate\Support\Facades\Auth;
@@ -115,23 +113,19 @@ class OilAndGasPumpProductController extends Controller
 
         $statusInformation = array("status" => "errors","message" => collect());
 
-        DB::beginTransaction();
-        try{
+        LogBatch::startBatch();
+            $product = new OilAndGasPumpProduct();
+            $product->name = $request->name;
+            $product->type = $request->type;
+            $product->oil_and_gas_pump_id =  $oilAndGasPump->id;
+            $product->slug = SystemConstant::slugGenerator($request->name,200);
+            $product->created_at = Carbon::now();
+            $product->created_by_id = Auth::user()->id;
+            $product->updated_at = null;
+            $saveProduct = $product->save();
+        LogBatch::endBatch();
 
-            LogBatch::startBatch();
-                $product = new OilAndGasPumpProduct();
-                $product->name = $request->name;
-                $product->type = $request->type;
-                $product->oil_and_gas_pump_id =  $oilAndGasPump->id;
-                $product->slug = SystemConstant::slugGenerator($request->name,200);
-                $product->created_at = Carbon::now();
-                $product->created_by_id = Auth::user()->id;
-                $product->updated_at = null;
-                $saveProduct = $product->save();
-            LogBatch::endBatch();
-
-            if($saveProduct){
-                DB::commit();
+        if($saveProduct){
                 $this->sendEmail("Create","A new product has been created by ".Auth::user()->name.".",$product );
 
                 $statusInformation["status"] = "status";
@@ -145,17 +139,10 @@ class OilAndGasPumpProductController extends Controller
                         $statusInformation["message"]->push($inMessage);
                     }
                 }
-            }
-            else{
-                DB::rollBack();
-                $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Can not update.");
-            }
         }
-        catch (Exception $e) {
-            DB::rollBack();
+        else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Error info: ".$e);
+            $statusInformation["message"]->push("Can not update.");
         }
 
         return redirect()->route("oil.and.gas.pump.product.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -198,34 +185,24 @@ class OilAndGasPumpProductController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
 
-        DB::beginTransaction();
-        try{
-            LogBatch::startBatch();
-                $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
-                $product->name = $request->name;
-                $product->type = $request->type;
-                $product->slug = SystemConstant::slugGenerator($request->name,200);
-                $product->updated_at = Carbon::now();
-                $updateProduct = $product->update();
-            LogBatch::endBatch();
+        LogBatch::startBatch();
+            $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
+            $product->name = $request->name;
+            $product->type = $request->type;
+            $product->slug = SystemConstant::slugGenerator($request->name,200);
+            $product->updated_at = Carbon::now();
+            $updateProduct = $product->update();
+        LogBatch::endBatch();
 
-            if($updateProduct){
-                DB::commit();
-                $this->sendEmail("Update","The product has been updated by ".Auth::user()->name.".",$product );
+        if($updateProduct){
+            $this->sendEmail("Update","The product has been updated by ".Auth::user()->name.".",$product );
 
-                $statusInformation["status"] = "status";
-                $statusInformation["message"] = "Successfully updated.";
-            }
-            else{
-                DB::rollBack();
-                $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Can not update.");
-            }
+            $statusInformation["status"] = "status";
+            $statusInformation["message"] = "Successfully updated.";
         }
-        catch (Exception $e) {
-            DB::rollBack();
+        else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Error info: ".$e);
+            $statusInformation["message"]->push("Can not update.");
         }
 
         return redirect()->route("oil.and.gas.pump.product.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -238,31 +215,21 @@ class OilAndGasPumpProductController extends Controller
 
         $deleteValidationStatus = $this->deleteValidation($pSlug);
 
-        DB::beginTransaction();
         if(true){
-            try{
-                LogBatch::startBatch();
-                    $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
-                    $deleteOilAndGasPumpProduct = $product->delete();
-                LogBatch::endBatch();
+            LogBatch::startBatch();
+                $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
+                $deleteOilAndGasPumpProduct = $product->delete();
+            LogBatch::endBatch();
 
-                if($deleteOilAndGasPumpProduct){
-                    DB::commit();
-                    $this->sendEmail("Delete","Product has been delete by ".Auth::user()->name.".",$product );
+            if($deleteOilAndGasPumpProduct){
+                $this->sendEmail("Delete","Product has been delete by ".Auth::user()->name.".",$product );
 
-                    $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push("Successfully deleted.");
-                }
-                else{
-                    DB::rollBack();
-                    $statusInformation["status"] = "errors";
-                    $statusInformation["message"]->push("Fail to delete.");
-                }
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Successfully deleted.");
             }
-            catch (Exception $e) {
-                DB::rollBack();
+            else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Error info: ".$e);
+                $statusInformation["message"]->push("Fail to delete.");
             }
         }
         else{

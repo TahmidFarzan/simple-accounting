@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\InternalUser;
 
-use Exception;
 use Carbon\Carbon;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\OilAndGasPump;
 use App\Utilities\SystemConstant;
-use Illuminate\Support\Facades\DB;
 use App\Models\OilAndGasPumpSupplier;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -114,42 +112,32 @@ class OilAndGasPumpSupplierController extends Controller
 
         $statusInformation = array("status" => "errors","message" => collect());
 
-        DB::beginTransaction();
-        try{
-            LogBatch::startBatch();
-                $supplier = new OilAndGasPumpSupplier();
-                $supplier->name = $request->name;
-                $supplier->email = $request->email;
-                $supplier->payable_amount = 0;
-                $supplier->receviable_amount = 0;
-                $supplier->note = array($request->note);
-                $supplier->description = $request->description;
-                $supplier->mobile_no = $request->mobile_no;
-                $supplier->oil_and_gas_pump_id =  $oilAndGasPump->id;
-                $supplier->slug = SystemConstant::slugGenerator($request->name,200);
-                $supplier->created_at = Carbon::now();
-                $supplier->created_by_id = Auth::user()->id;
-                $supplier->updated_at = null;
-                $saveSupplier = $supplier->save();
-            LogBatch::endBatch();
+        LogBatch::startBatch();
+            $supplier = new OilAndGasPumpSupplier();
+            $supplier->name = $request->name;
+            $supplier->email = $request->email;
+            $supplier->payable_amount = 0;
+            $supplier->receviable_amount = 0;
+            $supplier->note = array($request->note);
+            $supplier->description = $request->description;
+            $supplier->mobile_no = $request->mobile_no;
+            $supplier->oil_and_gas_pump_id =  $oilAndGasPump->id;
+            $supplier->slug = SystemConstant::slugGenerator($request->name,200);
+            $supplier->created_at = Carbon::now();
+            $supplier->created_by_id = Auth::user()->id;
+            $supplier->updated_at = null;
+            $saveSupplier = $supplier->save();
+        LogBatch::endBatch();
 
-            if($saveSupplier){
-                DB::commit();
-                $this->sendEmail("Create","A new supplier has been created by ".Auth::user()->name.".",$supplier );
+        if($saveSupplier){
+            $this->sendEmail("Create","A new supplier has been created by ".Auth::user()->name.".",$supplier );
 
-                $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Successfully created.");
-            }
-            else{
-                DB::rollBack();
-                $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Can not update.");
-            }
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Successfully created.");
         }
-        catch (Exception $e) {
-            DB::rollBack();
+        else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Error info: ".$e);
+            $statusInformation["message"]->push("Can not update.");
         }
 
         return redirect()->route("oil.and.gas.pump.supplier.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -201,39 +189,28 @@ class OilAndGasPumpSupplierController extends Controller
         $notes = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail()->note;
         array_push($notes,$request->note);
 
-        DB::beginTransaction();
-        try{
+        LogBatch::startBatch();
+            $supplier = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail();
 
-            LogBatch::startBatch();
-                $supplier = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail();
+            $supplier->name = $request->name;
+            $supplier->email = $request->email;
+            $supplier->note = $notes;
+            $supplier->description = $request->description;
+            $supplier->mobile_no = $request->mobile_no;
+            $supplier->slug = SystemConstant::slugGenerator($request->name,200);
+            $supplier->updated_at = Carbon::now();
+            $updateSupplier = $supplier->update();
+        LogBatch::endBatch();
 
-                $supplier->name = $request->name;
-                $supplier->email = $request->email;
-                $supplier->note = $notes;
-                $supplier->description = $request->description;
-                $supplier->mobile_no = $request->mobile_no;
-                $supplier->slug = SystemConstant::slugGenerator($request->name,200);
-                $supplier->updated_at = Carbon::now();
-                $updateSupplier = $supplier->update();
-            LogBatch::endBatch();
+        if($updateSupplier){
+            $this->sendEmail("Update","The supplier has been updated by ".Auth::user()->name.".",$supplier );
 
-            if($updateSupplier){
-                DB::commit();
-                $this->sendEmail("Update","The supplier has been updated by ".Auth::user()->name.".",$supplier );
-
-                $statusInformation["status"] = "status";
-                $statusInformation["message"] = "Successfully updated.";
-            }
-            else{
-                DB::rollBack();
-                $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Can not update.");
-            }
+            $statusInformation["status"] = "status";
+            $statusInformation["message"] = "Successfully updated.";
         }
-        catch (Exception $e) {
-            DB::rollBack();
+        else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Error info: ".$e);
+            $statusInformation["message"]->push("Can not update.");
         }
 
         return redirect()->route("oil.and.gas.pump.supplier.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
@@ -246,32 +223,20 @@ class OilAndGasPumpSupplierController extends Controller
 
         $deteValidationStatus = $this->deleteValidation($sSlug);
 
-        DB::beginTransaction();
-
         if(true){
-            try{
-                LogBatch::startBatch();
-                    $supplier = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail();
-                    $deleteOilAndGasPumpSupplier = $supplier->delete();
-                LogBatch::endBatch();
+            LogBatch::startBatch();
+                $supplier = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail();
+                $deleteOilAndGasPumpSupplier = $supplier->delete();
+            LogBatch::endBatch();
 
-                if($deleteOilAndGasPumpSupplier){
-                    DB::commit();
-                    $this->sendEmail("Delete","Supplier has been delete by ".Auth::user()->name.".",$supplier );
-
-                    $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push("Successfully deleted.");
-                }
-                else{
-                    DB::rollBack();
-                    $statusInformation["status"] = "errors";
-                    $statusInformation["message"]->push("Fail to delete.");
-                }
+            if($deleteOilAndGasPumpSupplier){
+                $this->sendEmail("Delete","Supplier has been delete by ".Auth::user()->name.".",$supplier );
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Successfully deleted.");
             }
-            catch (Exception $e) {
-                DB::rollBack();
+            else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Error info: ".$e);
+                $statusInformation["message"]->push("Fail to delete.");
             }
         }
         else{

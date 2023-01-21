@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\InternalUser;
 
-use Exception;
 use Carbon\Carbon;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\OilAndGasPump;
 use App\Utilities\SystemConstant;
-use Illuminate\Support\Facades\DB;
 use App\Models\OilAndGasPumpProduct;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -118,45 +116,33 @@ class OilAndGasPumpInventoryController extends Controller
 
         $statusInformation = array("status" => "errors","message" => collect());
 
-        DB::beginTransaction();
-        try{
+        $osgpProduct = OilAndGasPumpProduct::where("slug",$request->product)->firstOrFail();
 
-            $osgpProduct = OilAndGasPumpProduct::where("slug",$request->product)->firstOrFail();
+        LogBatch::startBatch();
+            $oagpInventory = new OilAndGasPumpInventory();
+            $oagpInventory->oagp_product_id = $osgpProduct->id;
+            $oagpInventory->quantity = $request->quantity;
+            $oagpInventory->sell_price = $request->sell_price;
+            $oagpInventory->purchase_price = $request->purchase_price;
+            $oagpInventory->old_quantity = $request->old_quantity;
+            $oagpInventory->old_sell_price = $request->old_sell_price;
+            $oagpInventory->old_purchase_price = $request->old_purchase_price;
+            $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);
+            $oagpInventory->created_at = Carbon::now();
+            $oagpInventory->created_by_id = Auth::user()->id;
+            $oagpInventory->updated_at = null;
+            $saveOAGPIn = $oagpInventory->save();
+        LogBatch::endBatch();
 
-            LogBatch::startBatch();
-                $oagpInventory = new OilAndGasPumpInventory();
-                $oagpInventory->oagp_product_id = $osgpProduct->id;
-                $oagpInventory->quantity = $request->quantity;
-                $oagpInventory->sell_price = $request->sell_price;
-                $oagpInventory->purchase_price = $request->purchase_price;
-                $oagpInventory->old_quantity = $request->old_quantity;
-                $oagpInventory->old_sell_price = $request->old_sell_price;
-                $oagpInventory->old_purchase_price = $request->old_purchase_price;
-                $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);
-                $oagpInventory->created_at = Carbon::now();
-                $oagpInventory->created_by_id = Auth::user()->id;
-                $oagpInventory->updated_at = null;
-                $saveOAGPIn = $oagpInventory->save();
-            LogBatch::endBatch();
-
-            if($saveOAGPIn){
-                DB::commit();
-                $this->sendEmail("Add","Product has been added to inventoryby ".Auth::user()->name.".",$oagpInventory );
-                $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Successfully added to inventory.");
-            }
-            else{
-                DB::rollBack();
-                $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Can not added to inventory.");
-            }
+        if($saveOAGPIn){
+            $this->sendEmail("Add","Product has been added to inventoryby ".Auth::user()->name.".",$oagpInventory );
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Successfully added to inventory.");
         }
-        catch (Exception $e) {
-            DB::rollBack();
+        else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push("Error info: ".$e);
+            $statusInformation["message"]->push("Can not added to inventory.");
         }
-
         return redirect()->route("oil.and.gas.pump.inventory.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
@@ -166,32 +152,21 @@ class OilAndGasPumpInventoryController extends Controller
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         $deleteValidationStatus = $this->deleteValidation($inSlug);
 
-        DB::beginTransaction();
         if(true){
-            try{
+            LogBatch::startBatch();
+                $inventoryProduct = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
+                $deleteOAGPProduct = $inventoryProduct->delete();
+            LogBatch::endBatch();
 
-                LogBatch::startBatch();
-                    $inventoryProduct = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
-                    $deleteOAGPProduct = $inventoryProduct->delete();
-                LogBatch::endBatch();
+            if($deleteOAGPProduct){
+                $this->sendEmail("Delete","Product has been delete by ".Auth::user()->name.".",$inventoryProduct );
 
-                if($deleteOAGPProduct){
-                    DB::commit();
-                    $this->sendEmail("Delete","Product has been delete by ".Auth::user()->name.".",$inventoryProduct );
-
-                    $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push("Successfully deleted.");
-                }
-                else{
-                    DB::rollBack();
-                    $statusInformation["status"] = "errors";
-                    $statusInformation["message"]->push("Fail to delete.");
-                }
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Successfully deleted.");
             }
-            catch (Exception $e) {
-                DB::rollBack();
+            else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Error info: ".$e);
+                $statusInformation["message"]->push("Fail to delete.");
             }
         }
         else{
