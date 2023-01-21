@@ -216,6 +216,8 @@ class OilAndGasPumpPurchaseController extends Controller
         $validator->after(function ($validator) {
             $afterValidatorData = $validator->getData();
 
+            $totalPrice = 0;
+
             $oilAndGasPump = OilAndGasPump::where("slug",$this->oagpSlug)->firstOrFail();
 
             for($i = 0; $i < $afterValidatorData["table_row"]; $i++){
@@ -242,6 +244,11 @@ class OilAndGasPumpPurchaseController extends Controller
                     );
                 }
 
+                // Calculate total price
+                $totalQuentityPurchasePrice = $afterValidatorData["purchase_price"][$i] * $afterValidatorData["quantity"][$i];
+                $totalQuentityDiscount = $totalQuentityPurchasePrice * ($afterValidatorData["purchase_discount"][$i]/100);
+                $totalPrice = round(($totalPrice + ($totalQuentityPurchasePrice - $totalQuentityDiscount)),2);
+
             }
 
             // Due status validation
@@ -257,6 +264,14 @@ class OilAndGasPumpPurchaseController extends Controller
                     'status', "Wrong Status. Status must be 'Complete'."
                 );
             }
+
+            // Total price validation
+            if(!($totalPrice == $afterValidatorData["total_price"])){
+                $validator->errors()->add(
+                    'total_price', "Wrong calculation of total price."
+                );
+            }
+
 
             // Pay able amount validation
             if (!($afterValidatorData["payable_amount"] == ($afterValidatorData["total_price"] - ($afterValidatorData["total_price"] * ($afterValidatorData["discount"]/100))))) {
