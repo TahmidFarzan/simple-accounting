@@ -416,12 +416,18 @@
             });
 
             $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="purchase_discount"], input[name^="purchase_price"]', function (event) {
+                var currentValue = $(this).val();
+                $(this).val(parseFloat(currentValue).toFixed(2));
+
                 calculateRowTotal($(this).closest("tr"));
             });
 
             $(document).on('change', '#discountInput', function () {
+                $(this).val(parseFloat($(this).val()).toFixed(2));
+
+                var discount = $(this).val();
                 var totalPrice = $("#totalPriceInput").val();
-                var discount = $("#discountInput").val();
+
                 var totalDiscount =  parseFloat(totalPrice) * (parseFloat(discount)/100);
 
                 var payableAmount = totalPrice - totalDiscount;
@@ -430,9 +436,10 @@
 
             $(document).on('change', '#paidAmountInput', function () {
                 var status = "Due";
+                $(this).val(parseFloat($(this).val()).toFixed(2));
 
+                var paidAmount = $(this).val();
                 var payableAmount = $("#payableAmountInput").val();
-                var paidAmount = $("#paidAmountInput").val();
 
                 var dueAmount = parseFloat(payableAmount) - parseFloat(paidAmount);
                 $("#dueAmountInput").val(dueAmount.toFixed(2));
@@ -491,16 +498,16 @@
         }
 
         function calculateRowTotal(row){
-            var rowTotal = 0;
             var quantity = +row.find('input[name^="quantity"]').val();
-            var productDiscount = +row.find('input[name^="purchase_discount"]').val();
+            var purchaseDiscount = +row.find('input[name^="purchase_discount"]').val();
             var purchasePrice = +row.find('input[name^="purchase_price"]').val();
 
-            var totalPurachecPrice = parseFloat(purchasePrice) * parseFloat(quantity);
-            var totalProductDiscount = parseFloat(totalPurachecPrice) * (parseFloat(productDiscount)/100);
-            rowTotal = (totalPurachecPrice - totalProductDiscount).toFixed(2);
+            var totalQuantityPurachecPrice = parseFloat(purchasePrice) * parseFloat(quantity);
+            var totalQuantityProductDiscount = parseFloat(totalQuantityPurachecPrice) * (parseFloat(purchaseDiscount)/100);
 
-            row.find('input[name^="total_purchase_price"]').val(rowTotal);
+            var totalPurchasePrice = (totalQuantityPurachecPrice - totalQuantityProductDiscount).toFixed(2);
+
+            row.find('input[name^="total_purchase_price"]').val(totalPurchasePrice);
             calculateTotalPrice();
         }
 
