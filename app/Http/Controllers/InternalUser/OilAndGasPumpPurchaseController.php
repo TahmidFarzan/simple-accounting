@@ -219,6 +219,13 @@ class OilAndGasPumpPurchaseController extends Controller
             $totalPrice = 0;
 
             $oilAndGasPump = OilAndGasPump::where("slug",$this->oagpSlug)->firstOrFail();
+            $oagpSupplier = OilAndGasPumpSupplier::where("slug",$afterValidatorData["supplier"])->count();
+
+            if($oagpSupplier == 0){
+                $validator->errors()->add(
+                    'supplier', "Unknown supplier."
+                );
+            }
 
             for($i = 0; $i < $afterValidatorData["table_row"]; $i++){
                 //Product validation
