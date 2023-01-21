@@ -120,12 +120,14 @@ class OilAndGasPumpPurchaseController extends Controller
     }
 
     public function save($oagpSlug,Request $request){
+        $this->oagpSlug = $oagpSlug;
+
         $validator = Validator::make($request->all(),
             [
                 'date' => 'required|date|before_or_equal:today',
                 'invoice' => 'required|string|max:200|unique:oil_and_gas_pump_purchases,invoice',
                 'supplier' => 'required',
-                'row_count' => 'required|numeric|min:1',
+                'table_row' => 'required|numeric|min:1',
                 'product.*' => 'required|distinct',
                 'quantity.*' => 'required|numeric|min:0',
                 'purchase_price.*' => 'required|numeric|min:0',
@@ -157,9 +159,9 @@ class OilAndGasPumpPurchaseController extends Controller
                 'name.required' => 'Name is required.',
                 'name.required' => 'Name max length is 200.',
 
-                'row_count.required' => 'Row count is required.',
-                'row_count.numeric' => 'Row count must be numeric.',
-                'row_count.required' => 'Row count at lease 1.',
+                'table_row.required' => 'Row count is required.',
+                'table_row.numeric' => 'Row count must be numeric.',
+                'table_row.required' => 'Row count at lease 1.',
 
                 'product.*.required' => 'Product is required.',
                 'product.*.distinct' => 'Product must be unique.',
@@ -216,9 +218,7 @@ class OilAndGasPumpPurchaseController extends Controller
 
             $oilAndGasPump = OilAndGasPump::where("slug",$this->oagpSlug)->firstOrFail();
 
-            $totalAmount = 0;
-
-            for($i = 0; $i < $afterValidatorData["row_count"]; $i++){
+            for($i = 0; $i < $afterValidatorData["table_row"]; $i++){
                 //Product validation
                 $productCount = OilAndGasPumpProduct::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$afterValidatorData["product"][$i])->count();
 
@@ -236,9 +236,9 @@ class OilAndGasPumpPurchaseController extends Controller
                 }
 
                 // Product purchase price validation
-                if(!(($afterValidatorData["purchase_price"][$i] > $afterValidatorData["sell_price"][$i]) || ($afterValidatorData["purchase_price"][$i] == $afterValidatorData["sell_price"][$i])) ){
+                if(!(($afterValidatorData["purchase_price"][$i] < $afterValidatorData["sell_price"][$i]) || ($afterValidatorData["purchase_price"][$i] == $afterValidatorData["sell_price"][$i])) ){
                     $validator->errors()->add(
-                        'purchase_price.'.$i, "Purchase price must be equal or greater then sell price."
+                        'purchase_price.'.$i, "Purchase price must be equal or less then sell price."
                     );
                 }
 
@@ -259,7 +259,7 @@ class OilAndGasPumpPurchaseController extends Controller
             }
 
             // Pay able amount validation
-            if (!($afterValidatorData["payable_amount"] == ($afterValidatorData["total_price"] - $afterValidatorData["discount"]))) {
+            if (!($afterValidatorData["payable_amount"] == ($afterValidatorData["total_price"] - ($afterValidatorData["total_price"] * ($afterValidatorData["discount"]/100))))) {
                 $validator->errors()->add(
                     'paid_amount', "Wrong payable amount. Payable must be equal to subtraction of total amount and discount."
                 );
@@ -291,8 +291,21 @@ class OilAndGasPumpPurchaseController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
-
+        $statusInformation = array("status" => "errors","message" => collect());
+        $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         return $request;
+
+        DB::beginTransaction();
+
+        try{
+
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Error info: ".$e);
+        }
+
+        return redirect()->route("oil.and.gas.pump.purchase.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 }

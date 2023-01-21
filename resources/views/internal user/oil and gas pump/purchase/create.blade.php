@@ -67,10 +67,10 @@
                             <div class="row">
                                 <label class="col-md-4 col-form-label col-form-label-sm text-bold">Supplier <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-8">
-                                    <select id="supplierInput" name="supplier" class="form-control form-control-sm @error('supplier') is-invalid @enderror">
+                                    <select id="supplierInput" name="supplier" class="form-control form-control-sm @error('supplier') is-invalid @enderror" required>
                                         <option value="">Select</option>
                                         @foreach ($oagpSuppliers as $perSupplier)
-                                        <option value="{{ $perSupplier->slug }}">{{ $perSupplier->name }}</option>
+                                            <option value="{{ $perSupplier->slug }}" {{ ( old("supplier")== $perSupplier->slug) ? "selected" : null }}>{{ $perSupplier->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -100,7 +100,7 @@
                         <div class="col-md-12 mb-2">
                             <div class="row mb-2">
                                 <div class="col-md-6 mb-2" hidden>
-                                    <input id="rowCount" name="row_count" type="number" class="form-control form-control-sm" value="{{ (old("table_row") == null) ? $dataTableRow["min"] : old("table_row") }}" min="{{ $dataTableRow["min"] }}" max="{{ $dataTableRow["max"] }}" required readonly hidden>
+                                    <input id="tableRow" name="table_row" type="number" class="form-control form-control-sm" value="{{ (old("table_row") == null) ? $dataTableRow["min"] : old("table_row") }}" min="{{ $dataTableRow["min"] }}" max="{{ $dataTableRow["max"] }}" required readonly hidden>
                                 </div>
 
                                 <div class="col-md-6">
@@ -186,8 +186,8 @@
                                                         @enderror
                                                     </td>
                                                     <td>
-                                                        <input id="discountInput{{ $i }}" name="purchase_discount[]" type="number" class="form-control form-control-sm @error('discount.'.$i) is-invalid @enderror" value="{{ old('discount.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('discount.'.$i)
+                                                        <input id="discountInput{{ $i }}" name="purchase_discount[]" type="number" class="form-control form-control-sm @error('purchase_discount.'.$i) is-invalid @enderror" value="{{ old('purchase_discount.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('purchase_discount.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -373,23 +373,23 @@
         $(document).ready(function(){
             $(document).on('click', '#addRow', function () {
                 var errorMessages = [];
-                var minRowCount = "{{ $dataTableRow['min'] }}";
-                var minRowCount = "{{ $dataTableRow['max'] }}";
-                var rowCount = $("#rowCount").val();
+                var minTableRow = "{{ $dataTableRow['min'] }}";
+                var minTableRow = "{{ $dataTableRow['max'] }}";
+                var tableRow = $("#tableRow").val();
 
-                if((parseInt(rowCount) > 0) || (parseInt(rowCount) == 0)){
-                    rowCount = parseInt(rowCount) + 1;
-                    $("#rowCount").val(rowCount);
+                if((parseInt(tableRow) > 0) || (parseInt(tableRow) == 0)){
+                    tableRow = parseInt(tableRow) + 1;
+                    $("#tableRow").val(tableRow);
 
                     var row = "";
                     row = row + '<tr>';
-                    row = row + '<td>' + rowCount + '</td>';
-                    row = row + '<td><select id="productInput'+ rowCount +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
-                    row = row + '<td><input id="quantityInput'+ rowCount +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
-                    row = row + '<td><input id="purchasePriceInput'+ rowCount +'" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="discountInput'+ rowCount +'" name="purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="sellPriceInput'+ rowCount +'" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td hidden><input id="rowTotalInput'+ rowCount +'" name="total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
+                    row = row + '<td>' + tableRow + '</td>';
+                    row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
+                    row = row + '<td><input id="quantityInput'+ tableRow +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
+                    row = row + '<td><input id="purchasePriceInput'+ tableRow +'" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td><input id="discountInput'+ tableRow +'" name="purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td><input id="sellPriceInput'+ tableRow +'" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td hidden><input id="rowTotalInput'+ tableRow +'" name="total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
                     row = row + '</tr>';
 
                     $('#dataTable tbody').append(row);
@@ -398,13 +398,13 @@
             });
 
             $(document).on('click', '#removeRow', function () {
-                var minRowCount = "{{ $dataTableRow['min'] }}";
-                var maxRowCount = "{{ $dataTableRow['max'] }}";
-                var rowCount = $("#rowCount").val();
+                var minTableRow = "{{ $dataTableRow['min'] }}";
+                var maxTableRow = "{{ $dataTableRow['max'] }}";
+                var tableRow = $("#tableRow").val();
 
-                if(parseInt(minRowCount) < parseInt(rowCount)){
-                    rowCount = parseInt(rowCount) - 1;
-                    $("#rowCount").val(rowCount);
+                if(parseInt(minTableRow) < parseInt(tableRow)){
+                    tableRow = parseInt(tableRow) - 1;
+                    $("#tableRow").val(tableRow);
                     $('#dataTable tbody tr:last').remove();
 
                     rowButtonStatusChange();
@@ -449,15 +449,15 @@
         });
 
         function rowButtonStatusChange(){
-            var minRowCount = "{{ $dataTableRow['min'] }}";
+            var minTableRow = "{{ $dataTableRow['min'] }}";
             var maxCount = "{{ $dataTableRow['max'] }}";
-            var rowCount = $("#rowCount").val();
+            var tableRow = $("#tableRow").val();
 
-            if(parseInt(rowCount) > 0 && (parseInt(rowCount) < parseInt(maxCount))){
+            if(parseInt(tableRow) > 0 && (parseInt(tableRow) < parseInt(maxCount))){
                 $("#addRow").prop("disabled",false);
                 $("#addRow").prop("hidden",false);
 
-                if(parseInt(rowCount) > 1){
+                if(parseInt(tableRow) > 1){
                     $("#removeRow").prop("disabled",false);
                     $("#removeRow").prop("hidden",false);
                 }
