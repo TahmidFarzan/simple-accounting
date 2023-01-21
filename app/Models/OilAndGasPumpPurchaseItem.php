@@ -18,7 +18,7 @@ class OilAndGasPumpPurchaseItem extends Model
 
     protected $fillable = [
         'slug',
-        'count',
+        'quantity',
         'discount',
         'sell_price',
         'created_by_id',
@@ -43,7 +43,7 @@ class OilAndGasPumpPurchaseItem extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-            'count','sell_price','created_by_id','discount',
+            'quantity','sell_price','created_by_id','discount',
             'purchase_price','oagp_product_id','oagp_purchase_id',
         ])
         ->useLogName('Oil and gas pump purchase item')

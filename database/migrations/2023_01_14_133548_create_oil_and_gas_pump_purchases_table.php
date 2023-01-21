@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('oil_and_gas_pump_purchases', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->dateTime('date');
+            $table->date('date');
             $table->unsignedBigInteger('oagp_supplier_id');
             $table->string('slug',200)->unique();
             $table->enum('status', ['Due','Complete'])->default('Due');

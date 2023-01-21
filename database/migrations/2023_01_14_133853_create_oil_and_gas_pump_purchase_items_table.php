@@ -12,7 +12,7 @@ return new class extends Migration
             $table->string('slug',200)->unique();
             $table->unsignedBigInteger('oagp_purchase_id');
             $table->unsignedBigInteger('oagp_product_id');
-            $table->double('count')->default(0);
+            $table->double('quantity')->default(0);
             $table->double('discount', 8, 2)->default(0);
             $table->double('sell_price', 8, 2)->default(0);
             $table->double('purchase_price', 8, 2)->default(0);
