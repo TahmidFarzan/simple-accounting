@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\OilAndGasPumpProduct;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use App\Models\OilAndGasPumpPurchase;
 use App\Models\OilAndGasPumpInventory;
 use Spatie\Activitylog\Facades\LogBatch;
 use App\Mail\EmailSendForOilAndGasPumpInventory;
@@ -57,6 +58,76 @@ class InventoryConstant
             $statusInformation["message"]->push("User does not have permission to add product to inventory.");
         }
         return $statusInformation;
+    }
+
+    public static function updateProductToInventoryForPurachase($puSlug){
+        $statusInformation = array("status" => "errors","message" => collect());
+        $inventoryUpdateCount = 0;
+
+        $oilAndGasPumpPurchase = OilAndGasPumpPurchase::where("slug",$puSlug)->firstOrFail();
+
+        foreach ($oilAndGasPumpPurchase->oagpPurchaseItems as $oagpPurchaseItem) {
+
+            // Product exit not exit in inventory
+            if(InventoryConstant::productExitInInventory($oagpPurchaseItem->oagp_product_id) == false){
+                InventoryConstant::addProductToInventory($oagpPurchaseItem->oagpProduct->slug);
+            }
+
+            $oldQuantity = 0.0;
+            $oldSellPrice = 0.0;
+            $oldPurchasePrice = 0.0;
+
+            $oagpInProduct = OilAndGasPumpInventory::where("oagp_product_id",$oagpPurchaseItem->oagp_product_id)->firstOrFail();
+
+            // Save old status
+            if($oagpInProduct->quantity > 0){
+                // Old quantity exit
+                $oldQuantity = ($oagpPurchaseItem->old_quantity == 0) ? $oagpPurchaseItem->quantity : ($oagpPurchaseItem->old_quantity + $oagpPurchaseItem->quantity);
+
+                $oldSellPrice = $oagpPurchaseItem->sell_price;
+                $oldPurchasePrice = $oagpPurchaseItem->purchase_price;
+            }
+            $oagpPurchaseItem->old_quantity = $oldQuantity;
+            $oagpInProduct->old_sell_price = $oldSellPrice;
+            $oagpInProduct->old_purchase_price = $oldPurchasePrice;
+
+            // New status
+            $oagpPurchaseItem->quantity = $oagpPurchaseItem->quantity;
+            $oagpInProduct->sell_price = $oagpPurchaseItem->sell_price;
+            $oagpInProduct->purchase_price = $oagpPurchaseItem->purchase_price;
+            $oagpInProduct->updated_at = Carbon::now();
+            $oagpInProductUpdate = $oagpInProduct->update();
+
+            if($oagpInProductUpdate){
+                $inventoryUpdateCount = $inventoryUpdateCount + 1;
+            }
+        }
+
+        if($inventoryUpdateCount == $oilAndGasPumpPurchase->oagpPurchaseItems->count()){
+            $statusInformation["status"] = "success";
+            $statusInformation["message"]->push("All seleted inventory product successfully update.");
+        }
+        else{
+            $statusInformation["message"]->push("Some seleted inventory product fail to update.");
+        }
+
+        return $statusInformation;
+    }
+
+    public static function productExitInInventory($productId){
+        $productExit = false;
+
+        $osgpProduct = OilAndGasPumpInventory::where("oagp_product_id",$productId)->count();
+
+        if($osgpProduct > 1){
+            $osgpProduct = true;
+        }
+
+        if($osgpProduct == 0){
+            $productExit = false;
+        }
+
+        return $productExit;
     }
 
     public static function sendEmail($event,$subject,OilAndGasPumpInventory $inventory ){

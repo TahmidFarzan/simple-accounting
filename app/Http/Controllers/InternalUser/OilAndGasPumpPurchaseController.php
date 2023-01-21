@@ -4,11 +4,11 @@ namespace App\Http\Controllers\InternalUser;
 
 use Exception;
 use Carbon\Carbon;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\OilAndGasPump;
 use App\Utilities\SystemConstant;
 use Illuminate\Support\Facades\DB;
+use App\Utilities\InventoryConstant;
 use App\Models\OilAndGasPumpProduct;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -252,9 +252,9 @@ class OilAndGasPumpPurchaseController extends Controller
                 }
 
                 // Calculate total price
-                $totalQuentityPurchasePrice = $afterValidatorData["purchase_price"][$i] * $afterValidatorData["quantity"][$i];
-                $totalQuentityDiscount = $totalQuentityPurchasePrice * ($afterValidatorData["purchase_discount"][$i]/100);
-                $totalPrice = round(($totalPrice + ($totalQuentityPurchasePrice - $totalQuentityDiscount)),2);
+                $totalQuantityPurchasePrice = $afterValidatorData["purchase_price"][$i] * $afterValidatorData["quantity"][$i];
+                $totalQuantityDiscount = $totalQuantityPurchasePrice * ($afterValidatorData["purchase_discount"][$i]/100);
+                $totalPrice = round(($totalPrice + ($totalQuantityPurchasePrice - $totalQuantityDiscount)),2);
 
             }
 
@@ -279,7 +279,6 @@ class OilAndGasPumpPurchaseController extends Controller
                 );
             }
 
-
             // Pay able amount validation
             if (!($afterValidatorData["payable_amount"] == ($afterValidatorData["total_price"] - ($afterValidatorData["total_price"] * ($afterValidatorData["discount"]/100))))) {
                 $validator->errors()->add(
@@ -293,7 +292,6 @@ class OilAndGasPumpPurchaseController extends Controller
                     'paid_amount', "Wrong paid amount. Paid amount can not greater than payable amount."
                 );
             }
-
 
             // Due amount validation
             if ( $afterValidatorData["payable_amount"] < $afterValidatorData["due_amount"]) {
@@ -320,7 +318,68 @@ class OilAndGasPumpPurchaseController extends Controller
         DB::beginTransaction();
 
         try{
+            $oilAndGasPumpPurchase = new OilAndGasPumpPurchase();
+            $oilAndGasPumpPurchase->updated_at = null;
+            $oilAndGasPumpPurchase->name = $request->name;
+            $oilAndGasPumpPurchase->date = $request->date;
+            $oilAndGasPumpPurchase->status = $request->status;
+            $oilAndGasPumpPurchase->created_at = Carbon::now();
+            $oilAndGasPumpPurchase->invoice = $request->invoice;
+            $oilAndGasPumpPurchase->note = array($request->note);
+            $oilAndGasPumpPurchase->discount = $request->discount;
+            $oilAndGasPumpPurchase->created_by_id = Auth::user()->id;
+            $oilAndGasPumpPurchase->paid_amount = $request->paid_amount;
+            $oilAndGasPumpPurchase->description = $request->description;
+            $oilAndGasPumpPurchase->slug = SystemConstant::slugGenerator($request->name,200);
+            $oilAndGasPumpPurchase->oagp_supplier_id = OilAndGasPumpSupplier::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->supplier)->firstOrFail()->id;
 
+            $savePurchase = $oilAndGasPumpPurchase->save();
+
+            if($savePurchase){
+                DB::commit();
+                $oilAndGasPumpPurchaseItemCount = 0;
+                $statusInformation["status"] = "success";
+                $statusInformation["message"]->push("Purchase has been done.");
+
+                for($i = 0; $i < $request->table_row; $i++){
+                    $product = OilAndGasPumpProduct::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->product[$i])->firstOrFail();
+
+                    $oilAndGasPumpPurchaseItem = new OilAndGasPumpPurchaseItem();
+                    $oilAndGasPumpPurchaseItem->updated_at = null;
+                    $oilAndGasPumpPurchaseItem->created_at = Carbon::now();
+                    $oilAndGasPumpPurchaseItem->oagp_product_id = $product->id;
+                    $oilAndGasPumpPurchaseItem->created_by_id = Auth::user()->id;
+                    $oilAndGasPumpPurchaseItem->quantity = $request->quantity[$i];
+                    $oilAndGasPumpPurchaseItem->sell_price = $request->sell_price[$i];
+                    $oilAndGasPumpPurchaseItem->purchase_price = $request->purchase_price[$i];
+                    $oilAndGasPumpPurchaseItem->oagp_purchase_id = $oilAndGasPumpPurchase->id;
+                    $oilAndGasPumpPurchaseItem->slug = SystemConstant::slugGenerator($request->name." Item",200);
+
+                    $oilAndGasPumpPurchaseItem = $oilAndGasPumpPurchaseItem->save();
+
+                    if($oilAndGasPumpPurchaseItem){
+                        $oilAndGasPumpPurchaseItemCount = $oilAndGasPumpPurchaseItemCount + 1;
+                    }
+                    else{
+                        $statusInformation["message"]->push("Fail to save product(".$product.").");
+                    }
+                }
+
+                if($oilAndGasPumpPurchaseItemCount == count($request->product)){
+                    $inventoryStatus = InventoryConstant::updateProductToInventoryForPurachase($oilAndGasPumpPurchase->slug);
+
+                    foreach($inventoryStatus["message"] as $perMessage){
+                        $statusInformation["message"]->push($perMessage);
+                    }
+                }
+                else{
+                    $statusInformation["message"]->push("Can not update inventory.Please update the inventory manually.");
+                }
+            }
+            else{
+                DB::rollBack();
+                $statusInformation["message"]->push("Fail to save.");
+            }
         }
         catch (Exception $e) {
             DB::rollBack();
