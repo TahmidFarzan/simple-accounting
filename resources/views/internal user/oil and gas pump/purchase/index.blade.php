@@ -29,7 +29,7 @@
             <div class="row mb-2">
                 <p>
                     @if (Auth::user()->hasUserPermission(["OAGPPUMP02"]) == true)
-                        <a href="{{ route("oil.and.gas.pump.purchase.create",["oagpSlug" => $oilAndGasPump->slug]) }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create purchase</a>
+                        <a href="{{ route("oil.and.gas.pump.purchase.add",["oagpSlug" => $oilAndGasPump->slug]) }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add purchase</a>
                     @endif
 
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sortingCollapseDiv" aria-expanded="false" aria-controls="sortingCollapseDiv">

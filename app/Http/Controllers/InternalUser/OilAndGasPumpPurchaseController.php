@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\OilAndGasPump;
 use App\Utilities\SystemConstant;
@@ -109,12 +110,12 @@ class OilAndGasPumpPurchaseController extends Controller
         return view('internal user.oil and gas pump.purchase.index',compact("completeOAGPPurchases","dueOAGPPurchases","oagpSuppliers","oilAndGasPump","paginations"));
     }
 
-    public function create($oagpSlug){
+    public function add($oagpSlug){
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         $oagpSuppliers = OilAndGasPumpSupplier::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
         $oilAndGasPumpProducts = OilAndGasPumpProduct::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
 
-        return view('internal user.oil and gas pump.purchase.create',compact("oilAndGasPump","oagpSuppliers","oilAndGasPumpProducts"));
+        return view('internal user.oil and gas pump.purchase.add',compact("oilAndGasPump","oagpSuppliers","oilAndGasPumpProducts"));
     }
 
     public function save($oagpSlug,Request $request){
@@ -312,7 +313,7 @@ class OilAndGasPumpPurchaseController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         return $request;
-
+        LogBatch::startBatch();
         $oilAndGasPumpPurchase = new OilAndGasPumpPurchase();
         $oilAndGasPumpPurchase->updated_at = null;
         $oilAndGasPumpPurchase->name = $request->name;
@@ -357,6 +358,7 @@ class OilAndGasPumpPurchaseController extends Controller
                     $statusInformation["message"]->push("Fail to save product(".$product.").");
                 }
             }
+            $this->sendEmail("Add","The purchase has been added by ".Auth::user()->name.".",$oilAndGasPumpPurchase );
 
             if($oilAndGasPumpPurchaseItemCount == count($request->product)){
                 $inventoryStatus = InventoryConstant::updateProductToInventoryForPurachase($oilAndGasPumpPurchase->slug);
@@ -368,11 +370,29 @@ class OilAndGasPumpPurchaseController extends Controller
             else{
                 $statusInformation["message"]->push("Can not update inventory.Please update the inventory manually.");
             }
+            LogBatch::endBatch();
         }
         else{
             $statusInformation["message"]->push("Fail to save.");
         }
 
         return redirect()->route("oil.and.gas.pump.purchase.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    private function sendEmail($event,$subject,OilAndGasPumpPurchase $purchase ){
+        $envelope = array();
+
+        $emailSendSetting = Setting::where( 'code','EmailSendSetting')->firstOrFail()->fields_with_values;
+
+        $envelope["to"] = $emailSendSetting["to"];
+        $envelope["cc"] = $emailSendSetting["cc"];
+        $envelope["from"] = $emailSendSetting["from"];
+        $envelope["reply"] = $emailSendSetting["reply"];
+
+        $moduleSetting = $emailSendSetting["module"]["OilAndGasPumpPurchase"];
+
+        if(($moduleSetting["send"] == true) && (($moduleSetting["event"] == "All") || (!($moduleSetting["event"] == "All") && ($moduleSetting["event"] == $event)))){
+            Mail::send(new EmailSendForOilAndGasPumpPurchase($event,$envelope,$subject,$purchase));
+        }
     }
 }

@@ -74,14 +74,14 @@ class OilAndGasPumpPurchase extends Model
         return $this->hasMany(OilAndGasPumpPurchaseItem::class,'oagp_purchase_id','id');
     }
 
-    public function oagpTotalItemsPayableAmount()
+    public function oagpTotalPrice()
     {
         return ($this->oagpPurchaseItems->sum('purchase_price') - ( $this->oagpPurchaseItems->sum('purchase_price') * ($this->oagpPurchaseItems->sum('discount') / 100) )) ;
     }
 
     public function oagpPayableAmount()
     {
-        return ($this->oagpTotalItemsPayableAmount() - ( $this->oagpTotalItemsPayableAmount() * ($this->discount / 100) )) ;
+        return ($this->oagpTotalPrice() - ( $this->oagpTotalPrice() * ($this->discount / 100) )) ;
     }
 
     public function oagpDueAmount()

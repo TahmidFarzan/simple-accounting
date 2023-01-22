@@ -14,7 +14,7 @@
             <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.index") }}">Oil and gas pump</a></li>
             <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.details",["slug" => $oilAndGasPump->slug]) }}">{{ $oilAndGasPump->name }}</a></li>
             <li class="breadcrumb-item">Purchase</li>
-            <li class="breadcrumb-item active" aria-current="page">Index</li>
+            <li class="breadcrumb-item active" aria-current="page">Add</li>
         </ol>
     </nav>
 @endsection
