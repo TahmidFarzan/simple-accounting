@@ -34,7 +34,7 @@ class OilAndGasPumpSupplierController extends Controller
         $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,105,120);
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
-        $suppliers = OilAndGasPumpSupplier::orderby("name","asc")->orderby("created_at","desc");
+        $suppliers = OilAndGasPumpSupplier::orderby("name","asc")->orderby("created_at","desc")->where("oil_and_gas_pump_id",$oilAndGasPump->id);
 
         if(count($request->input()) > 0){
             if($request->has('pagination')){
