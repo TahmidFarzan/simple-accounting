@@ -358,6 +358,7 @@ class OilAndGasPumpPurchaseController extends Controller
                         $statusInformation["message"]->push("Fail to save product(".$product->name.").");
                     }
                 }
+
                 $this->sendEmail("Add","The purchase has been added by ".Auth::user()->name.".",$oilAndGasPumpPurchase );
 
                 if($oilAndGasPumpPurchaseItemCount == count($request->product)){
