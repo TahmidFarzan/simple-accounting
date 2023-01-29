@@ -23,30 +23,24 @@ class InventoryConstant
         if(Auth::user()->hasUserPermission(["OAGPIMP02"]) == true){
             $osgpProduct = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
 
-            try{
-                LogBatch::startBatch();
-                    $oagpInventory = new OilAndGasPumpInventory();
-                    $oagpInventory->oagp_product_id = $osgpProduct->id;
-                    $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);
-                    $oagpInventory->created_at = Carbon::now();
-                    $oagpInventory->created_by_id = Auth::user()->id;
-                    $oagpInventory->updated_at = null;
-                    $saveOAGPIn = $oagpInventory->save();
-                LogBatch::endBatch();
+            LogBatch::startBatch();
+                $oagpInventory = new OilAndGasPumpInventory();
+                $oagpInventory->oagp_product_id = $osgpProduct->id;
+                $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);
+                $oagpInventory->created_at = Carbon::now();
+                $oagpInventory->created_by_id = Auth::user()->id;
+                $oagpInventory->updated_at = null;
+                $saveOAGPIn = $oagpInventory->save();
+            LogBatch::endBatch();
 
-                if($saveOAGPIn){
-                    InventoryConstant::sendEmail("Add","Product has been added to inventory by ".Auth::user()->name.".",$oagpInventory );
-                    $statusInformation["status"] = "status";
-                    $statusInformation["message"]->push("Successfully added to inventory.");
-                }
-                else{
-                    $statusInformation["status"] = "errors";
-                    $statusInformation["message"]->push("Can not added to inventory.");
-                }
+            if($saveOAGPIn){
+                InventoryConstant::sendEmail("Add","Product has been added to inventory by ".Auth::user()->name.".",$oagpInventory );
+                $statusInformation["status"] = "status";
+                $statusInformation["message"]->push("Successfully added to inventory.");
             }
-            catch (Exception $e) {
+            else{
                 $statusInformation["status"] = "errors";
-                $statusInformation["message"]->push("Error info: ".$e);
+                $statusInformation["message"]->push("Can not added to inventory.");
             }
         }
         else{
@@ -64,7 +58,7 @@ class InventoryConstant
 
         foreach ($oilAndGasPumpPurchase->oagpPurchaseItems as $oagpPurchaseItem) {
 
-            // Product exit not exit in inventory
+            // Product is exit in inventory
             if(InventoryConstant::productExitInInventory($oagpPurchaseItem->oagp_product_id) == false){
                 InventoryConstant::addProductToInventory($oagpPurchaseItem->oagpProduct->slug);
             }
@@ -115,7 +109,7 @@ class InventoryConstant
 
         $osgpProduct = OilAndGasPumpInventory::where("oagp_product_id",$productId)->count();
 
-        if($osgpProduct > 1){
+        if($osgpProduct > 0){
             $osgpProduct = true;
         }
 
