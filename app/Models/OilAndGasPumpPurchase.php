@@ -37,7 +37,9 @@ class OilAndGasPumpPurchase extends Model
         'created_by_id',
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'note' => "array",
+    ];
 
     protected $dates = [
         'created_at',
