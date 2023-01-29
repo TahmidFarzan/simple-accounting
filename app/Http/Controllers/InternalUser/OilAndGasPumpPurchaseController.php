@@ -345,6 +345,7 @@ class OilAndGasPumpPurchaseController extends Controller
                     $oilAndGasPumpPurchaseItem->created_by_id = Auth::user()->id;
                     $oilAndGasPumpPurchaseItem->quantity = $request->quantity[$i];
                     $oilAndGasPumpPurchaseItem->sell_price = $request->sell_price[$i];
+                    $oilAndGasPumpPurchaseItem->discount = $request->purchase_discount[$i];
                     $oilAndGasPumpPurchaseItem->purchase_price = $request->purchase_price[$i];
                     $oilAndGasPumpPurchaseItem->oagp_purchase_id = $oilAndGasPumpPurchase->id;
                     $oilAndGasPumpPurchaseItem->slug = SystemConstant::slugGenerator($request->name." purchase Item",200);
