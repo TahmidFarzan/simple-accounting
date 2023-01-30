@@ -78,8 +78,13 @@ class OilAndGasPumpPurchase extends Model
 
     public function oagpTotalPrice()
     {
-        $totalQuentityPrice = $this->oagpPurchaseItems->sum('purchase_price') * $this->oagpPurchaseItems->sum('quantity');
-        return ($totalQuentityPrice - ( $totalQuentityPrice * ($this->oagpPurchaseItems->sum('discount') / 100) )) ;
+        $totalPrice = 0.0;
+
+        foreach($this->oagpPurchaseItems as $perItem){
+            $totalQuentityPrice = $perItem->purchase_price * $perItem->quantity;
+            $totalPrice = $totalPrice + ( $totalQuentityPrice - ( $totalQuentityPrice * ($perItem->discount / 100) ) );
+        }
+        return $totalPrice;
     }
 
     public function oagpPayableAmount()

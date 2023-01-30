@@ -114,7 +114,7 @@
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpTotalPrice().'<br/>';
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPPurchase->discount.'<br/>';
+                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPPurchase->discount.'% <br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
                                                     @endphp
 
@@ -170,7 +170,7 @@
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpTotalPrice().'<br/>';
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPPurchase->discount.'<br/>';
+                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPPurchase->discount.'% <br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
                                                     @endphp
 
