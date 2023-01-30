@@ -77,12 +77,12 @@ class InventoryConstant
                 $oldSellPrice = $oagpPurchaseItem->sell_price;
                 $oldPurchasePrice = $oagpPurchaseItem->purchase_price;
             }
-            $oagpPurchaseItem->old_quantity = $oldQuantity;
+            $oagpInProduct->old_quantity = $oldQuantity;
             $oagpInProduct->old_sell_price = $oldSellPrice;
             $oagpInProduct->old_purchase_price = $oldPurchasePrice;
 
             // New status
-            $oagpPurchaseItem->quantity = $oagpPurchaseItem->quantity;
+            $oagpInProduct->quantity = $oagpPurchaseItem->quantity;
             $oagpInProduct->sell_price = $oagpPurchaseItem->sell_price;
             $oagpInProduct->purchase_price = $oagpPurchaseItem->purchase_price;
             $oagpInProduct->updated_at = Carbon::now();
@@ -110,7 +110,7 @@ class InventoryConstant
         $osgpProduct = OilAndGasPumpInventory::where("oagp_product_id",$productId)->count();
 
         if($osgpProduct > 0){
-            $osgpProduct = true;
+            $productExit = true;
         }
 
         if($osgpProduct == 0){

@@ -114,11 +114,11 @@
                                     <thead>
                                         <tr>
                                             <th>Sl</th>
-                                            <th>Product</th>
-                                            <th>Quantity</th>
-                                            <th>Purchase price ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
-                                            <th>Discount (%)</th>
-                                            <th>Sell price ({{ $setting["businessSetting"]["currency_symbol"] }})</th>
+                                            <th>Product *</th>
+                                            <th>Quantity *</th>
+                                            <th>Purchase price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
+                                            <th>Discount (%) *</th>
+                                            <th>Sell price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -408,7 +408,7 @@
                     $('#dataTable tbody tr:last').remove();
 
                     rowButtonStatusChange();
-                    calculateTotalPrice();
+                    calculateTotalPurchaseAmount();
                 }
                 else{
                     rowButtonStatusChange();
@@ -420,37 +420,16 @@
                 $(this).val(parseFloat(currentValue).toFixed(2));
 
                 calculateRowTotal($(this).closest("tr"));
+                calculateTotalPurchaseAmount();
             });
 
             $(document).on('change', '#discountInput', function () {
-                $(this).val(parseFloat($(this).val()).toFixed(2));
-
-                var discount = $(this).val();
-                var totalPrice = $("#totalPriceInput").val();
-
-                var totalDiscount =  parseFloat(totalPrice) * (parseFloat(discount)/100);
-
-                var payableAmount = totalPrice - totalDiscount;
-                $("#payableAmountInput").val(payableAmount.toFixed(2));
+                calculatePayAbleAmount();
+                calculateDueAmount();
             });
 
             $(document).on('change', '#paidAmountInput', function () {
-                var status = "Due";
-                $(this).val(parseFloat($(this).val()).toFixed(2));
-
-                var paidAmount = $(this).val();
-                var payableAmount = $("#payableAmountInput").val();
-
-                var dueAmount = parseFloat(payableAmount) - parseFloat(paidAmount);
-                $("#dueAmountInput").val(dueAmount.toFixed(2));
-
-                if(dueAmount == 0){
-                    status = "Complete";
-                }
-                if(dueAmount > 0){
-                    status = "Due";
-                }
-                $("#statusInput").val(status);
+                calculateDueAmount();
             });
 
         });
@@ -520,6 +499,43 @@
                 totalPrice = parseFloat(totalPrice) + parseFloat($(this).val());
             });
             $("#totalPriceInput").val(totalPrice.toFixed(2));
+        }
+
+        function calculatePayAbleAmount(){
+            $('#discountInput').val(parseFloat($('#discountInput').val()).toFixed(2));
+
+            var discount = $('#discountInput').val();
+            var totalPrice = $("#totalPriceInput").val();
+
+            var totalDiscount =  parseFloat(totalPrice) * (parseFloat(discount)/100);
+
+            var payableAmount = totalPrice - totalDiscount;
+            $("#payableAmountInput").val(payableAmount.toFixed(2));
+        }
+
+        function calculateDueAmount(){
+            var status = "Due";
+                $('#paidAmountInput').val(parseFloat($('#paidAmountInput').val()).toFixed(2));
+
+                var paidAmount = $('#paidAmountInput').val();
+                var payableAmount = $("#payableAmountInput").val();
+
+                var dueAmount = parseFloat(payableAmount) - parseFloat(paidAmount);
+                $("#dueAmountInput").val(dueAmount.toFixed(2));
+
+                if(dueAmount == 0){
+                    status = "Complete";
+                }
+                if(dueAmount > 0){
+                    status = "Due";
+                }
+                $("#statusInput").val(status);
+        }
+
+        function calculateTotalPurchaseAmount(){
+            calculateTotalPrice();
+            calculatePayAbleAmount();
+            calculateDueAmount();
         }
     </script>
 @endpush
