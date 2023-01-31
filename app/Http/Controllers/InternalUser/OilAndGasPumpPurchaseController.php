@@ -110,6 +110,11 @@ class OilAndGasPumpPurchaseController extends Controller
         return view('internal user.oil and gas pump.purchase.index',compact("completeOAGPPurchases","dueOAGPPurchases","oagpSuppliers","oilAndGasPump","paginations"));
     }
 
+    public function details($oagpSlug,$puSlug){
+        $oilAndGasPumpPurchase = OilAndGasPumpPurchase::where("slug",$puSlug)->firstOrFail();
+        return view('internal user.oil and gas pump.purchase.details',compact("oilAndGasPumpPurchase"));
+    }
+
     public function add($oagpSlug){
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         $oagpSuppliers = OilAndGasPumpSupplier::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
