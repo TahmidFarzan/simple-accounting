@@ -124,7 +124,7 @@ class OilAndGasPumpPurchaseController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'date' => 'required|date|before_or_equal:today',
-                'invoice' => 'required|string|max:200|unique:oil_and_gas_pump_purchases,invoice',
+                'invoice' => 'required|string|max:200',
                 'supplier' => 'required',
                 'table_row' => 'required|numeric|min:1',
                 'product.*' => 'required|distinct',
@@ -219,10 +219,17 @@ class OilAndGasPumpPurchaseController extends Controller
 
             $oilAndGasPump = OilAndGasPump::where("slug",$this->oagpSlug)->firstOrFail();
             $oagpSupplier = OilAndGasPumpSupplier::where("slug",$afterValidatorData["supplier"])->count();
+            $samePurchaseInvoice = OilAndGasPumpPurchase::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("invoice",$afterValidatorData["invoice"])->count();
 
             if($oagpSupplier == 0){
                 $validator->errors()->add(
                     'supplier', "Unknown supplier."
+                );
+            }
+
+            if($samePurchaseInvoice > 0){
+                $validator->errors()->add(
+                    'invoice', "Same invoice exit."
                 );
             }
 
@@ -312,7 +319,7 @@ class OilAndGasPumpPurchaseController extends Controller
         }
         $statusInformation = array("status" => "errors","message" => collect());
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
-
+        $oilAndGasPumpSupplier = OilAndGasPumpSupplier::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->supplier)->firstOrFail();
         LogBatch::startBatch();
             $oilAndGasPumpPurchase = new OilAndGasPumpPurchase();
             $oilAndGasPumpPurchase->updated_at = null;
@@ -326,8 +333,9 @@ class OilAndGasPumpPurchaseController extends Controller
             $oilAndGasPumpPurchase->created_by_id = Auth::user()->id;
             $oilAndGasPumpPurchase->paid_amount = $request->paid_amount;
             $oilAndGasPumpPurchase->description = $request->description;
+            $oilAndGasPumpPurchase->oil_and_gas_pump_id = $oilAndGasPump->id;
+            $oilAndGasPumpPurchase->oagp_supplier_id = $oilAndGasPumpSupplier->id;
             $oilAndGasPumpPurchase->slug = SystemConstant::slugGenerator($request->name,200);
-            $oilAndGasPumpPurchase->oagp_supplier_id = OilAndGasPumpSupplier::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->supplier)->firstOrFail()->id;
 
             $savePurchase = $oilAndGasPumpPurchase->save();
 

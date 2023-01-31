@@ -20,7 +20,7 @@ class OilAndGasPumpPurchase extends Model
         'note',
         'date',
         'name',
-        'sulg',
+        'slug',
         'status',
         'invoice',
         'discount',
@@ -50,7 +50,7 @@ class OilAndGasPumpPurchase extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-            'note','date','name','sulg',
+            'note','date','name','slug',
             'invoice','mobile_no','description','status',
             'created_by_id','paid_amount','discount','oagp_supplier_id',
         ])
@@ -69,6 +69,11 @@ class OilAndGasPumpPurchase extends Model
     public function oagpSupplier()
     {
         return $this->belongsTo(OilAndGasPumpSupplier::class,'oagp_supplier_id','id');
+    }
+
+    public function oilAndGasPump()
+    {
+        return $this->belongsTo(OilAndGasPump::class,'oil_and_gas_pump_id','id');
     }
 
     public function oagpPurchaseItems()

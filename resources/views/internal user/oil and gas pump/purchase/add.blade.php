@@ -116,9 +116,9 @@
                                             <th>Sl</th>
                                             <th>Product *</th>
                                             <th>Quantity *</th>
+                                            <th>Sell price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
                                             <th>Purchase price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
                                             <th>Discount (%) *</th>
-                                            <th>Sell price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -137,13 +137,13 @@
                                                     <input id="quantityInput1" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required>
                                                 </td>
                                                 <td>
+                                                    <input id="sellPriceInput1" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                </td>
+                                                <td>
                                                     <input id="purchasePriceInput1" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
                                                     <input id="discountInput1" name="purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
-                                                </td>
-                                                <td>
-                                                    <input id="sellPriceInput1" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td hidden>
                                                     <input id="rowTotalInput1" name="total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
@@ -177,14 +177,7 @@
                                                             </span>
                                                         @enderror
                                                     </td>
-                                                    <td>
-                                                        <input id="purchasePriceInput{{ $i }}" name="purchase_price[]" type="number" class="form-control form-control-sm @error('purchase_price.'.$i) is-invalid @enderror" value="{{ old('purchase_price.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('purchase_price.'.$i)
-                                                            <span class="invalid-feedback" role="alert" style="display: block;">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </td>
+
                                                     <td>
                                                         <input id="discountInput{{ $i }}" name="purchase_discount[]" type="number" class="form-control form-control-sm @error('purchase_discount.'.$i) is-invalid @enderror" value="{{ old('purchase_discount.'.$i) }}" min="0" step="00.01" required>
                                                         @error('purchase_discount.'.$i)
@@ -193,6 +186,16 @@
                                                             </span>
                                                         @enderror
                                                     </td>
+
+                                                    <td>
+                                                        <input id="purchasePriceInput{{ $i }}" name="purchase_price[]" type="number" class="form-control form-control-sm @error('purchase_price.'.$i) is-invalid @enderror" value="{{ old('purchase_price.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('purchase_price.'.$i)
+                                                            <span class="invalid-feedback" role="alert" style="display: block;">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </td>
+
                                                     <td>
                                                         <input id="sellPriceInput{{ $i }}" name="sell_price[]" type="number" class="form-control form-control-sm @error('sell_price.'.$i) is-invalid @enderror" value="{{ old('sell_price.'.$i) }}" min="0" step="00.01" required>
                                                         @error('sell_price.'.$i)
@@ -386,9 +389,9 @@
                     row = row + '<td>' + tableRow + '</td>';
                     row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
                     row = row + '<td><input id="quantityInput'+ tableRow +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
+                    row = row + '<td><input id="sellPriceInput'+ tableRow +'" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="purchasePriceInput'+ tableRow +'" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="discountInput'+ tableRow +'" name="purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="sellPriceInput'+ tableRow +'" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td hidden><input id="rowTotalInput'+ tableRow +'" name="total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
                     row = row + '</tr>';
 

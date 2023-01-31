@@ -779,6 +779,7 @@ class UserPermissionSeeder extends Seeder
                 'description' => "The internal user can delete a supplier.",
                 'slug' => SystemConstant::slugGenerator("Delete a supplier",200),
             ])->create();
+
         // Oil and gas pump supplier purchase.
             UserPermission::factory()->state([
                 'name' => "View oil and gas pump purchases.",
@@ -810,6 +811,14 @@ class UserPermissionSeeder extends Seeder
                 'type' => "OilAndGasPumpPurchaseModulePermission",
                 'description' => "The internal user can update a purchase.",
                 'slug' => SystemConstant::slugGenerator("Update a purchase",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete a oil and gas pump purchase.",
+                'code' => "OAGPPUMP05",
+                'type' => "OilAndGasPumpPurchaseModulePermission",
+                'description' => "The internal user can delete a purchase.",
+                'slug' => SystemConstant::slugGenerator("Delete a purchase",200),
             ])->create();
         // Oil and gas pump supplier permission.
     }
