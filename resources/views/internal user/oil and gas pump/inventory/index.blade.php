@@ -44,7 +44,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Product</th>
-                                    <th>Count</th>
+                                    <th>Quantity</th>
                                     <th>Sell price</th>
                                     <th>Purchase price</th>
                                     <th>Link</th>

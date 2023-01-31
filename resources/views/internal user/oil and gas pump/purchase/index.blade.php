@@ -113,18 +113,18 @@
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpTotalPrice().'<br/>';
+                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPPurchase->discount.'% <br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="date-range-popover" data-bs-title="Date range information" data-bs-content="{{ $totalPayableAmountInformation }}">
-                                                        {{ $perOAGPPurchase->oagpPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $perOAGPPurchase->oagpPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
-                                                <td>{{ $perOAGPPurchase->paid_amount }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                <td>Detail|Edit</td>
+                                                <td>{{ $perOAGPPurchase->paid_amount }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>Detail | Edit</td>
                                             </tr>
                                         @empty
                                             <tr>
@@ -169,7 +169,7 @@
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpTotalPrice().'<br/>';
+                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPPurchase->discount.'% <br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
                                                     @endphp
@@ -180,7 +180,7 @@
                                                 </td>
                                                 <td>{{ $perOAGPPurchase->paid_amount }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                <td>Detail|Edit</td>
+                                                <td>Detail | Edit</td>
                                             </tr>
                                         @empty
                                             <tr>
