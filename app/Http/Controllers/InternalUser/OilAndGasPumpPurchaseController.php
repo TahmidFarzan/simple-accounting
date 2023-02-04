@@ -17,6 +17,7 @@ use App\Models\OilAndGasPumpSupplier;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Support\Facades\Validator;
 use App\Models\OilAndGasPumpPurchaseItem;
+use App\Models\OilAndGasPumpPurchasePayment;
 use App\Mail\EmailSendForOilAndGasPumpPurchase;
 
 class OilAndGasPumpPurchaseController extends Controller
@@ -336,7 +337,6 @@ class OilAndGasPumpPurchaseController extends Controller
             $oilAndGasPumpPurchase->note = array($request->note);
             $oilAndGasPumpPurchase->discount = $request->discount;
             $oilAndGasPumpPurchase->created_by_id = Auth::user()->id;
-            $oilAndGasPumpPurchase->paid_amount = $request->paid_amount;
             $oilAndGasPumpPurchase->description = $request->description;
             $oilAndGasPumpPurchase->oil_and_gas_pump_id = $oilAndGasPump->id;
             $oilAndGasPumpPurchase->oagp_supplier_id = $oilAndGasPumpSupplier->id;
@@ -372,6 +372,25 @@ class OilAndGasPumpPurchaseController extends Controller
                         $statusInformation["message"]->push("Fail to save product(".$product->name.").");
                     }
                 }
+                $paymentNote = array();
+
+                if($request->paid_amount == $request->payable_amount){
+                    array_push($paymentNote,"One time full payment.");
+                }
+
+                if($request->payable_amount>$request->paid_amount){
+                    array_push($paymentNote,"Partial payment 1.");
+                }
+
+                $oilAndGasPumpPurchasePayment = new OilAndGasPumpPurchasePayment();
+                $oilAndGasPumpPurchasePayment->updated_at = null;
+                $oilAndGasPumpPurchasePayment->note = $paymentNote;
+                $oilAndGasPumpPurchasePayment->created_at = Carbon::now();
+                $oilAndGasPumpPurchasePayment->amount = $request->paid_amount;
+                $oilAndGasPumpPurchasePayment->created_by_id = Auth::user()->id;
+                $oilAndGasPumpPurchasePayment->oagp_purchase_id = $oilAndGasPumpPurchase->id;
+                $oilAndGasPumpPurchasePayment->slug = SystemConstant::slugGenerator($request->name." purchase payment",200);
+                $oilAndGasPumpPurchasePayment->save();
 
                 $this->sendEmail("Add","The purchase has been added by ".Auth::user()->name.".",$oilAndGasPumpPurchase );
 

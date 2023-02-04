@@ -197,7 +197,7 @@
                                             <td colspan="4"></td>
                                             <td>Paid amount</td>
                                             <td>
-                                                {{ $purchase->paid_amount }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $purchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>

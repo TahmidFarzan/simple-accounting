@@ -20,7 +20,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->json('note')->nullable();
             $table->double('discount', 8, 2)->default(0);
-            $table->double('paid_amount', 8, 2)->default(0);
             $table->unsignedBigInteger('created_by_id');
             $table->timestamps();
 

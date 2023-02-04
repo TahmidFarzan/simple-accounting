@@ -122,7 +122,7 @@
                                                         {{ $perOAGPPurchase->oagpPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
-                                                <td>{{ $perOAGPPurchase->paid_amount }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPPurchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
 
@@ -183,7 +183,7 @@
                                                         {{ $perOAGPPurchase->oagpPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
-                                                <td>{{ $perOAGPPurchase->paid_amount }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPPurchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td><a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2"><i class="fa-solid fa-info"></i></a></td>
                                             </tr>

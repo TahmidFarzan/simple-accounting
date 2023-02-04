@@ -26,7 +26,6 @@ class OilAndGasPumpPurchase extends Model
         'discount',
         'mobile_no',
         'description',
-        'paid_amount',
         'created_by_id',
         'oagp_supplier_id',
     ];
@@ -52,7 +51,7 @@ class OilAndGasPumpPurchase extends Model
         ->logOnly([
             'note','date','name','slug',
             'invoice','mobile_no','description','status',
-            'created_by_id','paid_amount','discount','oagp_supplier_id',
+            'created_by_id','discount','oagp_supplier_id',
         ])
         ->useLogName('Oil and gas pump purchase')
         ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
@@ -81,6 +80,11 @@ class OilAndGasPumpPurchase extends Model
         return $this->hasMany(OilAndGasPumpPurchaseItem::class,'oagp_purchase_id','id');
     }
 
+    public function oagpPurchasePayments()
+    {
+        return $this->hasMany(OilAndGasPumpPurchasePayment::class,'oagp_purchase_id','id');
+    }
+
     public function oagpTotalPrice()
     {
         $totalPrice = 0.0;
@@ -92,6 +96,11 @@ class OilAndGasPumpPurchase extends Model
         return $totalPrice;
     }
 
+    public function oagpPurchaseTotalPaidAmount()
+    {
+        return $this->oagpPurchasePayments->sum("amount");
+    }
+
     public function oagpPayableAmount()
     {
         return ($this->oagpTotalPrice() - ( $this->oagpTotalPrice() * ($this->discount / 100) )) ;
@@ -99,7 +108,7 @@ class OilAndGasPumpPurchase extends Model
 
     public function oagpDueAmount()
     {
-        return ($this->oagpPayableAmount() - $this->paid_amount) ;
+        return ($this->oagpPayableAmount() - $this->oagpPurchaseTotalPaidAmount()) ;
     }
 
     public function updatedBy()
