@@ -182,6 +182,47 @@
                     </div>
                 </div>
 
+                <div class="col-md-12 mb-2">
+                    <div class="card border-secondary">
+                        <div class="d-flex justify-content-center">
+                            <h5>Payments</h5>
+                        </div>
+
+                        <div class="card-body text-dark">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Sl</th>
+                                            <th>Amount</th>
+                                            <th>Notes</th>
+                                            <th>Link</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($oilAndGasPumpPurchase->oagpPurchasePayments as $oagpPurchasePaymentIndex => $oagpPurchasePayment)
+                                            <tr>
+                                                <td>{{ $oagpPurchasePaymentIndex + 1 }}</td>
+                                                <td>
+                                                    {{ $oagpPurchasePayment->amount }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                </td>
+                                                <td>
+                                                    <ul>
+                                                        @foreach ($oagpPurchasePayment->note as $perNote)
+                                                            <li> {{ $perNote }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-6 mb-2">
                     <div class="card border-secondary">
                         <div class="card-body text-dark">
