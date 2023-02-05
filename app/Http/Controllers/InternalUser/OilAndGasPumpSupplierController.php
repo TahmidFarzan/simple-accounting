@@ -223,7 +223,7 @@ class OilAndGasPumpSupplierController extends Controller
 
         $deteValidationStatus = $this->deleteValidation($sSlug);
 
-        if(true){
+        if($deteValidationStatus["status"] == "status"){
             LogBatch::startBatch();
                 $supplier = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail();
                 $deleteOilAndGasPumpSupplier = $supplier->delete();
@@ -262,7 +262,7 @@ class OilAndGasPumpSupplierController extends Controller
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push($oilAndGasPumpSupplier->oagpPurchases->count()." supplier(s) exit.");
+            $statusInformation["message"]->push($oilAndGasPumpSupplier->oagpPurchases->count()." purchase(s) exit.");
         }
 
         return $statusInformation;

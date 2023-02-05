@@ -82,35 +82,38 @@
                                             @endif
 
                                             @if (Auth::user()->hasUserPermission(["OAGPIMP04"]) == true)
-                                                <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perInventory->slug}}DeleteConfirmationModal">
-                                                    Delete
-                                                </button>
 
-                                                <div class="modal fade" id="{{$perInventory->slug}}DeleteConfirmationModal" tabindex="-1">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5">{{ $perInventory->name }} delete confirmation.</h1>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>
-                                                                    <ul>
-                                                                        <li>You can not recover it.</li>
-                                                                    </ul>
-                                                                </p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                <form action="{{ route("oil.and.gas.pump.inventory.delete",["oagpSlug" => $oilAndGasPump->slug,"inSlug" => $perInventory->slug]) }}" method="POST">
-                                                                    @csrf
-                                                                    @method("DELETE")
-                                                                    <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
-                                                                </form>
+                                                @if (($perInventory->oagpProduct->oagpPurchaseItems->count() == 0))
+                                                    <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perInventory->slug}}DeleteConfirmationModal">
+                                                        Delete
+                                                    </button>
+                                                    <div class="modal fade" id="{{$perInventory->slug}}DeleteConfirmationModal" tabindex="-1">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5">{{ $perInventory->name }} delete confirmation.</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>
+                                                                        <ul>
+                                                                            <li>You can not recover it.</li>
+                                                                        </ul>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                    <form action="{{ route("oil.and.gas.pump.inventory.delete",["oagpSlug" => $oilAndGasPump->slug,"inSlug" => $perInventory->slug]) }}" method="POST">
+                                                                        @csrf
+                                                                        @method("DELETE")
+                                                                        <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                @endif
+
                                             @endif
                                         </td>
                                     </tr>

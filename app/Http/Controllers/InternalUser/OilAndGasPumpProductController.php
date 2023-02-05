@@ -215,7 +215,7 @@ class OilAndGasPumpProductController extends Controller
 
         $deleteValidationStatus = $this->deleteValidation($pSlug);
 
-        if(true){
+        if($deleteValidationStatus["status"] == "status"){
             LogBatch::startBatch();
                 $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
                 $deleteOilAndGasPumpProduct = $product->delete();
@@ -249,15 +249,22 @@ class OilAndGasPumpProductController extends Controller
 
         $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
 
-        // if(($oilAndGasPump->status == "Complete") && !($oilAndGasPump->receivable_status == "NotStarted") && !($oilAndGasPump->receivable_status == "Complete")){
-        //     $statusInformation["status"] = "status";
-        //     $statusInformation["message"]->push("Passed the validation.");
-        // }
-        // else{
-        //     $statusInformation["status"] = "errors";
-        //     $statusInformation["message"]->push("Project contract is not complete.");
-        //     $statusInformation["message"]->push("Payment (Project contract) must be not started.");
-        // }
+        if(!($product->oagpInventory) && ($product->oagpPurchaseItems->count() == 0)){
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Passed the validation.");
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Can not delete the product.");
+
+            if($product->oagpPurchaseItems->count() > 0){
+                $statusInformation["message"]->push("The product has been in the purchase.");
+            }
+
+            if($product->oagpInventory){
+                $statusInformation["message"]->push("The product is in the inventory.");
+            }
+        }
 
         return $statusInformation;
     }

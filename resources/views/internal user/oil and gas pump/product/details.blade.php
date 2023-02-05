@@ -148,11 +148,15 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
+                    @php
+                        $passDeleteValidation = ((!($product->oagpInventory) && ($product->oagpPurchaseItems->count() == 0)) == true) ? true : false;
+                    @endphp
+
                     @if (Auth::user()->hasUserPermission(["OAGPMP04"]) == true)
                         <a href="{{ route("oil.and.gas.pump.product.edit",["oagpSlug" => $product->oilAndGasPump->slug,"pSlug"=>$product->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
-                    @if (($product->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPMP05"]) == true))
+                    @if (($product->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPMP05"]) == true) && ($passDeleteValidation == true))
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
                             Delete
                         </button>
@@ -161,7 +165,7 @@
             </div>
 
 
-            @if (($product->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPMP05"]) == true))
+            @if (($product->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPMP05"]) == true) && ($passDeleteValidation == true))
                 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">

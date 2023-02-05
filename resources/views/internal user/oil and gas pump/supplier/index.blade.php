@@ -104,7 +104,7 @@
                                                 <a href="{{ route("oil.and.gas.pump.supplier.edit",["oagpSlug" => $oilAndGasPump->slug,"sSlug" => $perSupplier->slug]) }}" class="btn btn-sm btn-primary m-1">Edit</a>
                                             @endif
 
-                                            @if (Auth::user()->hasUserPermission(["OAGPSMP05"]) == true)
+                                            @if ((Auth::user()->hasUserPermission(["OAGPSMP05"]) == true) && ( $perSupplier->oagpPurchases->count() == 0))
                                                 <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perSupplier->slug}}DeleteConfirmationModal">
                                                     Delete
                                                 </button>

@@ -116,35 +116,37 @@
                                             @endif
 
                                             @if (Auth::user()->hasUserPermission(["OAGPPMP05"]) == true)
-                                                <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perProduct->slug}}DeleteConfirmationModal">
-                                                    Delete
-                                                </button>
+                                                @if (!($perProduct->oagpInventory) && ($perProduct->oagpPurchaseItems->count() == 0))
+                                                    <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perProduct->slug}}DeleteConfirmationModal">
+                                                        Delete
+                                                    </button>
 
-                                                <div class="modal fade" id="{{$perProduct->slug}}DeleteConfirmationModal" tabindex="-1">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5">{{ $perProduct->name }} delete confirmation.</h1>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>
-                                                                    <ul>
-                                                                        <li>Product will not show dependency.</li>
-                                                                    </ul>
-                                                                </p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                                                <form action="{{ route("oil.and.gas.pump.product.delete",["oagpSlug" => $oilAndGasPump->slug,"pSlug" => $perProduct->slug]) }}" method="POST">
-                                                                    @csrf
-                                                                    @method("DELETE")
-                                                                    <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
-                                                                </form>
+                                                    <div class="modal fade" id="{{$perProduct->slug}}DeleteConfirmationModal" tabindex="-1">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5">{{ $perProduct->name }} delete confirmation.</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>
+                                                                        <ul>
+                                                                            <li>Product will not show dependency.</li>
+                                                                        </ul>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                    <form action="{{ route("oil.and.gas.pump.product.delete",["oagpSlug" => $oilAndGasPump->slug,"pSlug" => $perProduct->slug]) }}" method="POST">
+                                                                        @csrf
+                                                                        @method("DELETE")
+                                                                        <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>

@@ -192,7 +192,7 @@
                         <a href="{{ route("oil.and.gas.pump.supplier.edit",["oagpSlug" => $supplier->oilAndGasPump->slug,"sSlug"=>$supplier->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
-                    @if (($supplier->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGSMP05"]) == true))
+                    @if (($supplier->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGSMP05"]) == true) && ( $supplier->oagpPurchases->count() == 0))
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
                             Delete
                         </button>
@@ -201,7 +201,7 @@
             </div>
 
 
-            @if (($supplier->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGSMP05"]) == true))
+            @if (($supplier->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGSMP05"]) == true) && ( $supplier->oagpPurchases->count() == 0) )
                 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">

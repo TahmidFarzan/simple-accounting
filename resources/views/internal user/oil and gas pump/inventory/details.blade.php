@@ -230,11 +230,14 @@
         </div>
     @endif
 
-    <div class="card border-dark mb-3">
+    <div class="card border-dark mb-3" @if($inventory->oagpProduct->oagpPurchaseItems->count() > 0) hidden @endif >
+        @php
+            $passDeleteValidation = (($inventory->oagpProduct->oagpPurchaseItems->count() == 0)) ? true : false;
+        @endphp
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
-                    @if (($inventory->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPIMP04"]) == true))
+                    @if (($inventory->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPIMP04"]) == true) && ($passDeleteValidation == true))
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
                             Delete
                         </button>
@@ -242,7 +245,7 @@
                 </div>
             </div>
 
-            @if (($inventory->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPIMP04"]) == true))
+            @if (($inventory->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPIMP04"]) == true) && ($passDeleteValidation == true))
                 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">

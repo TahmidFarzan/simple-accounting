@@ -152,7 +152,7 @@ class OilAndGasPumpInventoryController extends Controller
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         $deleteValidationStatus = $this->deleteValidation($inSlug);
 
-        if(true){
+        if($deleteValidationStatus["status"] == "status"){
             LogBatch::startBatch();
                 $inventoryProduct = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
                 $deleteOAGPProduct = $inventoryProduct->delete();
@@ -184,17 +184,20 @@ class OilAndGasPumpInventoryController extends Controller
     private function deleteValidation($inSlug){
         $statusInformation = array("status" => "errors","message" => collect());
 
-        $product = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
+        $inProduct = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
 
-        // if(($oilAndGasPump->status == "Complete") && !($oilAndGasPump->receivable_status == "NotStarted") && !($oilAndGasPump->receivable_status == "Complete")){
-        //     $statusInformation["status"] = "status";
-        //     $statusInformation["message"]->push("Passed the validation.");
-        // }
-        // else{
-        //     $statusInformation["status"] = "errors";
-        //     $statusInformation["message"]->push("Project contract is not complete.");
-        //     $statusInformation["message"]->push("Payment (Project contract) must be not started.");
-        // }
+        if(($inProduct->oagpProduct->oagpPurchaseItems->count() == 0)){
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Passed the validation.");
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Can not delete the product.");
+
+            if($inProduct->oagpProduct->oagpPurchaseItems->count() > 0){
+                $statusInformation["message"]->push("The product has been in the purchase.");
+            }
+        }
 
         return $statusInformation;
     }
