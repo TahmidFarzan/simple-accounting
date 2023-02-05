@@ -55,9 +55,27 @@
                                     <tr>
                                         <td>{{ $perInventoryIndex + 1 }}</td>
                                         <td>{{ $perInventory->oagpProduct->name }}</td>
-                                        <td>{{ $perInventory->quantity }}</td>
-                                        <td>{{ $perInventory->sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        <td>{{ $perInventory->purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        <td>
+                                            <ul>
+                                                <li> Old: {{ $perInventory->old_quantity }} {{ ($perInventory->oagpProduct->type == "Oil") ? $setting["oagpSetting"]["oil_unit"] :  $setting["oagpSetting"]["gas_unit"] }}</li>
+                                                <li> Current: {{ $perInventory->quantity }} {{ ($perInventory->oagpProduct->type == "Oil") ? $setting["oagpSetting"]["oil_unit"] :  $setting["oagpSetting"]["gas_unit"] }}</li>
+                                                <li> Total: {{ $perInventory->old_quantity + $perInventory->quantity }} {{ ($perInventory->oagpProduct->type == "Oil") ? $setting["oagpSetting"]["oil_unit"] :  $setting["oagpSetting"]["gas_unit"] }}</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li> Old: {{ $perInventory->old_sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
+                                                <li> Current: {{ $perInventory->sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
+                                                <li> Avg: {{ ($perInventory->old_sell_price + $perInventory->sell_price)/2 }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li> Old: {{ $perInventory->old_purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
+                                                <li> Current: {{ $perInventory->purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
+                                                <li> Avg: {{ ($perInventory->old_purchase_price + $perInventory->purchase_price)/2 }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
+                                            </ul>
+                                        </td>
                                         <td>
                                             @if (Auth::user()->hasUserPermission(["OAGPIMP03"]) == true)
                                                 <a href="{{ route("oil.and.gas.pump.inventory.details",["oagpSlug" => $oilAndGasPump->slug,"inSlug" => $perInventory->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
