@@ -395,7 +395,7 @@ class OilAndGasPumpPurchaseController extends Controller
                 $this->sendEmail("Add","The purchase has been added by ".Auth::user()->name.".",$oilAndGasPumpPurchase );
 
                 if($oilAndGasPumpPurchaseItemCount == count($request->product)){
-                    $inventoryStatus = InventoryConstant::updateProductToInventoryForPurachase($oilAndGasPumpPurchase->slug);
+                    $inventoryStatus = InventoryConstant::updateProductToInventoryForPurachaseAdd($oilAndGasPumpPurchase->slug);
 
                     foreach($inventoryStatus["message"] as $perMessage){
                         $statusInformation["message"]->push($perMessage);
@@ -409,6 +409,45 @@ class OilAndGasPumpPurchaseController extends Controller
             else{
                 $statusInformation["message"]->push("Fail to save.");
             }
+
+        return redirect()->route("oil.and.gas.pump.purchase.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    public function delete($oagpSlug,$puSlug){
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
+
+        LogBatch::startBatch();
+            $oilAndGasPumpPurchase = OilAndGasPumpPurchase::where("slug",$puSlug)->firstOrFail();
+
+            InventoryConstant::updateProductToInventoryForPurachaseDelete($puSlug);
+
+            if($oilAndGasPumpPurchase->oagpPurchaseItems->count() > 0 ){
+                foreach($oilAndGasPumpPurchase->oagpPurchaseItems as $perPurchaseItem){
+                    $perPurchaseItem->delete();
+                }
+            }
+
+            if($oilAndGasPumpPurchase->oagpPurchasePayments->count() > 0 ){
+                foreach($oilAndGasPumpPurchase->oagpPurchasePayments as $perPayment){
+                    $perPayment->delete();
+                }
+            }
+
+            $deleteOilAndGasPumpPurchase = $oilAndGasPumpPurchase->delete();
+        LogBatch::endBatch();
+
+        if($deleteOilAndGasPumpPurchase){
+            $this->sendEmail("Delete","Purchase has been delete by ".Auth::user()->name.".",$oilAndGasPumpPurchase );
+
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Successfully deleted.");
+        }
+        else{
+            $statusInformation["status"] = "errors";
+            $statusInformation["message"]->push("Fail to delete.");
+        }
 
         return redirect()->route("oil.and.gas.pump.purchase.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
     }

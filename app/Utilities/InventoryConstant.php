@@ -50,7 +50,7 @@ class InventoryConstant
         return $statusInformation;
     }
 
-    public static function updateProductToInventoryForPurachase($puSlug){
+    public static function updateProductToInventoryForPurachaseAdd($puSlug){
         $statusInformation = array("status" => "errors","message" => collect());
         $inventoryUpdateCount = 0;
 
@@ -102,6 +102,21 @@ class InventoryConstant
         }
 
         return $statusInformation;
+    }
+
+    public static function updateProductToInventoryForPurachaseDelete($puSlug){
+        $oilAndGasPumpPurchase = OilAndGasPumpPurchase::where("slug",$puSlug)->firstOrFail();
+
+        if($oilAndGasPumpPurchase->oagpPurchaseItems->count() > 0 ){
+            foreach($oilAndGasPumpPurchase->oagpPurchaseItems as $perPurchaseItem){
+                $inventory = OilAndGasPumpInventory::where("oagp_product_id",$perPurchaseItem->oagp_product_id)->firstOrFail();
+
+                $updatedInventoryQuantity = $inventory->quantity - $perPurchaseItem->quantity;
+
+                $inventory->quantity = ($updatedInventoryQuantity < 0) ? 0 : $updatedInventoryQuantity;
+                $inventory->update();
+            }
+        }
     }
 
     public static function productExitInInventory($productId){

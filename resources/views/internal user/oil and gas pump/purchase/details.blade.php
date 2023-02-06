@@ -398,7 +398,10 @@
                             <div class="modal-body">
                                 <p>
                                     <ul>
-                                        <li>Product will not show dependency.</li>
+                                        <li>Purchase will not show dependency.</li>
+                                        <li>All related purchase items will be deleted.</li>
+                                        <li>All related purchase payment will be deleted.</li>
+                                        <li>This record can not recover and same gose for related dependency.</li>
                                     </ul>
                                 </p>
                             </div>

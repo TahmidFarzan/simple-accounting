@@ -246,6 +246,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('add', [OilAndGasPumpPurchaseController::class, 'add'])->name('add');
             Route::get('details/{puSlug}', [OilAndGasPumpPurchaseController::class, 'details'])->name('details');
             Route::post('save', [OilAndGasPumpPurchaseController::class, 'save'])->name('save');
+            Route::delete('delete/{puSlug}', [OilAndGasPumpPurchaseController::class, 'delete'])->name('delete');
         });
     });
 
