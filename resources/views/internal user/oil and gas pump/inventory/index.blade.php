@@ -66,14 +66,40 @@
                                             <ul>
                                                 <li> Old: {{ $perInventory->old_sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
                                                 <li> Current: {{ $perInventory->sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
-                                                <li> Avg: {{ ($perInventory->old_sell_price + $perInventory->sell_price)/2 }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
+                                                <li>
+                                                    @php
+                                                        $sellPrice = 0;
+
+                                                        if($perInventory->old_sell_price == 0){
+                                                            $sellPrice = $perInventory->sell_price;
+                                                        }
+
+                                                        if($perInventory->old_sell_price > 0){
+                                                            $sellPrice = ($sellPrice + $perInventory->old_sell_price)/2;
+                                                        }
+                                                    @endphp
+                                                    Avg: {{ $sellPrice }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                </li>
                                             </ul>
                                         </td>
                                         <td>
                                             <ul>
                                                 <li> Old: {{ $perInventory->old_purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
                                                 <li> Current: {{ $perInventory->purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
-                                                <li> Avg: {{ ($perInventory->old_purchase_price + $perInventory->purchase_price)/2 }} {{ $setting["businessSetting"]["currency_symbol"] }}</li>
+                                                <li>
+                                                    @php
+                                                        $purchasePrice = 0;
+
+                                                        if($perInventory->old_purchase_price == 0){
+                                                            $purchasePrice = $perInventory->purchase_price;
+                                                        }
+
+                                                        if($perInventory->old_purchase_price > 0){
+                                                            $purchasePrice = ($sellPrice + $perInventory->old_purchase_price)/2;
+                                                        }
+                                                    @endphp
+                                                    Avg: {{ $purchasePrice }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                </li>
                                             </ul>
                                         </td>
                                         <td>
