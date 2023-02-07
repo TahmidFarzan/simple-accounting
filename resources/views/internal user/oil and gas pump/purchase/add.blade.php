@@ -398,6 +398,7 @@
                     $('#dataTable tbody').append(row);
                     rowButtonStatusChange();
                 }
+                filterProductForPurchaseProducts();
             });
 
             $(document).on('click', '#removeRow', function () {
@@ -424,6 +425,15 @@
 
                 calculateRowTotal($(this).closest("tr"));
                 calculateTotalPurchaseAmount();
+            });
+
+            $("#dataTable tbody").on("change", 'input[name^="sell_price"]', function (event) {
+                var currentValue = $(this).val();
+                $(this).val(parseFloat(currentValue).toFixed(2));
+            });
+
+            $("#dataTable tbody").on("change", 'select[name^="product"]', function (event) {
+                filterProductForPurchaseProducts();
             });
 
             $(document).on('change', '#discountInput', function () {
@@ -539,6 +549,38 @@
             calculateTotalPrice();
             calculatePayAbleAmount();
             calculateDueAmount();
+        }
+
+        function filterProductForPurchaseProducts(){
+            var selectedProducts = [];
+            $("#dataTable tbody").find('select[name^="product"]').each(function () {
+                var productValue = $(this).val();
+                if(productValue.length > 0 ){
+                    selectedProducts.push(productValue);
+                }
+            });
+
+            if(selectedProducts.length > 0){
+                $.ajax({
+                    type:'get',
+                    url:"{{ route('oil.and.gas.pump.purchase.get.product',['oagpSlug'=>$oilAndGasPump->slug]) }}",
+                    data:{"selected_products":selectedProducts},
+                    success:function(successResponce){
+                        $("#dataTable tbody").find('select[name^="product"]').each(function () {
+                            if(($(this).val() == null) || ($(this).val().length == 0) ){
+                                var filterableProductId = $(this).attr("id");
+
+                                $(this).empty();
+                                $(this).append('<option value="">Select</option>');
+
+                                $.each(successResponce, function( index, perValue ) {
+                                    $("#dataTable tbody #"+filterableProductId).append('<option value="'+ perValue.slug +'">'+ perValue.name +'</option>');
+                                });
+                            }
+                        });
+                    }
+                });
+            }
         }
     </script>
 @endpush
