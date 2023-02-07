@@ -184,7 +184,7 @@
 
                 <div class="col-md-12 mb-2">
                     <div class="card border-secondary">
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-center mt-2">
                             <h5>Payments</h5>
                         </div>
 
@@ -196,6 +196,7 @@
                                             <th>Sl</th>
                                             <th>Amount</th>
                                             <th>Notes</th>
+                                            <th>Pay at</th>
                                             <th>Link</th>
                                         </tr>
                                     </thead>
@@ -213,6 +214,9 @@
                                                         @endforeach
                                                     </ul>
                                                 </td>
+                                                <td>
+                                                    {{ ($oagpPurchasePayment->created_at == null) ? "Not added yet." : date('d-M-Y',strtotime($oagpPurchasePayment->created_at))." at ".date('h:i:s a',strtotime($oagpPurchasePayment->created_at)) }}
+                                                </td>
                                                 <td></td>
                                             </tr>
                                         @endforeach
@@ -223,44 +227,45 @@
                     </div>
                 </div>
 
-                <div class="col-md-6 mb-2">
+                <div class="col-md-12 mb-2">
                     <div class="card border-secondary">
                         <div class="card-body text-dark">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <th style="width: 25%;">Note</th>
-                                            <th style="width: 1%;">:</th>
-                                            <td>
-                                                <ul>
-                                                    @foreach ($oilAndGasPumpPurchase->note as $perNote)
-                                                        <li>{{ $perNote }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="width: 25%;">Note</th>
+                                                    <th style="width: 1%;">:</th>
+                                                    <td>
+                                                        <ul>
+                                                            @foreach ($oilAndGasPumpPurchase->note as $perNote)
+                                                                <li>{{ $perNote }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-                <div class="col-md-6">
-                    <div class="card border-secondary">
-                        <div class="card-body text-dark">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <th style="width: 25%;">Status</th>
-                                            <th style="width: 1%;">:</th>
-                                            <td>{{ $oilAndGasPumpPurchase->status }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="width: 25%;">Status</th>
+                                                    <th style="width: 1%;">:</th>
+                                                    <td>{{ $oilAndGasPumpPurchase->status }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
