@@ -26,7 +26,7 @@
 @section('authContentOne')
 
     @php
-        $dataTableRow = array('min' => 1,'max' => 5);
+        $dataTableRow = array('min' => 1,'max' => 100);
     @endphp
     <div class="card border-dark mb-2">
         <div class="card-body text-dark">
