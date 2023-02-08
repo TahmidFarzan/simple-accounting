@@ -26,7 +26,7 @@ class OilAndGasPumpProduct extends Model
     ];
 
     protected $hidden = [
-        'slug',
+        'id',
         'created_by_id',
     ];
 

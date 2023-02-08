@@ -90,12 +90,12 @@
                                                     @php
                                                         $purchasePrice = 0;
 
-                                                        if($perInventory->old_purchase_price == 0){
+                                                        if($perInventory->purchase_price == 0){
                                                             $purchasePrice = $perInventory->purchase_price;
                                                         }
 
                                                         if($perInventory->old_purchase_price > 0){
-                                                            $purchasePrice = ($sellPrice + $perInventory->old_purchase_price)/2;
+                                                            $purchasePrice = ($purchasePrice + $perInventory->old_purchase_price)/2;
                                                         }
                                                     @endphp
                                                     Avg: {{ $purchasePrice }} {{ $setting["businessSetting"]["currency_symbol"] }}

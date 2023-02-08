@@ -72,7 +72,7 @@ class InventoryConstant
             // Save old status
             if($oagpInProduct->quantity > 0){
                 // Old quantity exit
-                $oldQuantity = ($oagpPurchaseItem->old_quantity == 0) ? $oagpPurchaseItem->quantity : ($oagpPurchaseItem->old_quantity + $oagpPurchaseItem->quantity);
+                $oldQuantity = ($oagpInProduct->old_quantity == 0) ? $oagpInProduct->quantity : ($oagpInProduct->old_quantity + $oagpInProduct->quantity);
 
                 $oldSellPrice = $oagpPurchaseItem->sell_price;
                 $oldPurchasePrice = $oagpPurchaseItem->purchase_price;
