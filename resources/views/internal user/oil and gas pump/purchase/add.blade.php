@@ -179,8 +179,8 @@
                                                     </td>
 
                                                     <td>
-                                                        <input id="discountInput{{ $i }}" name="purchase_discount[]" type="number" class="form-control form-control-sm @error('purchase_discount.'.$i) is-invalid @enderror" value="{{ old('purchase_discount.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('purchase_discount.'.$i)
+                                                        <input id="sellPriceInput{{ $i }}" name="sell_price[]" type="number" class="form-control form-control-sm @error('sell_price.'.$i) is-invalid @enderror" value="{{ old('sell_price.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('sell_price.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -197,13 +197,14 @@
                                                     </td>
 
                                                     <td>
-                                                        <input id="sellPriceInput{{ $i }}" name="sell_price[]" type="number" class="form-control form-control-sm @error('sell_price.'.$i) is-invalid @enderror" value="{{ old('sell_price.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('sell_price.'.$i)
+                                                        <input id="discountInput{{ $i }}" name="purchase_discount[]" type="number" class="form-control form-control-sm @error('purchase_discount.'.$i) is-invalid @enderror" value="{{ old('purchase_discount.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('purchase_discount.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
                                                         @enderror
                                                     </td>
+
                                                     <td hidden>
                                                         <input id="rowTotalInput{{ $i }}" name="total_purchase_price[]" type="number" class="form-control form-control-sm @error('total_purchase_price.'.$i) is-invalid @enderror" value="{{ old('total_purchase_price.'.$i) }}" min="0" step="00.01" required readonly hidden>
                                                         @error('total_purchase_price.'.$i)
