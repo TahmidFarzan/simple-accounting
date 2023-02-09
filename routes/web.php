@@ -244,9 +244,12 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
         Route::prefix('{oagpSlug}/purchase')->name('purchase.')->group(function(){
             Route::get('/', [OilAndGasPumpPurchaseController::class, 'index'])->name('index');
             Route::get('add', [OilAndGasPumpPurchaseController::class, 'add'])->name('add');
+            Route::get('edit/{puSlug}', [OilAndGasPumpPurchaseController::class, 'edit'])->name('edit');
             Route::get('details/{puSlug}', [OilAndGasPumpPurchaseController::class, 'details'])->name('details');
             Route::get('/get-product', [OilAndGasPumpPurchaseController::class, 'getProduct'])->name('get.product');
+
             Route::post('save', [OilAndGasPumpPurchaseController::class, 'save'])->name('save');
+            Route::patch('update/{puSlug}', [OilAndGasPumpPurchaseController::class, 'update'])->name('update');
             Route::delete('delete/{puSlug}', [OilAndGasPumpPurchaseController::class, 'delete'])->name('delete');
         });
     });

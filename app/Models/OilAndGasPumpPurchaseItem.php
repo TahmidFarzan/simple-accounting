@@ -68,6 +68,12 @@ class OilAndGasPumpPurchaseItem extends Model
         return $this->belongsTo(OilAndGasPumpProduct::class,'oagp_product_id','id');
     }
 
+    public function totalPurchasePrice()
+    {
+        $purchasePrice = $this->purchase_price * $this->quantity;
+        return $purchasePrice - ($purchasePrice * ($this->discount/100));
+    }
+
     public function updatedBy()
     {
         $causer = null;

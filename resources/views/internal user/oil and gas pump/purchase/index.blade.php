@@ -130,6 +130,10 @@
                                                         <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
                                                     @endif
 
+                                                    @if (Auth::user()->hasUserPermission(["OAGPPUMP04"]) == true)
+                                                        <a href="{{ route("oil.and.gas.pump.purchase.edit",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-primary btn-sm m-2">Edit</a>
+                                                    @endif
+
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP05"]) == true)
                                                         <button type="button" class="btn btn-sm btn-danger m-2" data-bs-toggle="modal" data-bs-target="#{{$perOAGPPurchase->slug}}DeleteConfirmationModal">
                                                             Delete
@@ -222,6 +226,10 @@
                                                 <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
+                                                    @if (Auth::user()->hasUserPermission(["OAGPPUMP04"]) == true)
+                                                        <a href="{{ route("oil.and.gas.pump.purchase.edit",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-primary btn-sm m-2">Edit</a>
+                                                    @endif
+
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP05"]) == true)
                                                         <button type="button" class="btn btn-sm btn-danger m-2" data-bs-toggle="modal" data-bs-target="#{{$perOAGPPurchase->slug}}DeleteConfirmationModal">
                                                             Delete
