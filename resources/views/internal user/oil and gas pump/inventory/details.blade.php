@@ -191,7 +191,7 @@
                 <div class="card-body text-dark">
                     <div class="d-flex justify-content-center">
                         <p>
-                            <b>Showing {{ ($activitylogLimit < $inventory->activityLogs()->count() ) ? "last ".$inventory : "All" }} out of {{ $inventory->activityLogs()->count() }} activity log(s).</b>
+                            <b>Showing {{ ($activitylogLimit < $inventory->activityLogs()->count() ) ? "last ".$activitylogLimit : "All" }} out of {{ $inventory->activityLogs()->count() }} activity log(s).</b>
                         </p>
                     </div>
 

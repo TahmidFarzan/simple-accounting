@@ -373,7 +373,7 @@ class OilAndGasPumpPurchaseController extends Controller
 
             if($savePurchase){
                 $oagpPurchaseItemCount = 0;
-                $statusInformation["status"] = "success";
+                $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Purchase has been done.");
                 for($i = 0; $i < $request->table_row; $i++){
                     $product = OilAndGasPumpProduct::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->product[$i])->firstOrFail();
