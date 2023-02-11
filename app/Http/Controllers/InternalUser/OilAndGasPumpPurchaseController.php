@@ -443,6 +443,7 @@ class OilAndGasPumpPurchaseController extends Controller
     public function update($oagpSlug,$puSlug,Request $request){
         $this->puSlug = $puSlug;
         $this->oagpSlug = $oagpSlug;
+
         $validator = Validator::make($request->all(),
             [
                 'date' => 'required|date|before_or_equal:today',
@@ -672,15 +673,18 @@ class OilAndGasPumpPurchaseController extends Controller
 
             if($savePurchase){
                 $oagpPurchaseItemCount = 0;
-                $statusInformation["status"] = "success";
+                $statusInformation["status"] = "status";
                 $statusInformation["message"]->push("Purchase has been updated.");
 
                 for($i = 0; $i < $request->table_row; $i++){
+                    $puItemSlug = null;
+                    $updatedQuentity = 0;
+                    $requestType = "AddItem";
                     $product = OilAndGasPumpProduct::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->product[$i])->firstOrFail();
-
                     $productCountInItem = OilAndGasPumpPurchaseItem::where("oagp_purchase_id", $oagpPurchase->id)->where("oagp_product_id",$product->id)->count();
 
                     if($productCountInItem == 0){
+                        $requestType = "AddItem";
                         $oagpPurchaseNewItem = new OilAndGasPumpPurchaseItem();
                         $oagpPurchaseNewItem->updated_at = null;
                         $oagpPurchaseNewItem->created_at = Carbon::now();
@@ -693,6 +697,9 @@ class OilAndGasPumpPurchaseController extends Controller
                         $oagpPurchaseNewItem->slug = SystemConstant::slugGenerator($request->name." purchase Item",200);
 
                         $saveOAGPPurchaseNewItem = $oagpPurchaseNewItem->save();
+
+                        $puItemSlug = $oagpPurchaseNewItem->slug;
+
                         if($saveOAGPPurchaseNewItem){
                             $oagpPurchaseItemCount =  $oagpPurchaseItemCount + 1;
                         }
@@ -701,15 +708,24 @@ class OilAndGasPumpPurchaseController extends Controller
                         }
                     }
                     else{
+                        $oldOAGPPurchaseItem = OilAndGasPumpPurchaseItem::where("oagp_purchase_id", $oagpPurchase->id)->where("oagp_product_id",$product->id)->firstOrFail();
+
+                        $requestType = "UpdateItem";
+                        $updatedQuentity = $request->quantity[$i] - $oldOAGPPurchaseItem->quantity;
+
                         $oagpPurchaseItem = OilAndGasPumpPurchaseItem::where("oagp_purchase_id", $oagpPurchase->id)->where("oagp_product_id",$product->id)->firstOrFail();
                         $oagpPurchaseItem->updated_at = Carbon::now();
                         $oagpPurchaseItem->oagp_product_id = $product->id;
+                        $oagpPurchaseItem->quantity = $request->quantity[$i];
                         $oagpPurchaseItem->sell_price = $request->sell_price[$i];
                         $oagpPurchaseItem->discount = $request->purchase_discount[$i];
                         $oagpPurchaseItem->purchase_price = $request->purchase_price[$i];
                         $oagpPurchaseItem->oagp_purchase_id =  $oagpPurchase->id;
 
                         $updateOAGPPurchaseItem = $oagpPurchaseItem->update();
+
+                        $puItemSlug = $oagpPurchaseItem->slug;
+
                         if($updateOAGPPurchaseItem){
                             $oagpPurchaseItemCount =  $oagpPurchaseItemCount + 1;
                         }
@@ -717,10 +733,22 @@ class OilAndGasPumpPurchaseController extends Controller
                             $statusInformation["message"]->push("Fail to update product(".$product->name.").");
                         }
                     }
+
+                    $inventoryStatus = InventoryConstant::updateProductToInventoryForPurachaseUpdate($puSlug,$puItemSlug,$requestType,$updatedQuentity);
+
+                    if($inventoryStatus["status"] == "status"){
+                        $oagpPurchaseItemCount = $oagpPurchaseItemCount +1 ;
+                    }
                 }
 
                 $this->sendEmail("Update","The purchase has been updated by ".Auth::user()->name.".", $oagpPurchase );
 
+                if( $oagpPurchaseItemCount == count($request->product)){
+                    $statusInformation["message"]->push("Inventory successfully updated.");
+                }
+                else{
+                    $statusInformation["message"]->push("Can not update inventory.Please update the inventory manually.");
+                }
 
                 LogBatch::endBatch();
             }
