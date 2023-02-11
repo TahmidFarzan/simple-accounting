@@ -336,7 +336,7 @@
                 <div class="card-body text-dark">
                     <div class="d-flex justify-content-center">
                         <p>
-                            <b>Showing {{ ($activitylogLimit < $oilAndGasPumpPurchase->activityLogs()->count() ) ? "last ".$oilAndGasPumpPurchase : "All" }} out of {{ $oilAndGasPumpPurchase->activityLogs()->count() }} activity log(s).</b>
+                            <b>Showing {{ ($activitylogLimit < $oilAndGasPumpPurchase->activityLogs()->count() ) ? "last ".$activitylogLimit : "All" }} out of {{ $oilAndGasPumpPurchase->activityLogs()->count() }} activity log(s).</b>
                         </p>
                     </div>
 

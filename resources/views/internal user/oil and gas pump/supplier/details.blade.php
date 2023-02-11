@@ -145,7 +145,7 @@
                 <div class="card-body text-dark">
                     <div class="d-flex justify-content-center">
                         <p>
-                            <b>Showing {{ ($activitylogLimit < $supplier->activityLogs()->count() ) ? "last ".$supplier : "All" }} out of {{ $supplier->activityLogs()->count() }} activity log(s).</b>
+                            <b>Showing {{ ($activitylogLimit < $supplier->activityLogs()->count() ) ? "last ".$activitylogLimit : "All" }} out of {{ $supplier->activityLogs()->count() }} activity log(s).</b>
                         </p>
                     </div>
 
