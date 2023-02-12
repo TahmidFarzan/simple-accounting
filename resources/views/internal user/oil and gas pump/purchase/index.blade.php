@@ -168,6 +168,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
+
                                                 </td>
                                             </tr>
                                         @empty
@@ -225,7 +226,10 @@
                                                 <td>{{ $perOAGPPurchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
-                                                    <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
+                                                    @if (Auth::user()->hasUserPermission(["OAGPPUMP03"]) == true)
+                                                        <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
+                                                    @endif
+
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP04"]) == true)
                                                         <a href="{{ route("oil.and.gas.pump.purchase.edit",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-primary btn-sm m-2">Edit</a>
                                                     @endif
