@@ -113,20 +113,20 @@ class OilAndGasPumpSupplierController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
-            $supplier = new OilAndGasPumpSupplier();
-            $supplier->name = $request->name;
-            $supplier->email = $request->email;
-            $supplier->payable_amount = 0;
-            $supplier->receviable_amount = 0;
-            $supplier->note = array($request->note);
-            $supplier->description = $request->description;
-            $supplier->mobile_no = $request->mobile_no;
-            $supplier->oil_and_gas_pump_id =  $oilAndGasPump->id;
-            $supplier->slug = SystemConstant::slugGenerator($request->name,200);
-            $supplier->created_at = Carbon::now();
-            $supplier->created_by_id = Auth::user()->id;
-            $supplier->updated_at = null;
-            $saveSupplier = $supplier->save();
+        $supplier = new OilAndGasPumpSupplier();
+        $supplier->name = $request->name;
+        $supplier->email = $request->email;
+        $supplier->payable_amount = 0;
+        $supplier->receviable_amount = 0;
+        $supplier->note = array($request->note);
+        $supplier->description = $request->description;
+        $supplier->mobile_no = $request->mobile_no;
+        $supplier->oil_and_gas_pump_id =  $oilAndGasPump->id;
+        $supplier->slug = SystemConstant::slugGenerator($request->name,200);
+        $supplier->created_at = Carbon::now();
+        $supplier->created_by_id = Auth::user()->id;
+        $supplier->updated_at = null;
+        $saveSupplier = $supplier->save();
         LogBatch::endBatch();
 
         if($saveSupplier){
@@ -190,16 +190,16 @@ class OilAndGasPumpSupplierController extends Controller
         array_push($notes,$request->note);
 
         LogBatch::startBatch();
-            $supplier = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail();
+        $supplier = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail();
 
-            $supplier->name = $request->name;
-            $supplier->email = $request->email;
-            $supplier->note = $notes;
-            $supplier->description = $request->description;
-            $supplier->mobile_no = $request->mobile_no;
-            $supplier->slug = SystemConstant::slugGenerator($request->name,200);
-            $supplier->updated_at = Carbon::now();
-            $updateSupplier = $supplier->update();
+        $supplier->name = $request->name;
+        $supplier->email = $request->email;
+        $supplier->note = $notes;
+        $supplier->description = $request->description;
+        $supplier->mobile_no = $request->mobile_no;
+        $supplier->slug = SystemConstant::slugGenerator($request->name,200);
+        $supplier->updated_at = Carbon::now();
+        $updateSupplier = $supplier->update();
         LogBatch::endBatch();
 
         if($updateSupplier){
@@ -225,8 +225,8 @@ class OilAndGasPumpSupplierController extends Controller
 
         if($deteValidationStatus["status"] == "status"){
             LogBatch::startBatch();
-                $supplier = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail();
-                $deleteOilAndGasPumpSupplier = $supplier->delete();
+            $supplier = OilAndGasPumpSupplier::where("slug",$sSlug)->firstOrFail();
+            $deleteOilAndGasPumpSupplier = $supplier->delete();
             LogBatch::endBatch();
 
             if($deleteOilAndGasPumpSupplier){

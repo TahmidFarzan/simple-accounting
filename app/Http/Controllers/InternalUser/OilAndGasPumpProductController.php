@@ -114,37 +114,35 @@ class OilAndGasPumpProductController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
-            $product = new OilAndGasPumpProduct();
-            $product->name = $request->name;
-            $product->type = $request->type;
-            $product->oil_and_gas_pump_id =  $oilAndGasPump->id;
-            $product->slug = SystemConstant::slugGenerator($request->name,200);
-            $product->created_at = Carbon::now();
-            $product->created_by_id = Auth::user()->id;
-            $product->updated_at = null;
-            $saveProduct = $product->save();
-        LogBatch::endBatch();
-
+        $product = new OilAndGasPumpProduct();
+        $product->name = $request->name;
+        $product->type = $request->type;
+        $product->oil_and_gas_pump_id =  $oilAndGasPump->id;
+        $product->slug = SystemConstant::slugGenerator($request->name,200);
+        $product->created_at = Carbon::now();
+        $product->created_by_id = Auth::user()->id;
+        $product->updated_at = null;
+        $saveProduct = $product->save();
         if($saveProduct){
-                $this->sendEmail("Create","A new product has been created by ".Auth::user()->name.".",$product );
+            $this->sendEmail("Create","A new product has been created by ".Auth::user()->name.".",$product );
 
-                $statusInformation["status"] = "status";
-                $statusInformation["message"]->push("Successfully created.");
+            $statusInformation["status"] = "status";
+            $statusInformation["message"]->push("Successfully created.");
 
-                if($request->add_to_inventory == "Yes"){
-                    $addProductToInventoryStatus = InventoryConstant::addProductToInventory($product->slug);
-                    $statusInformation["status"] = $addProductToInventoryStatus["status"];
+            if($request->add_to_inventory == "Yes"){
+                $addProductToInventoryStatus = InventoryConstant::addProductToInventory($product->slug);
+                $statusInformation["status"] = $addProductToInventoryStatus["status"];
 
-                    foreach( $addProductToInventoryStatus["message"] as $inMessage){
-                        $statusInformation["message"]->push($inMessage);
-                    }
+                foreach( $addProductToInventoryStatus["message"] as $inMessage){
+                    $statusInformation["message"]->push($inMessage);
                 }
+            }
+            LogBatch::endBatch();
         }
         else{
             $statusInformation["status"] = "errors";
             $statusInformation["message"]->push("Can not update.");
         }
-
         return redirect()->route("oil.and.gas.pump.product.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
     }
 
@@ -186,12 +184,12 @@ class OilAndGasPumpProductController extends Controller
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
 
         LogBatch::startBatch();
-            $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
-            $product->name = $request->name;
-            $product->type = $request->type;
-            $product->slug = SystemConstant::slugGenerator($request->name,200);
-            $product->updated_at = Carbon::now();
-            $updateProduct = $product->update();
+        $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
+        $product->name = $request->name;
+        $product->type = $request->type;
+        $product->slug = SystemConstant::slugGenerator($request->name,200);
+        $product->updated_at = Carbon::now();
+        $updateProduct = $product->update();
         LogBatch::endBatch();
 
         if($updateProduct){
@@ -217,8 +215,8 @@ class OilAndGasPumpProductController extends Controller
 
         if($deleteValidationStatus["status"] == "status"){
             LogBatch::startBatch();
-                $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
-                $deleteOilAndGasPumpProduct = $product->delete();
+            $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
+            $deleteOilAndGasPumpProduct = $product->delete();
             LogBatch::endBatch();
 
             if($deleteOilAndGasPumpProduct){

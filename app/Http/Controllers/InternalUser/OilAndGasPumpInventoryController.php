@@ -119,23 +119,24 @@ class OilAndGasPumpInventoryController extends Controller
         $osgpProduct = OilAndGasPumpProduct::where("slug",$request->product)->firstOrFail();
 
         LogBatch::startBatch();
-            $oagpInventory = new OilAndGasPumpInventory();
-            $oagpInventory->oagp_product_id = $osgpProduct->id;
-            $oagpInventory->quantity = $request->quantity;
-            $oagpInventory->sell_price = $request->sell_price;
-            $oagpInventory->purchase_price = $request->purchase_price;
-            $oagpInventory->old_quantity = $request->old_quantity;
-            $oagpInventory->old_sell_price = $request->old_sell_price;
-            $oagpInventory->old_purchase_price = $request->old_purchase_price;
-            $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);
-            $oagpInventory->created_at = Carbon::now();
-            $oagpInventory->created_by_id = Auth::user()->id;
-            $oagpInventory->updated_at = null;
-            $saveOAGPIn = $oagpInventory->save();
+        $oagpInventory = new OilAndGasPumpInventory();
+        $oagpInventory->oagp_product_id = $osgpProduct->id;
+        $oagpInventory->quantity = $request->quantity;
+        $oagpInventory->sell_price = $request->sell_price;
+        $oagpInventory->purchase_price = $request->purchase_price;
+        $oagpInventory->old_quantity = $request->old_quantity;
+        $oagpInventory->old_sell_price = $request->old_sell_price;
+        $oagpInventory->old_purchase_price = $request->old_purchase_price;
+        $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);
+        $oagpInventory->created_at = Carbon::now();
+        $oagpInventory->created_by_id = Auth::user()->id;
+        $oagpInventory->updated_at = null;
+        $saveOAGPIn = $oagpInventory->save();
         LogBatch::endBatch();
 
         if($saveOAGPIn){
             $this->sendEmail("Add","Product has been added to inventoryby ".Auth::user()->name.".",$oagpInventory );
+
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Successfully added to inventory.");
         }
@@ -154,8 +155,8 @@ class OilAndGasPumpInventoryController extends Controller
 
         if($deleteValidationStatus["status"] == "status"){
             LogBatch::startBatch();
-                $inventoryProduct = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
-                $deleteOAGPProduct = $inventoryProduct->delete();
+            $inventoryProduct = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
+            $deleteOAGPProduct = $inventoryProduct->delete();
             LogBatch::endBatch();
 
             if($deleteOAGPProduct){

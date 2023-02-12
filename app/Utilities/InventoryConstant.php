@@ -9,11 +9,9 @@ use App\Models\Setting;
 use Illuminate\Support\Str;
 use App\Utilities\SystemConstant;
 use App\Models\OilAndGasPumpProduct;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use App\Models\OilAndGasPumpPurchase;
 use App\Models\OilAndGasPumpInventory;
-use Spatie\Activitylog\Facades\LogBatch;
 use App\Models\OilAndGasPumpPurchaseItem;
 use App\Mail\EmailSendForOilAndGasPumpInventory;
 
@@ -24,15 +22,13 @@ class InventoryConstant
         if(Auth::user()->hasUserPermission(["OAGPIMP02"]) == true){
             $osgpProduct = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
 
-            LogBatch::startBatch();
-                $oagpInventory = new OilAndGasPumpInventory();
-                $oagpInventory->oagp_product_id = $osgpProduct->id;
-                $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);
-                $oagpInventory->created_at = Carbon::now();
-                $oagpInventory->created_by_id = Auth::user()->id;
-                $oagpInventory->updated_at = null;
-                $saveOAGPIn = $oagpInventory->save();
-            LogBatch::endBatch();
+            $oagpInventory = new OilAndGasPumpInventory();
+            $oagpInventory->oagp_product_id = $osgpProduct->id;
+            $oagpInventory->slug = SystemConstant::slugGenerator("Inventory ".$osgpProduct->name,200);
+            $oagpInventory->created_at = Carbon::now();
+            $oagpInventory->created_by_id = Auth::user()->id;
+            $oagpInventory->updated_at = null;
+            $saveOAGPIn = $oagpInventory->save();
 
             if($saveOAGPIn){
                 InventoryConstant::sendEmail("Add","Product has been added to inventory by ".Auth::user()->name.".",$oagpInventory );

@@ -90,16 +90,16 @@ class OilAndGasPumpController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
-            $oilAndGasPump = new OilAndGasPump();
-            $oilAndGasPump->name = $request->name;
-            $oilAndGasPump->code = $request->code;
-            $oilAndGasPump->description = $request->description;
-            $oilAndGasPump->note = array($request->note);
-            $oilAndGasPump->slug = SystemConstant::slugGenerator($request->name,200);
-            $oilAndGasPump->created_at = Carbon::now();
-            $oilAndGasPump->created_by_id = Auth::user()->id;
-            $oilAndGasPump->updated_at = null;
-            $saveOilAndGasPump = $oilAndGasPump->save();
+        $oilAndGasPump = new OilAndGasPump();
+        $oilAndGasPump->name = $request->name;
+        $oilAndGasPump->code = $request->code;
+        $oilAndGasPump->description = $request->description;
+        $oilAndGasPump->note = array($request->note);
+        $oilAndGasPump->slug = SystemConstant::slugGenerator($request->name,200);
+        $oilAndGasPump->created_at = Carbon::now();
+        $oilAndGasPump->created_by_id = Auth::user()->id;
+        $oilAndGasPump->updated_at = null;
+        $saveOilAndGasPump = $oilAndGasPump->save();
         LogBatch::endBatch();
 
         if($saveOilAndGasPump){
@@ -144,17 +144,17 @@ class OilAndGasPumpController extends Controller
         $statusInformation = array("status" => "errors","message" => collect());
 
         LogBatch::startBatch();
-            $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
-            $notes = $oilAndGasPump->note;
-            array_push($notes,$request->note);
+        $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
+        $notes = $oilAndGasPump->note;
+        array_push($notes,$request->note);
 
-            $oilAndGasPump->name = $request->name;
-            $oilAndGasPump->code = $request->code;
-            $oilAndGasPump->description = $request->description;
-            $oilAndGasPump->note = $notes;
-            $oilAndGasPump->slug = SystemConstant::slugGenerator($request->name,200);
-            $oilAndGasPump->updated_at = Carbon::now();
-            $updateOilAndGasPump = $oilAndGasPump->update();
+        $oilAndGasPump->name = $request->name;
+        $oilAndGasPump->code = $request->code;
+        $oilAndGasPump->description = $request->description;
+        $oilAndGasPump->note = $notes;
+        $oilAndGasPump->slug = SystemConstant::slugGenerator($request->name,200);
+        $oilAndGasPump->updated_at = Carbon::now();
+        $updateOilAndGasPump = $oilAndGasPump->update();
         LogBatch::endBatch();
 
         if($updateOilAndGasPump){
@@ -179,8 +179,8 @@ class OilAndGasPumpController extends Controller
         if($deleteValidationStatus["status"] == "status"){
 
             LogBatch::startBatch();
-                $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
-                $deleteOilAndGasPump = $oilAndGasPump->delete();
+            $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
+            $deleteOilAndGasPump = $oilAndGasPump->delete();
             LogBatch::endBatch();
             if($deleteOilAndGasPump){
                 $this->sendEmail("Delete","Oil and gas pump has been delete by ".Auth::user()->name.".",$oilAndGasPump );
