@@ -383,6 +383,10 @@
                         <a href="{{ route("oil.and.gas.pump.purchase.edit",["oagpSlug" => $oilAndGasPumpPurchase->oilAndGasPump->slug,"puSlug"=>$oilAndGasPumpPurchase->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
+                    @if ((Auth::user()->hasUserPermission(["OAGPPUMP06"]) == true) && ($oilAndGasPumpPurchase->status == "Due"))
+                        <a href="{{ route("oil.and.gas.pump.purchase.add.payment",["oagpSlug" => $oilAndGasPumpPurchase->oilAndGasPump->slug, "puSlug" => $oilAndGasPumpPurchase->slug]) }}" class="btn btn-secondary">Add payment</a>
+                    @endif
+
                     @if (($oilAndGasPumpPurchase->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPPUMP05"]) == true))
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
                             Delete

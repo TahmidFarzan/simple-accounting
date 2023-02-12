@@ -247,10 +247,12 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('edit/{puSlug}', [OilAndGasPumpPurchaseController::class, 'edit'])->name('edit');
             Route::get('details/{puSlug}', [OilAndGasPumpPurchaseController::class, 'details'])->name('details');
             Route::get('get-product', [OilAndGasPumpPurchaseController::class, 'getProduct'])->name('get.product');
+            Route::get('add-payment/{puSlug}', [OilAndGasPumpPurchaseController::class, 'addPayment'])->name('add.payment');
 
             Route::post('save', [OilAndGasPumpPurchaseController::class, 'save'])->name('save');
             Route::patch('update/{puSlug}', [OilAndGasPumpPurchaseController::class, 'update'])->name('update');
             Route::delete('delete/{puSlug}', [OilAndGasPumpPurchaseController::class, 'delete'])->name('delete');
+            Route::post('save-payment/{puSlug}', [OilAndGasPumpPurchaseController::class, 'savePayment'])->name('save.payment');
         });
     });
 

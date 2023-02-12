@@ -33,6 +33,7 @@ class OilAndGasPumpPurchaseController extends Controller
         $this->middleware(['user.user.permission.check:OAGPPUMP03'])->only(["details"]);
         $this->middleware(['user.user.permission.check:OAGPPUMP04'])->only(["edit","update"]);
         $this->middleware(['user.user.permission.check:OAGPPUMP05'])->only(["delete"]);
+        $this->middleware(['user.user.permission.check:OAGPPUMP06'])->only(["addPayment","savePayment"]);
     }
 
     public function index($oagpSlug,Request $request){
@@ -142,6 +143,18 @@ class OilAndGasPumpPurchaseController extends Controller
         $oilAndGasPumpProducts = OilAndGasPumpProduct::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
 
         return view('internal user.oil and gas pump.purchase.add',compact("oilAndGasPump","oagpSuppliers","oilAndGasPumpProducts"));
+    }
+
+    public function addPayment($oagpSlug,$puSlug){
+        $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
+        $oilAndGasPumpPurchase = OilAndGasPumpPurchase::where("slug",$puSlug)->firstOrFail();
+
+        if($oilAndGasPumpPurchase->status == "Due"){
+            return view('internal user.oil and gas pump.purchase.add payment',compact("oilAndGasPump","oilAndGasPumpPurchase"));
+        }
+        else{
+            return redirect()->route("oil.and.gas.pump.purchase.index",["oagpSlug" => $oilAndGasPump->slug])->with(["errors" => "The purchase status is complete. So can not add payment."]);
+        }
     }
 
     public function save($oagpSlug,Request $request){
@@ -798,6 +811,98 @@ class OilAndGasPumpPurchaseController extends Controller
         }
 
         return redirect()->route("oil.and.gas.pump.purchase.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"]]);
+    }
+
+    public function savePayment($oagpSlug,$puSlug,Request $request){
+        $this->puSlug = $puSlug;
+        $this->oagpSlug = $oagpSlug;
+
+        $validator = Validator::make($request->all(),
+            [
+                'note' => 'required',
+                'description' => 'nullable',
+                'amount' => 'required|numeric|min:0',
+            ],
+            [
+                'amount.required' => 'Amount is required.',
+                'amount.numeric' => 'Amount must be numeric.',
+                'amount.min' => 'Amount at least 0.',
+
+                'note.required' => 'Note is required.',
+            ]
+        );
+
+        $validator->after(function ($validator) {
+            $afterValidatorData = $validator->getData();
+
+            $oilAndGasPump = OilAndGasPump::where("slug",$this->oagpSlug)->firstOrFail();
+
+            $oagpPurchase = OilAndGasPumpPurchase::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$this->puSlug)->count();
+
+            $oagpPuchasePayable = $oagpPurchase->oagpPayableAmount();
+            $oagpPuchasePaidAmount = $oagpPurchase->oagpPurchaseTotalPaidAmount() + $afterValidatorData["amount"];
+
+            if($oagpPuchasePaidAmount > $oagpPurchase->oagpPayableAmount()){
+                $validator->errors()->add(
+                    'amount', "Total payment amount(".$oagpPuchasePaidAmount.") can not greater then payable amount (".$oagpPuchasePayable.")."
+                );
+            }
+
+            if($oagpPuchasePaidAmount < 0 ){
+                $validator->errors()->add(
+                    'amount', "Total payment amount(".$oagpPuchasePaidAmount.") can not less then 0."
+                );
+            }
+
+            if($oagpPurchase->oagpDueAmount() == 0){
+                $validator->errors()->add(
+                    'amount', "Can not add payment as the status is complete or due amount is 0."
+                );
+            }
+
+        });
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $statusInformation = array("status" => "errors","message" => collect());
+
+        $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
+        $oilAndGasPumpPurchase = OilAndGasPumpPurchase::where("slug",$puSlug)->firstOrFail();
+
+        if($oilAndGasPumpPurchase->status == "Due"){
+            LogBatch::startBatch();
+            $oagpPurchasePayment = new OilAndGasPumpPurchasePayment();
+            $oagpPurchasePayment->updated_at = null;
+            $oagpPurchasePayment->note = array($request->note);
+            $oagpPurchasePayment->created_at = Carbon::now();
+            $oagpPurchasePayment->amount = $request->amount;
+            $oagpPurchasePayment->created_by_id = Auth::user()->id;
+            $oagpPurchasePayment->oagp_purchase_id =  $oilAndGasPumpPurchase->id;
+            $oagpPurchasePayment->slug = SystemConstant::slugGenerator($oilAndGasPumpPurchase->name." purchase payment",200);
+            $saveOAGPPurchasePayment = $oagpPurchasePayment->save();
+            if($saveOAGPPurchasePayment){
+                $statusInformation["status"]->push("Payment successfully added.");
+
+                if($oilAndGasPumpPurchase->oagpDueAmount() == 0){
+                    $oilAndGasPumpPurchase->status = "Complete";
+                    $oilAndGasPumpPurchase->updated_at = Carbon::now();
+                    $oilAndGasPumpPurchase->update();
+
+                    $statusInformation["message"]->push("Purchase status successfully updated.");
+                }
+                LogBatch::endBatch();
+            }
+            else{
+                $statusInformation["message"]->push("Fail to add payment.");
+            }
+        }
+        else{
+            $statusInformation["message"]->push("The purchase status is complete. So can not add payment.");
+        }
+
+        return redirect()->route("oil.and.gas.pump.purchase.index",["oagpSlug" => $oilAndGasPump->slug])->with([$statusInformation["status"] => $statusInformation["message"] ]);
     }
 
     private function sendEmail($event,$subject,OilAndGasPumpPurchase $purchase ){

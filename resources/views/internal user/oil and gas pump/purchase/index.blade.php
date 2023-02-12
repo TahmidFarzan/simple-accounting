@@ -125,9 +125,16 @@
                                                 <td>{{ $perOAGPPurchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
-
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP03"]) == true)
                                                         <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
+                                                    @endif
+
+                                                    @if ((Auth::user()->hasUserPermission(["OAGPPUMP06"]) == true) && ($perOAGPPurchase->status == "Due"))
+                                                        <a href="{{ route("oil.and.gas.pump.purchase.add.payment",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-secondary btn-sm m-2">Add payment</a>
+                                                    @endif
+
+                                                    @if ((Auth::user()->hasUserPermission(["OAGPPUMP06"]) == true) && ($perOAGPPurchase->status == "Due"))
+                                                        <a href="{{ route("oil.and.gas.pump.purchase.add.payment",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-secondary btn-sm m-2">Add payment</a>
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP04"]) == true)
@@ -228,6 +235,10 @@
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP03"]) == true)
                                                         <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
+                                                    @endif
+
+                                                    @if ((Auth::user()->hasUserPermission(["OAGPPUMP06"]) == true) && ($perOAGPPurchase->status == "Due"))
+                                                        <a href="{{ route("oil.and.gas.pump.purchase.add.payment",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-secondary btn-sm m-2">Add payment</a>
                                                     @endif
 
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP04"]) == true)
