@@ -32,6 +32,7 @@ class OilAndGasPumpPurchaseController extends Controller
         $this->middleware(['user.user.permission.check:OAGPPUMP02'])->only(["create","save"]);
         $this->middleware(['user.user.permission.check:OAGPPUMP03'])->only(["details"]);
         $this->middleware(['user.user.permission.check:OAGPPUMP04'])->only(["edit","update"]);
+        $this->middleware(['user.user.permission.check:OAGPPUMP05'])->only(["delete"]);
     }
 
     public function index($oagpSlug,Request $request){
