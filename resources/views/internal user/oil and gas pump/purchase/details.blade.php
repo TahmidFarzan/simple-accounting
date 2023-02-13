@@ -197,7 +197,6 @@
                                             <th>Amount</th>
                                             <th>Notes</th>
                                             <th>Pay at</th>
-                                            <th>Link</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -217,7 +216,6 @@
                                                 <td>
                                                     {{ ($oagpPurchasePayment->created_at == null) ? "Not added yet." : date('d-M-Y',strtotime($oagpPurchasePayment->created_at))." at ".date('h:i:s a',strtotime($oagpPurchasePayment->created_at)) }}
                                                 </td>
-                                                <td></td>
                                             </tr>
                                         @endforeach
                                     </tbody>

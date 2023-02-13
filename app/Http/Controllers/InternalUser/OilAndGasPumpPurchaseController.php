@@ -837,12 +837,12 @@ class OilAndGasPumpPurchaseController extends Controller
 
             $oilAndGasPump = OilAndGasPump::where("slug",$this->oagpSlug)->firstOrFail();
 
-            $oagpPurchase = OilAndGasPumpPurchase::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$this->puSlug)->count();
+            $oagpPurchase = OilAndGasPumpPurchase::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$this->puSlug)->firstOrFail();
 
             $oagpPuchasePayable = $oagpPurchase->oagpPayableAmount();
             $oagpPuchasePaidAmount = $oagpPurchase->oagpPurchaseTotalPaidAmount() + $afterValidatorData["amount"];
 
-            if($oagpPuchasePaidAmount > $oagpPurchase->oagpPayableAmount()){
+            if($oagpPuchasePaidAmount > $oagpPuchasePayable){
                 $validator->errors()->add(
                     'amount', "Total payment amount(".$oagpPuchasePaidAmount.") can not greater then payable amount (".$oagpPuchasePayable.")."
                 );
@@ -883,7 +883,7 @@ class OilAndGasPumpPurchaseController extends Controller
             $oagpPurchasePayment->slug = SystemConstant::slugGenerator($oilAndGasPumpPurchase->name." purchase payment",200);
             $saveOAGPPurchasePayment = $oagpPurchasePayment->save();
             if($saveOAGPPurchasePayment){
-                $statusInformation["status"]->push("Payment successfully added.");
+                $statusInformation["status"]="status";
 
                 if($oilAndGasPumpPurchase->oagpDueAmount() == 0){
                     $oilAndGasPumpPurchase->status = "Complete";
