@@ -9,6 +9,7 @@ use App\Http\Controllers\InternalUser\DashboardController;
 use App\Http\Controllers\InternalUser\ActivityLogController;
 use App\Http\Controllers\InternalUser\OilAndGasPumpController;
 use App\Http\Controllers\InternalUser\ProjectContractController;
+use App\Http\Controllers\InternalUser\OilAndGasPumpSellController;
 use App\Http\Controllers\InternalUser\AuthenticationLogController;
 use App\Http\Controllers\InternalUser\OilAndGasPumpProductController;
 use App\Http\Controllers\InternalUser\OilAndGasPumpSupplierController;
@@ -253,6 +254,21 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::patch('update/{puSlug}', [OilAndGasPumpPurchaseController::class, 'update'])->name('update');
             Route::delete('delete/{puSlug}', [OilAndGasPumpPurchaseController::class, 'delete'])->name('delete');
             Route::post('save-payment/{puSlug}', [OilAndGasPumpPurchaseController::class, 'savePayment'])->name('save.payment');
+        });
+
+        // Oil and gas pump purchase
+        Route::prefix('{oagpSlug}/sell')->name('purchase.')->group(function(){
+            Route::get('/', [OilAndGasPumpSellController::class, 'index'])->name('index');
+            Route::get('add', [OilAndGasPumpSellController::class, 'add'])->name('add');
+            Route::get('edit/{seSlug}', [OilAndGasPumpSellController::class, 'edit'])->name('edit');
+            Route::get('details/{seSlug}', [OilAndGasPumpSellController::class, 'details'])->name('details');
+            Route::get('get-product', [OilAndGasPumpSellController::class, 'getProduct'])->name('get.product');
+            Route::get('add-payment/{seSlug}', [OilAndGasPumpSellController::class, 'addPayment'])->name('add.payment');
+
+            Route::post('save', [OilAndGasPumpSellController::class, 'save'])->name('save');
+            Route::patch('update/{seSlug}', [OilAndGasPumpSellController::class, 'update'])->name('update');
+            Route::delete('delete/{seSlug}', [OilAndGasPumpSellController::class, 'delete'])->name('delete');
+            Route::post('save-payment/{seSlug}', [OilAndGasPumpSellController::class, 'savePayment'])->name('save.payment');
         });
     });
 
