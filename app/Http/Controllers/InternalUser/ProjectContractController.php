@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Internaluser;
+namespace App\Http\Controllers\InternalUser;
 
 use Carbon\Carbon;
 use App\Models\Setting;
