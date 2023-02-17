@@ -101,14 +101,14 @@ class OilAndGasPumpPurchase extends Model
         return $this->oagpPurchasePayments->sum("amount");
     }
 
-    public function oagpPayableAmount()
+    public function oagpPurchasePayableAmount()
     {
         return ($this->oagpTotalPrice() - ( $this->oagpTotalPrice() * ($this->discount / 100) )) ;
     }
 
-    public function oagpDueAmount()
+    public function oagpPurchaseDueAmount()
     {
-        return ($this->oagpPayableAmount() - $this->oagpPurchaseTotalPaidAmount()) ;
+        return ($this->oagpPurchasePayableAmount() - $this->oagpPurchaseTotalPaidAmount()) ;
     }
 
     public function updatedBy()

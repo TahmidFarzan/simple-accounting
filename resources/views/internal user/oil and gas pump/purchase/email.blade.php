@@ -190,7 +190,7 @@
                                             <td colspan="4"></td>
                                             <td>Total payable</td>
                                             <td>
-                                                {{ $purchase->oagpPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $purchase->oagpPurchasePayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -204,7 +204,7 @@
                                             <td colspan="4"></td>
                                             <td>Due amount</td>
                                             <td>
-                                                {{ $purchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $purchase->oagpPurchaseDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                     </tfoot>

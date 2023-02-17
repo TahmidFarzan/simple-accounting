@@ -119,11 +119,11 @@
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="date-range-popover" data-bs-title="Date range information" data-bs-content="{{ $totalPayableAmountInformation }}">
-                                                        {{ $perOAGPPurchase->oagpPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $perOAGPPurchase->oagpPurchasePayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
                                                 <td>{{ $perOAGPPurchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPPurchase->oagpPurchaseDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP03"]) == true)
                                                         <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
@@ -227,11 +227,11 @@
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="date-range-popover" data-bs-title="Date range information" data-bs-content="{{ $totalPayableAmountInformation }}">
-                                                        {{ $perOAGPPurchase->oagpPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $perOAGPPurchase->oagpPurchasePayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
                                                 <td>{{ $perOAGPPurchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                <td>{{ $perOAGPPurchase->oagpDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPPurchase->oagpPurchaseDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP03"]) == true)
                                                         <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
