@@ -256,8 +256,8 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::post('save-payment/{puSlug}', [OilAndGasPumpPurchaseController::class, 'savePayment'])->name('save.payment');
         });
 
-        // Oil and gas pump purchase
-        Route::prefix('{oagpSlug}/sell')->name('purchase.')->group(function(){
+        // Oil and gas pump sell
+        Route::prefix('{oagpSlug}/sell')->name('sell.')->group(function(){
             Route::get('/', [OilAndGasPumpSellController::class, 'index'])->name('index');
             Route::get('add', [OilAndGasPumpSellController::class, 'add'])->name('add');
             Route::get('edit/{seSlug}', [OilAndGasPumpSellController::class, 'edit'])->name('edit');
