@@ -42,7 +42,9 @@ class ExtraController extends Controller
                     "All","User module",
                     "Setting module","Business setting module",
                     "Authentication log setting module","Activity log setting module",
-                    "User permission setting module"
+                    "User permission setting module",
+                    "Project contract","Project contract journal","Project contract payment","Project contract payment method",
+                    "Oil and gas pump","Oil and gas pump product","Oil and gas pump supplier","Oil and gas pump inventory","Oil and gas pump purchase","Oil and gas pump sell",
                 );
         $userPermissions = UserPermission::orderBy("id","asc");
 

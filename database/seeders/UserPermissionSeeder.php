@@ -828,6 +828,55 @@ class UserPermissionSeeder extends Seeder
                 'description' => "The internal user can add payment to a purchase.",
                 'slug' => SystemConstant::slugGenerator("Add payment to a oil and gas pump purchase.",200),
             ])->create();
+        // Oil and gas pump sell permission.
+            UserPermission::factory()->state([
+                'name' => "View oil and gas pump sells.",
+                'code' => "OAGPSEMP01",
+                'type' => "OilAndGasPumpSellModulePermission",
+                'description' => "The internal user can view sells.",
+                'slug' => SystemConstant::slugGenerator("View sells",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Create a oil and gas pump sell.",
+                'code' => "OAGPSEMP02",
+                'type' => "OilAndGasPumpSellModulePermission",
+                'description' => "The internal user can create a sell.",
+                'slug' => SystemConstant::slugGenerator("Create a sell",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "View detials of a oil and gas pump sell.",
+                'code' => "OAGPSEMP03",
+                'type' => "OilAndGasPumpSellModuleSell",
+                'description' => "The internal user can view details of a sell.",
+                'slug' => SystemConstant::slugGenerator("View detials of a sell",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Update a oil and gas pump sell.",
+                'code' => "OAGPSEMP04",
+                'type' => "OilAndGasPumpSellModulePermission",
+                'description' => "The internal user can update a sell.",
+                'slug' => SystemConstant::slugGenerator("Update a sell",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Delete a oil and gas pump sell.",
+                'code' => "OAGPSEMP05",
+                'type' => "OilAndGasPumpSellModulePermission",
+                'description' => "The internal user can delete a sell.",
+                'slug' => SystemConstant::slugGenerator("Delete a sell",200),
+            ])->create();
+
+            UserPermission::factory()->state([
+                'name' => "Add payment to a oil and gas pump sell.",
+                'code' => "OAGPSEMP06",
+                'type' => "OilAndGasPumpSellModulePermission",
+                'description' => "The internal user can add payment to a sell.",
+                'slug' => SystemConstant::slugGenerator("Add payment to a oil and gas pump sell.",200),
+            ])->create();
+
         // Oil and gas pump supplier permission.
     }
 }
