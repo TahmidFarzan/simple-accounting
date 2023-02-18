@@ -862,16 +862,8 @@ class UserPermissionSeeder extends Seeder
             ])->create();
 
             UserPermission::factory()->state([
-                'name' => "Delete a oil and gas pump sell.",
-                'code' => "OAGPSEMP05",
-                'type' => "OilAndGasPumpSellModulePermission",
-                'description' => "The internal user can delete a sell.",
-                'slug' => SystemConstant::slugGenerator("Delete a sell",200),
-            ])->create();
-
-            UserPermission::factory()->state([
                 'name' => "Add payment to a oil and gas pump sell.",
-                'code' => "OAGPSEMP06",
+                'code' => "OAGPSEMP05",
                 'type' => "OilAndGasPumpSellModulePermission",
                 'description' => "The internal user can add payment to a sell.",
                 'slug' => SystemConstant::slugGenerator("Add payment to a oil and gas pump sell.",200),
