@@ -381,49 +381,11 @@
                         <a href="{{ route("oil.and.gas.pump.purchase.edit",["oagpSlug" => $oilAndGasPumpPurchase->oilAndGasPump->slug,"puSlug"=>$oilAndGasPumpPurchase->slug]) }}" class="btn btn-primary">Edit</a>
                     @endif
 
-                    @if ((Auth::user()->hasUserPermission(["OAGPPUMP06"]) == true) && ($oilAndGasPumpPurchase->status == "Due"))
+                    @if ((Auth::user()->hasUserPermission(["OAGPPUMP05"]) == true) && ($oilAndGasPumpPurchase->status == "Due"))
                         <a href="{{ route("oil.and.gas.pump.purchase.add.payment",["oagpSlug" => $oilAndGasPumpPurchase->oilAndGasPump->slug, "puSlug" => $oilAndGasPumpPurchase->slug]) }}" class="btn btn-secondary">Add payment</a>
-                    @endif
-
-                    @if (($oilAndGasPumpPurchase->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPPUMP05"]) == true))
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
-                            Delete
-                        </button>
                     @endif
                 </div>
             </div>
-
-
-            @if (($oilAndGasPumpPurchase->deleted_at == null) && (Auth::user()->hasUserPermission(["OAGPPUMP05"]) == true))
-                <div class="modal fade" id="deleteConfirmationModal" tabindex="-1">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5">{{ $oilAndGasPumpPurchase->name }} delete confirmation model</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>
-                                    <ul>
-                                        <li>Purchase will not show dependency.</li>
-                                        <li>All related purchase items will be deleted.</li>
-                                        <li>All related purchase payment will be deleted.</li>
-                                        <li>This record can not recover and same gose for related dependency.</li>
-                                    </ul>
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                <form action="{{ route("oil.and.gas.pump.purchase.delete",["oagpSlug" => $oilAndGasPumpPurchase->oilAndGasPump->slug,"puSlug"=>$oilAndGasPumpPurchase->slug]) }}" method="POST">
-                                    @csrf
-                                    @method("DELETE")
-                                    <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
 @endsection

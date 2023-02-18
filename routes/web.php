@@ -252,7 +252,6 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
 
             Route::post('save', [OilAndGasPumpPurchaseController::class, 'save'])->name('save');
             Route::patch('update/{puSlug}', [OilAndGasPumpPurchaseController::class, 'update'])->name('update');
-            Route::delete('delete/{puSlug}', [OilAndGasPumpPurchaseController::class, 'delete'])->name('delete');
             Route::post('save-payment/{puSlug}', [OilAndGasPumpPurchaseController::class, 'savePayment'])->name('save.payment');
         });
 
