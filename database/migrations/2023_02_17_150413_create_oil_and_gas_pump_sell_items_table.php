@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('oil_and_gas_pump_sell_items', function (Blueprint $table) {
             $table->id();
             $table->string('slug',200)->unique();
+            $table->enum('product_inventory', ['Old','Current'])->default('Current');
             $table->unsignedBigInteger('oagp_sell_id');
             $table->unsignedBigInteger('oagp_product_id');
             $table->double('quantity')->default(0);
