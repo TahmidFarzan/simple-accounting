@@ -83,7 +83,7 @@
                                         <tr>
                                             <th style="width: 25%;">Name</th>
                                             <th style="width: 1%;">:</th>
-                                            <td>{{ $oilAndGasPumpPurchase->oagpSupplier->name }}</td>
+                                            <td>{{ $oilAndGasPumpPurchase->name }}</td>
                                         </tr>
                                         <tr>
                                             <th>Description</th>
