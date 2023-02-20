@@ -113,7 +113,7 @@
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpPurchaseTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPPurchase->discount.'% <br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
                                                     @endphp
@@ -182,7 +182,7 @@
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPPurchase->oagpPurchaseTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPPurchase->discount.'% <br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
                                                     @endphp

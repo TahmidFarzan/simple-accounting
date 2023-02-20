@@ -178,7 +178,7 @@
                                             <td colspan="4"></td>
                                             <td>Total price</td>
                                             <td>
-                                                {{ $purchase->oagpTotalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $purchase->oagpPurchaseTotalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>

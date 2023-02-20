@@ -237,7 +237,7 @@
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Total amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
-                                            <input id="totalPriceInput" name="total_price" type="number" class="form-control form-control-sm @error('total_price') is-invalid @enderror" value="{{ (old('total_price') == null) ? $oilAndGasPumpPurchase->oagpTotalPrice() : old('total_price') }}" min="0" step="00.01" required readonly>
+                                            <input id="totalPriceInput" name="total_price" type="number" class="form-control form-control-sm @error('total_price') is-invalid @enderror" value="{{ (old('total_price') == null) ? $oilAndGasPumpPurchase->oagpPurchaseTotalPrice() : old('total_price') }}" min="0" step="00.01" required readonly>
                                             @error('total_price')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
