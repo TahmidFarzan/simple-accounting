@@ -93,14 +93,6 @@ class OilAndGasPumpSellController extends Controller
         return $oagpProducts;
     }
 
-    public function edit($oagpSlug,$seSlug){
-        $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
-        $oilAndGasPumpProducts = OilAndGasPumpProduct::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
-
-        $oilAndGasPumpSell = OilAndGasPumpSell::where("slug",$seSlug)->firstOrFail();
-        return view('internal user.oil and gas pump.sell.edit',compact("oilAndGasPumpSell","oagpSuppliers"));
-    }
-
     public function add($oagpSlug){
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         $oilAndGasPumpProducts = OilAndGasPumpProduct::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->date('date');
             $table->unsignedBigInteger('oil_and_gas_pump_id');
-            $table->string('customer')->nullable();
+            $table->string('customer',255);
             $table->text('customer_info')->nullable();
             $table->string('slug',200)->unique();
             $table->enum('status', ['Due','Complete'])->default('Due');

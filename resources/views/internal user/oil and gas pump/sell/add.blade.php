@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('mainPageName')
-    Oil and gas pump purchase
+    Oil and gas pump sell
 @endsection
 
 @section('mainCardTitle')
@@ -13,7 +13,7 @@
         <ol class="breadcrumb m-1 mb-2">
             <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.index") }}">Oil and gas pump</a></li>
             <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.details",["slug" => $oilAndGasPump->slug]) }}">{{ $oilAndGasPump->name }}</a></li>
-            <li class="breadcrumb-item">Purchase</li>
+            <li class="breadcrumb-item">Sell</li>
             <li class="breadcrumb-item active" aria-current="page">Add</li>
         </ol>
     </nav>
@@ -30,7 +30,7 @@
     @endphp
     <div class="card border-dark mb-2">
         <div class="card-body text-dark">
-            <form action="{{ route("oil.and.gas.pump.purchase.save",["oagpSlug" => $oilAndGasPump->slug]) }}" method="POST" id="createForm">
+            <form action="{{ route("oil.and.gas.pump.sell.save",["oagpSlug" => $oilAndGasPump->slug]) }}" method="POST" id="createForm">
                 @csrf
 
                 <div class="form-group mb-3">
@@ -65,16 +65,25 @@
 
                         <div class="col-md-6 mb-2">
                             <div class="row">
-                                <label class="col-md-4 col-form-label col-form-label-sm text-bold">Supplier <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
+                                <label class="col-md-4 col-form-label col-form-label-sm text-bold">Customer <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                 <div class="col-md-8">
-                                    <select id="supplierInput" name="supplier" class="form-control form-control-sm @error('supplier') is-invalid @enderror" required>
-                                        <option value="">Select</option>
-                                        @foreach ($oagpSuppliers as $perSupplier)
-                                            <option value="{{ $perSupplier->slug }}" {{ ( old("supplier")== $perSupplier->slug) ? "selected" : null }}>{{ $perSupplier->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input id="customerInput" name="customer" type="text" class="form-control form-control-sm @error('customer') is-invalid @enderror" value="{{ old('customer') }}" placeholder="Ex: Farzan" maxlength="255" required>
 
-                                    @error('supplier')
+                                    @error('customer')
+                                        <span class="invalid-feedback" role="alert" style="display: block;">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <div class="row">
+                                <label class="col-md-4 col-form-label col-form-label-sm text-bold">Customer info </label>
+                                <div class="col-md-8">
+                                    <textarea id="customerInfoInput" name="customer_info" class="form-control form-control-sm @error('customer_info') is-invalid @enderror" placeholder="Ex: Kaliganj">{{ old('customer_info') }}</textarea>
+                                    @error('customer_info')
                                         <span class="invalid-feedback" role="alert" style="display: block;">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -116,8 +125,7 @@
                                             <th>Sl</th>
                                             <th>Product *</th>
                                             <th>Quantity *</th>
-                                            <th>Sell price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
-                                            <th>Purchase price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
+                                            <th>Price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
                                             <th>Discount (%) *</th>
                                         </tr>
                                     </thead>
@@ -137,16 +145,13 @@
                                                     <input id="quantityInput1" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required>
                                                 </td>
                                                 <td>
-                                                    <input id="sellPriceInput1" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="productPriceInput1" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
-                                                    <input id="purchasePriceInput1" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
-                                                </td>
-                                                <td>
-                                                    <input id="discountInput1" name="purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="productDiscountInput1" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td hidden>
-                                                    <input id="rowTotalInput1" name="total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
+                                                    <input id="totalProductInput1" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
                                                 </td>
                                             </tr>
                                         @endif
@@ -179,8 +184,8 @@
                                                     </td>
 
                                                     <td>
-                                                        <input id="sellPriceInput{{ $i }}" name="sell_price[]" type="number" class="form-control form-control-sm @error('sell_price.'.$i) is-invalid @enderror" value="{{ old('sell_price.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('sell_price.'.$i)
+                                                        <input id="productPriceInput{{ $i }}" name="product_price[]" type="number" class="form-control form-control-sm @error('product_price.'.$i) is-invalid @enderror" value="{{ old('product_price.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('product_price.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -188,17 +193,8 @@
                                                     </td>
 
                                                     <td>
-                                                        <input id="purchasePriceInput{{ $i }}" name="purchase_price[]" type="number" class="form-control form-control-sm @error('purchase_price.'.$i) is-invalid @enderror" value="{{ old('purchase_price.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('purchase_price.'.$i)
-                                                            <span class="invalid-feedback" role="alert" style="display: block;">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </td>
-
-                                                    <td>
-                                                        <input id="discountInput{{ $i }}" name="purchase_discount[]" type="number" class="form-control form-control-sm @error('purchase_discount.'.$i) is-invalid @enderror" value="{{ old('purchase_discount.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('purchase_discount.'.$i)
+                                                        <input id="productDiscountInput{{ $i }}" name="product_discount[]" type="number" class="form-control form-control-sm @error('product_discount.'.$i) is-invalid @enderror" value="{{ old('product_discount.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('product_discount.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -206,8 +202,8 @@
                                                     </td>
 
                                                     <td hidden>
-                                                        <input id="rowTotalInput{{ $i }}" name="total_purchase_price[]" type="number" class="form-control form-control-sm @error('total_purchase_price.'.$i) is-invalid @enderror" value="{{ old('total_purchase_price.'.$i) }}" min="0" step="00.01" required readonly hidden>
-                                                        @error('total_purchase_price.'.$i)
+                                                        <input id="totalProductInput{{ $i }}" name="total_product_price[]" type="number" class="form-control form-control-sm @error('product_total_price.'.$i) is-invalid @enderror" value="{{ old('product_total_price.'.$i) }}" min="0" step="00.01" required readonly hidden>
+                                                        @error('total_product_price.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -239,6 +235,7 @@
                                 </div>
 
                                 <div class="col-md-5 mb-2"></div>
+
                                 <div class="col-md-7 mb-2">
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Discount (%) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
@@ -254,6 +251,7 @@
                                 </div>
 
                                 <div class="col-md-5 mb-2"></div>
+
                                 <div class="col-md-7 mb-2">
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Payable amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
@@ -269,6 +267,7 @@
                                 </div>
 
                                 <div class="col-md-5 mb-2"></div>
+
                                 <div class="col-md-7 mb-2">
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Paid amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
@@ -284,6 +283,7 @@
                                 </div>
 
                                 <div class="col-md-5 mb-2"></div>
+
                                 <div class="col-md-7 mb-2">
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Due amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
@@ -364,8 +364,8 @@
     <div class="card border-dark mb-3">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <a role="button" href="{{ route("oil.and.gas.pump.purchase.index",["oagpSlug" => $oilAndGasPump->slug]) }}" class="btn btn-sm btn-secondary">
-                    Go to oil and gas pump purchase
+                <a role="button" href="{{ route("oil.and.gas.pump.sell.index",["oagpSlug" => $oilAndGasPump->slug]) }}" class="btn btn-sm btn-secondary">
+                    Go to oil and gas pump sell
                 </a>
             </div>
         </div>
@@ -390,16 +390,15 @@
                     row = row + '<td>' + tableRow + '</td>';
                     row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
                     row = row + '<td><input id="quantityInput'+ tableRow +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
-                    row = row + '<td><input id="sellPriceInput'+ tableRow +'" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="purchasePriceInput'+ tableRow +'" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="discountInput'+ tableRow +'" name="purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td hidden><input id="rowTotalInput'+ tableRow +'" name="total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
+                    row = row + '<td><input id="productPriceInput'+ tableRow +'" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td><input id="productDiscountInput'+ tableRow +'" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td hidden><input id="totalProductInput'+ tableRow +'" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
                     row = row + '</tr>';
 
                     $('#dataTable tbody').append(row);
                     rowButtonStatusChange();
                 }
-                filterProductForPurchaseProducts();
+                filterProductForSellProducts();
             });
 
             $(document).on('click', '#removeRow', function () {
@@ -413,28 +412,28 @@
                     $('#dataTable tbody tr:last').remove();
 
                     rowButtonStatusChange();
-                    calculateTotalPurchaseAmount();
+                    calculateTotalSellAmount();
                 }
                 else{
                     rowButtonStatusChange();
                 }
             });
 
-            $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="purchase_discount"], input[name^="purchase_price"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="product_discount"], input[name^="product_price"]', function (event) {
                 var currentValue = $(this).val();
                 $(this).val(parseFloat(currentValue).toFixed(2));
 
                 calculateRowTotal($(this).closest("tr"));
-                calculateTotalPurchaseAmount();
+                calculateTotalSellAmount();
             });
 
-            $("#dataTable tbody").on("change", 'input[name^="sell_price"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[name^="product_price"]', function (event) {
                 var currentValue = $(this).val();
                 $(this).val(parseFloat(currentValue).toFixed(2));
             });
 
             $("#dataTable tbody").on("change", 'select[name^="product"]', function (event) {
-                filterProductForPurchaseProducts();
+                filterProductForSellProducts();
             });
 
             $(document).on('change', '#discountInput', function () {
@@ -492,24 +491,22 @@
 
         function calculateRowTotal(row){
             var quantity = +row.find('input[name^="quantity"]').val();
-            var purchaseDiscount = +row.find('input[name^="purchase_discount"]').val();
-            var purchasePrice = +row.find('input[name^="purchase_price"]').val();
+            var sellDiscount = +row.find('input[name^="product_discount"]').val();
+            var sellPrice = +row.find('input[name^="product_price"]').val();
 
-            var totalQuantityPurachecPrice = parseFloat(purchasePrice) * parseFloat(quantity);
-            var totalQuantityProductDiscount = parseFloat(totalQuantityPurachecPrice) * (parseFloat(purchaseDiscount)/100);
+            var totalQuantityPurachecPrice = parseFloat(sellPrice) * parseFloat(quantity);
+            var totalQuantityProductDiscount = parseFloat(totalQuantityPurachecPrice) * (parseFloat(sellDiscount)/100);
 
-            var totalPurchasePrice = (totalQuantityPurachecPrice - totalQuantityProductDiscount).toFixed(2);
+            var totalSellPrice = (totalQuantityPurachecPrice - totalQuantityProductDiscount).toFixed(2);
 
-            row.find('input[name^="total_purchase_price"]').val(totalPurchasePrice);
+            row.find('input[name^="total_product_price"]').val(totalSellPrice);
             calculateTotalPrice();
         }
 
         function calculateTotalPrice(){
             var totalPrice = 0;
 
-            var rowTotalPrice = $('#dataTable').find('input[name^="total_purchase_price"]').val();
-
-            $("#dataTable").find('input[name^="total_purchase_price"]').each(function () {
+            $("#dataTable").find('input[name^="total_product_price"]').each(function () {
                 totalPrice = parseFloat(totalPrice) + parseFloat($(this).val());
             });
             $("#totalPriceInput").val(totalPrice.toFixed(2));
@@ -546,13 +543,13 @@
                 $("#statusInput").val(status);
         }
 
-        function calculateTotalPurchaseAmount(){
+        function calculateTotalSellAmount(){
             calculateTotalPrice();
             calculatePayAbleAmount();
             calculateDueAmount();
         }
 
-        function filterProductForPurchaseProducts(){
+        function filterProductForSellProducts(){
             var selectedProducts = [];
             $("#dataTable tbody").find('select[name^="product"]').each(function () {
                 var productValue = $(this).val();
@@ -564,7 +561,7 @@
             if(selectedProducts.length > 0){
                 $.ajax({
                     type:'get',
-                    url:"{{ route('oil.and.gas.pump.purchase.get.product',['oagpSlug'=>$oilAndGasPump->slug]) }}",
+                    url:"{{ route('oil.and.gas.pump.sell.get.product',['oagpSlug'=>$oilAndGasPump->slug]) }}",
                     data:{"selected_products":selectedProducts},
                     success:function(successResponce){
                         $("#dataTable tbody").find('select[name^="product"]').each(function () {
