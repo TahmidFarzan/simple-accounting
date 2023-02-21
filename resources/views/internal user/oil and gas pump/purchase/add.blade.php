@@ -137,16 +137,16 @@
                                                     <input id="quantityInput1" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required>
                                                 </td>
                                                 <td>
-                                                    <input id="sellPriceInput1" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="productSellPriceInput1" name="product_sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
-                                                    <input id="purchasePriceInput1" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="productPurchasePriceInput1" name="product_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
-                                                    <input id="discountInput1" name="purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="productPurchaseDiscountInput1" name="product_purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td hidden>
-                                                    <input id="rowTotalInput1" name="total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
+                                                    <input id="totalPurchaseProductPrice1" name="total_product_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
                                                 </td>
                                             </tr>
                                         @endif
@@ -179,8 +179,8 @@
                                                     </td>
 
                                                     <td>
-                                                        <input id="sellPriceInput{{ $i }}" name="sell_price[]" type="number" class="form-control form-control-sm @error('sell_price.'.$i) is-invalid @enderror" value="{{ old('sell_price.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('sell_price.'.$i)
+                                                        <input id="productSellPriceInput{{ $i }}" name="product_sell_price[]" type="number" class="form-control form-control-sm @error('product_sell_price.'.$i) is-invalid @enderror" value="{{ old('product_sell_price.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('product_sell_price.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -188,8 +188,8 @@
                                                     </td>
 
                                                     <td>
-                                                        <input id="purchasePriceInput{{ $i }}" name="purchase_price[]" type="number" class="form-control form-control-sm @error('purchase_price.'.$i) is-invalid @enderror" value="{{ old('purchase_price.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('purchase_price.'.$i)
+                                                        <input id="productPurchasePriceInput{{ $i }}" name="product_purchase_price[]" type="number" class="form-control form-control-sm @error('product_purchase_price.'.$i) is-invalid @enderror" value="{{ old('product_purchase_price.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('product_purchase_price.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -197,8 +197,8 @@
                                                     </td>
 
                                                     <td>
-                                                        <input id="discountInput{{ $i }}" name="purchase_discount[]" type="number" class="form-control form-control-sm @error('purchase_discount.'.$i) is-invalid @enderror" value="{{ old('purchase_discount.'.$i) }}" min="0" step="00.01" required>
-                                                        @error('purchase_discount.'.$i)
+                                                        <input id="discountInput{{ $i }}" name="product_purchase_discount[]" type="number" class="form-control form-control-sm @error('product_purchase_discount.'.$i) is-invalid @enderror" value="{{ old('product_purchase_discount.'.$i) }}" min="0" step="00.01" required>
+                                                        @error('product_purchase_discount.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -206,8 +206,8 @@
                                                     </td>
 
                                                     <td hidden>
-                                                        <input id="rowTotalInput{{ $i }}" name="total_purchase_price[]" type="number" class="form-control form-control-sm @error('total_purchase_price.'.$i) is-invalid @enderror" value="{{ old('total_purchase_price.'.$i) }}" min="0" step="00.01" required readonly hidden>
-                                                        @error('total_purchase_price.'.$i)
+                                                        <input id="totalPurchaseProductPrice{{ $i }}" name="total_product_purchase_price[]" type="number" class="form-control form-control-sm @error('total_product_purchase_price.'.$i) is-invalid @enderror" value="{{ old('total_product_purchase_price.'.$i) }}" min="0" step="00.01" required readonly hidden>
+                                                        @error('total_product_purchase_price.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -390,10 +390,10 @@
                     row = row + '<td>' + tableRow + '</td>';
                     row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
                     row = row + '<td><input id="quantityInput'+ tableRow +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
-                    row = row + '<td><input id="sellPriceInput'+ tableRow +'" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="purchasePriceInput'+ tableRow +'" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="discountInput'+ tableRow +'" name="purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td hidden><input id="rowTotalInput'+ tableRow +'" name="total_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
+                    row = row + '<td><input id="productSellPriceInput'+ tableRow +'" name="product_sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td><input id="productPurchasePriceInput'+ tableRow +'" name="product_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td><input id="discountInput'+ tableRow +'" name="product_purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td hidden><input id="totalPurchaseProductPrice'+ tableRow +'" name="total_product_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
                     row = row + '</tr>';
 
                     $('#dataTable tbody').append(row);
@@ -420,7 +420,7 @@
                 }
             });
 
-            $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="purchase_discount"], input[name^="purchase_price"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="product_purchase_discount"], input[name^="product_purchase_price"]', function (event) {
                 var currentValue = $(this).val();
                 $(this).val(parseFloat(currentValue).toFixed(2));
 
@@ -428,7 +428,7 @@
                 calculateTotalPurchaseAmount();
             });
 
-            $("#dataTable tbody").on("change", 'input[name^="sell_price"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[name^="product_sell_price"]', function (event) {
                 var currentValue = $(this).val();
                 $(this).val(parseFloat(currentValue).toFixed(2));
             });
@@ -492,24 +492,22 @@
 
         function calculateRowTotal(row){
             var quantity = +row.find('input[name^="quantity"]').val();
-            var purchaseDiscount = +row.find('input[name^="purchase_discount"]').val();
-            var purchasePrice = +row.find('input[name^="purchase_price"]').val();
+            var purchaseDiscount = +row.find('input[name^="product_purchase_discount"]').val();
+            var purchasePrice = +row.find('input[name^="product_purchase_price"]').val();
 
             var totalQuantityPurachecPrice = parseFloat(purchasePrice) * parseFloat(quantity);
             var totalQuantityProductDiscount = parseFloat(totalQuantityPurachecPrice) * (parseFloat(purchaseDiscount)/100);
 
             var totalPurchasePrice = (totalQuantityPurachecPrice - totalQuantityProductDiscount).toFixed(2);
 
-            row.find('input[name^="total_purchase_price"]').val(totalPurchasePrice);
+            row.find('input[name^="total_product_purchase_price"]').val(totalPurchasePrice);
             calculateTotalPrice();
         }
 
         function calculateTotalPrice(){
             var totalPrice = 0;
 
-            var rowTotalPrice = $('#dataTable').find('input[name^="total_purchase_price"]').val();
-
-            $("#dataTable").find('input[name^="total_purchase_price"]').each(function () {
+            $("#dataTable").find('input[name^="total_product_purchase_price"]').each(function () {
                 totalPrice = parseFloat(totalPrice) + parseFloat($(this).val());
             });
             $("#totalPriceInput").val(totalPrice.toFixed(2));

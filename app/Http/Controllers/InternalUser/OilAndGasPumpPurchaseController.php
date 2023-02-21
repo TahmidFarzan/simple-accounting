@@ -120,10 +120,10 @@ class OilAndGasPumpPurchaseController extends Controller
                 'table_row' => 'required|numeric|min:1',
                 'product.*' => 'required|distinct',
                 'quantity.*' => 'required|numeric|min:0',
-                'purchase_price.*' => 'required|numeric|min:0',
-                'purchase_discount.*' => 'required|numeric|min:0',
-                'sell_price.*' => 'required|numeric|min:0',
-                'total_purchase_price.*' => 'required|numeric|min:0',
+                'product_purchase_price.*' => 'required|numeric|min:0',
+                'product_purchase_discount.*' => 'required|numeric|min:0',
+                'product_sell_price.*' => 'required|numeric|min:0',
+                'total_product_purchase_price.*' => 'required|numeric|min:0',
                 'total_price' => 'required|numeric|min:0',
                 'discount' => 'required|numeric|min:0',
                 'payable_amount' => 'required|numeric|min:0',
@@ -160,21 +160,21 @@ class OilAndGasPumpPurchaseController extends Controller
                 'quantity.*.numeric' => 'Quantity must be numeric.',
                 'quantity.*.min' => 'Quantity at least 0.',
 
-                'purchase_price.*.required' => 'Purchase price is required.',
-                'purchase_price.*.numeric' => 'Purchase price must be numeric.',
-                'purchase_price.*.min' => 'Purchase price at least 0.',
+                'product_purchase_price.*.required' => 'Product purchase price is required.',
+                'product_purchase_price.*.numeric' => 'Product purchase price must be numeric.',
+                'product_purchase_price.*.min' => 'Product purchase price at least 0.',
 
-                'purchase_discount.*.required' => 'Row discount is required.',
-                'purchase_discount.*.numeric' => 'Row discount must be numeric.',
-                'purchase_discount.*.min' => 'Purchase discount at least 0.',
+                'product_purchase_discount.*.required' => 'Product purchase discount is required.',
+                'product_purchase_discount.*.numeric' => 'Product purchase discount must be numeric.',
+                'product_purchase_discount.*.min' => 'Purchase purchase discount at least 0.',
 
                 'sell_price.*.required' => 'Sell price is required.',
                 'sell_price.*.numeric' => 'Sell price must be numeric.',
                 'sell_discount.*.min' => 'Sell discount at least 0.',
 
-                'total_purchase_price.*.required' => 'Total purchase price is required.',
-                'total_purchase_price.*.numeric' => 'Total purchase price must be numeric.',
-                'total_purchase_price.*.min' => 'Total purchase price at least 0.',
+                'total_product_purchase_price.*.required' => 'Total product purchase price is required.',
+                'total_product_purchase_price.*.numeric' => 'Total product purchase price must be numeric.',
+                'total_product_purchase_price.*.min' => 'Total product purchase price at least 0.',
 
                 'total_price.required' => 'Total price is required.',
                 'total_price.numeric' => 'Total price must be numeric.',
@@ -242,22 +242,22 @@ class OilAndGasPumpPurchaseController extends Controller
                 }
 
                 // Product sell price validation
-                if( $afterValidatorData["sell_price"][$i] < $afterValidatorData["purchase_price"][$i] ){
+                if( $afterValidatorData["product_sell_price"][$i] < $afterValidatorData["product_purchase_price"][$i] ){
                     $validator->errors()->add(
                         'sell_price.'.$i, "Sell price can not less the purchase price."
                     );
                 }
 
                 // Product purchase price validation
-                if(!(($afterValidatorData["purchase_price"][$i] < $afterValidatorData["sell_price"][$i]) || ($afterValidatorData["purchase_price"][$i] == $afterValidatorData["sell_price"][$i])) ){
+                if(!(($afterValidatorData["product_purchase_price"][$i] < $afterValidatorData["product_sell_price"][$i]) || ($afterValidatorData["product_purchase_price"][$i] == $afterValidatorData["product_sell_price"][$i])) ){
                     $validator->errors()->add(
-                        'purchase_price.'.$i, "Purchase price must be equal or less then sell price."
+                        'product_purchase_price.'.$i, "Purchase price must be equal or less then sell price."
                     );
                 }
 
                 // Calculate total price
-                $totalQuantityPurchasePrice = $afterValidatorData["purchase_price"][$i] * $afterValidatorData["quantity"][$i];
-                $totalQuantityDiscount = $totalQuantityPurchasePrice * ($afterValidatorData["purchase_discount"][$i]/100);
+                $totalQuantityPurchasePrice = $afterValidatorData["product_purchase_price"][$i] * $afterValidatorData["quantity"][$i];
+                $totalQuantityDiscount = $totalQuantityPurchasePrice * ($afterValidatorData["product_purchase_discount"][$i]/100);
                 $totalPrice = round(($totalPrice + ($totalQuantityPurchasePrice - $totalQuantityDiscount)),2);
 
             }
@@ -351,9 +351,9 @@ class OilAndGasPumpPurchaseController extends Controller
                 $oagpPurchaseItem->oagp_product_id = $product->id;
                 $oagpPurchaseItem->created_by_id = Auth::user()->id;
                 $oagpPurchaseItem->quantity = $request->quantity[$i];
-                $oagpPurchaseItem->sell_price = $request->sell_price[$i];
-                $oagpPurchaseItem->discount = $request->purchase_discount[$i];
-                $oagpPurchaseItem->purchase_price = $request->purchase_price[$i];
+                $oagpPurchaseItem->sell_price = $request->product_sell_price[$i];
+                $oagpPurchaseItem->discount = $request->product_purchase_discount[$i];
+                $oagpPurchaseItem->purchase_price = $request->product_purchase_price[$i];
                 $oagpPurchaseItem->oagp_purchase_id =  $oagpPurchase->id;
                 $oagpPurchaseItem->slug = SystemConstant::slugGenerator($request->name." purchase Item",200);
 
