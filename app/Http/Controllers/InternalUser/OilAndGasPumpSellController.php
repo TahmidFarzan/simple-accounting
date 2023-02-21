@@ -93,6 +93,13 @@ class OilAndGasPumpSellController extends Controller
         return $oagpProducts;
     }
 
+    public function getProductInventoryInfo($oagpSlug,Request $request){
+        $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
+        $oagpProduct = OilAndGasPumpProduct::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$request->product_slug)->firstOrFail();
+
+        return OilAndGasPumpInventory::where('oagp_product_id',$oagpProduct->id)->firstOrFail();
+    }
+
     public function add($oagpSlug){
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
         $oilAndGasPumpProducts = OilAndGasPumpProduct::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
@@ -126,10 +133,10 @@ class OilAndGasPumpSellController extends Controller
                 'product_inventory.*' => 'required|in:Old,Current',
                 'quantity.*' => 'required|numeric|min:0',
                 'product_price.*' => 'required|numeric|min:0',
-                'product_discount.*' => 'required|numeric|min:0',
+                'product_discount.*' => 'required|numeric|min:0|max:100',
                 'total_product_price.*' => 'required|numeric|min:0',
                 'total_price' => 'required|numeric|min:0',
-                'discount' => 'required|numeric|min:0',
+                'discount' => 'required|numeric|min:0|max:100',
                 'payable_amount' => 'required|numeric|min:0',
                 'paid_amount' => 'required|numeric|min:0',
                 'due_amount' => 'required|numeric|min:0',
@@ -173,7 +180,8 @@ class OilAndGasPumpSellController extends Controller
 
                 'product_discount.*.required' => 'Product discount is required.',
                 'product_discount.*.numeric' => 'Product discount must be numeric.',
-                'product_discount.*.min' => 'Productdiscount at least 0.',
+                'product_discount.*.min' => 'Product discount at least 0.',
+                'product_discount.*.max' => 'Product discount at max 100.',
 
                 'total_product_price.*.required' => 'Total product price is required.',
                 'total_product_price.*.numeric' => 'Total product price must be numeric.',
@@ -186,6 +194,7 @@ class OilAndGasPumpSellController extends Controller
                 'discount.required' => 'Discount is required.',
                 'discount.numeric' => 'Discount must be numeric.',
                 'discount.min' => 'Discount at least 0.',
+                'discount.max' => 'Discount max 100.',
 
                 'payable_amount.required' => 'Payable amount is required.',
                 'payable_amount.numeric' => 'Payable amount must be numeric.',

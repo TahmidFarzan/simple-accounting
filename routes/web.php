@@ -260,6 +260,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('details/{seSlug}', [OilAndGasPumpSellController::class, 'details'])->name('details');
             Route::get('get-product', [OilAndGasPumpSellController::class, 'getProduct'])->name('get.product');
             Route::get('add-payment/{seSlug}', [OilAndGasPumpSellController::class, 'addPayment'])->name('add.payment');
+            Route::get('get-product-inventory-info', [OilAndGasPumpSellController::class, 'getProductInventoryInfo'])->name('get.product.inventory.info');
 
             Route::post('save', [OilAndGasPumpSellController::class, 'save'])->name('save');
             Route::post('save-payment/{seSlug}', [OilAndGasPumpSellController::class, 'savePayment'])->name('save.payment');

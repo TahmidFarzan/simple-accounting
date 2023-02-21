@@ -124,6 +124,7 @@
                                         <tr>
                                             <th>Sl</th>
                                             <th>Product *</th>
+                                            <th>Inventory *</th>
                                             <th>Quantity *</th>
                                             <th>Price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
                                             <th>Discount (%) *</th>
@@ -142,13 +143,21 @@
                                                     </select>
                                                 </td>
                                                 <td>
+                                                    <select id="productInventoryInput1" name="product_inventory[]" class="form-control form-select-sm " required>
+                                                        <option value="">Select</option>
+                                                        @foreach (["Old","Current"] as $perInventory)
+                                                            <option value="{{ $perInventory }}">{{ $perInventory }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td>
                                                     <input id="quantityInput1" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required>
                                                 </td>
                                                 <td>
                                                     <input id="productPriceInput1" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
                                                 <td>
-                                                    <input id="productDiscountInput1" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
+                                                    <input id="productDiscountInput1" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" max="100" required>
                                                 </td>
                                                 <td hidden>
                                                     <input id="totalProductInput1" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
@@ -175,6 +184,20 @@
                                                         @enderror
                                                     </td>
                                                     <td>
+                                                        <select id="productInventoryInput{{ $i }}" name="product_inventory[]" class="form-control form-select-sm @error('product_inventory.'.$i) is-invalid @enderror" required>
+                                                            <option value="">Select</option>
+                                                            @foreach (["Old","Current"] as $perInventory)
+                                                                <option value="{{ $perInventory }}" {{ ($perInventory == old('product_inventory.'.$i)) ? "selected": "" }}>{{ $perInventory }}</option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        @error('product_inventory.'.$i)
+                                                            <span class="invalid-feedback" role="alert" style="display: block;">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </td>
+                                                    <td>
                                                         <input id="quantityInput{{ $i }}" name="quantity[]" type="number" class="form-control form-control-sm @error('quantity.'.$i) is-invalid @enderror" value="{{ old('quantity.'.$i) }}" min="0" step="1" required>
                                                         @error('quantity.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -193,7 +216,7 @@
                                                     </td>
 
                                                     <td>
-                                                        <input id="productDiscountInput{{ $i }}" name="product_discount[]" type="number" class="form-control form-control-sm @error('product_discount.'.$i) is-invalid @enderror" value="{{ old('product_discount.'.$i) }}" min="0" step="00.01" required>
+                                                        <input id="productDiscountInput{{ $i }}" name="product_discount[]" type="number" class="form-control form-control-sm @error('product_discount.'.$i) is-invalid @enderror" value="{{ old('product_discount.'.$i) }}" min="0" step="00.01" max="100" required>
                                                         @error('product_discount.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
@@ -240,7 +263,7 @@
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Discount (%) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
-                                            <input id="discountInput" name="discount" type="number" class="form-control form-control-sm @error('discount') is-invalid @enderror" value="{{ (old('discount') == null) ? 0 : old('discount') }}" min="0" step="00.01" required>
+                                            <input id="discountInput" name="discount" type="number" class="form-control form-control-sm @error('discount') is-invalid @enderror" value="{{ (old('discount') == null) ? 0 : old('discount') }}" min="0" step="00.01" required max="100">
                                             @error('discount')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
@@ -389,9 +412,10 @@
                     row = row + '<tr>';
                     row = row + '<td>' + tableRow + '</td>';
                     row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
+                    row = row + '<td><select id="productInventoryInput'+ tableRow +'" name="product_inventory[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach (["Old","Current"] as $perInventory)<option value="{{ $perInventory }}">{{ $perInventory }}</option>@endforeach</select></td>';
                     row = row + '<td><input id="quantityInput'+ tableRow +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
                     row = row + '<td><input id="productPriceInput'+ tableRow +'" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="productDiscountInput'+ tableRow +'" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
+                    row = row + '<td><input id="productDiscountInput'+ tableRow +'" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" max="100" required></td>';
                     row = row + '<td hidden><input id="totalProductInput'+ tableRow +'" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
                     row = row + '</tr>';
 
@@ -432,8 +456,32 @@
                 $(this).val(parseFloat(currentValue).toFixed(2));
             });
 
-            $("#dataTable tbody").on("change", 'select[name^="product"]', function (event) {
+            $("#dataTable tbody").on("change", 'select[id^="productInput"]', function (event) {
                 filterProductForSellProducts();
+                setProductInventoryInformation($(this).closest("tr"));
+
+                var productSlug = $(this).val();
+                var productInventoryId = $(this).closest("tr").find('select[id^="productInventoryInput"]').attr( "id" );
+                if(productSlug != ''){
+                    $.ajax({
+                        type:'get',
+                        url: "{{ route('oil.and.gas.pump.sell.get.product.inventory.info',['oagpSlug'=>$oilAndGasPump->slug]) }}",
+                        data:{"product_slug" : productSlug},
+                        success:function(successResponce){
+                            $('#'+productInventoryId).html(null);
+                            $('#'+productInventoryId).append('<option value="">Select</option>');
+
+                            if(successResponce["old_quantity"] > 0){
+                                $('#'+productInventoryId).append('<option value="Old">Old</option>');
+                            }
+                            $('#'+productInventoryId).append('<option value="Current">Current</option>');
+                        }
+                    });
+                }
+            });
+
+            $("#dataTable tbody").on("change", 'select[id^="productInventoryInput"]', function (event) {
+                setProductInventoryInformation($(this).closest("tr"));
             });
 
             $(document).on('change', '#discountInput', function () {
@@ -564,18 +612,48 @@
                     url:"{{ route('oil.and.gas.pump.sell.get.product',['oagpSlug'=>$oilAndGasPump->slug]) }}",
                     data:{"selected_products":selectedProducts},
                     success:function(successResponce){
-                        $("#dataTable tbody").find('select[name^="product"]').each(function () {
+                        $("#dataTable tbody").find('select[id^="productInput"]').each(function () {
                             if(($(this).val() == null) || ($(this).val().length == 0) ){
                                 var filterableProductId = $(this).attr("id");
-
-                                $(this).empty();
-                                $(this).append('<option value="">Select</option>');
+                                $("#" + filterableProductId).empty();
+                                $("#" + filterableProductId).append('<option value="">Select</option>');
 
                                 $.each(successResponce, function( index, perValue ) {
                                     $("#dataTable tbody #"+filterableProductId).append('<option value="'+ perValue.slug +'">'+ perValue.name +'</option>');
                                 });
                             }
                         });
+                    }
+                });
+            }
+        }
+
+        function setProductInventoryInformation(row){
+            var productSlug = row.find('select[id^="productInput"]').val();
+            var productInventoryValue = row.find('select[id^="productInventoryInput"]').val();
+
+            var quantityInputId = row.find('input[id^="quantityInput"]').attr( "id" );
+            var productPriceId = row.find('input[id^="productPriceInput"]').attr( "id" );
+
+
+            if((productSlug != '') && (productInventoryValue != '')){
+
+                $.ajax({
+                    type:'get',
+                    url: "{{ route('oil.and.gas.pump.sell.get.product.inventory.info',['oagpSlug'=>$oilAndGasPump->slug]) }}",
+                    data:{"product_slug" : productSlug},
+                    success:function(successResponce){
+                        if(productInventoryValue == "Old"){
+                            $("#" + quantityInputId).prop('max', successResponce["old_quantity"]);
+                            $("#" + productPriceId).prop('min', successResponce["old_sell_price"]);
+                            $("#" + productPriceId).val(successResponce["old_sell_price"]);
+                        }
+
+                        if(productInventoryValue == "Current"){
+                            $("#" + quantityInputId).prop('max', successResponce["quantity"]);
+                            $("#" + productPriceId).prop('min', successResponce["sell_price"]);
+                            $("#" + productPriceId).val(successResponce["sell_price"]);
+                        }
                     }
                 });
             }
