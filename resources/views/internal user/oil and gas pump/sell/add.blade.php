@@ -198,8 +198,8 @@
                                                         @enderror
                                                     </td>
                                                     <td>
-                                                        <input id="productQuantityInput{{ $i }}" name="product_quantity[]" type="number" class="form-control form-control-sm @error('product_quantit.'.$i) is-invalid @enderror" value="{{ old('product_quantit.'.$i) }}" min="0" step="1" required>
-                                                        @error('product_quantit.'.$i)
+                                                        <input id="productQuantityInput{{ $i }}" name="product_quantity[]" type="number" class="form-control form-control-sm @error('product_quantity.'.$i) is-invalid @enderror" value="{{ old('product_quantity.'.$i) }}" min="0" step="1" required>
+                                                        @error('product_quantity.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>

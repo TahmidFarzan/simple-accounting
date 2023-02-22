@@ -113,6 +113,7 @@
                                         <tr>
                                             <th>Sl</th>
                                             <th>Product</th>
+                                            <th>Inventory</th>
                                             <th>Quantity</th>
                                             <th>Sell</th>
                                             <th>Discount</th>
@@ -131,6 +132,7 @@
                                                         {{ $setting["oagpSetting"]["gas_unit"] }}
                                                     @endif
                                                 </td>
+                                                <td>{{ $oagpSellItem->product_inventory }}</td>
                                                 <td>{{ $oagpSellItem->quantity }}</td>
                                                 <td>
                                                     {{ $oagpSellItem->price }} {{ $setting["businessSetting"]["currency_symbol"] }}
@@ -144,33 +146,33 @@
 
                                     <tfoot>
                                         <tr>
-                                            <td colspan="3"></td>
-                                            <td>Total pric4e</td>
+                                            <td colspan="4"></td>
+                                            <td>Total price</td>
                                             <td>
                                                 {{ $oilAndGasPumpSell->oagpSellTotalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3"></td>
+                                            <td colspan="4"></td>
                                             <td>Discount</td>
                                             <td>{{ $oilAndGasPumpSell->discount }} %</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3"></td>
+                                            <td colspan="4"></td>
                                             <td>Total payable</td>
                                             <td>
                                                 {{ $oilAndGasPumpSell->oagpSellPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3"></td>
+                                            <td colspan="4"></td>
                                             <td>Paid amount</td>
                                             <td>
                                                 {{ $oilAndGasPumpSell->oagpSellTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3"></td>
+                                            <td colspan="4"></td>
                                             <td>Due amount</td>
                                             <td>
                                                 {{ $oilAndGasPumpSell->oagpSellDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
