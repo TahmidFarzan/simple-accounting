@@ -378,8 +378,8 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
-                    @if ((Auth::user()->hasUserPermission(["OAGPPUMP04"]) == true) && ($oilAndGasPumpSell->status == "Due"))
-                        <a href="{{ route("oil.and.gas.pump.sell.add.payment",["oagpSlug" => $oilAndGasPumpSell->oilAndGasPump->slug, "puSlug" => $oilAndGasPumpSell->slug]) }}" class="btn btn-secondary">Add payment</a>
+                    @if ((Auth::user()->hasUserPermission(["OAGPSEMP04"]) == true) && ($oilAndGasPumpSell->status == "Due"))
+                        <a href="{{ route("oil.and.gas.pump.sell.add.payment",["oagpSlug" => $oilAndGasPumpSell->oilAndGasPump->slug, "seSlug" => $oilAndGasPumpSell->slug]) }}" class="btn btn-secondary">Add payment</a>
                     @endif
                 </div>
             </div>

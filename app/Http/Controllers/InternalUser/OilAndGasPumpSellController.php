@@ -240,7 +240,7 @@ class OilAndGasPumpSellController extends Controller
                 //Product validation
                 $productCount = OilAndGasPumpProduct::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$afterValidatorData["product"][$i])->count();
                 $product = OilAndGasPumpProduct::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$afterValidatorData["product"][$i])->firstOrFail();
-                $productInventoryCount = OilAndGasPumpInventory::where("oagp_product_id",$product->id)->firstOrFail();
+                $productInventoryCount = OilAndGasPumpInventory::where("oagp_product_id",$product->id)->count();
 
                 if($productCount == 0 ){
                     $validator->errors()->add(
@@ -382,7 +382,7 @@ class OilAndGasPumpSellController extends Controller
                 $oagpSellItem->created_at = Carbon::now();
                 $oagpSellItem->oagp_product_id = $product->id;
                 $oagpSellItem->created_by_id = Auth::user()->id;
-                $oagpSellItem->product_inventory = $request->product_inventory;
+                $oagpSellItem->product_inventory = $request->product_inventory[$i];
                 $oagpSellItem->quantity = $request->product_quantity[$i];
                 $oagpSellItem->price = $request->product_price[$i];
                 $oagpSellItem->discount = $request->product_discount[$i];

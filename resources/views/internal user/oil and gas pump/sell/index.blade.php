@@ -108,12 +108,12 @@
                                             <tr>
                                                 <td>{{ $perOAGPSellIndex + 1 }}</td>
                                                 <td>{{ $perOAGPSell->invoice }}</td>
-                                                <td>{{ $perOAGPSell->oagpSupplier->name }}</td>
+                                                <td>{{ $perOAGPSell->customer }}</td>
                                                 <td>{{ $perOAGPSell->date }}</td>
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPSell->oagpPurchaseTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPSell->oagpSellTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPSell->discount.'% <br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
                                                     @endphp
@@ -126,15 +126,11 @@
                                                 <td>{{ $perOAGPSell->oagpSellDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPSEMP03"]) == true)
-                                                        <a href="{{ route("oil.and.gas.pump.sell.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPSell->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
+                                                        <a href="{{ route("oil.and.gas.pump.sell.details",["oagpSlug" => $oilAndGasPump->slug, "seSlug" => $perOAGPSell->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
                                                     @endif
 
                                                     @if ((Auth::user()->hasUserPermission(["OAGPSEMP04"]) == true) && ($perOAGPSell->status == "Due"))
-                                                        <a href="{{ route("oil.and.gas.pump.sell.add.payment",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPSell->slug]) }}" class="btn btn-secondary btn-sm m-2">Add payment</a>
-                                                    @endif
-
-                                                    @if ((Auth::user()->hasUserPermission(["OAGPSEMP04"]) == true) && ($perOAGPSell->status == "Due"))
-                                                        <a href="{{ route("oil.and.gas.pump.sell.add.payment",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPSell->slug]) }}" class="btn btn-secondary btn-sm m-2">Add payment</a>
+                                                        <a href="{{ route("oil.and.gas.pump.sell.add.payment",["oagpSlug" => $oilAndGasPump->slug, "seSlug" => $perOAGPSell->slug]) }}" class="btn btn-secondary btn-sm m-2">Add payment</a>
                                                     @endif
 
                                                 </td>
@@ -164,7 +160,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Invoice</th>
-                                            <th>Supplier</th>
+                                            <th>Customer</th>
                                             <th>Date</th>
                                             <th>Total payable amount</th>
                                             <th>Paid amount</th>
@@ -177,12 +173,12 @@
                                             <tr>
                                                 <td>{{ $perOAGPSellIndex + 1 }}</td>
                                                 <td>{{ $perOAGPSell->invoice }}</td>
-                                                <td>{{ $perOAGPSell->oagpSupplier->name }}</td>
+                                                <td>{{ $perOAGPSell->customer }}</td>
                                                 <td>{{ $perOAGPSell->date }}</td>
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPSell->oagpPurchaseTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPSell->oagpSellTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPSell->discount.'% <br/>';
                                                         $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
                                                     @endphp
@@ -195,11 +191,11 @@
                                                 <td>{{ $perOAGPSell->oagpSellDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPSEMP03"]) == true)
-                                                        <a href="{{ route("oil.and.gas.pump.sell.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPSell->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
+                                                        <a href="{{ route("oil.and.gas.pump.sell.details",["oagpSlug" => $oilAndGasPump->slug, "seSlug" => $perOAGPSell->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
                                                     @endif
 
                                                     @if ((Auth::user()->hasUserPermission(["OAGPSEMP04"]) == true) && ($perOAGPSell->status == "Due"))
-                                                        <a href="{{ route("oil.and.gas.pump.sell.add.payment",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPSell->slug]) }}" class="btn btn-secondary btn-sm m-2">Add payment</a>
+                                                        <a href="{{ route("oil.and.gas.pump.sell.add.payment",["oagpSlug" => $oilAndGasPump->slug, "seSlug" => $perOAGPSell->slug]) }}" class="btn btn-secondary btn-sm m-2">Add payment</a>
                                                     @endif
                                                 </td>
                                             </tr>

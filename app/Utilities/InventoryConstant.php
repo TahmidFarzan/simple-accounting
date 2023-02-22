@@ -118,7 +118,7 @@ class InventoryConstant
             }
 
             // New status
-            if($oagpSellItem->product_inventory == "Old"){
+            if($oagpSellItem->product_inventory == "Current"){
                 $oagpInProduct->quantity = ($oagpSellItem->quantity - $oagpSellItem->quantity);
             }
 

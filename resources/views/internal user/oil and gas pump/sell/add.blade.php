@@ -151,7 +151,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input id="quantityInput1" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required>
+                                                    <input id="productQuantityInput1" name="product_quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required>
                                                 </td>
                                                 <td>
                                                     <input id="productPriceInput1" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
@@ -198,8 +198,8 @@
                                                         @enderror
                                                     </td>
                                                     <td>
-                                                        <input id="quantityInput{{ $i }}" name="quantity[]" type="number" class="form-control form-control-sm @error('quantity.'.$i) is-invalid @enderror" value="{{ old('quantity.'.$i) }}" min="0" step="1" required>
-                                                        @error('quantity.'.$i)
+                                                        <input id="productQuantityInput{{ $i }}" name="product_quantity[]" type="number" class="form-control form-control-sm @error('product_quantit.'.$i) is-invalid @enderror" value="{{ old('product_quantit.'.$i) }}" min="0" step="1" required>
+                                                        @error('product_quantit.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -413,7 +413,7 @@
                     row = row + '<td>' + tableRow + '</td>';
                     row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
                     row = row + '<td><select id="productInventoryInput'+ tableRow +'" name="product_inventory[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach (["Old","Current"] as $perInventory)<option value="{{ $perInventory }}">{{ $perInventory }}</option>@endforeach</select></td>';
-                    row = row + '<td><input id="quantityInput'+ tableRow +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
+                    row = row + '<td><input id="productQuantityInput'+ tableRow +'" name="product_quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
                     row = row + '<td><input id="productPriceInput'+ tableRow +'" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="productDiscountInput'+ tableRow +'" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" max="100" required></td>';
                     row = row + '<td hidden><input id="totalProductInput'+ tableRow +'" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
@@ -443,7 +443,7 @@
                 }
             });
 
-            $("#dataTable tbody").on("change", 'input[name^="quantity"], input[name^="product_discount"], input[name^="product_price"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[name^="product_quantity"], input[name^="product_discount"], input[name^="product_price"]', function (event) {
                 var currentValue = $(this).val();
                 $(this).val(parseFloat(currentValue).toFixed(2));
 
@@ -538,7 +538,7 @@
         }
 
         function calculateRowTotal(row){
-            var quantity = +row.find('input[name^="quantity"]').val();
+            var quantity = +row.find('input[name^="product_quantity"]').val();
             var sellDiscount = +row.find('input[name^="product_discount"]').val();
             var sellPrice = +row.find('input[name^="product_price"]').val();
 
@@ -632,7 +632,7 @@
             var productSlug = row.find('select[id^="productInput"]').val();
             var productInventoryValue = row.find('select[id^="productInventoryInput"]').val();
 
-            var quantityInputId = row.find('input[id^="quantityInput"]').attr( "id" );
+            var quantityInputId = row.find('input[id^="productQuantityInput"]').attr( "id" );
             var productPriceId = row.find('input[id^="productPriceInput"]').attr( "id" );
 
 
