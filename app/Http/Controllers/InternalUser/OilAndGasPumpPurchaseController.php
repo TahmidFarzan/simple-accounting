@@ -119,7 +119,7 @@ class OilAndGasPumpPurchaseController extends Controller
                 'supplier' => 'required',
                 'table_row' => 'required|numeric|min:1',
                 'product.*' => 'required|distinct',
-                'quantity.*' => 'required|numeric|min:0',
+                'product_quantity.*' => 'required|numeric|min:0',
                 'product_purchase_price.*' => 'required|numeric|min:0',
                 'product_purchase_discount.*' => 'required|numeric|min:0|max:100',
                 'product_sell_price.*' => 'required|numeric|min:0',
@@ -156,9 +156,9 @@ class OilAndGasPumpPurchaseController extends Controller
                 'product.*.required' => 'Product is required.',
                 'product.*.distinct' => 'Product must be unique.',
 
-                'quantity.*.required' => 'Quantity is required.',
-                'quantity.*.numeric' => 'Quantity must be numeric.',
-                'quantity.*.min' => 'Quantity at least 0.',
+                'product_quantity.*.required' => 'Quantity is required.',
+                'product_quantity.*.numeric' => 'Quantity must be numeric.',
+                'product_quantity.*.min' => 'Quantity at least 0.',
 
                 'product_purchase_price.*.required' => 'Product purchase price is required.',
                 'product_purchase_price.*.numeric' => 'Product purchase price must be numeric.',
@@ -258,7 +258,7 @@ class OilAndGasPumpPurchaseController extends Controller
                 }
 
                 // Calculate total price
-                $totalQuantityPurchasePrice = $afterValidatorData["product_purchase_price"][$i] * $afterValidatorData["quantity"][$i];
+                $totalQuantityPurchasePrice = $afterValidatorData["product_purchase_price"][$i] * $afterValidatorData["product_quantity"][$i];
                 $totalQuantityDiscount = $totalQuantityPurchasePrice * ($afterValidatorData["product_purchase_discount"][$i]/100);
                 $totalPrice = round(($totalPrice + ($totalQuantityPurchasePrice - $totalQuantityDiscount)),2);
 
@@ -352,7 +352,7 @@ class OilAndGasPumpPurchaseController extends Controller
                 $oagpPurchaseItem->created_at = Carbon::now();
                 $oagpPurchaseItem->oagp_product_id = $product->id;
                 $oagpPurchaseItem->created_by_id = Auth::user()->id;
-                $oagpPurchaseItem->quantity = $request->quantity[$i];
+                $oagpPurchaseItem->quantity = $request->product_quantity[$i];
                 $oagpPurchaseItem->sell_price = $request->product_sell_price[$i];
                 $oagpPurchaseItem->discount = $request->product_purchase_discount[$i];
                 $oagpPurchaseItem->purchase_price = $request->product_purchase_price[$i];
