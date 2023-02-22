@@ -160,7 +160,7 @@
                                                     <input id="productDiscountInput1" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" max="100" required>
                                                 </td>
                                                 <td hidden>
-                                                    <input id="totalProductInput1" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
+                                                    <input id="totalProductPriceInput1" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
                                                 </td>
                                             </tr>
                                         @endif
@@ -225,7 +225,7 @@
                                                     </td>
 
                                                     <td hidden>
-                                                        <input id="totalProductInput{{ $i }}" name="total_product_price[]" type="number" class="form-control form-control-sm @error('product_total_price.'.$i) is-invalid @enderror" value="{{ old('product_total_price.'.$i) }}" min="0" step="00.01" required readonly hidden>
+                                                        <input id="totalProductPriceInput{{ $i }}" name="total_product_price[]" type="number" class="form-control form-control-sm @error('product_total_price.'.$i) is-invalid @enderror" value="{{ old('product_total_price.'.$i) }}" min="0" step="00.01" required readonly hidden>
                                                         @error('total_product_price.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
@@ -416,7 +416,7 @@
                     row = row + '<td><input id="productQuantityInput'+ tableRow +'" name="product_quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
                     row = row + '<td><input id="productPriceInput'+ tableRow +'" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="productDiscountInput'+ tableRow +'" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" max="100" required></td>';
-                    row = row + '<td hidden><input id="totalProductInput'+ tableRow +'" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
+                    row = row + '<td hidden><input id="totalProductPriceInput'+ tableRow +'" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
                     row = row + '</tr>';
 
                     $('#dataTable tbody').append(row);
@@ -443,7 +443,7 @@
                 }
             });
 
-            $("#dataTable tbody").on("change", 'input[name^="product_quantity"], input[name^="product_discount"], input[name^="product_price"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[id^="productQuantityInput"], input[id^="productDiscountInput"], input[id^="productPriceInput"]', function (event) {
                 var currentValue = $(this).val();
                 $(this).val(parseFloat(currentValue).toFixed(2));
 
@@ -451,7 +451,7 @@
                 calculateTotalSellAmount();
             });
 
-            $("#dataTable tbody").on("change", 'input[name^="product_price"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[id^="productPriceInput"]', function (event) {
                 var currentValue = $(this).val();
                 $(this).val(parseFloat(currentValue).toFixed(2));
             });
@@ -538,23 +538,23 @@
         }
 
         function calculateRowTotal(row){
-            var quantity = +row.find('input[name^="product_quantity"]').val();
-            var sellDiscount = +row.find('input[name^="product_discount"]').val();
-            var sellPrice = +row.find('input[name^="product_price"]').val();
+            var quantity = +row.find('input[id^="productQuantityInput"]').val();
+            var sellDiscount = +row.find('input[id^="productDiscountInput"]').val();
+            var sellPrice = +row.find('input[id^="productPriceInput"]').val();
 
             var totalQuantityPurachecPrice = parseFloat(sellPrice) * parseFloat(quantity);
             var totalQuantityProductDiscount = parseFloat(totalQuantityPurachecPrice) * (parseFloat(sellDiscount)/100);
 
             var totalSellPrice = (totalQuantityPurachecPrice - totalQuantityProductDiscount).toFixed(2);
 
-            row.find('input[name^="total_product_price"]').val(totalSellPrice);
+            row.find('input[id^="totalProductPriceInput"]').val(totalSellPrice);
             calculateTotalPrice();
         }
 
         function calculateTotalPrice(){
             var totalPrice = 0;
 
-            $("#dataTable").find('input[name^="total_product_price"]').each(function () {
+            $("#dataTable").find('input[id^="totalProductPriceInput"]').each(function () {
                 totalPrice = parseFloat(totalPrice) + parseFloat($(this).val());
             });
             $("#totalPriceInput").val(totalPrice.toFixed(2));
@@ -599,7 +599,7 @@
 
         function filterProductForSellProducts(){
             var selectedProducts = [];
-            $("#dataTable tbody").find('select[name^="product"]').each(function () {
+            $("#dataTable tbody").find('select[id^="productInput"]').each(function () {
                 var productValue = $(this).val();
                 if(productValue.length > 0 ){
                     selectedProducts.push(productValue);
