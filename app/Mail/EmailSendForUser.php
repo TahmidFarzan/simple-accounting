@@ -15,6 +15,11 @@ class EmailSendForUser extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $event = null;
+    public $subject = null;
+    public $envelope = null;
+    public $user = null;
+
     public function __construct($event,$envelope,$subject,User $user)
     {
         $this->user = $user;

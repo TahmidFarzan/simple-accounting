@@ -16,6 +16,10 @@ class EmailSendForSetting extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $subject = null;
+    public $envelope = null;
+    public $setting = null;
+
     public function __construct($envelope,$subject,Setting $setting)
     {
         $this->subject = $subject;

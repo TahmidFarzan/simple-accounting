@@ -16,6 +16,11 @@ class EmailSendForUserPermissionGroup extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $event = null;
+    public $subject = null;
+    public $envelope = null;
+    public $userPermissionGroup = null;
+
     public function __construct($event,$envelope,$subject,UserPermissionGroup $userPermissionGroup)
     {
         $this->event = $event;

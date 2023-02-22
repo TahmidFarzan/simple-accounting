@@ -16,6 +16,11 @@ class EmailSendForProjectContractClient extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $event = null;
+    public $subject = null;
+    public $envelope = null;
+    public $projectContractClient = null;
+
     public function __construct($event,$envelope,$subject,ProjectContractClient $projectContractClient)
     {
         $this->event = $event;

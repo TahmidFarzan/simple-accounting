@@ -17,6 +17,10 @@ class EmailSendForActivityLog extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $subject = null;
+    public $envelope = null;
+    public $activitLogs = null;
+
     public function __construct($envelope,$subject,$activitLogs)
     {
         $this->subject = $subject;

@@ -16,6 +16,11 @@ class EmailSendForOilAndGasPumpInventory extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $event = null;
+    public $subject = null;
+    public $envelope = null;
+    public $inventory = null;
+
     public function __construct($event,$envelope,$subject,OilAndGasPumpInventory $inventory)
     {
         $this->event = $event;

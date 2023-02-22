@@ -15,6 +15,10 @@ class EmailSendForAuthenticationLog extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $subject = null;
+    public $envelope = null;
+    public $authenticationLogs = null;
+
     public function __construct($envelope,$subject,$authenticationLogs)
     {
         $this->subject = $subject;
