@@ -283,5 +283,9 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('/', [ReportController::class, 'projectContractPaymentIndex'])->name('index');
             Route::get('{slug}', [ReportController::class, 'projectContractPaymentDetails'])->name('details');
         });
+
+        Route::prefix('oil-and-gas-pump')->name('oil.and.gas.pump.')->group(function(){
+            Route::get('/', [ReportController::class, 'oilAndGasPumpIndex'])->name('index');
+        });
     });
 });

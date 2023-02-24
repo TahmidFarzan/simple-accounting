@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\InternalUser;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\OilAndGasPump;
 use App\Models\ProjectContract;
+use App\Models\OilAndGasPumpSell;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\OilAndGasPumpPurchase;
 use App\Models\ProjectContractJournal;
 use App\Models\ProjectContractPayment;
 use App\Models\ProjectContractCategory;
@@ -166,5 +170,90 @@ class ReportController extends Controller
     {
         $projectContractPayment = ProjectContractPayment::where("slug",$slug)->firstOrFail();
         return view('internal user.report.project contract payment.details', compact('projectContractPayment'));
+    }
+
+    public function oilAndGasPumpIndex(Request $request){
+        $pagination = 5;
+        $generatedReport = false;
+        $endDate = Carbon::now();
+        $startDate = Carbon::now()->startOfMonth();
+
+        $paginations = array(5,15,30,45,60,75,90,105,120);
+
+        $models = array(
+            'PurchaseAll' => 'Purchase (All)',
+            'PurchaseDue' => 'Purchase (Due)',
+            'PurchaseComplete' => 'Purchase (Complete)',
+            'SellAll' => 'Sell (All)',
+            'SellDue' => 'Sell (Due)',
+            'SellComplete' => 'Sell (Complete)',
+        );
+
+        $modelRecords = collect();
+        $selectedModel = "None";
+
+        if((count($request->input())) > 0 ){
+            $generatedReport = true;
+
+            if($request->has('pagination')){
+                $pagination = (in_array($request->pagination,$paginations)) ? $request->pagination : $pagination;
+            }
+
+            if ($request->has('model') && !($request->model == null)) {
+                $selectedModel = $request->model;
+                switch ( Str::studly($request->model)) {
+                    case 'PurchaseAll':
+                        $modelRecords = OilAndGasPumpPurchase::orderBy("date","desc")->orderBy("id","desc");
+                    break;
+
+                    case 'PurchaseDue':
+                        $modelRecords = OilAndGasPumpPurchase::orderBy("date","desc")->orderBy("id","desc")->where("status","Due");
+                    break;
+
+                    case 'PurchaseComplete':
+                        $modelRecords = OilAndGasPumpPurchase::orderBy("date","desc")->orderBy("id","desc")->where("status","Complete");
+                    break;
+
+                    case 'SellAll':
+                        $modelRecords = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc");
+                    break;
+
+                    case 'SellDue':
+                        $modelRecords = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc")->where("status","Due");
+                    break;
+
+                    case 'SellComplete':
+                        $modelRecords = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc")->where("status","Complete");
+                    break;
+
+                    default:
+                        abort(404);
+                    break;
+                }
+            }
+            else{
+                abort(404);
+            }
+
+            if($request->has('oil_and_gas_pump') && !($request->oil_and_gas_pump == null)){
+                $oilAndGasPump = OilAndGasPump::where("slug",$request->oil_and_gas_pump)->firstOrFail();
+
+                $modelRecords = $modelRecords->where("oil_and_gas_pump_id",$oilAndGasPump->id);
+            }
+
+            if($request->has('start_date') && !($request->start_date == null)){
+                $startDate = ($request->start_date == null) ? $startDate : $request->start_date;
+                $modelRecords = $modelRecords->where("date",'>=',date("Y-m-d",strtotime($startDate)));
+            }
+
+            if($request->has('end_date') && !($request->end_date == null)){
+                $endDate = ($request->start_date == null) ? $endDate : $request->end_date;
+                $modelRecords = $modelRecords->where("date",'<=',date("Y-m-d",strtotime($endDate)));
+            }
+
+            $modelRecords = $modelRecords->paginate($pagination);
+        }
+
+        return view('internal user.report.oil and gas pump.index', compact("modelRecords","paginations",'models','selectedModel',"generatedReport"));
     }
 }

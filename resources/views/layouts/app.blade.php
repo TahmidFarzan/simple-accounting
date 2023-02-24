@@ -362,7 +362,12 @@
                                                             </div>
                                                         </div>
                                                     </li>
-
+                                                    <li class="nav-item">
+                                                        <a class="nav-link {{(Request::is('report/oil-and-gas-pump') || (Request::is('report/oil-and-gas-pump/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.oil.and.gas.pump.index") }}">
+                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                            Oil and gas pump
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
