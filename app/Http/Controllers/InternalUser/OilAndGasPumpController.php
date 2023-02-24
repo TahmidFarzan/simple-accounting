@@ -27,7 +27,7 @@ class OilAndGasPumpController extends Controller
     }
 
     public function index(Request $request){
-        $pagination = 1;
+        $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,105,120);
 
         $oilAndGasPumps = OilAndGasPump::orderby("created_at","desc")->orderby("name","asc");

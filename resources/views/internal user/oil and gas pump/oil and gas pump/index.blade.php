@@ -74,7 +74,7 @@
             </div>
 
             <div class="row">
-                <div class="card-body">
+                <div class="card-body" id="oagpDataTableDiv">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -208,7 +208,7 @@
 
         function parameterGenerate(){
             var parameterString = null;
-            $.each( ["paginationInputForSorting","searchInputForSorting","selectedNavTabForSorting"], function( key, perInput ) {
+            $.each( ["paginationInputForSorting","searchInputForSorting"], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
                     var inputFieldValue = $("#" + perInput).val();
                     var inputFieldName = $("#" + perInput).attr('name');
@@ -227,15 +227,7 @@
                     $("#extraErrorMessageDiv").hide();
                     $("#extraErrorMessageDiv").html("");;
 
-                    switch ($("#selectedNavTabForSorting").val()) {
-                        case "Active":
-                            $("#activeNavTabDiv").html($(result).find("#activeNavTabDiv").html());
-                        break;
-
-                        default:
-                            $("#trashNavTabDiv").html($(result).find("#trashNavTabDiv").html());
-                        break;
-                    }
+                    $("#oagpDataTableDiv").html($(result).find("#oagpDataTableDiv").html());
                 },
                 error: function(errorResponse) {
                     showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
