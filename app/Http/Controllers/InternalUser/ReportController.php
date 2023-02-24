@@ -10,6 +10,7 @@ use App\Models\ProjectContract;
 use App\Models\OilAndGasPumpSell;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\OilAndGasPumpSupplier;
 use App\Models\OilAndGasPumpPurchase;
 use App\Models\ProjectContractJournal;
 use App\Models\ProjectContractPayment;
@@ -192,6 +193,8 @@ class ReportController extends Controller
         $modelRecords = collect();
         $selectedModel = "None";
 
+        $suppliers = OilAndGasPumpSupplier::orderBy("created_at","desc")->orderBy("name","desc")->get();
+
         if((count($request->input())) > 0 ){
             $generatedReport = true;
 
@@ -235,6 +238,12 @@ class ReportController extends Controller
                 abort(404);
             }
 
+            if($request->has('supplier') && !( ($request->supplier == "All") || ($request->supplier == null)) && (strpos($request->model, "Purchase") == true)){
+                $supplier = OilAndGasPumpSupplier::where("slug",$request->supplier)->firstOrFail();
+
+                $modelRecords = $modelRecords->where("oagp_supplier_id",$supplier->id);
+            }
+
             if($request->has('oil_and_gas_pump') && !($request->oil_and_gas_pump == null)){
                 $oilAndGasPump = OilAndGasPump::where("slug",$request->oil_and_gas_pump)->firstOrFail();
 
@@ -254,6 +263,6 @@ class ReportController extends Controller
             $modelRecords = $modelRecords->paginate($pagination);
         }
 
-        return view('internal user.report.oil and gas pump.index', compact("modelRecords","paginations",'models','selectedModel',"generatedReport"));
+        return view('internal user.report.oil and gas pump.index', compact("modelRecords","paginations",'models','selectedModel',"generatedReport","suppliers"));
     }
 }

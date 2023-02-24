@@ -57,6 +57,21 @@
                     </div>
                 </div>
 
+                <div class="col-md-6 mb-2" id="supplierInputDivForGenerateReport" style="display: none;">
+                    <div class="row">
+                        <label class="col-md-4 col-form-label col-form-label-sm">Supplier</label>
+                        <div class="col-md-8">
+                            <select class="form-control form-control-sm" id="supplierInputForGenerateReport" name="supplier" disabled hidden>
+                                <option value="">Select</option>
+                                <option value="All">All</option>
+                                @foreach ( $suppliers as $perSupplier)
+                                    <option value="{{ $perSupplier->slug }}">{{ $perSupplier->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-6 mb-2">
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Start date</label>
@@ -90,6 +105,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>OAGP</th>
                                 <th>Invoice</th>
                                 <th>Date</th>
                                 <th>Name</th>
@@ -111,6 +127,7 @@
                             @forelse ($modelRecords as $perModelRecordIndex => $perModelRecord)
                                 <tr>
                                     <td>{{ $perModelRecordIndex + 1 }}</td>
+                                    <td>{{ $perModelRecord->oilAndGasPump->name }}</td>
                                     <td>{{ $perModelRecord->invoice }}</td>
                                     <td>{{ ( ($perModelRecord->date == null) ? "Not added." : date('d-M-Y',strtotime($perModelRecord->date)) ) }}</td>
                                     <td>{{ $perModelRecord->name }}</td>
@@ -185,7 +202,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="10">
+                                    <td colspan="11">
                                         <b class="d-flex justify-content-center text-warning">No records found.</b>
                                     </td>
                                 </tr>
@@ -193,7 +210,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="7">
+                                <th colspan="8">
                                     <b class=" d-flex float-end">Total</b>
                                 </th>
                                 <th>{{ $allRowTotalPrice }} {{ $setting["businessSetting"]["currency_symbol"] }}</th>
@@ -236,6 +253,23 @@
                     dataTableLoad(parameterGenerate());
                 }
             });
+
+            $(document).on('change', "#modelInputForGenerateReport", function () {
+                var modelValue = $(this).val();
+
+                if((modelValue != '' ) && (modelValue.includes("Purchase") == true)){
+                    $("#supplierInputForGenerateReport").prop('disabled',false);
+                    $("#supplierInputForGenerateReport").prop('hidden',false);
+
+                    $("#supplierInputDivForGenerateReport").show();
+                }
+                if((modelValue != '' ) && (modelValue.includes("Purchase") == false)){
+                    $("#supplierInputForGenerateReport").prop('disabled',true);
+                    $("#supplierInputForGenerateReport").prop('hidden',true);
+
+                    $("#supplierInputDivForGenerateReport").hide();
+                }
+            });
         });
 
         function parameterGenerate(){
@@ -245,6 +279,7 @@
                     "modelInputForGenerateReport",
                     "startDateInputForGenerateReport",
                     "endDateInputForGenerateReport",
+                    "supplierInputForGenerateReport",
                 ], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
                     var inputFieldValue = $("#" + perInput).val();
@@ -280,8 +315,9 @@
                     "modelInputForGenerateReport",
                     "startDateInputForGenerateReport",
                     "endDateInputForGenerateReport",
+                    "supplierInputForGenerateReport",
                 ], function( key, perInput ) {
-                if(($("#" + perInput).val().length == 0)){
+                if(($("#" + perInput).val().length == 0) && ($("#" + perInput).attr('disabled')!== false)){
                     passValidation = false;
                     var inputName = $("#" + perInput).attr("name");
                     var inputNameFotmat = inputName.replace("_", " ");
