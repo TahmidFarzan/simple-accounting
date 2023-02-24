@@ -173,6 +173,14 @@ class ReportController extends Controller
         return view('internal user.report.project contract payment.details', compact('projectContractPayment'));
     }
 
+    public function oilAndGasPumpGetSupplierByOAGP(Request $request){
+        $oilAndGasPump = OilAndGasPump::where("slug",$request->oil_and_gas_pump)->firstOrFail();
+
+        $oilAndGasPumpSupplier = OilAndGasPumpSupplier::orderBy("created_at","desc")->orderBy("name","desc");
+
+        return $oilAndGasPumpSupplier->where('oil_and_gas_pump_id',$oilAndGasPump->id)->get();
+    }
+
     public function oilAndGasPumpIndex(Request $request){
         $pagination = 5;
         $generatedReport = false;
@@ -193,6 +201,7 @@ class ReportController extends Controller
         $modelRecords = collect();
         $selectedModel = "None";
 
+        $oilAndGasPumps = OilAndGasPump::orderBy("created_at","desc")->orderBy("name","desc")->get();
         $suppliers = OilAndGasPumpSupplier::orderBy("created_at","desc")->orderBy("name","desc")->get();
 
         if((count($request->input())) > 0 ){
@@ -244,7 +253,7 @@ class ReportController extends Controller
                 $modelRecords = $modelRecords->where("oagp_supplier_id",$supplier->id);
             }
 
-            if($request->has('oil_and_gas_pump') && !($request->oil_and_gas_pump == null)){
+            if($request->has('oil_and_gas_pump') && !($request->oil_and_gas_pump == null) && !($request->oil_and_gas_pump == "All")){
                 $oilAndGasPump = OilAndGasPump::where("slug",$request->oil_and_gas_pump)->firstOrFail();
 
                 $modelRecords = $modelRecords->where("oil_and_gas_pump_id",$oilAndGasPump->id);
@@ -263,6 +272,6 @@ class ReportController extends Controller
             $modelRecords = $modelRecords->paginate($pagination);
         }
 
-        return view('internal user.report.oil and gas pump.index', compact("modelRecords","paginations",'models','selectedModel',"generatedReport","suppliers"));
+        return view('internal user.report.oil and gas pump.index', compact("modelRecords","paginations",'models',"oilAndGasPumps","suppliers",'selectedModel','generatedReport'));
     }
 }

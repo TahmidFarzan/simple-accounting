@@ -57,6 +57,21 @@
                     </div>
                 </div>
 
+                <div class="col-md-6 mb-2">
+                    <div class="row">
+                        <label class="col-md-4 col-form-label col-form-label-sm">Oil and gas pump</label>
+                        <div class="col-md-8">
+                            <select class="form-control form-control-sm" id="oilAndGasPumpInputForGenerateReport" name="oil_and_gas_pump">
+                                <option value="">Select</option>
+                                <option value="All">All</option>
+                                @foreach ( $oilAndGasPumps as $perOilAndGasPump)
+                                    <option value="{{ $perOilAndGasPump->slug }}">{{ $perOilAndGasPump->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-6 mb-2" id="supplierInputDivForGenerateReport" style="display: none;">
                     <div class="row">
                         <label class="col-md-4 col-form-label col-form-label-sm">Supplier</label>
@@ -270,6 +285,30 @@
                     $("#supplierInputDivForGenerateReport").hide();
                 }
             });
+
+            $(document).on('change', "#oilAndGasPumpInputForGenerateReport", function () {
+                var oagp = $(this).val();
+
+                if((oagp != '') && (oagp != 'All')){
+                    $.ajax({
+                        type: "get",
+                        url: "{{ route('report.oil.and.gas.pump.get.supplier.by.oagp') }}",
+                        data:{ "oil_and_gas_pump" : oagp },
+                        success: function(successResponce) {
+                            $("#supplierInputForGenerateReport").html("");
+                            $("#supplierInputForGenerateReport").append("<option>Select</option>");
+                            $("#supplierInputForGenerateReport").append('<option value="All">All</option>');
+
+                            $.each(successResponce, function( index, value ) {
+                                $("#supplierInputForGenerateReport").append('<option value="'+value["slug"]+'">'+value["name"]+'</option>');
+                            });
+                        },
+                        error: function(errorResponse) {
+                            showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
+                        }
+                    });
+                }
+            });
         });
 
         function parameterGenerate(){
@@ -280,6 +319,7 @@
                     "startDateInputForGenerateReport",
                     "endDateInputForGenerateReport",
                     "supplierInputForGenerateReport",
+                    "oilAndGasPumpInputForGenerateReport",
                 ], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
                     var inputFieldValue = $("#" + perInput).val();

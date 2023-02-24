@@ -286,6 +286,7 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
 
         Route::prefix('oil-and-gas-pump')->name('oil.and.gas.pump.')->group(function(){
             Route::get('/', [ReportController::class, 'oilAndGasPumpIndex'])->name('index');
+            Route::get('get-supplier-by-oagp', [ReportController::class, 'oilAndGasPumpGetSupplierByOAGP'])->name('get.supplier.by.oagp');
         });
     });
 });
