@@ -38,8 +38,8 @@ class OilAndGasPumpPurchaseController extends Controller
         $pagination = 5;
         $paginations = array(5,15,30,45,60,75,90,105,120);
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
-        $completeOAGPPurchases = OilAndGasPumpPurchase::orderby("name","asc")->orderby("created_at","desc")->where("status","Complete");
-        $dueOAGPPurchases = OilAndGasPumpPurchase::orderby("name","asc")->orderby("created_at","desc")->where("status","Due");
+        $completeOAGPPurchases = OilAndGasPumpPurchase::orderby("name","asc")->orderby("created_at","desc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("status","Complete");
+        $dueOAGPPurchases = OilAndGasPumpPurchase::orderby("name","asc")->orderby("created_at","desc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("status","Due");
 
         if(count($request->input()) > 0){
             if($request->has('pagination')){

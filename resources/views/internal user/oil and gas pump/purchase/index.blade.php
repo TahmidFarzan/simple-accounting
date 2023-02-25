@@ -109,7 +109,7 @@
                                                 <td>{{ $perOAGPPurchaseIndex + 1 }}</td>
                                                 <td>{{ $perOAGPPurchase->invoice }}</td>
                                                 <td>{{ $perOAGPPurchase->oagpSupplier->name }}</td>
-                                                <td>{{ $perOAGPPurchase->date }}</td>
+                                                <td>{{ date('d-M-Y', strtotime($perOAGPPurchase->date)) }}</td>
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
@@ -178,7 +178,7 @@
                                                 <td>{{ $perOAGPPurchaseIndex + 1 }}</td>
                                                 <td>{{ $perOAGPPurchase->invoice }}</td>
                                                 <td>{{ $perOAGPPurchase->oagpSupplier->name }}</td>
-                                                <td>{{ $perOAGPPurchase->date }}</td>
+                                                <td>{{ date('d-M-Y', strtotime($perOAGPPurchase->date)) }}</td>
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";

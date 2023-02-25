@@ -68,6 +68,17 @@ class OilAndGasPump extends Model
         return $this->hasMany(OilAndGasPumpSupplier::class,'oil_and_gas_pump_id','id');
     }
 
+    public function oilAndGasPumpPurchases()
+    {
+        return $this->hasMany(OilAndGasPumpPurchase::class,'oil_and_gas_pump_id','id');
+    }
+
+    public function oilAndGasPumpSells()
+    {
+        return $this->hasMany(OilAndGasPumpSell::class,'oil_and_gas_pump_id','id');
+    }
+
+
     public function updatedBy()
     {
         $causer = null;

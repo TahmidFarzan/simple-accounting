@@ -69,7 +69,7 @@
                                             <th>Date</th>
                                             <th>:</th>
                                             <td>
-                                                {{ date('d-M-Y', strtotime($oilAndGasPumpSell->date)); }}
+                                                {{ date('d-M-Y', strtotime($oilAndGasPumpSell->date)) }}
                                             </td>
                                         </tr>
                                     </tbody>

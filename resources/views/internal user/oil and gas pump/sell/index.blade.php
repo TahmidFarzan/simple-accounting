@@ -109,7 +109,7 @@
                                                 <td>{{ $perOAGPSellIndex + 1 }}</td>
                                                 <td>{{ $perOAGPSell->invoice }}</td>
                                                 <td>{{ $perOAGPSell->customer }}</td>
-                                                <td>{{ $perOAGPSell->date }}</td>
+                                                <td>{{ date('d-M-Y', strtotime($perOAGPSell->date)) }}</td>
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
@@ -174,7 +174,7 @@
                                                 <td>{{ $perOAGPSellIndex + 1 }}</td>
                                                 <td>{{ $perOAGPSell->invoice }}</td>
                                                 <td>{{ $perOAGPSell->customer }}</td>
-                                                <td>{{ $perOAGPSell->date }}</td>
+                                                <td>{{ date('d-M-Y', strtotime($perOAGPSell->date)) }}</td>
                                                 <td>
                                                     @php
                                                         $totalPayableAmountInformation = "<p>";
