@@ -63,18 +63,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="card-body text-dark mb-2">
-                    <div class="row">
                         <div class="col-md-6 mb-2">
-                            <div class="card">
-                                <div class="d-flex justify-content-center mt-2">
-                                    <h5>Current</h5>
-                                </div>
-
-                                <div class="card-body">
+                            <div class="card border-secondary">
+                                <div class="card-body text-dark">
                                     <div class="table-responsive">
                                         <table class="table">
                                             <tbody>
@@ -101,46 +93,6 @@
                                                     <th style="width: 25%;">Purchase price</th>
                                                     <th style="width: 1%;">:</th>
                                                     <td>{{ $inventory->purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="d-flex justify-content-center mt-2">
-                                    <h5>Old</h5>
-                                </div>
-
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <tbody>
-                                                <tr>
-                                                    <th style="width: 25%;">Quantity</th>
-                                                    <th style="width: 1%;">:</th>
-                                                    <td>{{ $inventory->old_quantity }}
-                                                        @if ( $inventory->oagpProduct->type == "Oil")
-                                                            {{ $setting["oagpSetting"]["oil_unit"] }}
-                                                        @endif
-
-                                                        @if ( $inventory->oagpProduct->type == "Gas")
-                                                            {{ $setting["oagpSetting"]["gas_unit"] }}
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th style="width: 25%;">Sell price</th>
-                                                    <th style="width: 1%;">:</th>
-                                                    <td>{{ $inventory->old_sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th style="width: 25%;">Purchase price</th>
-                                                    <th style="width: 1%;">:</th>
-                                                    <td>{{ $inventory->old_purchase_price }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

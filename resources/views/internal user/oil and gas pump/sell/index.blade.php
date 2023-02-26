@@ -111,16 +111,7 @@
                                                 <td>{{ $perOAGPSell->customer }}</td>
                                                 <td>{{ date('d-M-Y', strtotime($perOAGPSell->date)) }}</td>
                                                 <td>
-                                                    @php
-                                                        $totalPayableAmountInformation = "<p>";
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPSell->oagpSellTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPSell->discount.'% <br/>';
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
-                                                    @endphp
-
-                                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="date-range-popover" data-bs-title="Date range information" data-bs-content="{{ $totalPayableAmountInformation }}">
-                                                        {{ $perOAGPSell->oagpSellPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
-                                                    </button>
+                                                    {{ $perOAGPSell->oagpSellPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                 </td>
                                                 <td>{{ $perOAGPSell->oagpSellTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPSell->oagpSellDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
@@ -176,16 +167,7 @@
                                                 <td>{{ $perOAGPSell->customer }}</td>
                                                 <td>{{ date('d-M-Y', strtotime($perOAGPSell->date)) }}</td>
                                                 <td>
-                                                    @php
-                                                        $totalPayableAmountInformation = "<p>";
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Total price :</b> '.$perOAGPSell->oagpSellTotalPrice()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation.'<b>Discount :</b> '.$perOAGPSell->discount.'% <br/>';
-                                                        $totalPayableAmountInformation = $totalPayableAmountInformation."</p>";
-                                                    @endphp
-
-                                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="date-range-popover" data-bs-title="Date range information" data-bs-content="{{ $totalPayableAmountInformation }}">
-                                                        {{ $perOAGPSell->oagpSellPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
-                                                    </button>
+                                                    {{ $perOAGPSell->oagpSellPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                 </td>
                                                 <td>{{ $perOAGPSell->oagpSellTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPSell->oagpSellDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
@@ -223,9 +205,6 @@
 @push("onPageExtraScript")
     <script>
         $(document).ready(function(){
-            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-
             $(document).on('click', "#dueNavTabPaginationDiv .pagination .page-item a", function () {
                 event.preventDefault();
                 var paginationiteUrl = $(this).attr('href');
@@ -381,27 +360,3 @@
         }
     </script>
 @endpush
-
-
-@push('onPageExtraCss')
-    <style>
-        .receivable-amount-popover {
-            --bs-popover-max-width: auto;
-            --bs-popover-border-color: var(--bs-primary);
-            --bs-popover-header-bg: var(--bs-primary);
-            --bs-popover-header-color: var(--bs-white);
-            --bs-popover-body-padding-x: 1rem;
-            --bs-popover-body-padding-y: .5rem;
-        }
-
-        .date-range-popover {
-            --bs-popover-max-width: auto;
-            --bs-popover-border-color: var(--bs-primary);
-            --bs-popover-header-bg: var(--bs-primary);
-            --bs-popover-header-color: var(--bs-white);
-            --bs-popover-body-padding-x: 1rem;
-            --bs-popover-body-padding-y: .5rem;
-        }
-    </style>
-@endpush
-

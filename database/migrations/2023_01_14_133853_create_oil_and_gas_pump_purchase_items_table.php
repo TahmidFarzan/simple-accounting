@@ -14,7 +14,6 @@ return new class extends Migration
             $table->unsignedBigInteger('oagp_purchase_id');
             $table->unsignedBigInteger('oagp_product_id');
             $table->double('quantity')->default(0);
-            $table->double('discount', 8, 2)->default(0);
             $table->double('sell_price', 8, 2)->default(0);
             $table->double('purchase_price', 8, 2)->default(0);
             $table->unsignedBigInteger('created_by_id');

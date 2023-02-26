@@ -121,11 +121,9 @@ class OilAndGasPumpPurchaseController extends Controller
                 'product.*' => 'required|distinct',
                 'product_quantity.*' => 'required|numeric|min:0',
                 'product_purchase_price.*' => 'required|numeric|min:0',
-                'product_purchase_discount.*' => 'required|numeric|min:0|max:100',
                 'product_sell_price.*' => 'required|numeric|min:0',
                 'total_product_purchase_price.*' => 'required|numeric|min:0',
                 'total_price' => 'required|numeric|min:0',
-                'discount' => 'required|numeric|min:0|max:100',
                 'payable_amount' => 'required|numeric|min:0',
                 'paid_amount' => 'required|numeric|min:0',
                 'due_amount' => 'required|numeric|min:0',
@@ -164,14 +162,8 @@ class OilAndGasPumpPurchaseController extends Controller
                 'product_purchase_price.*.numeric' => 'Product purchase price must be numeric.',
                 'product_purchase_price.*.min' => 'Product purchase price at least 0.',
 
-                'product_purchase_discount.*.required' => 'Product purchase discount is required.',
-                'product_purchase_discount.*.numeric' => 'Product purchase discount must be numeric.',
-                'product_purchase_discount.*.min' => 'Purchase purchase discount at least 0.',
-                'product_purchase_discount.*.max' => 'Purchase purchase discount max 100.',
-
                 'sell_price.*.required' => 'Sell price is required.',
                 'sell_price.*.numeric' => 'Sell price must be numeric.',
-                'sell_discount.*.min' => 'Sell discount at least 0.',
 
                 'total_product_purchase_price.*.required' => 'Total product purchase price is required.',
                 'total_product_purchase_price.*.numeric' => 'Total product purchase price must be numeric.',
@@ -180,10 +172,6 @@ class OilAndGasPumpPurchaseController extends Controller
                 'total_price.required' => 'Total price is required.',
                 'total_price.numeric' => 'Total price must be numeric.',
                 'total_price.min' => 'Total price at least 0.',
-
-                'discount.required' => 'Discount is required.',
-                'discount.numeric' => 'Discount must be numeric.',
-                'discount.min' => 'Discount at least 0.',
 
                 'payable_amount.required' => 'Payable amount is required.',
                 'payable_amount.numeric' => 'Payable amount must be numeric.',
@@ -196,7 +184,6 @@ class OilAndGasPumpPurchaseController extends Controller
                 'due_amount.required' => 'Due amount is required.',
                 'due_amount.numeric' => 'Due amount must be numeric.',
                 'due_amount.min' => 'Due amount at least 0.',
-                'discount.*.max' => 'Discount max 100.',
 
                 'status.required' => 'Status is required.',
                 'status.in' => 'Status must be on out of [Due,Complete].',
@@ -259,8 +246,8 @@ class OilAndGasPumpPurchaseController extends Controller
 
                 // Calculate total price
                 $totalQuantityPurchasePrice = $afterValidatorData["product_purchase_price"][$i] * $afterValidatorData["product_quantity"][$i];
-                $totalQuantityDiscount = $totalQuantityPurchasePrice * ($afterValidatorData["product_purchase_discount"][$i]/100);
-                $totalPrice = round(($totalPrice + ($totalQuantityPurchasePrice - $totalQuantityDiscount)),2);
+
+                $totalPrice = round(($totalPrice + $totalQuantityPurchasePrice ),2);
 
             }
 
@@ -286,9 +273,9 @@ class OilAndGasPumpPurchaseController extends Controller
             }
 
             // Pay able amount validation
-            if (!($afterValidatorData["payable_amount"] == ($afterValidatorData["total_price"] - ($afterValidatorData["total_price"] * ($afterValidatorData["discount"]/100))))) {
+            if (!($afterValidatorData["payable_amount"] == $afterValidatorData["total_price"] )) {
                 $validator->errors()->add(
-                    'paid_amount', "Wrong payable amount. Payable must be equal to subtraction of total amount and discount."
+                    'paid_amount', "Wrong payable amount. Payable must be equal to subtraction of total amount."
                 );
             }
 
@@ -331,7 +318,6 @@ class OilAndGasPumpPurchaseController extends Controller
         $oagpPurchase->created_at = Carbon::now();
         $oagpPurchase->invoice = $request->invoice;
         $oagpPurchase->note = array($request->note);
-        $oagpPurchase->discount = $request->discount;
         $oagpPurchase->created_by_id = Auth::user()->id;
         $oagpPurchase->description = $request->description;
         $oagpPurchase->oagp_supplier_id = $oagpSupplier->id;
@@ -354,7 +340,6 @@ class OilAndGasPumpPurchaseController extends Controller
                 $oagpPurchaseItem->created_by_id = Auth::user()->id;
                 $oagpPurchaseItem->quantity = $request->product_quantity[$i];
                 $oagpPurchaseItem->sell_price = $request->product_sell_price[$i];
-                $oagpPurchaseItem->discount = $request->product_purchase_discount[$i];
                 $oagpPurchaseItem->purchase_price = $request->product_purchase_price[$i];
                 $oagpPurchaseItem->oagp_purchase_id =  $oagpPurchase->id;
                 $oagpPurchaseItem->slug = SystemConstant::slugGenerator($request->name." purchase Item",200);

@@ -54,7 +54,7 @@
                                                     <th>Date</th>
                                                     <th>:</th>
                                                     <td>
-                                                        {{ date('d-M-Y', strtotime($sell->date)); }}
+                                                        {{ date('d-M-Y', strtotime($sell->date)) }}
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -117,7 +117,6 @@
                                             <th>Product</th>
                                             <th>Quantity</th>
                                             <th>Price</th>
-                                            <th>Discount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -137,35 +136,27 @@
                                                 <td>
                                                     {{ $oagpSellItem->price }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                 </td>
-                                                <td>
-                                                    {{ $oagpSellItem->discount }}%
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
 
                                     <tfoot>
                                         <tr>
-                                            <td colspan="4"></td>
+                                            <td colspan="3"></td>
                                             <td>Total price</td>
                                             <td>
                                                 {{ $sell->oagpSellTotalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="4"></td>
-                                            <td>Discount</td>
-                                            <td>{{ $sell->discount }} %</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4"></td>
+                                            <td colspan="3"></td>
                                             <td>Total payable</td>
                                             <td>
                                                 {{ $sell->oagpSellPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="4"></td>
+                                            <td colspan="3"></td>
                                             <td>Paid amount</td>
                                             <td>
                                                 {{ $sell->oagpSellTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}

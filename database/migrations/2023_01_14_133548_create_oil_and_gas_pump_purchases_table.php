@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('invoice',200);
             $table->text('description')->nullable();
             $table->json('note')->nullable();
-            $table->double('discount', 8, 2)->default(0);
             $table->unsignedBigInteger('created_by_id');
             $table->timestamps();
 

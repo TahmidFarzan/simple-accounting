@@ -19,14 +19,12 @@ class OilAndGasPumpInventory extends Model
     protected $fillable = [
         'slug',
         'quantity',
-        'oagp_product_id',
+        'discount',
         'sell_price',
         'created_by_id',
         'purchase_price',
-        'old_quantity',
-        'old_sell_price',
-        'oil_and_gas_pump_id',
-        'old_purchase_price'
+        'oagp_product_id',
+        'oil_and_gas_pump_id'
     ];
 
     protected $hidden = [
@@ -46,9 +44,9 @@ class OilAndGasPumpInventory extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-            'slug','quantity','oagp_product_id','sell_price','created_by_id',
-            'purchase_price','previous_quantiold_sell_priceprice',
-            'oil_and_gas_pump_id','old_purchase_price'
+            'slug','quantity','oagp_product_id',
+            'sell_price','created_by_id','purchase_price',
+            'oil_and_gas_pump_id'
         ])
         ->useLogName('Oil and gas pump product inventory')
         ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")

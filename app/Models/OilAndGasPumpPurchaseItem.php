@@ -19,7 +19,6 @@ class OilAndGasPumpPurchaseItem extends Model
     protected $fillable = [
         'slug',
         'quantity',
-        'discount',
         'sell_price',
         'created_by_id',
         'purchase_price',
@@ -43,7 +42,7 @@ class OilAndGasPumpPurchaseItem extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-            'quantity','sell_price','created_by_id','discount',
+            'quantity','sell_price','created_by_id',
             'purchase_price','oagp_product_id','oagp_purchase_id',
         ])
         ->useLogName('Oil and gas pump purchase item')
@@ -70,8 +69,7 @@ class OilAndGasPumpPurchaseItem extends Model
 
     public function totalPurchasePrice()
     {
-        $purchasePrice = $this->purchase_price * $this->quantity;
-        return $purchasePrice - ($purchasePrice * ($this->discount/100));
+        return $this->purchase_price * $this->quantity;
     }
 
     public function updatedBy()

@@ -23,7 +23,6 @@ class OilAndGasPumpSell extends Model
         'slug',
         'status',
         'invoice',
-        'discount',
         'customer',
         'mobile_no',
         'description',
@@ -52,7 +51,7 @@ class OilAndGasPumpSell extends Model
         ->logOnly([
             'note','date','name','slug',
             'invoice','mobile_no','description','status',
-            'created_by_id','discount','customer_info','customer',
+            'created_by_id','customer_info','customer',
         ])
         ->useLogName('Oil and gas pump sell')
         ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
@@ -86,8 +85,7 @@ class OilAndGasPumpSell extends Model
         $totalPrice = 0.0;
 
         foreach($this->oagpSellItems as $perItem){
-            $totalQuentityPrice = $perItem->price * $perItem->quantity;
-            $totalPrice = $totalPrice + ( $totalQuentityPrice - ( $totalQuentityPrice * ($perItem->discount / 100) ) );
+            $totalPrice = $totalPrice + ( $perItem->price * $perItem->quantity );
         }
         return $totalPrice;
     }
@@ -99,7 +97,7 @@ class OilAndGasPumpSell extends Model
 
     public function oagpSellPayableAmount()
     {
-        return ($this->oagpSellTotalPrice() - ( $this->oagpSellTotalPrice() * ($this->discount / 100) )) ;
+        return $this->oagpSellTotalPrice() ;
     }
 
     public function oagpSellDueAmount()
@@ -113,7 +111,7 @@ class OilAndGasPumpSell extends Model
         foreach($this->oagpSellItems as $perItem){
             $income = $income + $perItem->totalItemIncome();
         }
-        return ($income - ( $income * ($this->discount / 100) ));
+        return $income;
     }
 
     public function updatedBy()

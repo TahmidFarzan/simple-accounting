@@ -130,13 +130,10 @@ class OilAndGasPumpSellController extends Controller
                 'customer_info' => 'nullable',
                 'table_row' => 'required|numeric|min:1',
                 'product.*' => 'required|distinct',
-                'product_inventory.*' => 'required|in:Old,Current',
                 'quantity.*' => 'required|numeric|min:0',
                 'product_price.*' => 'required|numeric|min:0',
-                'product_discount.*' => 'required|numeric|min:0|max:100',
                 'total_product_price.*' => 'required|numeric|min:0',
                 'total_price' => 'required|numeric|min:0',
-                'discount' => 'required|numeric|min:0|max:100',
                 'payable_amount' => 'required|numeric|min:0',
                 'paid_amount' => 'required|numeric|min:0',
                 'due_amount' => 'required|numeric|min:0',
@@ -167,9 +164,6 @@ class OilAndGasPumpSellController extends Controller
                 'product.*.required' => 'Product is required.',
                 'product.*.distinct' => 'Product must be unique.',
 
-                'product_inventory.*.required' => 'Product inventory in required',
-                'product_inventory.*' => 'Product inventory must be one out of [Old,Current].',
-
                 'product_quantity.*.required' => 'Quantity is required.',
                 'product_quantity.*.numeric' => 'Quantity must be numeric.',
                 'product_quantity.*.min' => 'Quantity at least 0.',
@@ -178,11 +172,6 @@ class OilAndGasPumpSellController extends Controller
                 'product_price.*.numeric' => 'Product price must be numeric.',
                 'product_price.*.min' => 'Product price at least 0.',
 
-                'product_discount.*.required' => 'Product discount is required.',
-                'product_discount.*.numeric' => 'Product discount must be numeric.',
-                'product_discount.*.min' => 'Product discount at least 0.',
-                'product_discount.*.max' => 'Product discount at max 100.',
-
                 'total_product_price.*.required' => 'Total product price is required.',
                 'total_product_price.*.numeric' => 'Total product price must be numeric.',
                 'total_product_price.*.min' => 'Total product price at least 0.',
@@ -190,11 +179,6 @@ class OilAndGasPumpSellController extends Controller
                 'total_price.required' => 'Total price is required.',
                 'total_price.numeric' => 'Total price must be numeric.',
                 'total_price.min' => 'Total price at least 0.',
-
-                'discount.required' => 'Discount is required.',
-                'discount.numeric' => 'Discount must be numeric.',
-                'discount.min' => 'Discount at least 0.',
-                'discount.max' => 'Discount max 100.',
 
                 'payable_amount.required' => 'Payable amount is required.',
                 'payable_amount.numeric' => 'Payable amount must be numeric.',
@@ -256,40 +240,22 @@ class OilAndGasPumpSellController extends Controller
 
                 $productInventory = OilAndGasPumpInventory::where("oagp_product_id",$product->id)->firstOrFail();
 
-                if($afterValidatorData["product_inventory"][$i] == "Old"){
-                    // Product price validation
-                    if( ($afterValidatorData["product_price"][$i] < $productInventory->old_sell_price) ){
-                            $validator->errors()->add(
-                                'product_price.'.$i, "Product price can not less then ".$productInventory->old_sell_price."."
-                        );
-                    }
-                    // Product qty validation
-                    if( ($afterValidatorData["product_quantity"][$i] > $productInventory->old_quantity) ){
-                        $validator->errors()->add(
-                            'product_price.'.$i, "Product price can not bigger then ".$productInventory->old_quantity."."
-                        );
-                    }
+                // Product price validation
+                if( ($afterValidatorData["product_price"][$i] < $productInventory->sell_price) ){
+                    $validator->errors()->add(
+                        'product_price.'.$i, "Product price can not less then ".$productInventory->sell_price."."
+                    );
                 }
-
-                if($afterValidatorData["product_inventory"][$i] == "Current"){
-                    // Product price validation
-                    if( ($afterValidatorData["product_price"][$i] < $productInventory->sell_price) ){
-                            $validator->errors()->add(
-                                'product_price.'.$i, "Product price can not less then ".$productInventory->sell_price."."
-                        );
-                    }
-                    // Product qty validation
-                    if( ($afterValidatorData["product_quantity"][$i] > $productInventory->quantity) ){
-                        $validator->errors()->add(
-                            'product_price.'.$i, "Product price can not bigger then ".$productInventory->quantity."."
-                        );
-                    }
+                // Product qty validation
+                if( ($afterValidatorData["product_quantity"][$i] > $productInventory->quantity) ){
+                    $validator->errors()->add(
+                        'product_price.'.$i, "Product price can not bigger then ".$productInventory->quantity."."
+                    );
                 }
 
                 // Calculate total price
                 $totalQuantitySellPrice = $afterValidatorData["product_price"][$i] * $afterValidatorData["product_quantity"][$i];
-                $totalQuantityDiscount = $totalQuantitySellPrice * ($afterValidatorData["product_discount"][$i]/100);
-                $totalPrice = round(($totalPrice + ($totalQuantitySellPrice - $totalQuantityDiscount)),2);
+                $totalPrice = round(($totalPrice + $totalQuantitySellPrice),2);
 
             }
 
@@ -315,9 +281,9 @@ class OilAndGasPumpSellController extends Controller
             }
 
             // Pay able amount validation
-            if (!($afterValidatorData["payable_amount"] == ($afterValidatorData["total_price"] - ($afterValidatorData["total_price"] * ($afterValidatorData["discount"]/100))))) {
+            if (!($afterValidatorData["payable_amount"] == $afterValidatorData["total_price"] )) {
                 $validator->errors()->add(
-                    'paid_amount', "Wrong payable amount. Payable must be equal to subtraction of total amount and discount."
+                    'paid_amount', "Wrong payable amount. Payable must be equal to subtraction of total amount."
                 );
             }
 
@@ -359,7 +325,6 @@ class OilAndGasPumpSellController extends Controller
         $oagpSell->created_at = Carbon::now();
         $oagpSell->invoice = $request->invoice;
         $oagpSell->note = array($request->note);
-        $oagpSell->discount = $request->discount;
         $oagpSell->customer = $request->customer;
         $oagpSell->created_by_id = Auth::user()->id;
         $oagpSell->description = $request->description;
@@ -382,10 +347,8 @@ class OilAndGasPumpSellController extends Controller
                 $oagpSellItem->created_at = Carbon::now();
                 $oagpSellItem->oagp_product_id = $product->id;
                 $oagpSellItem->created_by_id = Auth::user()->id;
-                $oagpSellItem->product_inventory = $request->product_inventory[$i];
                 $oagpSellItem->quantity = $request->product_quantity[$i];
                 $oagpSellItem->price = $request->product_price[$i];
-                $oagpSellItem->discount = $request->product_discount[$i];
 
                 $oagpSellItem->oagp_sell_id =  $oagpSell->id;
                 $oagpSellItem->slug = SystemConstant::slugGenerator($request->name." sell Item",200);

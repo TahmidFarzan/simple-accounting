@@ -118,7 +118,6 @@
                                             <th>Quantity *</th>
                                             <th>Sell price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
                                             <th>Purchase price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
-                                            <th>Discount (%) *</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -141,9 +140,6 @@
                                                 </td>
                                                 <td>
                                                     <input id="productPurchasePriceInput1" name="product_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
-                                                </td>
-                                                <td>
-                                                    <input id="productPurchaseDiscountInput1" name="product_purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" max="100" required>
                                                 </td>
                                                 <td hidden>
                                                     <input id="totalProductPurchasePriceInput1" name="total_product_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
@@ -196,15 +192,6 @@
                                                         @enderror
                                                     </td>
 
-                                                    <td>
-                                                        <input id="productPurchaseDiscountInput{{ $i }}" name="product_purchase_discount[]" type="number" class="form-control form-control-sm @error('product_purchase_discount.'.$i) is-invalid @enderror" value="{{ old('product_purchase_discount.'.$i) }}" min="0" step="00.01" max="100" required>
-                                                        @error('product_purchase_discount.'.$i)
-                                                            <span class="invalid-feedback" role="alert" style="display: block;">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </td>
-
                                                     <td hidden>
                                                         <input id="totalProductPurchasePriceInput{{ $i }}" name="total_product_purchase_price[]" type="number" class="form-control form-control-sm @error('total_product_purchase_price.'.$i) is-invalid @enderror" value="{{ old('total_product_purchase_price.'.$i) }}" min="0" step="00.01" required readonly hidden>
                                                         @error('total_product_purchase_price.'.$i)
@@ -230,21 +217,6 @@
                                         <div class="col-md-8">
                                             <input id="totalPriceInput" name="total_price" type="number" class="form-control form-control-sm @error('total_price') is-invalid @enderror" value="{{ (old('total_price') == null) ? 0 : old('total_price') }}" min="0" step="00.01" required readonly>
                                             @error('total_price')
-                                                <span class="invalid-feedback" role="alert" style="display: block;">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-5 mb-2"></div>
-                                <div class="col-md-7 mb-2">
-                                    <div class="row">
-                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Discount (%) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
-                                        <div class="col-md-8">
-                                            <input id="discountInput" name="discount" type="number" class="form-control form-control-sm @error('discount') is-invalid @enderror" value="{{ (old('discount') == null) ? 0 : old('discount') }}" min="0" step="00.01" max="100" required>
-                                            @error('discount')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -392,7 +364,6 @@
                     row = row + '<td><input id="productQuantityInput'+ tableRow +'" name="product_quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
                     row = row + '<td><input id="productSellPriceInput'+ tableRow +'" name="product_sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="productPurchasePriceInput'+ tableRow +'" name="product_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="productPurchaseDiscountInput'+ tableRow +'" name="product_purchase_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" max="100" required></td>';
                     row = row + '<td hidden><input id="totalProductPurchasePriceInput'+ tableRow +'" name="total_product_purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
                     row = row + '</tr>';
 
@@ -420,7 +391,7 @@
                 }
             });
 
-            $("#dataTable tbody").on("change", 'input[id^="productQuantityInput"], input[id^="productPurchaseDiscountInput"], input[id^="productPurchasePriceInput"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[id^="productQuantityInput"], input[id^="productPurchasePriceInput"]', function (event) {
                 var currentValue = $(this).val();
                 $(this).val(parseFloat(currentValue).toFixed(2));
 
@@ -435,11 +406,6 @@
 
             $("#dataTable tbody").on("change", 'select[id^="productInput"]', function (event) {
                 filterProductForPurchaseProducts();
-            });
-
-            $(document).on('change', '#discountInput', function () {
-                calculatePayAbleAmount();
-                calculateDueAmount();
             });
 
             $(document).on('change', '#paidAmountInput', function () {
@@ -492,13 +458,12 @@
 
         function calculateRowTotal(row){
             var quantity = +row.find('input[id^="productQuantityInput"]').val();
-            var purchaseDiscount = +row.find('input[id^="productPurchaseDiscountInput"]').val();
             var purchasePrice = +row.find('input[id^="productPurchasePriceInput"]').val();
 
             var totalQuantityPurachecPrice = parseFloat(purchasePrice) * parseFloat(quantity);
-            var totalQuantityProductDiscount = parseFloat(totalQuantityPurachecPrice) * (parseFloat(purchaseDiscount)/100);
 
-            var totalPurchasePrice = (totalQuantityPurachecPrice - totalQuantityProductDiscount).toFixed(2);
+
+            var totalPurchasePrice = (totalQuantityPurachecPrice).toFixed(2);
 
             row.find('input[id^="totalProductPurchasePriceInput"]').val(totalPurchasePrice);
             calculateTotalPrice();
@@ -511,18 +476,13 @@
                 totalPrice = parseFloat(totalPrice) + parseFloat($(this).val());
             });
             $("#totalPriceInput").val(totalPrice.toFixed(2));
+            calculatePayAbleAmount();
         }
 
         function calculatePayAbleAmount(){
-            $('#discountInput').val(parseFloat($('#discountInput').val()).toFixed(2));
+            var totalPrice = parseFloat($("#totalPriceInput").val());
 
-            var discount = $('#discountInput').val();
-            var totalPrice = $("#totalPriceInput").val();
-
-            var totalDiscount =  parseFloat(totalPrice) * (parseFloat(discount)/100);
-
-            var payableAmount = totalPrice - totalDiscount;
-            $("#payableAmountInput").val(payableAmount.toFixed(2));
+            $("#payableAmountInput").val(totalPrice.toFixed(2));
         }
 
         function calculateDueAmount(){

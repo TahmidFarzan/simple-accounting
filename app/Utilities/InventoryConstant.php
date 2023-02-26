@@ -61,28 +61,13 @@ class InventoryConstant
                 InventoryConstant::addProductToInventory($oagpPurchaseItem->oagpProduct->slug);
             }
 
-            $oldQuantity = 0.0;
-            $oldSellPrice = 0.0;
-            $oldPurchasePrice = 0.0;
 
             $oagpInProduct = OilAndGasPumpInventory::where("oagp_product_id",$oagpPurchaseItem->oagp_product_id)->firstOrFail();
 
-            // Save old status
-            if($oagpInProduct->quantity > 0){
-                // Old quantity exit
-                $oldQuantity = ($oagpInProduct->old_quantity == 0) ? $oagpInProduct->quantity : ($oagpInProduct->old_quantity + $oagpInProduct->quantity);
-
-                $oldSellPrice = $oagpPurchaseItem->sell_price;
-                $oldPurchasePrice = $oagpPurchaseItem->purchase_price;
-            }
-            $oagpInProduct->old_quantity = $oldQuantity;
-            $oagpInProduct->old_sell_price = $oldSellPrice;
-            $oagpInProduct->old_purchase_price = $oldPurchasePrice;
-
             // New status
-            $oagpInProduct->quantity = $oagpPurchaseItem->quantity;
-            $oagpInProduct->sell_price = $oagpPurchaseItem->sell_price;
-            $oagpInProduct->purchase_price = $oagpPurchaseItem->purchase_price;
+            $oagpInProduct->quantity = $oagpInProduct->quantity + $oagpPurchaseItem->quantity;
+            $oagpInProduct->sell_price = ($oagpPurchaseItem->sell_price > $oagpInProduct->sell_price ) ? $oagpPurchaseItem->sell_price : $oagpInProduct->sell_price;
+            $oagpInProduct->purchase_price = ($oagpPurchaseItem->purchase_price > $oagpInProduct->purchase_price ) ? $oagpPurchaseItem->purchase_price : $oagpInProduct->purchase_price;
             $oagpInProduct->updated_at = Carbon::now();
             $oagpInProductUpdate = $oagpInProduct->update();
 
@@ -112,16 +97,7 @@ class InventoryConstant
 
             $oagpInProduct = OilAndGasPumpInventory::where("oagp_product_id",$oagpSellItem->oagp_product_id)->firstOrFail();
 
-            // Save old status
-            if($oagpSellItem->product_inventory == "Old"){
-                $oagpInProduct->old_quantity = ($oagpInProduct->old_quantity - $oagpSellItem->quantity);
-            }
-
-            // New status
-            if($oagpSellItem->product_inventory == "Current"){
-                $oagpInProduct->quantity = ($oagpSellItem->quantity - $oagpSellItem->quantity);
-            }
-
+            $oagpInProduct->quantity = ($oagpInProduct->quantity - $oagpSellItem->quantity);
             $oagpInProduct->updated_at = Carbon::now();
             $oagpInProductUpdate = $oagpInProduct->update();
 
@@ -131,65 +107,6 @@ class InventoryConstant
         }
 
         if($inventoryUpdateCount == $oilAndGasPumpSell->oagpSellItems->count()){
-            $statusInformation["status"] = "success";
-            $statusInformation["message"]->push("All seleted inventory product successfully update.");
-        }
-        else{
-            $statusInformation["message"]->push("Some seleted inventory product fail to update.");
-        }
-
-        return $statusInformation;
-    }
-
-    public static function updateProductToInventoryForSellUpdate($puSlug,$puItemSlug,$requestType,$updatedQuentity){
-        $statusInformation = array("status" => "errors","message" => collect());
-
-        $oilAndGasPumpPurchase = OilAndGasPumpPurchase::where("slug",$puSlug)->firstOrFail();
-
-        $oagpPurchaseItem = OilAndGasPumpPurchaseItem::where("oagp_purchase_id",$oilAndGasPumpPurchase->id)->where("slug",$puItemSlug)->firstOrFail();
-
-        // Product is exit in inventory
-        if(InventoryConstant::productExitInInventory($oagpPurchaseItem->oagp_product_id) == false){
-            InventoryConstant::addProductToInventory($oagpPurchaseItem->oagpProduct->slug);
-        }
-
-        $oldQuantity = 0.0;
-        $oldSellPrice = 0.0;
-        $oldPurchasePrice = 0.0;
-        $oagpInProductUpdate = null;
-        $oagpInProduct = OilAndGasPumpInventory::where("oagp_product_id",$oagpPurchaseItem->oagp_product_id)->firstOrFail();
-
-        if($requestType == "AddItem"){
-            // Save old status
-            if($oagpInProduct->quantity > 0){
-                // Old quantity exit
-                $oldQuantity = ($oagpInProduct->old_quantity == 0) ? $oagpInProduct->quantity : ($oagpInProduct->old_quantity + $oagpInProduct->quantity);
-
-                $oldSellPrice = $oagpPurchaseItem->sell_price;
-                $oldPurchasePrice = $oagpPurchaseItem->purchase_price;
-            }
-            $oagpInProduct->old_quantity = $oldQuantity;
-            $oagpInProduct->old_sell_price = $oldSellPrice;
-            $oagpInProduct->old_purchase_price = $oldPurchasePrice;
-
-            // New status
-            $oagpInProduct->quantity = $oagpPurchaseItem->quantity;
-            $oagpInProduct->sell_price = $oagpPurchaseItem->sell_price;
-            $oagpInProduct->purchase_price = $oagpPurchaseItem->purchase_price;
-            $oagpInProduct->updated_at = Carbon::now();
-            $oagpInProductUpdate = $oagpInProduct->update();
-        }
-
-        if($requestType == "UpdateItem"){
-            // New status
-            $oagpInProduct->quantity = $oagpInProduct->quantity + ($updatedQuentity);
-            $oagpInProduct->sell_price = $oagpPurchaseItem->sell_price;
-            $oagpInProduct->purchase_price = $oagpPurchaseItem->purchase_price;
-            $oagpInProduct->updated_at = Carbon::now();
-            $oagpInProductUpdate = $oagpInProduct->update();
-        }
-
-        if($oagpInProductUpdate){
             $statusInformation["status"] = "success";
             $statusInformation["message"]->push("All seleted inventory product successfully update.");
         }

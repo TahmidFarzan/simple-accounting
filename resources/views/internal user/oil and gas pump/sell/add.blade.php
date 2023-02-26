@@ -124,10 +124,8 @@
                                         <tr>
                                             <th>Sl</th>
                                             <th>Product *</th>
-                                            <th>Inventory *</th>
                                             <th>Quantity *</th>
                                             <th>Price ({{ $setting["businessSetting"]["currency_symbol"] }}) *</th>
-                                            <th>Discount (%) *</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -143,22 +141,12 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select id="productInventoryInput1" name="product_inventory[]" class="form-control form-select-sm " required>
-                                                        <option value="">Select</option>
-                                                        @foreach (["Old","Current"] as $perInventory)
-                                                            <option value="{{ $perInventory }}">{{ $perInventory }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
                                                     <input id="productQuantityInput1" name="product_quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required>
                                                 </td>
                                                 <td>
                                                     <input id="productPriceInput1" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required>
                                                 </td>
-                                                <td>
-                                                    <input id="productDiscountInput1" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" max="100" required>
-                                                </td>
+
                                                 <td hidden>
                                                     <input id="totalProductPriceInput1" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden>
                                                 </td>
@@ -184,20 +172,6 @@
                                                         @enderror
                                                     </td>
                                                     <td>
-                                                        <select id="productInventoryInput{{ $i }}" name="product_inventory[]" class="form-control form-select-sm @error('product_inventory.'.$i) is-invalid @enderror" required>
-                                                            <option value="">Select</option>
-                                                            @foreach (["Old","Current"] as $perInventory)
-                                                                <option value="{{ $perInventory }}" {{ ($perInventory == old('product_inventory.'.$i)) ? "selected": "" }}>{{ $perInventory }}</option>
-                                                            @endforeach
-                                                        </select>
-
-                                                        @error('product_inventory.'.$i)
-                                                            <span class="invalid-feedback" role="alert" style="display: block;">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </td>
-                                                    <td>
                                                         <input id="productQuantityInput{{ $i }}" name="product_quantity[]" type="number" class="form-control form-control-sm @error('product_quantity.'.$i) is-invalid @enderror" value="{{ old('product_quantity.'.$i) }}" min="0" step="1" required>
                                                         @error('product_quantity.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
@@ -209,15 +183,6 @@
                                                     <td>
                                                         <input id="productPriceInput{{ $i }}" name="product_price[]" type="number" class="form-control form-control-sm @error('product_price.'.$i) is-invalid @enderror" value="{{ old('product_price.'.$i) }}" min="0" step="00.01" required>
                                                         @error('product_price.'.$i)
-                                                            <span class="invalid-feedback" role="alert" style="display: block;">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </td>
-
-                                                    <td>
-                                                        <input id="productDiscountInput{{ $i }}" name="product_discount[]" type="number" class="form-control form-control-sm @error('product_discount.'.$i) is-invalid @enderror" value="{{ old('product_discount.'.$i) }}" min="0" step="00.01" max="100" required>
-                                                        @error('product_discount.'.$i)
                                                             <span class="invalid-feedback" role="alert" style="display: block;">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -249,22 +214,6 @@
                                         <div class="col-md-8">
                                             <input id="totalPriceInput" name="total_price" type="number" class="form-control form-control-sm @error('total_price') is-invalid @enderror" value="{{ (old('total_price') == null) ? 0 : old('total_price') }}" min="0" step="00.01" required readonly>
                                             @error('total_price')
-                                                <span class="invalid-feedback" role="alert" style="display: block;">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-5 mb-2"></div>
-
-                                <div class="col-md-7 mb-2">
-                                    <div class="row">
-                                        <label class="col-md-4 col-form-label col-form-label-sm text-bold">Discount (%) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
-                                        <div class="col-md-8">
-                                            <input id="discountInput" name="discount" type="number" class="form-control form-control-sm @error('discount') is-invalid @enderror" value="{{ (old('discount') == null) ? 0 : old('discount') }}" min="0" step="00.01" required max="100">
-                                            @error('discount')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -412,10 +361,8 @@
                     row = row + '<tr>';
                     row = row + '<td>' + tableRow + '</td>';
                     row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
-                    row = row + '<td><select id="productInventoryInput'+ tableRow +'" name="product_inventory[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach (["Old","Current"] as $perInventory)<option value="{{ $perInventory }}">{{ $perInventory }}</option>@endforeach</select></td>';
                     row = row + '<td><input id="productQuantityInput'+ tableRow +'" name="product_quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
                     row = row + '<td><input id="productPriceInput'+ tableRow +'" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
-                    row = row + '<td><input id="productDiscountInput'+ tableRow +'" name="product_discount[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" max="100" required></td>';
                     row = row + '<td hidden><input id="totalProductPriceInput'+ tableRow +'" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';
                     row = row + '</tr>';
 
@@ -443,7 +390,7 @@
                 }
             });
 
-            $("#dataTable tbody").on("change", 'input[id^="productQuantityInput"], input[id^="productDiscountInput"], input[id^="productPriceInput"]', function (event) {
+            $("#dataTable tbody").on("change", 'input[id^="productQuantityInput"], input[id^="productPriceInput"]', function (event) {
                 var currentValue = $(this).val();
                 $(this).val(parseFloat(currentValue).toFixed(2));
 
@@ -459,35 +406,8 @@
             $("#dataTable tbody").on("change", 'select[id^="productInput"]', function (event) {
                 filterProductForSellProducts();
                 setProductInventoryInformation($(this).closest("tr"));
-
-                var productSlug = $(this).val();
-                var productInventoryId = $(this).closest("tr").find('select[id^="productInventoryInput"]').attr( "id" );
-                if(productSlug != ''){
-                    $.ajax({
-                        type:'get',
-                        url: "{{ route('oil.and.gas.pump.sell.get.product.inventory.info',['oagpSlug'=>$oilAndGasPump->slug]) }}",
-                        data:{"product_slug" : productSlug},
-                        success:function(successResponce){
-                            $('#'+productInventoryId).html(null);
-                            $('#'+productInventoryId).append('<option value="">Select</option>');
-
-                            if(successResponce["old_quantity"] > 0){
-                                $('#'+productInventoryId).append('<option value="Old">Old</option>');
-                            }
-                            $('#'+productInventoryId).append('<option value="Current">Current</option>');
-                        }
-                    });
-                }
             });
 
-            $("#dataTable tbody").on("change", 'select[id^="productInventoryInput"]', function (event) {
-                setProductInventoryInformation($(this).closest("tr"));
-            });
-
-            $(document).on('change', '#discountInput', function () {
-                calculatePayAbleAmount();
-                calculateDueAmount();
-            });
 
             $(document).on('change', '#paidAmountInput', function () {
                 calculateDueAmount();
@@ -539,13 +459,11 @@
 
         function calculateRowTotal(row){
             var quantity = +row.find('input[id^="productQuantityInput"]').val();
-            var sellDiscount = +row.find('input[id^="productDiscountInput"]').val();
             var sellPrice = +row.find('input[id^="productPriceInput"]').val();
 
             var totalQuantityPurachecPrice = parseFloat(sellPrice) * parseFloat(quantity);
-            var totalQuantityProductDiscount = parseFloat(totalQuantityPurachecPrice) * (parseFloat(sellDiscount)/100);
 
-            var totalSellPrice = (totalQuantityPurachecPrice - totalQuantityProductDiscount).toFixed(2);
+            var totalSellPrice = (totalQuantityPurachecPrice).toFixed(2);
 
             row.find('input[id^="totalProductPriceInput"]').val(totalSellPrice);
             calculateTotalPrice();
@@ -557,43 +475,39 @@
             $("#dataTable").find('input[id^="totalProductPriceInput"]').each(function () {
                 totalPrice = parseFloat(totalPrice) + parseFloat($(this).val());
             });
+
             $("#totalPriceInput").val(totalPrice.toFixed(2));
+
+            calculatePayAbleAmount();
         }
 
         function calculatePayAbleAmount(){
-            $('#discountInput').val(parseFloat($('#discountInput').val()).toFixed(2));
+            var totalPrice = parseFloat($('#totalPriceInput').val());
 
-            var discount = $('#discountInput').val();
-            var totalPrice = $("#totalPriceInput").val();
-
-            var totalDiscount =  parseFloat(totalPrice) * (parseFloat(discount)/100);
-
-            var payableAmount = totalPrice - totalDiscount;
-            $("#payableAmountInput").val(payableAmount.toFixed(2));
+            $("#payableAmountInput").val(totalPrice.toFixed(2));
         }
 
         function calculateDueAmount(){
             var status = "Due";
-                $('#paidAmountInput').val(parseFloat($('#paidAmountInput').val()).toFixed(2));
+            $('#paidAmountInput').val(parseFloat($('#paidAmountInput').val()).toFixed(2));
 
-                var paidAmount = $('#paidAmountInput').val();
-                var payableAmount = $("#payableAmountInput").val();
+            var paidAmount = $('#paidAmountInput').val();
+            var payableAmount = $("#payableAmountInput").val();
 
-                var dueAmount = parseFloat(payableAmount) - parseFloat(paidAmount);
-                $("#dueAmountInput").val(dueAmount.toFixed(2));
+            var dueAmount = parseFloat(payableAmount) - parseFloat(paidAmount);
+            $("#dueAmountInput").val(dueAmount.toFixed(2));
 
-                if(dueAmount == 0){
-                    status = "Complete";
-                }
-                if(dueAmount > 0){
-                    status = "Due";
-                }
-                $("#statusInput").val(status);
+            if(dueAmount == 0){
+                status = "Complete";
+            }
+            if(dueAmount > 0){
+                status = "Due";
+            }
+            $("#statusInput").val(status);
         }
 
         function calculateTotalSellAmount(){
             calculateTotalPrice();
-            calculatePayAbleAmount();
             calculateDueAmount();
         }
 
@@ -630,30 +544,20 @@
 
         function setProductInventoryInformation(row){
             var productSlug = row.find('select[id^="productInput"]').val();
-            var productInventoryValue = row.find('select[id^="productInventoryInput"]').val();
-
             var quantityInputId = row.find('input[id^="productQuantityInput"]').attr( "id" );
             var productPriceId = row.find('input[id^="productPriceInput"]').attr( "id" );
 
 
-            if((productSlug != '') && (productInventoryValue != '')){
+            if(productSlug != ''){
 
                 $.ajax({
                     type:'get',
                     url: "{{ route('oil.and.gas.pump.sell.get.product.inventory.info',['oagpSlug'=>$oilAndGasPump->slug]) }}",
                     data:{"product_slug" : productSlug},
                     success:function(successResponce){
-                        if(productInventoryValue == "Old"){
-                            $("#" + quantityInputId).prop('max', successResponce["old_quantity"]);
-                            $("#" + productPriceId).prop('min', successResponce["old_sell_price"]);
-                            $("#" + productPriceId).val(successResponce["old_sell_price"]);
-                        }
-
-                        if(productInventoryValue == "Current"){
-                            $("#" + quantityInputId).prop('max', successResponce["quantity"]);
-                            $("#" + productPriceId).prop('min', successResponce["sell_price"]);
-                            $("#" + productPriceId).val(successResponce["sell_price"]);
-                        }
+                        $("#" + quantityInputId).prop('max', successResponce["quantity"]);
+                        $("#" + productPriceId).prop('min', successResponce["sell_price"]);
+                        $("#" + productPriceId).val(successResponce["sell_price"]);
                     }
                 });
             }

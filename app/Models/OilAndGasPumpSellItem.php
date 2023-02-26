@@ -20,7 +20,6 @@ class OilAndGasPumpSellItem extends Model
         'slug',
         'price',
         'quantity',
-        'discount',
         'oagp_sell_id',
         'created_by_id',
         'oagp_product_id',
@@ -43,7 +42,7 @@ class OilAndGasPumpSellItem extends Model
     {
         return LogOptions::defaults()
         ->logOnly([
-            'quantity','created_by_id','discount',
+            'quantity','created_by_id',
             'price','oagp_product_id','oagp_sell_id',
             'product_inventory',
         ])
@@ -71,21 +70,12 @@ class OilAndGasPumpSellItem extends Model
 
     public function totalSellPrice()
     {
-        $sellPrice = $this->price * $this->quantity;
-        return $sellPrice - ($sellPrice * ($this->discount/100));
+        return $this->price * $this->quantity;
     }
 
     public function totalPurchasePrice()
     {
-        $purchasePrice = 0;
-        if($this->product_inventory == "Old"){
-            $purchasePrice = ($this->oagpProduct->oagpInventory->old_purchase_price);
-        }
-
-        if($this->product_inventory == "Current"){
-            $purchasePrice = ($this->oagpProduct->oagpInventory->purchase_price);
-        }
-        return $purchasePrice * $this->quantity;
+        return $this->oagpProduct->oagpInventory->purchase_price * $this->quantity;
     }
 
     public function totalItemIncome()
