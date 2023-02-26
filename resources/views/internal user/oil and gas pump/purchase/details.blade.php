@@ -139,29 +139,29 @@
 
                                     <tfoot>
                                         <tr>
-                                            <td colspan="3"></td>
-                                            <td>Total price</td>
+                                            <th colspan="3"></th>
+                                            <th>Total price</th>
                                             <td>
                                                 {{ $oilAndGasPumpPurchase->oagpPurchaseTotalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3"></td>
-                                            <td>Total payable</td>
+                                            <th colspan="3"></th>
+                                            <th>Total payable</th>
                                             <td>
                                                 {{ $oilAndGasPumpPurchase->oagpPurchasePayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3"></td>
-                                            <td>Paid amount</td>
+                                            <th colspan="3"></th>
+                                            <th>Paid amount</th>
                                             <td>
                                                 {{ $oilAndGasPumpPurchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3"></td>
-                                            <td>Due amount</td>
+                                            <th colspan="3"></th>
+                                            <th>Due amount</th>
                                             <td>
                                                 {{ $oilAndGasPumpPurchase->oagpPurchaseDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
