@@ -75,6 +75,24 @@ class OilAndGasPumpSellItem extends Model
         return $sellPrice - ($sellPrice * ($this->discount/100));
     }
 
+    public function totalPurchasePrice()
+    {
+        $purchasePrice = 0;
+        if($this->product_inventory == "Old"){
+            $purchasePrice = ($this->oagpProduct->oagpInventory->old_purchase_price);
+        }
+
+        if($this->product_inventory == "Current"){
+            $purchasePrice = ($this->oagpProduct->oagpInventory->purchase_price);
+        }
+        return $purchasePrice * $this->quantity;
+    }
+
+    public function totalItemIncome()
+    {
+        return $this->totalSellPrice() - $this->totalPurchasePrice();
+    }
+
     public function updatedBy()
     {
         $causer = null;

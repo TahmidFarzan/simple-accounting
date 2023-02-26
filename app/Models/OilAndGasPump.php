@@ -78,6 +78,19 @@ class OilAndGasPump extends Model
         return $this->hasMany(OilAndGasPumpSell::class,'oil_and_gas_pump_id','id');
     }
 
+    public function oilAndGasPumpSellsByDate($startDate,$endDate)
+    {
+        $allSells = $this->oilAndGasPumpSells;
+
+        if(!($startDate == null)){
+            $allSells = $allSells->where('date','>=',$startDate);
+        }
+        if(!($endDate == null)){
+            $allSells = $allSells->where('date','<=',$endDate);
+        }
+        $allSells = $allSells->groupBy("date");
+        return  $allSells;
+    }
 
     public function updatedBy()
     {

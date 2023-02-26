@@ -107,6 +107,15 @@ class OilAndGasPumpSell extends Model
         return ($this->oagpSellPayableAmount() - $this->oagpSellTotalPaidAmount()) ;
     }
 
+    public function totalSellIncome()
+    {
+        $income = 0;
+        foreach($this->oagpSellItems as $perItem){
+            $income = $income + $perItem->totalItemIncome();
+        }
+        return ($income - ( $income * ($this->discount / 100) ));
+    }
+
     public function updatedBy()
     {
         $causer = null;
