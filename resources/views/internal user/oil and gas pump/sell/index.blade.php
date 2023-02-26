@@ -100,6 +100,7 @@
                                             <th>Total payable amount</th>
                                             <th>Paid amount</th>
                                             <th>Due amount</th>
+                                            <th>Income</th>
                                             <th>Link</th>
                                         </tr>
                                     </thead>
@@ -115,6 +116,7 @@
                                                 </td>
                                                 <td>{{ $perOAGPSell->oagpSellTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPSell->oagpSellDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPSell->totalSellIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPSEMP03"]) == true)
                                                         <a href="{{ route("oil.and.gas.pump.sell.details",["oagpSlug" => $oilAndGasPump->slug, "seSlug" => $perOAGPSell->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
@@ -128,7 +130,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8">
+                                                <td colspan="9">
                                                     <b class="d-flex justify-content-center text-warning">No sell found.</b>
                                                 </td>
                                             </tr>
@@ -156,6 +158,7 @@
                                             <th>Total payable amount</th>
                                             <th>Paid amount</th>
                                             <th>Due amount</th>
+                                            <th>Income</th>
                                             <th>Link</th>
                                         </tr>
                                     </thead>
@@ -171,6 +174,7 @@
                                                 </td>
                                                 <td>{{ $perOAGPSell->oagpSellTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPSell->oagpSellDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPSell->totalSellIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPSEMP03"]) == true)
                                                         <a href="{{ route("oil.and.gas.pump.sell.details",["oagpSlug" => $oilAndGasPump->slug, "seSlug" => $perOAGPSell->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
@@ -183,7 +187,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8">
+                                                <td colspan="9">
                                                     <b class="d-flex justify-content-center text-warning">No sell found.</b>
                                                 </td>
                                             </tr>
