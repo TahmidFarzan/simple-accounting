@@ -34,6 +34,11 @@
                             <th style="width: 1%;">:</th>
                             <td>{{ $oilAndGasPump->code }}</td>
                         </tr>
+                        <tr>
+                            <th style="width: 25%;">Total income</th>
+                            <th style="width: 1%;">:</th>
+                            <td>{{ $oilAndGasPump->oilAndGasPumpTotalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

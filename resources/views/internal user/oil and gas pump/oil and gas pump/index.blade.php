@@ -81,6 +81,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Total income</th>
                                     <th>Link</th>
                                 </tr>
                             </thead>
@@ -89,6 +90,7 @@
                                     <tr>
                                         <td>{{ $perOilAndGasPumpIndex+1 }}</td>
                                         <td>{{ $perOilAndGasPump->name }}</td>
+                                        <td>{{ $perOilAndGasPump->oilAndGasPumpTotalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                         <td>
                                             @if (Auth::user()->hasUserPermission(["OAGPMP03"]) == true)
                                                 <a href="{{ route("oil.and.gas.pump.details",["slug" => $perOilAndGasPump->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>
@@ -153,7 +155,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3">
+                                        <td colspan="4">
                                             <b class="d-flex justify-content-center text-warning">No oil and gas pump found.</b>
                                         </td>
                                     </tr>

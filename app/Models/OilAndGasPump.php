@@ -92,6 +92,16 @@ class OilAndGasPump extends Model
         return  $allSells;
     }
 
+    public function oilAndGasPumpTotalIncome()
+    {
+        $totalIncome = 0;
+
+        foreach($this->oilAndGasPumpSells as $perSell){
+            $totalIncome = $totalIncome + $perSell->totalSellIncome();
+        }
+        return  $totalIncome;
+    }
+
     public function updatedBy()
     {
         $causer = null;
