@@ -368,6 +368,13 @@
                                                             Oil and gas pump
                                                         </a>
                                                     </li>
+
+                                                    <li class="nav-item">
+                                                        <a class="nav-link {{(Request::is('report/income') || (Request::is('report/income/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.income.index") }}">
+                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                            Income
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>

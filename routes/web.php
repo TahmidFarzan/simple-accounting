@@ -288,5 +288,9 @@ Route::group(['middleware' => 'prevent.back.history'],function(){
             Route::get('/', [ReportController::class, 'oilAndGasPumpIndex'])->name('index');
             Route::get('get-supplier-by-oagp', [ReportController::class, 'oilAndGasPumpGetSupplierByOAGP'])->name('get.supplier.by.oagp');
         });
+
+        Route::prefix('income')->name('income.')->group(function(){
+            Route::get('/', [ReportController::class, 'incomeIndex'])->name('index');
+        });
     });
 });

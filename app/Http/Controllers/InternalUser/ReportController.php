@@ -274,4 +274,63 @@ class ReportController extends Controller
 
         return view('internal user.report.oil and gas pump.index', compact("modelRecords","paginations",'models',"oilAndGasPumps","suppliers",'selectedModel','generatedReport'));
     }
+
+    public function incomeIndex(Request $request){
+        $selectedNavTab = "OilAndGasPump";
+
+        $pagination = 1;
+        $paginations = array(1,5,15,30,45,60,75,90,105,120);
+
+        $oagpEndDate = Carbon::now();
+        $oagpStartDate = Carbon::now()->startOfMonth();
+
+       //$oilAndGasPumpIncomes = collect();
+        $oagpTotalIncome = 0;
+        $oilAndGasPumpIncomes = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc");
+
+        foreach($oilAndGasPumpIncomes->get() as $perOAGP){
+            $oagpTotalIncome += $perOAGP->totalSellIncome();
+        }
+        $oilAndGasPumpIncomes = $oilAndGasPumpIncomes->get();
+
+        $oilAndGasPumps = OilAndGasPump::orderBy("created_at","desc")->orderBy("name","desc")->get();
+        $projectContracts = ProjectContract::orderBy("created_at","desc")->orderBy("name","desc")->get();
+
+
+        if( (count($request->input())) > 0 ){
+            if(array_key_exists($request->selected_nav_tab, array("OilAndGasPump","ProjectContract")) == false){
+                abort(404);
+            }
+            $selectedNavTab = $request->selected_nav_tab;
+
+            $endDate = null;
+            $startDate = null;
+
+            if($request->has('start_date') && !($request->start_date == null)){
+                $startDate = ($request->start_date == null) ? $startDate : $request->start_date;
+            }
+
+            if($request->has('end_date') && !($request->end_date == null)){
+                $endDate = ($request->start_date == null) ? $endDate : $request->end_date;
+            }
+
+            if($selectedNavTab == "OilAndGasPump"){
+                $oilAndGasPumpIncomes = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc");
+
+                if( $request->has('oil_and_gas_pump') && ( !($request->oil_and_gas_pump == null) || !($request->oil_and_gas_pump == "All") )){
+                    $sOilAndGasPump = OilAndGasPump::where("slug",$request->oil_and_gas_pump)->firstOrFail();
+                }
+
+                foreach($oilAndGasPumpIncomes->get() as $perOAGP){
+                    $oagpTotalIncome += $perOAGP->totalSellIncome();
+                }
+
+                $oilAndGasPumpIncomes = $oilAndGasPumpIncomes->where("date",'>=',date("Y-m-d",strtotime($startDate)));
+                $oilAndGasPumpIncomes = $oilAndGasPumpIncomes->where("date",'<=',date("Y-m-d",strtotime($endDate)));
+                $oilAndGasPumpIncomes = $oilAndGasPumpIncomes->paginate($pagination);
+            }
+        }
+
+        return view('internal user.report.income.index',compact("selectedNavTab","paginations","oilAndGasPumps","oilAndGasPumpIncomes","oagpTotalIncome"));
+    }
 }
