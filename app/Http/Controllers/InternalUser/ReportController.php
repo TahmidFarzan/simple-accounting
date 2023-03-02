@@ -282,15 +282,15 @@ class ReportController extends Controller
         $oagpStartDate = Carbon::now();
 
         $oilAndGasPumpSellIncomes = collect();
-        $oilAndGasPumpSellIncomes = $this->generateOAGPIncomes($oagpStartDate->startOfYear(),$oagpEndDate,null);
 
         $oilAndGasPumps = OilAndGasPump::orderBy("created_at","desc")->orderBy("name","desc")->get();
         $projectContracts = ProjectContract::orderBy("created_at","desc")->orderBy("name","desc")->get();
 
         if( (count($request->input())) > 0 ){
-            if(array_key_exists($request->selected_nav_tab, array("OilAndGasPump","ProjectContract")) == false){
+            if(!in_array($request->selected_nav_tab, array("All","OilAndGasPump","ProjectContract"))){
                 abort(404);
             }
+
             $selectedNavTab = $request->selected_nav_tab;
 
             $endDate = null;
@@ -307,7 +307,7 @@ class ReportController extends Controller
             if($selectedNavTab == "OilAndGasPump"){
                 $oilAndGasPumpSellIncomes = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc");
 
-                if( $request->has('oil_and_gas_pump') && ( !($request->oil_and_gas_pump == null) || !($request->oil_and_gas_pump == "All") )){
+                if( $request->has('oil_and_gas_pump') && ( !($request->oil_and_gas_pump == null) && !($request->oil_and_gas_pump == "All") )){
                     $sOilAndGasPump = OilAndGasPump::where("slug",$request->oil_and_gas_pump)->firstOrFail();
                 }
 

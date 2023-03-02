@@ -30,7 +30,7 @@
 
             <div class="row">
                 <div class="card-body">
-                    <input type="text" class="form-control mb-2" name="selected_nav" id="selectedNavInput" value="OilAndGasPump" readonly hidden>
+                    <input type="text" class="form-control mb-2" name="selected_nav_tab" id="selectedNavInput" value="OilAndGasPump" readonly hidden>
                     <ul class="nav nav-tabs" id="incomeNavTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="oagpIncomeNavTab" data-bs-toggle="tab" data-bs-target="#oagpIncomeNavTabPanel" type="button" role="tab" aria-controls="oagpIncomeNavTabPanel" aria-selected="true">Oil and gas pump</button>
@@ -78,10 +78,15 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-12">
+                                        <div class="d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary" id="oagpIncomeGenerateButton">Generate</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="card-body">
+                            <div class="card-body" id="oagpIncomeDataTableDiv">
                                 <div class="row">
                                     @php $oagpIncomeSellIndexCount = 0; @endphp
                                     @foreach ($oilAndGasPumpSellIncomes as $oagpSellIndex  => $oagpSellIncomes)
@@ -114,7 +119,7 @@
                                                                     <tr>
                                                                         <td>{{ $oagpSellIncomeIndexCount }}</td>
                                                                         <td>{{ date("d-M-Y",strtotime($oagpSellIncomeIndex))  }}</td>
-                                                                        <td>{{  $oagpSellIncome }}</td>
+                                                                        <td>{{  $oagpSellIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                                     </tr>
                                                                 @empty
                                                                     <tr>
@@ -166,21 +171,20 @@
                 $("#selectedNavInput").val("ProjectContract");
             });
 
-            $(document).on('click', "#generateReportDataTableGridViewButton", function () {
-                if(passInputFieldValidation() == true){
-                    dataTableLoad(parameterGenerate());
+            $(document).on('click', "#oagpIncomeGenerateButton", function () {
+                if(oagpIncomePassInputFieldValidation() == true){
+                    oagpIncomeDataTableLoad(oagpIncomeParameterGenerate());
                 }
             });
         });
-        function parameterGenerate(){
+
+        function oagpIncomeParameterGenerate(){
             var parameterString = null;
             $.each( [
-                    "incomeReportIndexInput",
+                    "selectedNavInput",
                     "oilAndGasPumpInput",
-                    "projectContractInput",
-                    "startDateInput",
-                    "endDateInput",
-                    "startDateInput",
+                    "oagpStartDateInput",
+                    "oagpEndDateInput",
                 ], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
                     var inputFieldValue = $("#" + perInput).val();
@@ -192,15 +196,19 @@
             return parameterString;
         }
 
-        function dataTableLoad(parameterString){
+        function oagpIncomeDataTableLoad(parameterString){
             $.ajax({
                 type: "get",
                 url: "{{ route('report.income.index') }}" + "?" + parameterString,
                 success: function(result) {
                     $("#extraErrorMessageDiv").hide();
                     $("#extraErrorMessageDiv").html("");
+                    var selectedNavInput = $("#selectedNavInput").val();
 
-                    $("#dataTableGridViewDiv").html($(result).find("#dataTableGridViewDiv").html());
+                    if(selectedNavInput == "OilAndGasPump"){
+                        $("#oagpIncomeNavTabPanel #oagpIncomeDataTableDiv").html($(result).find("#oagpIncomeNavTabPanel #oagpIncomeDataTableDiv").html());
+                    }
+
                 },
                 error: function(errorResponse) {
                     showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
@@ -208,16 +216,14 @@
             });
         }
 
-        function passInputFieldValidation(){
+        function oagpIncomePassInputFieldValidation(){
             var passValidation = true;
             var errors = [];
             $.each( [
-                    "incomeReportIndexInput",
+                    "selectedNavInput",
                     "oilAndGasPumpInput",
-                    "projectContractInput",
-                    "startDateInput",
-                    "endDateInput",
-                    "startDateInput",
+                    "oagpStartDateInput",
+                    "oagpEndDateInput",
                 ], function( key, perInput ) {
                 if(($("#" + perInput).val().length == 0) && !($("#" + perInput).prop('disabled')) ){
                     passValidation = false;
