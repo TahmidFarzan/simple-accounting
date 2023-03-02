@@ -305,14 +305,16 @@ class ReportController extends Controller
             }
 
             if($selectedNavTab == "OilAndGasPump"){
+                $sOilAndGasPumpSlug = null;
                 $oilAndGasPumpSellIncomes = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc");
 
                 if( $request->has('oil_and_gas_pump') && ( !($request->oil_and_gas_pump == null) && !($request->oil_and_gas_pump == "All") )){
-                    $sOilAndGasPump = OilAndGasPump::where("slug",$request->oil_and_gas_pump)->firstOrFail();
+                    $sOilAndGasPumpSlug = $request->oil_and_gas_pump;
                 }
 
-                $oilAndGasPumpSellIncomes = $this->generateOAGPIncomes($oagpStartDate->startOfYear(),$oagpEndDate,null);
+                $oilAndGasPumpSellIncomes = $this->generateOAGPIncomes($oagpStartDate,$oagpEndDate,$sOilAndGasPumpSlug);
             }
+
         }
 
         return view('internal user.report.income.index',compact("selectedNavTab","oilAndGasPumps","oilAndGasPumpSellIncomes"));
