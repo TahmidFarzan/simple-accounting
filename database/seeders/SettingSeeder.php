@@ -111,6 +111,10 @@ class SettingSeeder extends Seeder
                         "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
                     ),
+                    "ProjectContractClient" => array(
+                        "event" => "All", // Create,Update,Trash,Restore.
+                        "send" => true,
+                    ),
                     "ProjectContractJournal" => array(
                         "event" => "All", // Create,Update,Trash,Restore.
                         "send" => true,
