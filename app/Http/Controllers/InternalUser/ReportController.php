@@ -278,24 +278,14 @@ class ReportController extends Controller
     public function incomeIndex(Request $request){
         $selectedNavTab = "OilAndGasPump";
 
-        $pagination = 1;
-        $paginations = array(1,5,15,30,45,60,75,90,105,120);
-
         $oagpEndDate = Carbon::now();
-        $oagpStartDate = Carbon::now()->startOfMonth();
+        $oagpStartDate = Carbon::now();
 
-       //$oilAndGasPumpIncomes = collect();
-        $oagpTotalIncome = 0;
-        $oilAndGasPumpIncomes = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc");
-
-        foreach($oilAndGasPumpIncomes->get() as $perOAGP){
-            $oagpTotalIncome += $perOAGP->totalSellIncome();
-        }
-        $oilAndGasPumpIncomes = $oilAndGasPumpIncomes->get();
+        $oilAndGasPumpSellIncomes = collect();
+        $oilAndGasPumpSellIncomes = $this->generateOAGPIncomes($oagpStartDate->startOfYear(),$oagpEndDate,null);
 
         $oilAndGasPumps = OilAndGasPump::orderBy("created_at","desc")->orderBy("name","desc")->get();
         $projectContracts = ProjectContract::orderBy("created_at","desc")->orderBy("name","desc")->get();
-
 
         if( (count($request->input())) > 0 ){
             if(array_key_exists($request->selected_nav_tab, array("OilAndGasPump","ProjectContract")) == false){
@@ -315,22 +305,48 @@ class ReportController extends Controller
             }
 
             if($selectedNavTab == "OilAndGasPump"){
-                $oilAndGasPumpIncomes = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc");
+                $oilAndGasPumpSellIncomes = OilAndGasPumpSell::orderBy("date","desc")->orderBy("id","desc");
 
                 if( $request->has('oil_and_gas_pump') && ( !($request->oil_and_gas_pump == null) || !($request->oil_and_gas_pump == "All") )){
                     $sOilAndGasPump = OilAndGasPump::where("slug",$request->oil_and_gas_pump)->firstOrFail();
                 }
 
-                foreach($oilAndGasPumpIncomes->get() as $perOAGP){
-                    $oagpTotalIncome += $perOAGP->totalSellIncome();
-                }
-
-                $oilAndGasPumpIncomes = $oilAndGasPumpIncomes->where("date",'>=',date("Y-m-d",strtotime($startDate)));
-                $oilAndGasPumpIncomes = $oilAndGasPumpIncomes->where("date",'<=',date("Y-m-d",strtotime($endDate)));
-                $oilAndGasPumpIncomes = $oilAndGasPumpIncomes->paginate($pagination);
+                $oilAndGasPumpSellIncomes = $this->generateOAGPIncomes($oagpStartDate->startOfYear(),$oagpEndDate,null);
             }
         }
 
-        return view('internal user.report.income.index',compact("selectedNavTab","paginations","oilAndGasPumps","oilAndGasPumpIncomes","oagpTotalIncome"));
+        return view('internal user.report.income.index',compact("selectedNavTab","oilAndGasPumps","oilAndGasPumpSellIncomes"));
+    }
+
+    private function generateOAGPIncomes($startDate,$endDate,$oagpSlug){
+        $startDate = date("Y-m-d",strtotime($startDate));
+        $endDate = date("Y-m-d",strtotime($endDate));
+
+        $oilAndGasPumpSellIncomes = collect();
+        $oilAndGasPumps = OilAndGasPump::orderBy("name","asc");
+        if(!($oagpSlug == null)){
+            $oilAndGasPumps = $oilAndGasPumps->where("slug",$oagpSlug);
+        }
+
+        $oilAndGasPumps = $oilAndGasPumps->get();
+        foreach($oilAndGasPumps as $perOAGP){
+
+            if($perOAGP->oilAndGasPumpSellsByDate($startDate,$endDate)->count() > 0){
+                foreach($perOAGP->oilAndGasPumpSellsByDate($startDate,$endDate) as $oagpSellsIndex  => $oagpSells){
+                    $totalSellIncome = 0;
+                    foreach($oagpSells as $perSell){
+                        $totalSellIncome += $perSell->totalSellIncome();
+                    }
+                    $oagpSellCollect[$oagpSellsIndex] = $totalSellIncome;
+                    $oilAndGasPumpSellIncomes[$perOAGP->name] = $oagpSellCollect;
+                }
+            }
+            if($perOAGP->oilAndGasPumpSellsByDate($startDate,$endDate)->count() == 0){
+                $oilAndGasPumpSellIncomes[$perOAGP->name] = collect();
+
+            }
+        }
+
+        return $oilAndGasPumpSellIncomes;
     }
 }

@@ -30,7 +30,7 @@
 
             <div class="row">
                 <div class="card-body">
-                    <input type="text" class="form-control mb-2" name="selected_nav" id="selectedNavInput" value="OilAndGasPump" readonly>
+                    <input type="text" class="form-control mb-2" name="selected_nav" id="selectedNavInput" value="OilAndGasPump" readonly hidden>
                     <ul class="nav nav-tabs" id="incomeNavTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="oagpIncomeNavTab" data-bs-toggle="tab" data-bs-target="#oagpIncomeNavTabPanel" type="button" role="tab" aria-controls="oagpIncomeNavTabPanel" aria-selected="true">Oil and gas pump</button>
@@ -45,20 +45,6 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-2">
                                         <div class="row">
-                                            <label class="col-md-4 col-form-label col-form-label-sm">Pagination</label>
-                                            <div class="col-md-8">
-                                                <select class="form-control form-control-sm" id="paginationInput" name="pagination">
-                                                    <option value="">Select</option>
-                                                    @foreach ( $paginations as $perPagination)
-                                                        <option value="{{ $perPagination }}">{{ $perPagination }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mb-2">
-                                        <div class="row">
                                             <label class="col-md-4 col-form-label col-form-label-sm">Oil and gas pump</label>
                                             <div class="col-md-8">
                                                 <select class="form-control form-control-sm" id="oilAndGasPumpInput" name="oil_and_gas_pump">
@@ -71,6 +57,8 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-6 mb-2"></div>
 
                                     <div class="col-md-6 mb-2">
                                         <div class="row">
@@ -94,67 +82,67 @@
                             </div>
 
                             <div class="card-body">
-                                @php
-                                    $oagpGridTotalIncome = 0;
-                                @endphp
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Sl</th>
-                                                <th>Oil and gas pump</th>
-                                                <th>Product</th>
-                                                <th>Date</th>
-                                                <th>Income</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse ($oilAndGasPumpIncomes as $perOilAndGasPumpIncomeIndex => $perOilAndGasPumpIncome)
-                                                @php
-                                                    $oagpGridTotalIncome +=  $perOilAndGasPumpIncome->totalSellIncome();
-                                                @endphp
-                                                <tr>
-                                                    <td>{{ $perOilAndGasPumpIncomeIndex + 1 }}</td>
-                                                    <td>{{ $perOilAndGasPumpIncome->oilAndGasPump->name}}</td>
-                                                    <td>{{ $perOilAndGasPumpIncome->oilAndGasPump->name}}</td>
-                                                    <td>{{ date('d-M-Y',$perOilAndGasPumpIncome->oilAndGasPump->date) }}</td>
-                                                    <td>{{ $perOilAndGasPumpIncome->totalSellIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="5">
-                                                        <b class="d-flex justify-content-center text-warning">No income foound.</b>
-                                                    </td>
-                                                </tr>
-                                            @endforelse
-
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="4">
-                                                    <span class="d-flex justify-content-end">
-                                                        <b>Grid total</b>
-                                                    </span>
-                                                </td>
-                                                <td>{{ $oagpGridTotalIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4">
-                                                    <span class="d-flex justify-content-end">
-                                                        <b>Total</b>
-                                                    </span>
-                                                </td>
-                                                <td>{{ $oagpTotalIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+                                <div class="row">
+                                    @php $oagpIncomeSellIndexCount = 0; @endphp
+                                    @foreach ($oilAndGasPumpSellIncomes as $oagpSellIndex  => $oagpSellIncomes)
+                                        @php $oagpIncomeSellIndexCount ++; @endphp
+                                        <div class="col-md-6 {{ ($oilAndGasPumpSellIncomes->count() < $oagpIncomeSellIndexCount ) }}">
+                                            <div class="card border-dark">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-center mb-2">
+                                                        <b>{{ $oagpSellIndex }}</b>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-sm table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Sl</th>
+                                                                    <th>Date</th>
+                                                                    <th>Income</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @php
+                                                                    $oagpTotalSellIncome = 0;
+                                                                    $oagpSellIncomeIndexCount = 0;
+                                                                @endphp
+                                                                @forelse ($oagpSellIncomes as $oagpSellIncomeIndex => $oagpSellIncome )
+                                                                    @php
+                                                                        $oagpSellIncomeIndexCount ++;
+                                                                        $oagpTotalSellIncome += $oagpSellIncome;
+                                                                    @endphp
+                                                                    <tr>
+                                                                        <td>{{ $oagpSellIncomeIndexCount }}</td>
+                                                                        <td>{{ date("d-M-Y",strtotime($oagpSellIncomeIndex))  }}</td>
+                                                                        <td>{{  $oagpSellIncome }}</td>
+                                                                    </tr>
+                                                                @empty
+                                                                    <tr>
+                                                                        <td colspan="3">
+                                                                            <div class="d-flex justify-content-center me-2 text-warning">
+                                                                                <b>No income found</b>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforelse
+                                                            </tbody>
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <th colspan="2">
+                                                                        <div class="d-flex justify-content-end me-2">
+                                                                            <b>Total</b>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>{{ $oagpTotalSellIncome }}</th>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-
-                                {{-- @if ($oilAndGasPumpIncomes->count() > 0)
-                                    <div id="oagpIncomeNavPaginationDiv" class="mb-1">
-                                        {{ $oilAndGasPumpIncomes->links() }}
-                                    </div>
-                                @endif --}}
                             </div>
                         </div>
                         <div class="tab-pane fade" id="projectContractNavTabPanel" role="tabpanel" aria-labelledby="projectContractNavTab" tabindex="0">...</div>
