@@ -166,7 +166,7 @@
                                                             <option value="">Select</option>
                                                             @foreach ($products as $perOilAndGasPumpProduct)
                                                                 @php
-                                                                    $productSlug = (old("product.".$perItemIndex) == null) ? $perItem->oagpProduct->slug : old("product.".$perItemIndex);
+                                                                    $productSlug = (old("product.".$perItemIndex) == null) ? $perItem->product->slug : old("product.".$perItemIndex);
                                                                 @endphp
                                                                 <option value="{{ $perOilAndGasPumpProduct->slug }}" {{ ($productSlug == $perOilAndGasPumpProduct->slug) ? "selected": null  }}>{{ $perOilAndGasPumpProduct->name }}</option>
                                                             @endforeach

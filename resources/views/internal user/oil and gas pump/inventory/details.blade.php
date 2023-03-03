@@ -12,8 +12,8 @@
     <nav aria-label="breadcrumb" class="ms-3">
         <ol class="breadcrumb m-1 mb-2">
             <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.index") }}">Oil and gas pump</a></li>
-            <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.details",["slug" => $inventory->oagpProduct->oilAndGasPump->slug]) }}">{{ $inventory->oagpProduct->oilAndGasPump->name }}</a></li>
-            <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.inventory.index",["oagpSlug" => $inventory->oagpProduct->oilAndGasPump->slug]) }}">Inventory</a></li>
+            <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.details",["slug" => $inventory->product->oilAndGasPump->slug]) }}">{{ $inventory->product->oilAndGasPump->name }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route("oil.and.gas.pump.inventory.index",["oagpSlug" => $inventory->product->oilAndGasPump->slug]) }}">Inventory</a></li>
             <li class="breadcrumb-item active" aria-current="page">Details</li>
         </ol>
     </nav>
@@ -33,12 +33,12 @@
                                         <tr>
                                             <th style="width: 25%;">Name</th>
                                             <th style="width: 1%;">:</th>
-                                            <td>{{ $inventory->oagpProduct->name }}</td>
+                                            <td>{{ $inventory->product->name }}</td>
                                         </tr>
                                         <tr>
                                             <th style="width: 25%;">Type</th>
                                             <th style="width: 1%;">:</th>
-                                            <td>{{ $inventory->oagpProduct->type }}</td>
+                                            <td>{{ $inventory->product->type }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -58,11 +58,11 @@
                                             <th style="width: 1%;">:</th>
                                             <td>
                                                 {{ $inventory->quantity }}
-                                                @if ( $inventory->oagpProduct->type == "Oil")
+                                                @if ( $inventory->product->type == "Oil")
                                                     {{ $setting["oagpSetting"]["oil_unit"] }}
                                                 @endif
 
-                                                @if ( $inventory->oagpProduct->type == "Gas")
+                                                @if ( $inventory->product->type == "Gas")
                                                     {{ $setting["oagpSetting"]["gas_unit"] }}
                                                 @endif
                                             </td>
@@ -189,9 +189,9 @@
         </div>
     @endif
 
-    <div class="card border-dark mb-3" @if($inventory->oagpProduct->purchaseItems->count() > 0) hidden @endif >
+    <div class="card border-dark mb-3" @if($inventory->product->purchaseItems->count() > 0) hidden @endif >
         @php
-            $passDeleteValidation = (($inventory->oagpProduct->purchaseItems->count() == 0)) ? true : false;
+            $passDeleteValidation = (($inventory->product->purchaseItems->count() == 0)) ? true : false;
         @endphp
         <div class="card-body">
             <div class="d-flex justify-content-center">
@@ -221,7 +221,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
-                                <form action="{{ route("oil.and.gas.pump.inventory.delete",["oagpSlug" => $inventory->oagpProduct->oilAndGasPump->slug,"inSlug"=>$inventory->slug]) }}" method="POST">
+                                <form action="{{ route("oil.and.gas.pump.inventory.delete",["oagpSlug" => $inventory->product->oilAndGasPump->slug,"inSlug"=>$inventory->slug]) }}" method="POST">
                                     @csrf
                                     @method("DELETE")
                                     <button type="submit" class="btn btn-sm btn-success">Yes,Delete</button>
@@ -239,7 +239,7 @@
     <div class="card border-dark mb-3">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <a role="button" href="{{ route("oil.and.gas.pump.inventory.index",["oagpSlug" => $inventory->oagpProduct->oilAndGasPump->slug]) }}" class="btn btn-sm btn-secondary">
+                <a role="button" href="{{ route("oil.and.gas.pump.inventory.index",["oagpSlug" => $inventory->product->oilAndGasPump->slug]) }}" class="btn btn-sm btn-secondary">
                     Go to inventory
                 </a>
             </div>

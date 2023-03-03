@@ -150,11 +150,11 @@
                                             <tr>
                                                 <td>{{ $oagpPurchaseItemIndex + 1 }}</td>
                                                 <td>
-                                                    {{ $oagpPurchaseItem->oagpProduct->name }}
-                                                    @if ($oagpPurchaseItem->oagpProduct->type == "Oil")
+                                                    {{ $oagpPurchaseItem->product->name }}
+                                                    @if ($oagpPurchaseItem->product->type == "Oil")
                                                         {{ $setting["oagpSetting"]["oil_unit"] }}
                                                     @endif
-                                                    @if ($oagpPurchaseItem->oagpProduct->type == "Gas")
+                                                    @if ($oagpPurchaseItem->product->type == "Gas")
                                                         {{ $setting["oagpSetting"]["gas_unit"] }}
                                                     @endif
                                                 </td>

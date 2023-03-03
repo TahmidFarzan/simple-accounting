@@ -54,9 +54,9 @@
                                 @forelse ($inventories as $perInventoryIndex => $perInventory)
                                     <tr>
                                         <td>{{ $perInventoryIndex + 1 }}</td>
-                                        <td>{{ $perInventory->oagpProduct->name }}</td>
+                                        <td>{{ $perInventory->product->name }}</td>
                                         <td>
-                                            {{ $perInventory->quantity }} {{ ($perInventory->oagpProduct->type == "Oil") ? $setting["oagpSetting"]["oil_unit"] :  $setting["oagpSetting"]["gas_unit"] }}
+                                            {{ $perInventory->quantity }} {{ ($perInventory->product->type == "Oil") ? $setting["oagpSetting"]["oil_unit"] :  $setting["oagpSetting"]["gas_unit"] }}
                                         </td>
                                         <td>
                                             {{ $perInventory->sell_price }} {{ $setting["businessSetting"]["currency_symbol"] }}
@@ -71,7 +71,7 @@
 
                                             @if (Auth::user()->hasUserPermission(["OAGPIMP04"]) == true)
 
-                                                @if (($perInventory->oagpProduct->purchaseItems->count() == 0))
+                                                @if (($perInventory->product->purchaseItems->count() == 0))
                                                     <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perInventory->slug}}DeleteConfirmationModal">
                                                         Delete
                                                     </button>

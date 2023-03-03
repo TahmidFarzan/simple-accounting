@@ -63,7 +63,7 @@ class OilAndGasPumpSellItem extends Model
         return $this->belongsTo(OilAndGasPumpSell::class,'oagp_sell_id','id');
     }
 
-    public function oagpProduct()
+    public function product()
     {
         return $this->belongsTo(OilAndGasPumpProduct::class,'oagp_product_id','id');
     }
@@ -75,7 +75,7 @@ class OilAndGasPumpSellItem extends Model
 
     public function totalPurchasePrice()
     {
-        return $this->oagpProduct->oagpInventory->purchase_price * $this->quantity;
+        return $this->product->inventory->purchase_price * $this->quantity;
     }
 
     public function totalIncome()

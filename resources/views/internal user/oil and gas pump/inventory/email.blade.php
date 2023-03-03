@@ -48,13 +48,13 @@
                                                 <tr>
                                                     <th style="width: 25%;">Name</th>
                                                     <th style="width: 1%;">:</th>
-                                                    <td>{{ $inventory->oagpProduct->name }}</td>
+                                                    <td>{{ $inventory->product->name }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Oil and gas pump</th>
                                                     <th>:</th>
                                                     <td>
-                                                        {{ $inventory->oagpProduct->oilAndGasPump->name }}
+                                                        {{ $inventory->product->oilAndGasPump->name }}
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -75,11 +75,11 @@
                                                     <th style="width: 1%;">:</th>
                                                     <td>
                                                         {{ $inventory->quantity }}
-                                                        @if ( $inventory->oagpProduct->type == "Oil")
+                                                        @if ( $inventory->product->type == "Oil")
                                                             {{ $setting["oagpSetting"]["oil_unit"] }}
                                                         @endif
 
-                                                        @if ( $inventory->oagpProduct->type == "Gas")
+                                                        @if ( $inventory->product->type == "Gas")
                                                             {{ $setting["oagpSetting"]["gas_unit"] }}
                                                         @endif
                                                     </td>

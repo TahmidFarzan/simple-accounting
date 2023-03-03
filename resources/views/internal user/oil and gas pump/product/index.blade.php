@@ -116,7 +116,7 @@
                                             @endif
 
                                             @if (Auth::user()->hasUserPermission(["OAGPPMP05"]) == true)
-                                                @if (!($perProduct->oagpInventory) && ($perProduct->purchaseItems->count() == 0))
+                                                @if (!($perProduct->inventory) && ($perProduct->purchaseItems->count() == 0))
                                                     <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perProduct->slug}}DeleteConfirmationModal">
                                                         Delete
                                                     </button>

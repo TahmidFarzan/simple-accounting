@@ -58,7 +58,7 @@ class InventoryConstant
 
             // Product is exit in inventory
             if(InventoryConstant::productExitInInventory($oagpPurchaseItem->oagp_product_id) == false){
-                InventoryConstant::addProductToInventory($oagpPurchaseItem->oagpProduct->slug);
+                InventoryConstant::addProductToInventory($oagpPurchaseItem->product->slug);
             }
 
 

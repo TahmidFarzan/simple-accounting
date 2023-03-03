@@ -63,7 +63,7 @@ class OilAndGasPumpSupplier extends Model
         return $this->belongsTo(User::class,'created_by_id','id')->withTrashed();
     }
 
-    public function oagpInventory()
+    public function inventory()
     {
         return $this->belongsTo(OilAndGasPumpInventory::class,'id','oagp_product_id');
     }

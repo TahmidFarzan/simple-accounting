@@ -247,7 +247,7 @@ class OilAndGasPumpProductController extends Controller
 
         $product = OilAndGasPumpProduct::where("slug",$pSlug)->firstOrFail();
 
-        if(!($product->oagpInventory) && ($product->purchaseItems->count() == 0)){
+        if(!($product->inventory) && ($product->purchaseItems->count() == 0)){
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Passed the validation.");
         }
@@ -259,7 +259,7 @@ class OilAndGasPumpProductController extends Controller
                 $statusInformation["message"]->push("The product has been in the purchase.");
             }
 
-            if($product->oagpInventory){
+            if($product->inventory){
                 $statusInformation["message"]->push("The product is in the inventory.");
             }
         }
