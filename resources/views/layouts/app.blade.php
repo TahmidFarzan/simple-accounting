@@ -253,6 +253,62 @@
                                         </li>
                                     @endif
 
+                                    <li class="nav-item">
+                                        <a class="nav-link {{(Request::is('report') || (Request::is('report/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#reportCollapseDiv" role="button" aria-expanded="false" aria-controls="reportCollapseDiv">
+                                            <i class="fa-solid fa-sheet-plastic"></i>
+                                            Reports <i class="fa-solid fa-angle-down"></i>
+                                        </a>
+                                        <div class="collapse bg-light" id="reportCollapseDiv">
+                                            <div class="card card-body bg-light border-0 p-0 m-0 px-2 mx-2 ">
+                                                <ul class="nav flex-column">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link {{(Request::is('report/project-contract') || (Request::is('report/project-contract/*')) || (Request::is('report/project-contract-journal')) || (Request::is('report/project-contract-journal/*')) || (Request::is('report/project-contract-payment')) || (Request::is('report/project-contract-payment/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#projectContractReportCollapseDiv" role="button" aria-expanded="false" aria-controls="projectContractReportCollapseDiv">
+                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                            Project contract <i class="fa-solid fa-angle-down"></i>
+                                                        </a>
+                                                        <div class="collapse bg-light" id="projectContractReportCollapseDiv">
+                                                            <div class="card card-body bg-light border-0 p-0 m-0 px-1 mx-1 ">
+                                                                <ul class="nav flex-column">
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link {{(Request::is('report/project-contract') || (Request::is('report/project-contract/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.project.contract.index") }}">
+                                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                                            Project contract
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link {{(Request::is('report/project-contract-journal') || (Request::is('report/project-contract-journal/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.project.contract.journal.index") }}">
+                                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                                            Journal
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link {{(Request::is('report/project-contract-payment') || (Request::is('report/project-contract-payment/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.project.contract.payment.index") }}">
+                                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                                            Payment
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link {{(Request::is('report/oil-and-gas-pump') || (Request::is('report/oil-and-gas-pump/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.oil.and.gas.pump.index") }}">
+                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                            Oil and gas pump
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="nav-item">
+                                                        <a class="nav-link {{(Request::is('report/income') || (Request::is('report/income/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.income.index") }}">
+                                                            <i class="fa-solid fa-clipboard-list"></i>
+                                                            Income
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+
                                     @if (Auth::user()->hasUserPermission(["SMP01"]) == true)
                                         <li class="nav-item">
                                             <a class="nav-link {{(Request::is('setting') || (Request::is('setting/*'))) ? 'active' : null}}" href="{{ route("setting.index") }}">
@@ -324,61 +380,6 @@
                                         </div>
                                     </li>
 
-                                    <li class="nav-item">
-                                        <a class="nav-link {{(Request::is('report') || (Request::is('report/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#reportCollapseDiv" role="button" aria-expanded="false" aria-controls="reportCollapseDiv">
-                                            <i class="fa-solid fa-sheet-plastic"></i>
-                                            Reports <i class="fa-solid fa-angle-down"></i>
-                                        </a>
-                                        <div class="collapse bg-light" id="reportCollapseDiv">
-                                            <div class="card card-body bg-light border-0 p-0 m-0 px-2 mx-2 ">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link {{(Request::is('report/project-contract') || (Request::is('report/project-contract/*')) || (Request::is('report/project-contract-journal')) || (Request::is('report/project-contract-journal/*')) || (Request::is('report/project-contract-payment')) || (Request::is('report/project-contract-payment/*'))) ? 'active' : null}}" data-bs-toggle="collapse" href="#projectContractReportCollapseDiv" role="button" aria-expanded="false" aria-controls="projectContractReportCollapseDiv">
-                                                            <i class="fa-solid fa-clipboard-list"></i>
-                                                            Project contract <i class="fa-solid fa-angle-down"></i>
-                                                        </a>
-                                                        <div class="collapse bg-light" id="projectContractReportCollapseDiv">
-                                                            <div class="card card-body bg-light border-0 p-0 m-0 px-1 mx-1 ">
-                                                                <ul class="nav flex-column">
-                                                                    <li class="nav-item">
-                                                                        <a class="nav-link {{(Request::is('report/project-contract') || (Request::is('report/project-contract/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.project.contract.index") }}">
-                                                                            <i class="fa-solid fa-clipboard-list"></i>
-                                                                            Project contract
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a class="nav-link {{(Request::is('report/project-contract-journal') || (Request::is('report/project-contract-journal/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.project.contract.journal.index") }}">
-                                                                            <i class="fa-solid fa-clipboard-list"></i>
-                                                                            Journal
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a class="nav-link {{(Request::is('report/project-contract-payment') || (Request::is('report/project-contract-payment/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.project.contract.payment.index") }}">
-                                                                            <i class="fa-solid fa-clipboard-list"></i>
-                                                                            Payment
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link {{(Request::is('report/oil-and-gas-pump') || (Request::is('report/oil-and-gas-pump/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.oil.and.gas.pump.index") }}">
-                                                            <i class="fa-solid fa-clipboard-list"></i>
-                                                            Oil and gas pump
-                                                        </a>
-                                                    </li>
-
-                                                    <li class="nav-item">
-                                                        <a class="nav-link {{(Request::is('report/income') || (Request::is('report/income/*'))) ? 'active' : null}}" aria-current="page" href="{{ route("report.income.index") }}">
-                                                            <i class="fa-solid fa-clipboard-list"></i>
-                                                            Income
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
                                 </ul>
                             </div>
                         </nav>
