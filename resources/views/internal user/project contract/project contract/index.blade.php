@@ -209,6 +209,7 @@
                                                         $receivablePopOver = $receivablePopOver.'<b>Total revenue :</b> '.$perProjectContract->totalRevenueAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total loss :</b> '.$perProjectContract->totalLossAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total receivable :</b> '.$perProjectContract->totalReceivableAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $receivablePopOver = $receivablePopOver.'<b>Total income :</b> '.$perProjectContract->totalIncome()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver."</p>";
                                                     @endphp
 
@@ -358,6 +359,7 @@
                                                         $receivablePopOver = $receivablePopOver.'<b>Total receivable :</b> '.$perProjectContract->totalReceivableAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total receive :</b> '.$perProjectContract->totalReceiveAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total due :</b> '.$perProjectContract->totalDueAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $receivablePopOver = $receivablePopOver.'<b>Total income :</b> '.$perProjectContract->totalIncome()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver."</p>";
                                                     @endphp
 

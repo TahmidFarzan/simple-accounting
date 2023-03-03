@@ -132,6 +132,12 @@ class ProjectContract extends Model
         return  $this->totalReceivableAmount() - $this->totalReceiveAmount();
     }
 
+    public function totalIncome()
+    {
+
+        return $this->totalReceivableAmount() - $this->invested_amount;
+    }
+
     public function activityLogs(){
         return Activity::orderBy("id","desc")->where("subject_type","App\Models\ProjectContract")->where("subject_id",$this->id)->get();
     }

@@ -157,6 +157,14 @@
                                             </td>
                                         </tr>
 
+                                        <tr>
+                                            <th>Income</th>
+                                            <th>:</th>
+                                            <td>
+                                                {{ $projectContract->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                            </td>
+                                        </tr>
+
                                         @if ($projectContract->status == "Complete")
                                             <tr>
                                                 <th>Receive</th>
