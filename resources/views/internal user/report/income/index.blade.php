@@ -36,7 +36,7 @@
                             <button class="nav-link active" id="oagpIncomeNavTab" data-bs-toggle="tab" data-bs-target="#oagpIncomeNavTabPanel" type="button" role="tab" aria-controls="oagpIncomeNavTabPanel" aria-selected="true">Oil and gas pump</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="projectContractNavTab" data-bs-toggle="tab" data-bs-target="#projectContractNavTabPanel" type="button" role="tab" aria-controls="projectContractNavTabPanel" aria-selected="false">Project contract</button>
+                            <button class="nav-link" id="projectContractNavTab" data-bs-toggle="tab" data-bs-target="#pcIncomeNavTabPanel" type="button" role="tab" aria-controls="pcIncomeNavTabPanel" aria-selected="false">Project contract</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="incomeNavTabsContent">
@@ -108,13 +108,13 @@
                                                             </thead>
                                                             <tbody>
                                                                 @php
-                                                                    $oagpTotalSellIncome = 0;
+                                                                    $oagpTotalIncome = 0;
                                                                     $oagpSellIncomeIndexCount = 0;
                                                                 @endphp
                                                                 @forelse ($oagpSellIncomes as $oagpSellIncomeIndex => $oagpSellIncome )
                                                                     @php
                                                                         $oagpSellIncomeIndexCount ++;
-                                                                        $oagpTotalSellIncome += $oagpSellIncome;
+                                                                        $oagpTotalIncome += $oagpSellIncome;
                                                                     @endphp
                                                                     <tr>
                                                                         <td>{{ $oagpSellIncomeIndexCount }}</td>
@@ -138,7 +138,7 @@
                                                                             <b>Total</b>
                                                                         </div>
                                                                     </th>
-                                                                    <th>{{ $oagpTotalSellIncome }}</th>
+                                                                    <th>{{ $oagpTotalIncome }}</th>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
@@ -150,7 +150,92 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="projectContractNavTabPanel" role="tabpanel" aria-labelledby="projectContractNavTab" tabindex="0">...</div>
+                        <div class="tab-pane fade" id="pcIncomeNavTabPanel" role="tabpanel" aria-labelledby="projectContractNavTab" tabindex="0">
+                            <div class="card-body mb-2">
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <div class="row">
+                                            <label class="col-md-4 col-form-label col-form-label-sm">Start date</label>
+                                            <div class="col-md-8">
+                                                <input type="date" class="form-control form-control-sm" id="pcStartDateInput" name="start_date" value="{{ date('Y-m-d',strToTime(now())) }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-2">
+                                        <div class="row">
+                                            <label class="col-md-4 col-form-label col-form-label-sm">End date</label>
+                                            <div class="col-md-8">
+                                                <input type="date" class="form-control form-control-sm" id="pcEndDateInput" name="end_date" value="{{ date('Y-m-d',strToTime(now())) }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary" id="pcIncomeGenerateButton">Generate</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body" id="pcIncomeDataTableDiv">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl</th>
+                                                <th>Start date</th>
+                                                <th>End date</th>
+                                                <th>Project</th>
+                                                <th>Income</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $projectContractTotalIncome = 0;
+                                            @endphp
+                                            @forelse ($projectContractIncomes as $startDate => $projectContractIncomesData)
+                                                @forelse ($projectContractIncomesData as $endDate => $projectContractIncomesRow)
+                                                    @forelse ($projectContractIncomesRow as $projectContractIncomeIndex => $projectContractIncome)
+                                                        @php
+                                                            $projectContractTotalIncome += $projectContractIncome->totalIncome();
+                                                        @endphp
+                                                        <tr>
+                                                            <td>{{ $projectContractIncomeIndex + 1 }}</td>
+                                                            <td>{{ date('d-M-Y',strToTime($startDate)) }}</td>
+                                                            <td>{{ date('d-M-Y',strToTime($endDate)) }}</td>
+                                                            <td>{{ $projectContractIncome->name }}</td>
+                                                            <td>{{ $projectContractIncome->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="5"><b class="d-flex justify-content-center text-warning">No income found.</b></td>
+                                                        </tr>
+                                                    @endforelse
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5"><b class="d-flex justify-content-center text-warning">No income found.</b></td>
+                                                    </tr>
+                                                @endforelse
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5"><b class="d-flex justify-content-center text-warning">No income found.</b></td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                        <tfoot>
+                                            <th colspan="4">
+                                                <div class="d-flex justify-content-end me-2">
+                                                    <b>Total income</b>
+                                                </div>
+                                            </th>
+                                            <th> {{ $projectContractTotalIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</th>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,6 +261,12 @@
                     oagpIncomeDataTableLoad(oagpIncomeParameterGenerate());
                 }
             });
+
+            $(document).on('click', "#pcIncomeGenerateButton", function () {
+                if(pcIncomePassInputFieldValidation() == true){
+                    pcIncomeDataTableLoad(pcIncomeParameterGenerate());
+                }
+            });
         });
 
         function oagpIncomeParameterGenerate(){
@@ -185,6 +276,23 @@
                     "oilAndGasPumpInput",
                     "oagpStartDateInput",
                     "oagpEndDateInput",
+                ], function( key, perInput ) {
+                if(($("#" + perInput).val().length > 0)){
+                    var inputFieldValue = $("#" + perInput).val();
+                    var inputFieldName = $("#" + perInput).attr('name');
+                    var curentParameterString = inputFieldName + "=" + inputFieldValue;
+                    parameterString = (parameterString==null) ? curentParameterString : parameterString + "&" + curentParameterString;
+                }
+            });
+            return parameterString;
+        }
+
+        function pcIncomeParameterGenerate(){
+            var parameterString = null;
+            $.each( [
+                    "selectedNavInput",
+                    "pcStartDateInput",
+                    "pcEndDateInput",
                 ], function( key, perInput ) {
                 if(($("#" + perInput).val().length > 0)){
                     var inputFieldValue = $("#" + perInput).val();
@@ -216,6 +324,21 @@
             });
         }
 
+        function pcIncomeDataTableLoad(parameterString){
+            $.ajax({
+                type: "get",
+                url: "{{ route('report.income.index') }}" + "?" + parameterString,
+                success: function(result) {
+                    $("#extraErrorMessageDiv").hide();
+                    $("#extraErrorMessageDiv").html("");
+                    $("#pcIncomeNavTabPanel #pcIncomeDataTableDiv").html($(result).find("#pcIncomeNavTabPanel #pcIncomeDataTableDiv").html());
+                },
+                error: function(errorResponse) {
+                    showExtraErrorMessages(["Error " + errorResponse.status,errorResponse.statusText]);
+                }
+            });
+        }
+
         function oagpIncomePassInputFieldValidation(){
             var passValidation = true;
             var errors = [];
@@ -239,6 +362,30 @@
 
             return passValidation;
         }
+
+        function pcIncomePassInputFieldValidation(){
+            var passValidation = true;
+            var errors = [];
+            $.each( [
+                    "selectedNavInput",
+                    "pcStartDateInput",
+                    "pcEndDateInput",
+                ], function( key, perInput ) {
+                if(($("#" + perInput).val().length == 0) && !($("#" + perInput).prop('disabled')) ){
+                    passValidation = false;
+                    var inputName = $("#" + perInput).attr("name");
+                    var inputNameFotmat = inputName.replaceAll("_", " ");
+                    errors.push("The " + inputNameFotmat + " field is empty.");
+                }
+            });
+
+            if(errors.length > 0){
+                showExtraErrorMessages(errors);
+            }
+
+            return passValidation;
+        }
+
         function showExtraErrorMessages(errorMessages){
             if(errorMessages.length > 0){
                 $("#extraErrorMessageDiv").show();

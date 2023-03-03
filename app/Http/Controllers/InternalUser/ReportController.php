@@ -279,9 +279,12 @@ class ReportController extends Controller
         $selectedNavTab = "OilAndGasPump";
 
         $oilAndGasPumpSellIncomes = collect();
+        $projectContractIncomes = collect();
+
+        $endDate = Carbon::now();
+        $startDate = Carbon::now();
 
         $oilAndGasPumps = OilAndGasPump::orderBy("created_at","desc")->orderBy("name","desc")->get();
-        $projectContracts = ProjectContract::orderBy("created_at","desc")->orderBy("name","desc")->get();
 
         if( (count($request->input())) > 0 ){
 
@@ -289,8 +292,6 @@ class ReportController extends Controller
                 abort(404);
             }
 
-            $endDate = Carbon::now();
-            $startDate = Carbon::now();
             $selectedNavTab = $request->selected_nav_tab;
 
             if($request->has('start_date') && !($request->start_date == null)){
@@ -310,12 +311,20 @@ class ReportController extends Controller
                 $oilAndGasPumpSellIncomes = $this->generateOAGPIncomes($startDate,$endDate,$sOilAndGasPumpSlug);
             }
 
+            if($selectedNavTab == "ProjectContract"){
+                $projectContractIncomes = $this->generatePCIncomes($startDate,$endDate);
+            }
+
+            if($selectedNavTab == "All"){
+
+            }
         }
 
-        return view('internal user.report.income.index',compact("selectedNavTab","oilAndGasPumps","oilAndGasPumpSellIncomes"));
+        return view('internal user.report.income.index',compact("selectedNavTab","oilAndGasPumps","oilAndGasPumpSellIncomes","projectContractIncomes"));
     }
 
     private function generateOAGPIncomes($startDate,$endDate,$oagpSlug){
+
         $startDate = date("Y-m-d",strtotime($startDate));
         $endDate = date("Y-m-d",strtotime($endDate));
 
@@ -328,22 +337,44 @@ class ReportController extends Controller
         $oilAndGasPumps = $oilAndGasPumps->get();
         foreach($oilAndGasPumps as $perOAGP){
 
-            if($perOAGP->oilAndGasPumpSellsByDate($startDate,$endDate)->count() > 0){
-                foreach($perOAGP->oilAndGasPumpSellsByDate($startDate,$endDate) as $oagpSellsIndex  => $oagpSells){
-                    $totalSellIncome = 0;
+            if($perOAGP->sellsByDate($startDate,$endDate)->count() > 0){
+                foreach($perOAGP->sellsByDate($startDate,$endDate) as $oagpSellsIndex  => $oagpSells){
+                    $totalIncome = 0;
                     foreach($oagpSells as $perSell){
-                        $totalSellIncome += $perSell->totalSellIncome();
+                        $totalIncome += $perSell->totalIncome();
                     }
-                    $oagpSellCollect[$oagpSellsIndex] = $totalSellIncome;
+                    $oagpSellCollect[$oagpSellsIndex] = $totalIncome;
                     $oilAndGasPumpSellIncomes[$perOAGP->name] = $oagpSellCollect;
                 }
             }
-            if($perOAGP->oilAndGasPumpSellsByDate($startDate,$endDate)->count() == 0){
+            if($perOAGP->sellsByDate($startDate,$endDate)->count() == 0){
                 $oilAndGasPumpSellIncomes[$perOAGP->name] = collect();
 
             }
         }
 
         return $oilAndGasPumpSellIncomes;
+    }
+
+    private function generatePCIncomes($startDate,$endDate){
+        $startDate = date("Y-m-d",strtotime($startDate));
+        $endDate = date("Y-m-d",strtotime($endDate));
+
+        $pcIncomes = collect();
+
+        $projectContracts = ProjectContract::orderBy("name","asc");
+
+        if(!($startDate == null)){
+            $projectContracts =  $projectContracts->where('start_date','>=',$startDate);
+            $projectContracts =  $projectContracts->where('end_date','>=',$startDate);
+        }
+
+        if(!($endDate == null)){
+            $projectContracts =  $projectContracts->where('start_date','<=',$endDate);
+            $projectContracts =  $projectContracts->where('end_date','<=',$endDate);
+        }
+
+        $pcIncomes = $projectContracts->get()->groupBy(["start_date",'end_date']);
+        return  $pcIncomes;
     }
 }
