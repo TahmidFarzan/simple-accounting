@@ -279,7 +279,7 @@ class ReportController extends Controller
         $selectedNavTab = "OilAndGasPump";
 
         $oilAndGasPumpIncomes = collect();
-        $projectContractIncomes = collect();
+        $projectContractReport = collect();
 
         $endDate = Carbon::now();
         $startDate = Carbon::now();
@@ -312,7 +312,7 @@ class ReportController extends Controller
             }
 
             if($selectedNavTab == "ProjectContract"){
-                $projectContractIncomes = $this->generatePCIncomes($startDate,$endDate);
+                $projectContractReport = $this->generatePCIncomes($startDate,$endDate);
             }
 
             if($selectedNavTab == "All"){
@@ -320,7 +320,7 @@ class ReportController extends Controller
             }
         }
 
-        return view('internal user.report.income.index',compact("selectedNavTab","oilAndGasPumps","oilAndGasPumpIncomes","projectContractIncomes"));
+        return view('internal user.report.income.index',compact("selectedNavTab","oilAndGasPumps","oilAndGasPumpIncomes","projectContractReport"));
     }
 
     private function generateOAGPIncomes($startDate,$endDate,$oagpSlug){

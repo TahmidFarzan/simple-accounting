@@ -182,49 +182,66 @@
                                                 <th>Start date</th>
                                                 <th>End date</th>
                                                 <th>Project</th>
+                                                <th>Status</th>
+                                                <th>Receiveable</th>
+                                                <th>Receive</th>
+                                                <th>Due</th>
                                                 <th>Income</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @php
-                                                $projectContractTotalIncome = 0;
+                                                $pcTotalDue = 0;
+                                                $pcTotalIncome = 0;
+                                                $pcTotalReceive = 0;
+                                                $pcTotalReceivable = 0;
                                             @endphp
-                                            @forelse ($projectContractIncomes as $startDate => $projectContractIncomesData)
-                                                @forelse ($projectContractIncomesData as $endDate => $projectContractIncomesRow)
-                                                    @forelse ($projectContractIncomesRow as $projectContractIncomeIndex => $projectContractIncome)
+                                            @forelse ($projectContractReport as $pcReportStartDate => $pcReportData)
+                                                @forelse ($pcReportData as $pcReportEndDate => $pcReportRowData)
+                                                    @forelse ($pcReportRowData as $pcIncomeIndex => $pcReportRow)
                                                         @php
-                                                            $projectContractTotalIncome += $projectContractIncome->totalIncome();
+                                                            $pcTotalDue += $pcReportRow->totalDueAmount();
+                                                            $pcTotalIncome += $pcReportRow->totalIncome();
+                                                            $pcTotalReceive = $pcReportRow->totalReceiveAmount();
+                                                            $pcTotalReceivable = $pcReportRow->totalReceivableAmount();
                                                         @endphp
                                                         <tr>
-                                                            <td>{{ $projectContractIncomeIndex + 1 }}</td>
-                                                            <td>{{ date('d-M-Y',strToTime($startDate)) }}</td>
-                                                            <td>{{ date('d-M-Y',strToTime($endDate)) }}</td>
-                                                            <td>{{ $projectContractIncome->name }}</td>
-                                                            <td>{{ $projectContractIncome->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                            <td>{{ $pcIncomeIndex + 1 }}</td>
+                                                            <td>{{ date('d-M-Y',strToTime($pcReportStartDate)) }}</td>
+                                                            <td>{{ date('d-M-Y',strToTime($pcReportEndDate)) }}</td>
+                                                            <td>{{ $pcReportRow->name }}</td>
+                                                            <td>{{ $pcReportRow->status }}</td>
+                                                            <td>{{ $pcReportRow->totalReceivableAmount() }}</td>
+                                                            <td>{{ $pcReportRow->totalReceiveAmount() }}</td>
+                                                            <td>{{ $pcReportRow->totalDueAmount() }}</td>
+                                                            <td>{{ $pcReportRow->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="5"><b class="d-flex justify-content-center text-warning">No income found.</b></td>
+                                                            <td colspan="9"><b class="d-flex justify-content-center text-warning">No income found.</b></td>
                                                         </tr>
                                                     @endforelse
                                                 @empty
                                                     <tr>
-                                                        <td colspan="5"><b class="d-flex justify-content-center text-warning">No income found.</b></td>
+                                                        <td colspan="9"><b class="d-flex justify-content-center text-warning">No income found.</b></td>
                                                     </tr>
                                                 @endforelse
                                             @empty
                                                 <tr>
-                                                    <td colspan="5"><b class="d-flex justify-content-center text-warning">No income found.</b></td>
+                                                    <td colspan="9"><b class="d-flex justify-content-center text-warning">No income found.</b></td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
                                         <tfoot>
-                                            <th colspan="4">
+                                            <th colspan="5">
                                                 <div class="d-flex justify-content-end me-2">
-                                                    <b>Total income</b>
+                                                    <b>Total</b>
                                                 </div>
                                             </th>
-                                            <th> {{ $projectContractTotalIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</th>
+                                            <td> {{ $pcTotalReceivable }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                            <td> {{ $pcTotalReceive }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                            <td> {{ $pcTotalDue }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                            <td> {{ $pcTotalIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                         </tfoot>
                                     </table>
                                 </div>
