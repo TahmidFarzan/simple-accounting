@@ -78,7 +78,7 @@ class OilAndGasPumpSellItem extends Model
         return $this->oagpProduct->oagpInventory->purchase_price * $this->quantity;
     }
 
-    public function totalItemIncome()
+    public function totalIncome()
     {
         return $this->totalSellPrice() - $this->totalPurchasePrice();
     }

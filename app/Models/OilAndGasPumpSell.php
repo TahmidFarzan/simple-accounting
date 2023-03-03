@@ -80,7 +80,7 @@ class OilAndGasPumpSell extends Model
         return $this->hasMany(OilAndGasPumpSellPayment::class,'oagp_sell_id','id');
     }
 
-    public function oagpSellTotalPrice()
+    public function totalPrice()
     {
         $totalPrice = 0.0;
 
@@ -90,26 +90,26 @@ class OilAndGasPumpSell extends Model
         return $totalPrice;
     }
 
-    public function oagpSellTotalPaidAmount()
+    public function totalPaidAmount()
     {
         return $this->oagpSellPayments->sum("amount");
     }
 
-    public function oagpSellPayableAmount()
+    public function totalPayableAmount()
     {
-        return $this->oagpSellTotalPrice() ;
+        return $this->totalPrice() ;
     }
 
-    public function oagpSellDueAmount()
+    public function totalDueAmount()
     {
-        return ($this->oagpSellPayableAmount() - $this->oagpSellTotalPaidAmount()) ;
+        return ($this->totalPayableAmount() - $this->totalPaidAmount()) ;
     }
 
-    public function totalSellIncome()
+    public function totalIncome()
     {
         $income = 0;
         foreach($this->oagpSellItems as $perItem){
-            $income = $income + $perItem->totalItemIncome();
+            $income = $income + $perItem->totalIncome();
         }
         return $income;
     }

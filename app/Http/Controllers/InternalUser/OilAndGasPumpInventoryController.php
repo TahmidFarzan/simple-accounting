@@ -29,14 +29,14 @@ class OilAndGasPumpInventoryController extends Controller
 
     public function index($oagpSlug){
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
-        $inventories = OilAndGasPumpInventory::orderby("id","asc")->orderby("created_at","desc")->whereIn("oagp_product_id",$oilAndGasPump->oilAndGasPumpProducts->pluck("id"))->get();
+        $inventories = OilAndGasPumpInventory::orderby("id","asc")->orderby("created_at","desc")->whereIn("oagp_product_id",$oilAndGasPump->products->pluck("id"))->get();
         return view('internal user.oil and gas pump.inventory.index',compact("inventories","oilAndGasPump"));
     }
 
     public function add($oagpSlug){
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
 
-        $productsInInventory = OilAndGasPumpInventory::orderby("id","asc")->orderby("created_at","desc")->whereIn("oagp_product_id",$oilAndGasPump->oilAndGasPumpProducts->pluck("id"))->pluck("oagp_product_id");
+        $productsInInventory = OilAndGasPumpInventory::orderby("id","asc")->orderby("created_at","desc")->whereIn("oagp_product_id",$oilAndGasPump->products->pluck("id"))->pluck("oagp_product_id");
         $products = OilAndGasPumpProduct::orderBy("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id);
 
         if($productsInInventory->count() > 0){
@@ -171,7 +171,7 @@ class OilAndGasPumpInventoryController extends Controller
 
         $inProduct = OilAndGasPumpInventory::where("slug",$inSlug)->firstOrFail();
 
-        if(($inProduct->oagpProduct->oagpPurchaseItems->count() == 0)){
+        if(($inProduct->oagpProduct->purchaseItems->count() == 0)){
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Passed the validation.");
         }
@@ -179,7 +179,7 @@ class OilAndGasPumpInventoryController extends Controller
             $statusInformation["status"] = "errors";
             $statusInformation["message"]->push("Can not delete the product.");
 
-            if($inProduct->oagpProduct->oagpPurchaseItems->count() > 0){
+            if($inProduct->oagpProduct->purchaseItems->count() > 0){
                 $statusInformation["message"]->push("The product has been in the purchase.");
             }
         }

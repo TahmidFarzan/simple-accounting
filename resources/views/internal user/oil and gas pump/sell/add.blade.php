@@ -135,7 +135,7 @@
                                                 <td>
                                                     <select id="productInput1" name="product[]" class="form-control form-select-sm " required>
                                                         <option value="">Select</option>
-                                                        @foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)
+                                                        @foreach ($products as $perOilAndGasPumpProduct)
                                                             <option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>
                                                         @endforeach
                                                     </select>
@@ -160,7 +160,7 @@
                                                     <td>
                                                         <select id="productInput{{ $i }}" name="product[]" class="form-control form-select-sm @error('product.'.$i) is-invalid @enderror" required>
                                                             <option value="">Select</option>
-                                                            @foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)
+                                                            @foreach ($products as $perOilAndGasPumpProduct)
                                                                     <option value="{{ $perOilAndGasPumpProduct->slug }}" {{ (old("product.".$i) == $perOilAndGasPumpProduct->slug) ? "selected": null  }}>{{ $perOilAndGasPumpProduct->name }}</option>
                                                             @endforeach
                                                         </select>
@@ -360,7 +360,7 @@
                     var row = "";
                     row = row + '<tr>';
                     row = row + '<td>' + tableRow + '</td>';
-                    row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
+                    row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($products as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
                     row = row + '<td><input id="productQuantityInput'+ tableRow +'" name="product_quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
                     row = row + '<td><input id="productPriceInput'+ tableRow +'" name="product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td hidden><input id="totalProductPriceInput'+ tableRow +'" name="total_product_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required readonly hidden></td>';

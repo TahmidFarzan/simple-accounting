@@ -90,7 +90,7 @@
                                     <tr>
                                         <td>{{ $perOilAndGasPumpIndex+1 }}</td>
                                         <td>{{ $perOilAndGasPump->name }}</td>
-                                        <td>{{ $perOilAndGasPump->oilAndGasPumpTotalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                        <td>{{ $perOilAndGasPump->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                         <td>
                                             @if (Auth::user()->hasUserPermission(["OAGPMP03"]) == true)
                                                 <a href="{{ route("oil.and.gas.pump.details",["slug" => $perOilAndGasPump->slug]) }}" class="btn btn-sm btn-info m-1">Details</a>

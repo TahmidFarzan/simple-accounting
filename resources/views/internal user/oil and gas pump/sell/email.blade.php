@@ -145,28 +145,28 @@
                                             <td colspan="3"></td>
                                             <td>Total price</td>
                                             <td>
-                                                {{ $sell->oagpSellTotalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $sell->totalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="3"></td>
                                             <td>Total payable</td>
                                             <td>
-                                                {{ $sell->oagpSellPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $sell->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="3"></td>
                                             <td>Paid amount</td>
                                             <td>
-                                                {{ $sell->oagpSellTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $sell->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="4"></td>
                                             <td>Due amount</td>
                                             <td>
-                                                {{ $sell->oagpSellDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $sell->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                     </tfoot>

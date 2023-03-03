@@ -54,7 +54,7 @@ class InventoryConstant
 
         $oilAndGasPumpPurchase = OilAndGasPumpPurchase::where("slug",$puSlug)->firstOrFail();
 
-        foreach ($oilAndGasPumpPurchase->oagpPurchaseItems as $oagpPurchaseItem) {
+        foreach ($oilAndGasPumpPurchase->purchaseItems as $oagpPurchaseItem) {
 
             // Product is exit in inventory
             if(InventoryConstant::productExitInInventory($oagpPurchaseItem->oagp_product_id) == false){
@@ -76,7 +76,7 @@ class InventoryConstant
             }
         }
 
-        if($inventoryUpdateCount == $oilAndGasPumpPurchase->oagpPurchaseItems->count()){
+        if($inventoryUpdateCount == $oilAndGasPumpPurchase->purchaseItems->count()){
             $statusInformation["status"] = "success";
             $statusInformation["message"]->push("All seleted inventory product successfully update.");
         }

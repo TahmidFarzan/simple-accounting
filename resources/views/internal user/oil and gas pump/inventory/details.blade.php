@@ -189,9 +189,9 @@
         </div>
     @endif
 
-    <div class="card border-dark mb-3" @if($inventory->oagpProduct->oagpPurchaseItems->count() > 0) hidden @endif >
+    <div class="card border-dark mb-3" @if($inventory->oagpProduct->purchaseItems->count() > 0) hidden @endif >
         @php
-            $passDeleteValidation = (($inventory->oagpProduct->oagpPurchaseItems->count() == 0)) ? true : false;
+            $passDeleteValidation = (($inventory->oagpProduct->purchaseItems->count() == 0)) ? true : false;
         @endphp
         <div class="card-body">
             <div class="d-flex justify-content-center">

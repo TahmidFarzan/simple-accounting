@@ -33,7 +33,7 @@
                                         <tr>
                                             <th style="width: 25%;">Supplier</th>
                                             <th style="width: 1%;">:</th>
-                                            <td>{{ $oilAndGasPumpPurchase->oagpSupplier->name }}</td>
+                                            <td>{{ $oilAndGasPumpPurchase->supplier->name }}</td>
                                         </tr>
                                         <tr>
                                             <th>Date</th>
@@ -114,7 +114,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($oilAndGasPumpPurchase->oagpPurchaseItems as $oagpPurchaseItemIndex => $oagpPurchaseItem)
+                                        @foreach ($oilAndGasPumpPurchase->purchaseItems as $oagpPurchaseItemIndex => $oagpPurchaseItem)
                                             <tr>
                                                 <td>{{ $oagpPurchaseItemIndex + 1 }}</td>
                                                 <td>
@@ -142,28 +142,28 @@
                                             <th colspan="3"></th>
                                             <th>Total price</th>
                                             <td>
-                                                {{ $oilAndGasPumpPurchase->oagpPurchaseTotalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $oilAndGasPumpPurchase->totalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th colspan="3"></th>
                                             <th>Total payable</th>
                                             <td>
-                                                {{ $oilAndGasPumpPurchase->oagpPurchasePayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $oilAndGasPumpPurchase->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th colspan="3"></th>
                                             <th>Paid amount</th>
                                             <td>
-                                                {{ $oilAndGasPumpPurchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $oilAndGasPumpPurchase->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th colspan="3"></th>
                                             <th>Due amount</th>
                                             <td>
-                                                {{ $oilAndGasPumpPurchase->oagpPurchaseDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $oilAndGasPumpPurchase->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -191,7 +191,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($oilAndGasPumpPurchase->oagpPurchasePayments as $oagpPurchasePaymentIndex => $oagpPurchasePayment)
+                                        @foreach ($oilAndGasPumpPurchase->payments as $oagpPurchasePaymentIndex => $oagpPurchasePayment)
                                             <tr>
                                                 <td>{{ $oagpPurchasePaymentIndex + 1 }}</td>
                                                 <td>

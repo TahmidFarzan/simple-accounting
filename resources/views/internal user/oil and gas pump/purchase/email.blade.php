@@ -75,7 +75,7 @@
                                                 <tr>
                                                     <th style="width: 25%;">Supplier</th>
                                                     <th style="width: 1%;">:</th>
-                                                    <td>{{ $purchase->oagpSupplier->name }}</td>
+                                                    <td>{{ $purchase->supplier->name }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Date</th>
@@ -117,7 +117,7 @@
                                                 <tr>
                                                     <th style="width: 25%;">Name</th>
                                                     <th style="width: 1%;">:</th>
-                                                    <td>{{ $purchase->oagpSupplier->name }}</td>
+                                                    <td>{{ $purchase->supplier->name }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Description</th>
@@ -146,7 +146,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($purchase->oagpPurchaseItems as $oagpPurchaseItemIndex => $oagpPurchaseItem)
+                                        @foreach ($purchase->purchaseItems as $oagpPurchaseItemIndex => $oagpPurchaseItem)
                                             <tr>
                                                 <td>{{ $oagpPurchaseItemIndex + 1 }}</td>
                                                 <td>
@@ -174,28 +174,28 @@
                                             <td colspan="3"></td>
                                             <td>Total price</td>
                                             <td>
-                                                {{ $purchase->oagpPurchaseTotalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $purchase->totalPrice() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="3"></td>
                                             <td>Total payable</td>
                                             <td>
-                                                {{ $purchase->oagpPurchasePayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $purchase->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="3"></td>
                                             <td>Paid amount</td>
                                             <td>
-                                                {{ $purchase->oagpPurchaseTotalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $purchase->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="3"></td>
                                             <td>Due amount</td>
                                             <td>
-                                                {{ $purchase->oagpPurchaseDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $purchase->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                     </tfoot>

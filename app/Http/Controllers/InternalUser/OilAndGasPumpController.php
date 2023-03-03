@@ -210,22 +210,22 @@ class OilAndGasPumpController extends Controller
 
         $oilAndGasPump = OilAndGasPump::where("slug",$slug)->firstOrFail();
 
-        if( $oilAndGasPump->oilAndGasPumpProducts->count() == 0){
+        if( $oilAndGasPump->products->count() == 0){
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Passed the validation.");
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push($oilAndGasPump->oilAndGasPumpProducts->count()." product(s) exit.");
+            $statusInformation["message"]->push($oilAndGasPump->products->count()." product(s) exit.");
         }
 
-        if( $oilAndGasPump->oilAndGasPumpSuppliers->count() == 0){
+        if( $oilAndGasPump->suppliers->count() == 0){
             $statusInformation["status"] = "status";
             $statusInformation["message"]->push("Passed the validation.");
         }
         else{
             $statusInformation["status"] = "errors";
-            $statusInformation["message"]->push($oilAndGasPump->oilAndGasPumpSuppliers->count()." supplier(s) exit.");
+            $statusInformation["message"]->push($oilAndGasPump->suppliers->count()." supplier(s) exit.");
         }
 
         return $statusInformation;

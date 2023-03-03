@@ -61,7 +61,7 @@ class OilAndGasPumpProduct extends Model
         return $this->belongsTo(OilAndGasPumpInventory::class,'id','oagp_product_id');
     }
 
-    public function oagpPurchaseItems()
+    public function purchaseItems()
     {
         return $this->hasMany(OilAndGasPumpPurchaseItem::class,'oagp_product_id','id');
     }

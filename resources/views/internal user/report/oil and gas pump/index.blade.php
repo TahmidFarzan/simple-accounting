@@ -153,20 +153,20 @@
 
                                         @php
                                             if (str_contains(Str::studly($selectedModel ), "Purchase")) {
-                                                $allRowTotalPrice = $allRowTotalPrice + $perModelRecord->oagpPurchaseTotalPrice();
+                                                $allRowTotalPrice = $allRowTotalPrice + $perModelRecord->totalPrice();
                                             }
 
                                             if (str_contains(Str::studly($selectedModel ), "Sell")) {
-                                                $allRowTotalPrice = $allRowTotalPrice + $perModelRecord->oagpSellTotalPrice();
+                                                $allRowTotalPrice = $allRowTotalPrice + $perModelRecord->totalPrice();
                                             }
                                         @endphp
 
                                         @if (str_contains(Str::studly($selectedModel ), "Purchase"))
-                                            {{ $perModelRecord->oagpPurchaseTotalPrice() }}
+                                            {{ $perModelRecord->totalPrice() }}
                                         @endif
 
                                         @if (str_contains(Str::studly($selectedModel ), "Sell"))
-                                            {{ $perModelRecord->oagpSellTotalPrice() }}
+                                            {{ $perModelRecord->totalPrice() }}
                                         @endif
 
                                         {{ $setting["businessSetting"]["currency_symbol"] }}
@@ -174,20 +174,20 @@
                                     <td>
                                         @php
                                             if (str_contains(Str::studly($selectedModel ), "Purchase")) {
-                                                $allRowTotalPayableAmount = $allRowTotalPayableAmount + $perModelRecord->oagpPurchasePayableAmount();
+                                                $allRowTotalPayableAmount = $allRowTotalPayableAmount + $perModelRecord->totalPayableAmount();
                                             }
 
                                             if (str_contains(Str::studly($selectedModel ), "Sell")) {
-                                                $allRowTotalPayableAmount = $allRowTotalPayableAmount + $perModelRecord->oagpSellPayableAmount();
+                                                $allRowTotalPayableAmount = $allRowTotalPayableAmount + $perModelRecord->totalPayableAmount();
                                             }
                                         @endphp
 
                                         @if (str_contains(Str::studly($selectedModel ), "Purchase"))
-                                            {{ $perModelRecord->oagpPurchasePayableAmount() }}
+                                            {{ $perModelRecord->totalPayableAmount() }}
                                         @endif
 
                                         @if (str_contains(Str::studly($selectedModel ), "Sell"))
-                                            {{ $perModelRecord->oagpSellPayableAmount() }}
+                                            {{ $perModelRecord->totalPayableAmount() }}
                                         @endif
 
                                         {{ $setting["businessSetting"]["currency_symbol"] }}
@@ -195,20 +195,20 @@
                                     <td>
                                         @php
                                             if (str_contains(Str::studly($selectedModel ), "Purchase")) {
-                                                $allRowTotalPaidAmount = $allRowTotalPaidAmount + $perModelRecord->oagpPurchaseTotalPaidAmount();
+                                                $allRowTotalPaidAmount = $allRowTotalPaidAmount + $perModelRecord->totalPaidAmount();
                                             }
 
                                             if (str_contains(Str::studly($selectedModel ), "Sell")) {
-                                                $allRowTotalPaidAmount = $allRowTotalPaidAmount + $perModelRecord->oagpSellTotalPaidAmount();
+                                                $allRowTotalPaidAmount = $allRowTotalPaidAmount + $perModelRecord->totalPaidAmount();
                                             }
                                         @endphp
 
                                         @if (str_contains(Str::studly($selectedModel ), "Purchase"))
-                                            {{ $perModelRecord->oagpPurchaseTotalPaidAmount() }}
+                                            {{ $perModelRecord->totalPaidAmount() }}
                                         @endif
 
                                         @if (str_contains(Str::studly($selectedModel ), "Sell"))
-                                            {{ $perModelRecord->oagpSellTotalPaidAmount() }}
+                                            {{ $perModelRecord->totalPaidAmount() }}
                                         @endif
 
                                         {{ $setting["businessSetting"]["currency_symbol"] }}

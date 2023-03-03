@@ -149,7 +149,7 @@
             <div class="d-flex justify-content-center">
                 <div class="btn-group" role="group">
                     @php
-                        $passDeleteValidation = ((!($product->oagpInventory) && ($product->oagpPurchaseItems->count() == 0)) == true) ? true : false;
+                        $passDeleteValidation = ((!($product->oagpInventory) && ($product->purchaseItems->count() == 0)) == true) ? true : false;
                     @endphp
 
                     @if (Auth::user()->hasUserPermission(["OAGPMP04"]) == true)

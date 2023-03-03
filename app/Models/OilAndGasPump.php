@@ -58,29 +58,29 @@ class OilAndGasPump extends Model
         return $this->belongsTo(User::class,'created_by_id','id')->withTrashed();
     }
 
-    public function oilAndGasPumpProducts()
+    public function products()
     {
         return $this->hasMany(OilAndGasPumpProduct::class,'oil_and_gas_pump_id','id');
     }
 
-    public function oilAndGasPumpSuppliers()
+    public function suppliers()
     {
         return $this->hasMany(OilAndGasPumpSupplier::class,'oil_and_gas_pump_id','id');
     }
 
-    public function oilAndGasPumpPurchases()
+    public function purchases()
     {
         return $this->hasMany(OilAndGasPumpPurchase::class,'oil_and_gas_pump_id','id');
     }
 
-    public function oilAndGasPumpSells()
+    public function sells()
     {
         return $this->hasMany(OilAndGasPumpSell::class,'oil_and_gas_pump_id','id');
     }
 
-    public function oilAndGasPumpSellsByDate($startDate,$endDate)
+    public function sellsByDate($startDate,$endDate)
     {
-        $allSells = $this->oilAndGasPumpSells;
+        $allSells = $this->sells;
 
         if(!($startDate == null)){
             $allSells = $allSells->where('date','>=',$startDate);
@@ -92,12 +92,12 @@ class OilAndGasPump extends Model
         return  $allSells;
     }
 
-    public function oilAndGasPumpTotalIncome()
+    public function totalIncome()
     {
         $totalIncome = 0;
 
-        foreach($this->oilAndGasPumpSells as $perSell){
-            $totalIncome = $totalIncome + $perSell->totalSellIncome();
+        foreach($this->sells as $perSell){
+            $totalIncome = $totalIncome + $perSell->totalIncome();
         }
         return  $totalIncome;
     }

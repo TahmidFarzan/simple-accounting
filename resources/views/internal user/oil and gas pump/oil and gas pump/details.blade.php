@@ -37,7 +37,7 @@
                         <tr>
                             <th style="width: 25%;">Total income</th>
                             <th style="width: 1%;">:</th>
-                            <td>{{ $oilAndGasPump->oilAndGasPumpTotalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                            <td>{{ $oilAndGasPump->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                         </tr>
                     </tbody>
                 </table>

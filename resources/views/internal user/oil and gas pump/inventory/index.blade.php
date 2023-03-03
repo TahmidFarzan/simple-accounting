@@ -71,7 +71,7 @@
 
                                             @if (Auth::user()->hasUserPermission(["OAGPIMP04"]) == true)
 
-                                                @if (($perInventory->oagpProduct->oagpPurchaseItems->count() == 0))
+                                                @if (($perInventory->oagpProduct->purchaseItems->count() == 0))
                                                     <button type="button" class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#{{$perInventory->slug}}DeleteConfirmationModal">
                                                         Delete
                                                     </button>

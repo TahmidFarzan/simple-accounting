@@ -102,9 +102,9 @@ class OilAndGasPumpSellController extends Controller
 
     public function add($oagpSlug){
         $oilAndGasPump = OilAndGasPump::where("slug",$oagpSlug)->firstOrFail();
-        $oilAndGasPumpProducts = OilAndGasPumpProduct::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
+        $products = OilAndGasPumpProduct::orderby("name","asc")->where("oil_and_gas_pump_id",$oilAndGasPump->id)->get();
 
-        return view('internal user.oil and gas pump.sell.add',compact("oilAndGasPump","oilAndGasPumpProducts"));
+        return view('internal user.oil and gas pump.sell.add',compact("oilAndGasPump","products"));
     }
 
     public function addPayment($oagpSlug,$seSlug){
@@ -429,8 +429,8 @@ class OilAndGasPumpSellController extends Controller
 
             $oagpSell = OilAndGasPumpSell::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$this->seSlug)->firstOrFail();
 
-            $oagpSellPayable = $oagpSell->oagpSellPayableAmount();
-            $oagpSellPaidAmount = $oagpSell->oagpSellTotalPaidAmount() + $afterValidatorData["amount"];
+            $oagpSellPayable = $oagpSell->totalPayableAmount();
+            $oagpSellPaidAmount = $oagpSell->totalPaidAmount() + $afterValidatorData["amount"];
 
             if($oagpSellPaidAmount > $oagpSellPayable){
                 $validator->errors()->add(
@@ -444,7 +444,7 @@ class OilAndGasPumpSellController extends Controller
                 );
             }
 
-            if($oagpSell->oagpSellDueAmount() == 0){
+            if($oagpSell->totalDueAmount() == 0){
                 $validator->errors()->add(
                     'amount', "Can not add payment as the status is complete or due amount is 0."
                 );
@@ -475,7 +475,7 @@ class OilAndGasPumpSellController extends Controller
             if($saveOAGPSellPayment){
                 $statusInformation["status"]="status";
 
-                if($oilAndGasPumpSell->oagpSellDueAmount() == 0){
+                if($oilAndGasPumpSell->totalDueAmount() == 0){
                     $oilAndGasPumpSell->status = "Complete";
                     $oilAndGasPumpSell->updated_at = Carbon::now();
                     $oilAndGasPumpSell->update();

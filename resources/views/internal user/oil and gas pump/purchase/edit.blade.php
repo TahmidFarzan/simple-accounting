@@ -27,9 +27,9 @@
 
     @php
         $invoiceDate = (old('date') == null) ? $oilAndGasPumpPurchase->date : now();
-        $dataTableRow = array('min' => $oilAndGasPumpPurchase->oagpPurchaseItems->count(),'max' => 100);
-        $supplier = (old('supplier') == null) ? $oilAndGasPumpPurchase->oagpSupplier->slug : old('supplier');
-        $purchaseItemRow = (old("table_row") == null) ? $oilAndGasPumpPurchase->oagpPurchaseItems->count() : old("table_row");
+        $dataTableRow = array('min' => $oilAndGasPumpPurchase->purchaseItems->count(),'max' => 100);
+        $supplier = (old('supplier') == null) ? $oilAndGasPumpPurchase->supplier->slug : old('supplier');
+        $purchaseItemRow = (old("table_row") == null) ? $oilAndGasPumpPurchase->purchaseItems->count() : old("table_row");
     @endphp
 
 
@@ -75,7 +75,7 @@
                                 <div class="col-md-8">
                                     <select id="supplierInput" name="supplier" class="form-control form-control-sm @error('supplier') is-invalid @enderror" required>
                                         <option value="">Select</option>
-                                        @foreach ($oagpSuppliers as $perSupplier)
+                                        @foreach ($suppliers as $perSupplier)
                                             <option value="{{ $perSupplier->slug }}" {{ ( $supplier == $perSupplier->slug) ? "selected" : null }}>{{ $perSupplier->name }}</option>
                                         @endforeach
                                     </select>
@@ -134,7 +134,7 @@
                                                 <td>
                                                     <select id="productInput1" name="product[]" class="form-control form-select-sm " required>
                                                         <option value="">Select</option>
-                                                        @foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)
+                                                        @foreach ($products as $perOilAndGasPumpProduct)
                                                             <option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>
                                                         @endforeach
                                                     </select>
@@ -158,13 +158,13 @@
                                         @endif
 
                                         @if (!($purchaseItemRow == null))
-                                            @foreach ($oilAndGasPumpPurchase->oagpPurchaseItems as $perItemIndex => $perItem)
+                                            @foreach ($oilAndGasPumpPurchase->purchaseItems as $perItemIndex => $perItem)
                                                 <tr>
                                                     <td>{{ $perItemIndex +1 }}</td>
                                                     <td>
                                                         <select id="productInput{{ $perItemIndex }}" name="product[]" class="form-control form-select-sm @error('product.'.$perItemIndex) is-invalid @enderror" required>
                                                             <option value="">Select</option>
-                                                            @foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)
+                                                            @foreach ($products as $perOilAndGasPumpProduct)
                                                                 @php
                                                                     $productSlug = (old("product.".$perItemIndex) == null) ? $perItem->oagpProduct->slug : old("product.".$perItemIndex);
                                                                 @endphp
@@ -237,7 +237,7 @@
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Total amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
-                                            <input id="totalPriceInput" name="total_price" type="number" class="form-control form-control-sm @error('total_price') is-invalid @enderror" value="{{ (old('total_price') == null) ? $oilAndGasPumpPurchase->oagpPurchaseTotalPrice() : old('total_price') }}" min="0" step="00.01" required readonly>
+                                            <input id="totalPriceInput" name="total_price" type="number" class="form-control form-control-sm @error('total_price') is-invalid @enderror" value="{{ (old('total_price') == null) ? $oilAndGasPumpPurchase->totalPrice() : old('total_price') }}" min="0" step="00.01" required readonly>
                                             @error('total_price')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
@@ -267,7 +267,7 @@
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Payable amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
-                                            <input id="payableAmountInput" name="payable_amount" type="number" class="form-control form-control-sm @error('payable_amount') is-invalid @enderror" value="{{ (old('payable_amount') == null) ? $oilAndGasPumpPurchase->oagpPurchasePayableAmount() : old('payable_amount') }}" min="0" step="00.01" required readonly>
+                                            <input id="payableAmountInput" name="payable_amount" type="number" class="form-control form-control-sm @error('payable_amount') is-invalid @enderror" value="{{ (old('payable_amount') == null) ? $oilAndGasPumpPurchase->totalPayableAmount() : old('payable_amount') }}" min="0" step="00.01" required readonly>
                                             @error('payable_amount')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
@@ -282,7 +282,7 @@
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Paid amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
-                                            <input id="paidAmountInput" name="paid_amount" type="number" class="form-control form-control-sm @error('paid_amount') is-invalid @enderror" value="{{ (old('paid_amount') == null) ? $oilAndGasPumpPurchase->oagpPurchaseTotalPaidAmount() : old('paid_amount') }}" min="0" step="00.01" required readonly>
+                                            <input id="paidAmountInput" name="paid_amount" type="number" class="form-control form-control-sm @error('paid_amount') is-invalid @enderror" value="{{ (old('paid_amount') == null) ? $oilAndGasPumpPurchase->totalPaidAmount() : old('paid_amount') }}" min="0" step="00.01" required readonly>
                                             @error('paid_amount')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
@@ -297,7 +297,7 @@
                                     <div class="row">
                                         <label class="col-md-4 col-form-label col-form-label-sm text-bold">Due amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                                         <div class="col-md-8">
-                                            <input id="dueAmountInput" name="due_amount" type="number" class="form-control form-control-sm @error('due_amount') is-invalid @enderror" value="{{ (old('due_amount') == null) ? $oilAndGasPumpPurchase->oagpPurchaseDueAmount() : old('due_amount') }}" min="0" step="00.01" required readonly>
+                                            <input id="dueAmountInput" name="due_amount" type="number" class="form-control form-control-sm @error('due_amount') is-invalid @enderror" value="{{ (old('due_amount') == null) ? $oilAndGasPumpPurchase->totalDueAmount() : old('due_amount') }}" min="0" step="00.01" required readonly>
                                             @error('due_amount')
                                                 <span class="invalid-feedback" role="alert" style="display: block;">
                                                     <strong>{{ $message }}</strong>
@@ -397,7 +397,7 @@
                     var row = "";
                     row = row + '<tr>';
                     row = row + '<td>' + tableRow + '</td>';
-                    row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($oilAndGasPumpProducts as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
+                    row = row + '<td><select id="productInput'+ tableRow +'" name="product[]" class="form-control form-select-sm " required><option value="">Select</option>@foreach ($products as $perOilAndGasPumpProduct)<option value="{{ $perOilAndGasPumpProduct->slug }}">{{ $perOilAndGasPumpProduct->name }}</option>@endforeach</select></td>';
                     row = row + '<td><input id="quantityInput'+ tableRow +'" name="quantity[]" type="number" class="form-control form-control-sm" value="0" min="0" step="1" required></td>';
                     row = row + '<td><input id="sellPriceInput'+ tableRow +'" name="sell_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';
                     row = row + '<td><input id="purchasePriceInput'+ tableRow +'" name="purchase_price[]" type="number" class="form-control form-control-sm" value="0" min="0" step="00.01" required></td>';

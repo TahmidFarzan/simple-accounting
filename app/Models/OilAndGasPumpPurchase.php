@@ -64,7 +64,7 @@ class OilAndGasPumpPurchase extends Model
         return $this->belongsTo(User::class,'created_by_id','id')->withTrashed();
     }
 
-    public function oagpSupplier()
+    public function supplier()
     {
         return $this->belongsTo(OilAndGasPumpSupplier::class,'oagp_supplier_id','id');
     }
@@ -74,39 +74,39 @@ class OilAndGasPumpPurchase extends Model
         return $this->belongsTo(OilAndGasPump::class,'oil_and_gas_pump_id','id');
     }
 
-    public function oagpPurchaseItems()
+    public function purchaseItems()
     {
         return $this->hasMany(OilAndGasPumpPurchaseItem::class,'oagp_purchase_id','id');
     }
 
-    public function oagpPurchasePayments()
+    public function payments()
     {
         return $this->hasMany(OilAndGasPumpPurchasePayment::class,'oagp_purchase_id','id');
     }
 
-    public function oagpPurchaseTotalPrice()
+    public function totalPrice()
     {
         $totalPrice = 0.0;
 
-        foreach($this->oagpPurchaseItems as $perItem){
+        foreach($this->purchaseItems as $perItem){
             $totalPrice = $totalPrice + ($perItem->purchase_price * $perItem->quantity );
         }
         return $totalPrice;
     }
 
-    public function oagpPurchaseTotalPaidAmount()
+    public function totalPaidAmount()
     {
-        return $this->oagpPurchasePayments->sum("amount");
+        return $this->payments->sum("amount");
     }
 
-    public function oagpPurchasePayableAmount()
+    public function totalPayableAmount()
     {
-        return $this->oagpPurchaseTotalPrice() ;
+        return $this->totalPrice() ;
     }
 
-    public function oagpPurchaseDueAmount()
+    public function totalDueAmount()
     {
-        return ($this->oagpPurchasePayableAmount() - $this->oagpPurchaseTotalPaidAmount()) ;
+        return ($this->totalPayableAmount() - $this->totalPaidAmount()) ;
     }
 
     public function updatedBy()
