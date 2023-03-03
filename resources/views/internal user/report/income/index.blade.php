@@ -87,69 +87,63 @@
                             </div>
 
                             <div class="card-body" id="oagpIncomeDataTableDiv">
-                                <div class="row">
-                                    @php $oagpIncomeSellIndexCount = 0; @endphp
-                                    @foreach ($oilAndGasPumpSellIncomes as $oagpSellIndex  => $oagpSellIncomes)
-                                        @php $oagpIncomeSellIndexCount ++; @endphp
-                                        <div class="col-md-6 {{ ($oilAndGasPumpSellIncomes->count() < $oagpIncomeSellIndexCount ) }}">
-                                            <div class="card border-dark">
-                                                <div class="card-body">
-                                                    <div class="d-flex justify-content-center mb-2">
-                                                        <b>{{ $oagpSellIndex }}</b>
-                                                    </div>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-sm table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Sl</th>
-                                                                    <th>Date</th>
-                                                                    <th>Income</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl</th>
+                                                <th>Oil and gas pump</th>
+                                                <th>Date</th>
+                                                <th>Invoice</th>
+                                                <th>Product</th>
+                                                <th>Income</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $oagpTotalIncome = 0;
+                                                $oagpDataTableRowCount = 0;
+                                            @endphp
+                                            @foreach ($oilAndGasPumpIncomes as $oilAndGasPump)
+                                                @foreach ($oilAndGasPump as $oagpName => $oagpData)
+
+                                                    @foreach ($oagpData as $oagpDate => $oagpSells)
+                                                        @foreach ($oagpSells as $oagpSellIndex => $oagpSell)
+                                                            @foreach ($oagpSell->oagpSellItems as $oagpSellItemIndex => $oagpSellItem)
                                                                 @php
-                                                                    $oagpTotalIncome = 0;
-                                                                    $oagpSellIncomeIndexCount = 0;
+                                                                    $oagpDataTableRowCount += 1;
+                                                                    $oagpTotalIncome += $oagpSellItem->totalIncome();
                                                                 @endphp
-                                                                @forelse ($oagpSellIncomes as $oagpSellIncomeIndex => $oagpSellIncome )
-                                                                    @php
-                                                                        $oagpSellIncomeIndexCount ++;
-                                                                        $oagpTotalIncome += $oagpSellIncome;
-                                                                    @endphp
-                                                                    <tr>
-                                                                        <td>{{ $oagpSellIncomeIndexCount }}</td>
-                                                                        <td>{{ date("d-M-Y",strtotime($oagpSellIncomeIndex))  }}</td>
-                                                                        <td>{{  $oagpSellIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                                    </tr>
-                                                                @empty
-                                                                    <tr>
-                                                                        <td colspan="3">
-                                                                            <div class="d-flex justify-content-center me-2 text-warning">
-                                                                                <b>No income found</b>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforelse
-                                                            </tbody>
-                                                            <tfoot>
                                                                 <tr>
-                                                                    <th colspan="2">
-                                                                        <div class="d-flex justify-content-end me-2">
-                                                                            <b>Total</b>
-                                                                        </div>
-                                                                    </th>
-                                                                    <th>{{ $oagpTotalIncome }}</th>
+                                                                    <td>{{ $oagpDataTableRowCount }}</td>
+                                                                    <td>{{ $oagpName }}</td>
+                                                                    <td>{{ date("d-M-Y",strToTime($oagpDate)) }}</td>
+                                                                    <td>{{ $oagpSell->invoice }}</td>
+                                                                    <td>{{ $oagpSellItem->product->name }}</td>
+                                                                    <td>{{ $oagpSellItem->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                                 </tr>
-                                                            </tfoot>
-                                                        </table>
+                                                            @endforeach
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="5">
+                                                    <div class="d-flex justify-content-end me-2">
+                                                        <b>Total income</b>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                                </td>
+                                                <td>{{ $oagpTotalIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
+
                             </div>
                         </div>
+
                         <div class="tab-pane fade" id="pcIncomeNavTabPanel" role="tabpanel" aria-labelledby="projectContractNavTab" tabindex="0">
                             <div class="card-body mb-2">
                                 <div class="row">
