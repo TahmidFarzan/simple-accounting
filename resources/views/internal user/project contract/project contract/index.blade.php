@@ -208,13 +208,13 @@
                                                         $receivablePopOver = $receivablePopOver.'<b>Invested :</b> '.$perProjectContract->invested_amount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total revenue :</b> '.$perProjectContract->totalRevenueAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total loss :</b> '.$perProjectContract->totalLossAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $receivablePopOver = $receivablePopOver.'<b>Total receivable :</b> '.$perProjectContract->totalReceivableAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $receivablePopOver = $receivablePopOver.'<b>Total receivable :</b> '.$perProjectContract->totalReceivable()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total income :</b> '.$perProjectContract->totalIncome()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver."</p>";
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="receivable-amount-popover" data-bs-title="Receivable amount information" data-bs-content="{{ $receivablePopOver }}">
-                                                        {{ $perProjectContract->totalReceivableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $perProjectContract->totalReceivable() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
                                                 <td>
@@ -356,15 +356,15 @@
                                                         $receivablePopOver = $receivablePopOver.'<b>Invested :</b> '.$perProjectContract->invested_amount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total revenue :</b> '.$perProjectContract->totalRevenueAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total loss :</b> '.$perProjectContract->totalLossAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $receivablePopOver = $receivablePopOver.'<b>Total receivable :</b> '.$perProjectContract->totalReceivableAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $receivablePopOver = $receivablePopOver.'<b>Total receive :</b> '.$perProjectContract->totalReceiveAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                                        $receivablePopOver = $receivablePopOver.'<b>Total due :</b> '.$perProjectContract->totalDueAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $receivablePopOver = $receivablePopOver.'<b>Total receivable :</b> '.$perProjectContract->totalReceivable()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $receivablePopOver = $receivablePopOver.'<b>Total receive :</b> '.$perProjectContract->totalReceive()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                                        $receivablePopOver = $receivablePopOver.'<b>Total due :</b> '.$perProjectContract->totalDue()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver.'<b>Total income :</b> '.$perProjectContract->totalIncome()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                                         $receivablePopOver = $receivablePopOver."</p>";
                                                     @endphp
 
                                                     <button type="button" class="btn btn-sm btn-secondary" data-bs-container="body" data-bs-animation="true" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-placement="top" data-bs-custom-class="receivable-amount-popover" data-bs-title="Receivable amount information" data-bs-content="{{ $receivablePopOver }}">
-                                                        {{ $perProjectContract->totalReceivableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                        {{ $perProjectContract->totalReceivable() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                     </button>
                                                 </td>
                                                 <td>
@@ -408,7 +408,7 @@
                                                         </div>
                                                     @endif
 
-                                                    @if (!($perProjectContract->receivable_status == "NotStarted") && !($perProjectContract->receivable_status == "Complete") && ($perProjectContract->totalDueAmount() == 0) && (Auth::user()->hasUserPermission(["PCMP08"]) == true))
+                                                    @if (!($perProjectContract->receivable_status == "NotStarted") && !($perProjectContract->receivable_status == "Complete") && ($perProjectContract->totalDue() == 0) && (Auth::user()->hasUserPermission(["PCMP08"]) == true))
                                                         <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#complete{{str_replace("-","",$perProjectContract->slug)}}CompleteReceivingPaymentConfirmationModal">
                                                             Complete receive payment
                                                         </button>

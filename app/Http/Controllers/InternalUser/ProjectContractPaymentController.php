@@ -158,21 +158,21 @@ class ProjectContractPaymentController extends Controller
             }
 
             if( $projectContract){
-                $pcTotalReceiveAmount = $projectContract->totalReceiveAmount() + $afterValidatorData["amount"];
+                $pcTotalReceive = $projectContract->totalReceive() + $afterValidatorData["amount"];
 
-                if($afterValidatorData["amount"] > $projectContract->totalReceivableAmount()){
+                if($afterValidatorData["amount"] > $projectContract->totalReceivable()){
                     $validator->errors()->add(
                         'amount', "Amount can not bigger then receivable amount."
                     );
                 }
 
-                if($pcTotalReceiveAmount > $projectContract->totalReceivableAmount()){
+                if($pcTotalReceive > $projectContract->totalReceivable()){
                     $validator->errors()->add(
                         'amount', "Total receive amount can not bigger then total receivable amount."
                     );
                 }
 
-                if(($afterValidatorData["amount"] + $afterValidatorData["due"]) > $projectContract->totalReceivableAmount()){
+                if(($afterValidatorData["amount"] + $afterValidatorData["due"]) > $projectContract->totalReceivable()){
                     $validator->errors()->add(
                         'amount', "Sum of amount and due can not bigger then total receivable amount."
                     );
@@ -289,21 +289,21 @@ class ProjectContractPaymentController extends Controller
             }
 
             if( $projectContract){
-                $pcTotalReceiveAmount = $projectContract->totalReceiveAmount() + $afterValidatorData["amount"];
+                $pcTotalReceive = $projectContract->totalReceive() + $afterValidatorData["amount"];
 
-                if($afterValidatorData["amount"] > $projectContract->totalReceivableAmount()){
+                if($afterValidatorData["amount"] > $projectContract->totalReceivable()){
                     $validator->errors()->add(
                         'amount', "Amount can not bigger then receivable amount."
                     );
                 }
 
-                if($pcTotalReceiveAmount > $projectContract->totalReceivableAmount()){
+                if($pcTotalReceive > $projectContract->totalReceivable()){
                     $validator->errors()->add(
                         'amount', "Total receive amount can not bigger then total receivable amount."
                     );
                 }
 
-                if(($afterValidatorData["current_amount"] + $afterValidatorData["amount"] + $afterValidatorData["due"]) > $projectContract->totalReceivableAmount()){
+                if(($afterValidatorData["current_amount"] + $afterValidatorData["amount"] + $afterValidatorData["due"]) > $projectContract->totalReceivable()){
                     $validator->errors()->add(
                         'amount', "Sum of current amount,amount and due can not bigger then total receivable amount."
                     );
@@ -430,11 +430,11 @@ class ProjectContractPaymentController extends Controller
             $sProjectContract = ProjectContract::where("slug", $pcSlug)->firstOrFail();
             $projectContractNotes = $sProjectContract->note;
 
-            if($sProjectContract->totalReceivableAmount() == $sProjectContract->totalReceiveAmount()){
+            if($sProjectContract->totalReceivable() == $sProjectContract->totalReceive()){
                 $projectContractReceivableStatus = "Complete";
             }
             else{
-                if($sProjectContract->totalReceiveAmount() < $sProjectContract->totalReceivableAmount()){
+                if($sProjectContract->totalReceive() < $sProjectContract->totalReceivable()){
                     $projectContractReceivableStatus = "Partial";
                 }
                 else{

@@ -113,29 +113,29 @@ class ProjectContract extends Model
         return $totalLossAmount;
     }
 
-    public function totalReceivableAmount()
+    public function totalReceivable()
     {
         return ($this->invested_amount + $this->totalRevenueAmount()) - $this->totalLossAmount();
     }
 
-    public function totalReceiveAmount()
+    public function totalReceive()
     {
-        $totalReceiveAmount = 0;
+        $totalReceive = 0;
 
-        $totalReceiveAmount = ($this->payments->count() == 0 ) ? 0 : $this->payments()->whereNotNull("id")->sum("amount");
+        $totalReceive = ($this->payments->count() == 0 ) ? 0 : $this->payments()->whereNotNull("id")->sum("amount");
 
-        return $totalReceiveAmount;
+        return $totalReceive;
     }
 
-    public function totalDueAmount()
+    public function totalDue()
     {
-        return  $this->totalReceivableAmount() - $this->totalReceiveAmount();
+        return  $this->totalReceivable() - $this->totalReceive();
     }
 
     public function totalIncome()
     {
 
-        return $this->totalReceivableAmount() - $this->invested_amount;
+        return $this->totalReceivable() - $this->invested_amount;
     }
 
     public function activityLogs(){

@@ -133,18 +133,18 @@
                                                                                         @forelse ($oagpSells as $oagpSellIndex => $oagpSell)
 
                                                                                             @php
-                                                                                                $oagpTotalDue += $oagpSell->totalDueAmount();
-                                                                                                $oagpTotalPaid += $oagpSell->totalPaidAmount();
-                                                                                                $oagpTotalPayable += $oagpSell->totalPayableAmount();
+                                                                                                $oagpTotalDue += $oagpSell->totalDue();
+                                                                                                $oagpTotalPaid += $oagpSell->totalPaid();
+                                                                                                $oagpTotalPayable += $oagpSell->totalPayable();
                                                                                                 $oagpTotalIncome += $oagpSell->totalIncome();
                                                                                             @endphp
                                                                                             <tr>
                                                                                                 <td>{{ $oagpSellIndex + 1 }}</td>
                                                                                                 <td>{{ $oagpSell->invoice }}</td>
                                                                                                 <td>{{ $oagpSell->status }}</td>
-                                                                                                <td>{{ $oagpSell->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                                                                <td>{{ $oagpSell->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                                                                <td>{{ $oagpSell->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                                <td>{{ $oagpSell->totalPayable() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                                <td>{{ $oagpSell->totalPaid() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                                <td>{{ $oagpSell->totalDue() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                                                                 <td>{{ $oagpSell->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                                                             </tr>
                                                                                         @empty
@@ -257,10 +257,10 @@
                                                 @forelse ($pcReportData as $pcReportEndDate => $pcReportRowData)
                                                     @forelse ($pcReportRowData as $pcIncomeIndex => $pcReportRow)
                                                         @php
-                                                            $pcTotalDue += $pcReportRow->totalDueAmount();
+                                                            $pcTotalDue += $pcReportRow->totalDue();
                                                             $pcTotalIncome += $pcReportRow->totalIncome();
-                                                            $pcTotalReceive = $pcReportRow->totalReceiveAmount();
-                                                            $pcTotalReceivable = $pcReportRow->totalReceivableAmount();
+                                                            $pcTotalReceive = $pcReportRow->totalReceive();
+                                                            $pcTotalReceivable = $pcReportRow->totalReceivable();
                                                         @endphp
                                                         <tr>
                                                             <td>{{ $pcIncomeIndex + 1 }}</td>
@@ -268,9 +268,9 @@
                                                             <td>{{ date('d-M-Y',strToTime($pcReportEndDate)) }}</td>
                                                             <td>{{ $pcReportRow->name }}</td>
                                                             <td>{{ $pcReportRow->status }}</td>
-                                                            <td>{{ $pcReportRow->totalReceivableAmount() }}</td>
-                                                            <td>{{ $pcReportRow->totalReceiveAmount() }}</td>
-                                                            <td>{{ $pcReportRow->totalDueAmount() }}</td>
+                                                            <td>{{ $pcReportRow->totalReceivable() }}</td>
+                                                            <td>{{ $pcReportRow->totalReceive() }}</td>
+                                                            <td>{{ $pcReportRow->totalDue() }}</td>
                                                             <td>{{ $pcReportRow->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                         </tr>
                                                     @empty

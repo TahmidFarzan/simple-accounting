@@ -153,7 +153,7 @@
                                             <th>Receivable</th>
                                             <th>:</th>
                                             <td>
-                                                {{ $projectContract->totalReceivableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                {{ $projectContract->totalReceivable() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                             </td>
                                         </tr>
 
@@ -170,7 +170,7 @@
                                                 <th>Receive</th>
                                                 <th>:</th>
                                                 <td>
-                                                    {{ $projectContract->totalReceiveAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                    {{ $projectContract->totalReceive() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                                 </td>
                                             </tr>
 
@@ -178,7 +178,7 @@
                                                 <th>Due</th>
                                                 <th>:</th>
                                                 <td>
-                                                    {{ $projectContract->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                    {{ $projectContract->totalDue() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                                 </td>
                                             </tr>
                                         @endif

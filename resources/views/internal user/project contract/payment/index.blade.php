@@ -39,7 +39,7 @@
         <div class="card-body text-dark mt-0">
             <div class="row mb-2">
                 <p>
-                    @if (($passProjectContactValidation == true) && ($projectContract->totalReceivableAmount() > 0) && ($projectContract->totalDueAmount() > 0) && (Auth::user()->hasUserPermission(["PCPMP02"]) == true))
+                    @if (($passProjectContactValidation == true) && ($projectContract->totalReceivable() > 0) && ($projectContract->totalDue() > 0) && (Auth::user()->hasUserPermission(["PCPMP02"]) == true))
                         <a href="{{ route("project.contract.payment.create",["pcSlug" => $projectContract->slug]) }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Create payment</a>
                     @endif
 

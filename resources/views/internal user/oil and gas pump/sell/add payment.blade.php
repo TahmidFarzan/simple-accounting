@@ -31,7 +31,7 @@
                         <div class="row">
                             <label class="col-lg-4 col-form-label col-form-label-sm text-bold">Amount <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                             <div class="col-lg-8">
-                                <input id="amountInput" name="amount" type="number" class="form-control form-control-sm @error('amount') is-invalid @enderror" value="{{ (old('amount') == null) ? 0 : old('amount') }}" min="0" max="{{ $oilAndGasPumpSell->totalDueAmount() }}" step="00.01" required>
+                                <input id="amountInput" name="amount" type="number" class="form-control form-control-sm @error('amount') is-invalid @enderror" value="{{ (old('amount') == null) ? 0 : old('amount') }}" min="0" max="{{ $oilAndGasPumpSell->totalDue() }}" step="00.01" required>
 
                                 @error('amount')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
@@ -46,7 +46,7 @@
                         <div class="row">
                             <label class="col-md-4 col-form-label col-form-label-sm text-bold">Payable amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                             <div class="col-md-8">
-                                <input id="payableAmountInput" name="payable_amount" type="number" class="form-control form-control-sm @error('payable_amount') is-invalid @enderror" value="{{ (old('payable_amount') == null) ? $oilAndGasPumpSell->totalPayableAmount() : old('payable_amount') }}" min="0" step="00.01" required readonly>
+                                <input id="payableAmountInput" name="payable_amount" type="number" class="form-control form-control-sm @error('payable_amount') is-invalid @enderror" value="{{ (old('payable_amount') == null) ? $oilAndGasPumpSell->totalPayable() : old('payable_amount') }}" min="0" step="00.01" required readonly>
                                 @error('payable_amount')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>
@@ -60,7 +60,7 @@
                         <div class="row">
                             <label class="col-md-4 col-form-label col-form-label-sm text-bold">Paid amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                             <div class="col-md-8">
-                                <input id="paidAmountInput" name="paid_amount" type="number" class="form-control form-control-sm @error('paid_amount') is-invalid @enderror" value="{{ (old('paid_amount') == null) ? $oilAndGasPumpSell->totalPaidAmount() : old('paid_amount') }}" min="0" step="00.01" required readonly>
+                                <input id="paidAmountInput" name="paid_amount" type="number" class="form-control form-control-sm @error('paid_amount') is-invalid @enderror" value="{{ (old('paid_amount') == null) ? $oilAndGasPumpSell->totalPaid() : old('paid_amount') }}" min="0" step="00.01" required readonly>
                                 @error('paid_amount')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>
@@ -74,7 +74,7 @@
                         <div class="row">
                             <label class="col-md-4 col-form-label col-form-label-sm text-bold">Due amount ({{ $setting["businessSetting"]["currency_symbol"] }}) <i class="fa-solid fa-asterisk" style="font-size: 10px;!important"></i></label>
                             <div class="col-md-8">
-                                <input id="dueAmountInput" name="due_amount" type="number" class="form-control form-control-sm @error('due_amount') is-invalid @enderror" value="{{ (old('due_amount') == null) ? $oilAndGasPumpSell->totalDueAmount() : old('due_amount') }}" min="0" step="00.01" required readonly>
+                                <input id="dueAmountInput" name="due_amount" type="number" class="form-control form-control-sm @error('due_amount') is-invalid @enderror" value="{{ (old('due_amount') == null) ? $oilAndGasPumpSell->totalDue() : old('due_amount') }}" min="0" step="00.01" required readonly>
                                 @error('due_amount')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>

@@ -149,21 +149,21 @@
                                             <th colspan="3"></th>
                                             <th>Total payable</th>
                                             <td>
-                                                {{ $oilAndGasPumpPurchase->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $oilAndGasPumpPurchase->totalPayable() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th colspan="3"></th>
                                             <th>Paid amount</th>
                                             <td>
-                                                {{ $oilAndGasPumpPurchase->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $oilAndGasPumpPurchase->totalPaid() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th colspan="3"></th>
                                             <th>Due amount</th>
                                             <td>
-                                                {{ $oilAndGasPumpPurchase->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $oilAndGasPumpPurchase->totalDue() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                     </tfoot>

@@ -22,7 +22,7 @@
 @section('authContentOne')
 
     @php
-        $currentDueAmount = (old("due") == null) ? $projectContract->totalDueAmount() : old("due");
+        $currentDueAmount = (old("due") == null) ? $projectContract->totalDue() : old("due");
         $currentPaymentMethodOption = (old("payment_method") == null) ? $projectContractPayment->paymentMethod->slug : old("payment_method");
     @endphp
 
@@ -183,7 +183,7 @@
     <script>
         $(document).ready(function(){
             $(document).on('change', "#amountInput", function () {
-                var dueAmount = '{{ $projectContract->totalDueAmount() }}';
+                var dueAmount = '{{ $projectContract->totalDue() }}';
                 if($(this).val().length > 0){
                     dueAmount = parseFloat(dueAmount) - parseFloat($(this).val());
                 }

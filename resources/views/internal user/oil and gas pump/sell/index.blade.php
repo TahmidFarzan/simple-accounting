@@ -112,10 +112,10 @@
                                                 <td>{{ $perOAGPSell->customer }}</td>
                                                 <td>{{ date('d-M-Y', strtotime($perOAGPSell->date)) }}</td>
                                                 <td>
-                                                    {{ $perOAGPSell->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                    {{ $perOAGPSell->totalPayable() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                 </td>
-                                                <td>{{ $perOAGPSell->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                <td>{{ $perOAGPSell->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPSell->totalPaid() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPSell->totalDue() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPSell->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPSEMP03"]) == true)
@@ -170,10 +170,10 @@
                                                 <td>{{ $perOAGPSell->customer }}</td>
                                                 <td>{{ date('d-M-Y', strtotime($perOAGPSell->date)) }}</td>
                                                 <td>
-                                                    {{ $perOAGPSell->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                    {{ $perOAGPSell->totalPayable() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                 </td>
-                                                <td>{{ $perOAGPSell->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                <td>{{ $perOAGPSell->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPSell->totalPaid() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPSell->totalDue() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>{{ $perOAGPSell->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPSEMP03"]) == true)

@@ -22,7 +22,7 @@
 @section('authContentOne')
 
     @php
-        $currentDueAmount = (old("due") == null) ? $projectContract->totalDueAmount() : old("due");
+        $currentDueAmount = (old("due") == null) ? $projectContract->totalDue() : old("due");
         $currentPaymentMethodOption = (old("payment_method") == null) ? null : old("payment_method");
     @endphp
 

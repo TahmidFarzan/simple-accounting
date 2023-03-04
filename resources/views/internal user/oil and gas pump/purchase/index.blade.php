@@ -111,10 +111,10 @@
                                                 <td>{{ $perOAGPPurchase->supplier->name }}</td>
                                                 <td>{{ date('d-M-Y', strtotime($perOAGPPurchase->date)) }}</td>
                                                 <td>
-                                                    {{ $perOAGPPurchase->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                    {{ $perOAGPPurchase->totalPayable() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                 </td>
-                                                <td>{{ $perOAGPPurchase->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                <td>{{ $perOAGPPurchase->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPPurchase->totalPaid() }} {{ $setting["businessSetting"]["currency_symbol"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPPurchase->totalDue() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP03"]) == true)
                                                         <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>
@@ -171,10 +171,10 @@
                                                 <td>{{ $perOAGPPurchase->supplier->name }}</td>
                                                 <td>{{ date('d-M-Y', strtotime($perOAGPPurchase->date)) }}</td>
                                                 <td>
-                                                    {{ $perOAGPPurchase->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                    {{ $perOAGPPurchase->totalPayable() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                                 </td>
-                                                <td>{{ $perOAGPPurchase->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                <td>{{ $perOAGPPurchase->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPPurchase->totalPaid() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                <td>{{ $perOAGPPurchase->totalDue() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
                                                 <td>
                                                     @if (Auth::user()->hasUserPermission(["OAGPPUMP03"]) == true)
                                                         <a href="{{ route("oil.and.gas.pump.purchase.details",["oagpSlug" => $oilAndGasPump->slug, "puSlug" => $perOAGPPurchase->slug]) }}" class="btn btn-info btn-sm m-2">Details</a>

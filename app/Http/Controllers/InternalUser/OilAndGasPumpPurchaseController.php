@@ -420,8 +420,8 @@ class OilAndGasPumpPurchaseController extends Controller
 
             $oagpPurchase = OilAndGasPumpPurchase::where("oil_and_gas_pump_id",$oilAndGasPump->id)->where("slug",$this->puSlug)->firstOrFail();
 
-            $oagpPuchasePayable = $oagpPurchase->totalPayableAmount();
-            $oagpPuchasePaidAmount = $oagpPurchase->totalPaidAmount() + $afterValidatorData["amount"];
+            $oagpPuchasePayable = $oagpPurchase->totalPayable();
+            $oagpPuchasePaidAmount = $oagpPurchase->totalPaid() + $afterValidatorData["amount"];
 
             if($oagpPuchasePaidAmount > $oagpPuchasePayable){
                 $validator->errors()->add(
@@ -435,7 +435,7 @@ class OilAndGasPumpPurchaseController extends Controller
                 );
             }
 
-            if($oagpPurchase->totalDueAmount() == 0){
+            if($oagpPurchase->totalDue() == 0){
                 $validator->errors()->add(
                     'amount', "Can not add payment as the status is complete or due amount is 0."
                 );
@@ -466,7 +466,7 @@ class OilAndGasPumpPurchaseController extends Controller
             if($saveOAGPPurchasePayment){
                 $statusInformation["status"]="status";
 
-                if($oilAndGasPumpPurchase->totalDueAmount() == 0){
+                if($oilAndGasPumpPurchase->totalDue() == 0){
                     $oilAndGasPumpPurchase->status = "Complete";
                     $oilAndGasPumpPurchase->updated_at = Carbon::now();
                     $oilAndGasPumpPurchase->update();

@@ -152,21 +152,21 @@
                                             <td colspan="3"></td>
                                             <td>Total payable</td>
                                             <td>
-                                                {{ $sell->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $sell->totalPayable() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="3"></td>
                                             <td>Paid amount</td>
                                             <td>
-                                                {{ $sell->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $sell->totalPaid() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="4"></td>
                                             <td>Due amount</td>
                                             <td>
-                                                {{ $sell->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}
+                                                {{ $sell->totalDue() }} {{ $setting["businessSetting"]["currency_symbol"] }}
                                             </td>
                                         </tr>
                                     </tfoot>

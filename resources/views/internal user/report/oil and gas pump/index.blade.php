@@ -135,8 +135,8 @@
                         <tbody>
                             @php
                                 $allRowTotalPrice = 0;
-                                $allRowTotalPaidAmount = 0;
-                                $allRowTotalPayableAmount = 0;
+                                $allRowTotalPaid = 0;
+                                $allRowTotalPayable = 0;
                             @endphp
 
                             @forelse ($modelRecords as $perModelRecordIndex => $perModelRecord)
@@ -174,20 +174,20 @@
                                     <td>
                                         @php
                                             if (str_contains(Str::studly($selectedModel ), "Purchase")) {
-                                                $allRowTotalPayableAmount = $allRowTotalPayableAmount + $perModelRecord->totalPayableAmount();
+                                                $allRowTotalPayable = $allRowTotalPayable + $perModelRecord->totalPayable();
                                             }
 
                                             if (str_contains(Str::studly($selectedModel ), "Sell")) {
-                                                $allRowTotalPayableAmount = $allRowTotalPayableAmount + $perModelRecord->totalPayableAmount();
+                                                $allRowTotalPayable = $allRowTotalPayable + $perModelRecord->totalPayable();
                                             }
                                         @endphp
 
                                         @if (str_contains(Str::studly($selectedModel ), "Purchase"))
-                                            {{ $perModelRecord->totalPayableAmount() }}
+                                            {{ $perModelRecord->totalPayable() }}
                                         @endif
 
                                         @if (str_contains(Str::studly($selectedModel ), "Sell"))
-                                            {{ $perModelRecord->totalPayableAmount() }}
+                                            {{ $perModelRecord->totalPayable() }}
                                         @endif
 
                                         {{ $setting["businessSetting"]["currency_symbol"] }}
@@ -195,20 +195,20 @@
                                     <td>
                                         @php
                                             if (str_contains(Str::studly($selectedModel ), "Purchase")) {
-                                                $allRowTotalPaidAmount = $allRowTotalPaidAmount + $perModelRecord->totalPaidAmount();
+                                                $allRowTotalPaid = $allRowTotalPaid + $perModelRecord->totalPaid();
                                             }
 
                                             if (str_contains(Str::studly($selectedModel ), "Sell")) {
-                                                $allRowTotalPaidAmount = $allRowTotalPaidAmount + $perModelRecord->totalPaidAmount();
+                                                $allRowTotalPaid = $allRowTotalPaid + $perModelRecord->totalPaid();
                                             }
                                         @endphp
 
                                         @if (str_contains(Str::studly($selectedModel ), "Purchase"))
-                                            {{ $perModelRecord->totalPaidAmount() }}
+                                            {{ $perModelRecord->totalPaid() }}
                                         @endif
 
                                         @if (str_contains(Str::studly($selectedModel ), "Sell"))
-                                            {{ $perModelRecord->totalPaidAmount() }}
+                                            {{ $perModelRecord->totalPaid() }}
                                         @endif
 
                                         {{ $setting["businessSetting"]["currency_symbol"] }}
@@ -229,8 +229,8 @@
                                     <b class=" d-flex float-end">Total</b>
                                 </th>
                                 <th>{{ $allRowTotalPrice }} {{ $setting["businessSetting"]["currency_symbol"] }}</th>
-                                <th>{{ $allRowTotalPayableAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</th>
-                                <th>{{ $allRowTotalPaidAmount }} {{ $setting["businessSetting"]["currency_symbol"] }}</th>
+                                <th>{{ $allRowTotalPayable }} {{ $setting["businessSetting"]["currency_symbol"] }}</th>
+                                <th>{{ $allRowTotalPaid }} {{ $setting["businessSetting"]["currency_symbol"] }}</th>
                             </tr>
                         </tfoot>
                     </table>

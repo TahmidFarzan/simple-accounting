@@ -591,7 +591,7 @@ class ProjectContractController extends Controller
 
         if($currentProjectContract->status == "Complete"){
             if(!($currentProjectContract->receivable_status == "NotStarted")){
-                if($currentProjectContract->totalDueAmount() == 0){
+                if($currentProjectContract->totalDue() == 0){
                     $projectContract = ProjectContract::where("slug",$slug)->firstOrFail();
                     $projectContract->receivable_status = "Complete";
                     $projectContract->updated_at = Carbon::now();

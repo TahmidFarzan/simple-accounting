@@ -152,7 +152,7 @@
                                             <th>Receivable</th>
                                             <th>:</th>
                                             <td>
-                                                {{ $projectContract->totalReceivableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                {{ $projectContract->totalReceivable() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                             </td>
                                         </tr>
 
@@ -170,7 +170,7 @@
                                                 <th>Receive</th>
                                                 <th>:</th>
                                                 <td>
-                                                    {{ $projectContract->totalReceiveAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                    {{ $projectContract->totalReceive() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                                 </td>
                                             </tr>
 
@@ -178,7 +178,7 @@
                                                 <th>Due</th>
                                                 <th>:</th>
                                                 <td>
-                                                    {{ $projectContract->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                    {{ $projectContract->totalDue() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                                 </td>
                                             </tr>
                                         @endif
@@ -355,7 +355,7 @@
                         </button>
                     @endif
 
-                    @if (!($projectContract->receivable_status == "NotStarted") && !($projectContract->receivable_status == "Complete") && ($projectContract->totalDueAmount() == 0) && (Auth::user()->hasUserPermission(["PCMP08"]) == true))
+                    @if (!($projectContract->receivable_status == "NotStarted") && !($projectContract->receivable_status == "Complete") && ($projectContract->totalDue() == 0) && (Auth::user()->hasUserPermission(["PCMP08"]) == true))
                         <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#complete{{str_replace("-","",$projectContract->slug)}}CompleteReceivingPaymentConfirmationModal">
                             Complete receive payment
                         </button>
@@ -460,7 +460,7 @@
                 </div>
             @endif
 
-            @if (!($projectContract->receivable_status == "NotStarted") && !($projectContract->receivable_status == "Complete") && ($projectContract->totalDueAmount() == 0) && (Auth::user()->hasUserPermission(["PCMP08"]) == true))
+            @if (!($projectContract->receivable_status == "NotStarted") && !($projectContract->receivable_status == "Complete") && ($projectContract->totalDue() == 0) && (Auth::user()->hasUserPermission(["PCMP08"]) == true))
                 <div class="modal fade" id="complete{{str_replace("-","",$projectContract->slug) }}CompleteReceivingPaymentConfirmationModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">

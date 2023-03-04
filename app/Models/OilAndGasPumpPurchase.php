@@ -94,19 +94,19 @@ class OilAndGasPumpPurchase extends Model
         return $totalPrice;
     }
 
-    public function totalPaidAmount()
+    public function totalPaid()
     {
         return $this->payments->sum("amount");
     }
 
-    public function totalPayableAmount()
+    public function totalPayable()
     {
         return $this->totalPrice() ;
     }
 
-    public function totalDueAmount()
+    public function totalDue()
     {
-        return ($this->totalPayableAmount() - $this->totalPaidAmount()) ;
+        return ($this->totalPayable() - $this->totalPaid()) ;
     }
 
     public function updatedBy()
