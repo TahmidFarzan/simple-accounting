@@ -196,7 +196,7 @@
                                                 $pcTotalReceive = 0;
                                                 $pcTotalReceivable = 0;
                                             @endphp
-                                            @forelse ($projectContractReport as $pcReportStartDate => $pcReportData)
+                                            @forelse ($pcIncomeReport as $pcReportStartDate => $pcReportData)
                                                 @forelse ($pcReportData as $pcReportEndDate => $pcReportRowData)
                                                     @forelse ($pcReportRowData as $pcIncomeIndex => $pcReportRow)
                                                         @php
