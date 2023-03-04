@@ -87,60 +87,117 @@
                             </div>
 
                             <div class="card-body" id="oagpIncomeDataTableDiv">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Sl</th>
-                                                <th>Oil and gas pump</th>
-                                                <th>Date</th>
-                                                <th>Invoice</th>
-                                                <th>Product</th>
-                                                <th>Income</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                                $oagpTotalIncome = 0;
-                                                $oagpDataTableRowCount = 0;
-                                            @endphp
-                                            @foreach ($oilAndGasPumpIncomes as $oilAndGasPump)
-                                                @foreach ($oilAndGasPump as $oagpName => $oagpData)
-
-                                                    @foreach ($oagpData as $oagpDate => $oagpSells)
-                                                        @foreach ($oagpSells as $oagpSellIndex => $oagpSell)
-                                                            @foreach ($oagpSell->oagpSellItems as $oagpSellItemIndex => $oagpSellItem)
+                                <div class="row">
+                                    <div class="card border">
+                                        <div class="card-body">
+                                            @forelse ($oagpIncomeReport as $oagpStartDate => $oagpIncomeReportData)
+                                                <div class="card border mb-2">
+                                                    <div class="card-body">
+                                                        <b class="d-flex justify-content-center mb-2">
+                                                            <h5>
+                                                                {{ date("d-M-Y",strToTime($oagpStartDate)) }}.
+                                                            </h5>
+                                                        </b>
+                                                        <div class="row">
+                                                            @forelse ($oagpIncomeReportData as $oagpId => $oagpSells)
                                                                 @php
-                                                                    $oagpDataTableRowCount += 1;
-                                                                    $oagpTotalIncome += $oagpSellItem->totalIncome();
-                                                                @endphp
-                                                                <tr>
-                                                                    <td>{{ $oagpDataTableRowCount }}</td>
-                                                                    <td>{{ $oagpName }}</td>
-                                                                    <td>{{ date("d-M-Y",strToTime($oagpDate)) }}</td>
-                                                                    <td>{{ $oagpSell->invoice }}</td>
-                                                                    <td>{{ $oagpSellItem->product->name }}</td>
-                                                                    <td>{{ $oagpSellItem->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                                                </tr>
-                                                            @endforeach
-                                                        @endforeach
-                                                    @endforeach
-                                                @endforeach
-                                            @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="5">
-                                                    <div class="d-flex justify-content-end me-2">
-                                                        <b>Total income</b>
-                                                    </div>
-                                                </td>
-                                                <td>{{ $oagpTotalIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
+                                                                    $oagpInfo = \App\Models\OilAndGasPump::where("id",$oagpId)->firstOrFail();
 
+                                                                    $oagpTotalDue = 0;
+                                                                    $oagpTotalPaid = 0;
+                                                                    $oagpTotalPayable = 0;
+                                                                    $oagpTotalIncome = 0;
+                                                                @endphp
+                                                                <div class="col-md-6 mb-2">
+                                                                    <div class="card border mb-2">
+                                                                        <div class="card-body">
+                                                                            <b class="d-flex justify-content-center mb-2">
+                                                                                <h6>
+                                                                                    {{ $oagpInfo->name }}
+                                                                                </h6>
+                                                                            </b>
+                                                                            <div class="table-responsive">
+                                                                                <table class="table table-sm table-bordered">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>Sl</th>
+                                                                                            <th>Invoice</th>
+                                                                                            <th>Status</th>
+                                                                                            <th>Payable</th>
+                                                                                            <th>Paid</th>
+                                                                                            <th>Due</th>
+                                                                                            <th>Income</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        @forelse ($oagpSells as $oagpSellIndex => $oagpSell)
+
+                                                                                            @php
+                                                                                                $oagpTotalDue += $oagpSell->totalDueAmount();
+                                                                                                $oagpTotalPaid += $oagpSell->totalPaidAmount();
+                                                                                                $oagpTotalPayable += $oagpSell->totalPayableAmount();
+                                                                                                $oagpTotalIncome += $oagpSell->totalIncome();
+                                                                                            @endphp
+                                                                                            <tr>
+                                                                                                <td>{{ $oagpSellIndex + 1 }}</td>
+                                                                                                <td>{{ $oagpSell->invoice }}</td>
+                                                                                                <td>{{ $oagpSell->status }}</td>
+                                                                                                <td>{{ $oagpSell->totalPayableAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                                <td>{{ $oagpSell->totalPaidAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                                <td>{{ $oagpSell->totalDueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                                <td>{{ $oagpSell->totalIncome() }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                            </tr>
+                                                                                        @empty
+                                                                                            <tr>
+                                                                                                <td colspan="7">
+                                                                                                    <b class="d-flex justify-content-center mb-2 text-warning">
+                                                                                                        No income found.
+                                                                                                    </b>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        @endforelse
+                                                                                    </tbody>
+                                                                                    <tfoot>
+                                                                                        <tr>
+                                                                                            <td colspan="2">
+                                                                                                <b class="d-flex justify-content-center">Total</b>
+                                                                                            </td>
+                                                                                            <td> {{ $oagpTotalPayable }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                            <td> {{ $oagpTotalPaid }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                            <td> {{ $oagpTotalDue }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                            <td> {{ $oagpTotalIncome }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
+                                                                                        </tr>
+                                                                                    </tfoot>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @empty
+                                                                <div class="col-md-12">
+                                                                    <div class="card border mb-2">
+                                                                        <div class="card-body">
+                                                                            <b class="d-flex justify-content-center mb-2 text-warning">
+                                                                                No income found.
+                                                                            </b>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforelse
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            @empty
+                                                <div class="card border">
+                                                    <div class="card-body">
+                                                        <b class="d-flex justify-content-center text-warning">No income found.</b>
+                                                    </div>
+                                                </div>
+                                            @endforelse
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
