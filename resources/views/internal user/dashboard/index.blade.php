@@ -23,137 +23,93 @@
 @section('authContentOne')
     <div class="card border-dark mb-3">
         <div class="card-body text-dark">
-            <div class="d-flex justify-content-center">
-                <h5 class="card-title">Project contract quick view</h5>
-            </div>
-
             <div class="row">
                 <div class="col-md-6 mb-2">
-                    <p>
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#ongoingProjectContractCollapse" aria-expanded="false" aria-controls="ongoingProjectContractCollapse">
-                            Ongoing project contract : {{ $ongoingProjectContractQuickView["projectContract"] }}
-                        </button>
-                    </p>
-                    <div class="collapse" id="ongoingProjectContractCollapse">
-                        <div class="card card-body">
-                            <div class="table-responsive">
-                                <table class="table table-sm table-bordered ">
-                                    <tbody>
-                                        <tr>
-                                            <th>Project contract</th>
-                                            <td>:</td>
-                                            <td>{{ $ongoingProjectContractQuickView["projectContract"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Journal entry</th>
-                                            <td>:</td>
-                                            <td>{{ $ongoingProjectContractQuickView["journalEntry"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Journal entry (Revenue)</th>
-                                            <td>:</td>
-                                            <td>{{ $ongoingProjectContractQuickView["journalRevenueEntry"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Journal entry (Loss)</th>
-                                            <td>:</td>
-                                            <td>{{ $ongoingProjectContractQuickView["journalLossEntry"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Invested amount</th>
-                                            <td>:</td>
-                                            <td>{{ $ongoingProjectContractQuickView["investedAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Revenue amount</th>
-                                            <td>:</td>
-                                            <td>{{ $ongoingProjectContractQuickView["revenueAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Loss amount</th>
-                                            <td>:</td>
-                                            <td>{{ $ongoingProjectContractQuickView["lossAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Receivable amount</th>
-                                            <td>:</td>
-                                            <td>{{ $ongoingProjectContractQuickView["receivableAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <h5 class="card-title">OAGP Sell quick view - Current month</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6 class="card-title">{{ date('d-M-Y',strtotime(now()->startOfMonth())) }} to {{ date('d-M-Y',strtotime(now()->endOfMonth())) }}</h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total price : {{ $oagpSellCMQuickInfo['total_price'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total payable : {{ $oagpSellCMQuickInfo['total_payable_amount'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-warning">Total due : {{ $oagpSellCMQuickInfo['total_due_amount'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total paid : {{ $oagpSellCMQuickInfo['total_paid_amount'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total income : {{ $oagpSellCMQuickInfo['total_income'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2"></div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-warning">Total due count : {{ $oagpSellCMQuickInfo['total_due_payment_count'] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total complete count : {{ $oagpSellCMQuickInfo['total_complete_payment_count'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <p>
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#completeProjectContractCollapse" aria-expanded="false" aria-controls="completeProjectContractCollapse">
-                            Complete project contract : {{ $completeProjectContractQuickView["projectContract"] }}
-                        </button>
-                    </p>
-                    <div class="collapse" id="completeProjectContractCollapse">
-                        <div class="card card-body">
-                            <div class="table-responsive">
-                                <table class="table table-sm table-bordered ">
-                                    <tbody>
-                                        <tr>
-                                            <th>Project contract</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["projectContract"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Journal entry</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["journalEntry"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Journal entry (Revenue)</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["journalRevenueEntry"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Journal entry (Loss)</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["journalLossEntry"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Payment</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["payment"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Invested amount</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["investedAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Revenue amount</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["revenueAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Loss amount</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["lossAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Receivable amount</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["receivableAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Receive amount</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["receiveAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Due amount</th>
-                                            <td>:</td>
-                                            <td>{{ $completeProjectContractQuickView["dueAmount"] }} {{ $setting["businessSetting"]["currency_symbol"] }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <h5 class="card-title">OAGP Sell quick view - Current week</h5>
+                            </div>
+
+                            <div class="d-flex justify-content-center">
+                                <h6 class="card-title">{{ date('d-M-Y',strtotime(now()->startOfWeek())) }} to {{ date('d-M-Y',strtotime(now()->endOfWeek())) }}</h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total price : {{ $oagpSellCWQuickInfo['total_price'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total payable : {{ $oagpSellCWQuickInfo['total_payable_amount'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-warning">Total due : {{ $oagpSellCWQuickInfo['total_due_amount'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total paid : {{ $oagpSellCWQuickInfo['total_paid_amount'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total income : {{ $oagpSellCWQuickInfo['total_income'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2"></div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-warning">Total due count : {{ $oagpSellCWQuickInfo['total_due_payment_count'] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total complete count : {{ $oagpSellCWQuickInfo['total_complete_payment_count'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
                             </div>
                         </div>
                     </div>

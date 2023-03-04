@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\InternalUser;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\ProjectContract;
+use App\Models\OilAndGasPumpSell;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectContractJournal;
@@ -18,66 +20,73 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        $currentDate = now();
-        $startDate = $currentDate->startOfMonth()->format('Y-m-d');
-        $endDate = $currentDate->endOfMonth()->format('Y-m-d');
+        $currentDate = Carbon::now();
+        $oagpSellCMQuickInfo = $this->oagpSellQuickInfo("CurrentMonth");
+        $oagpSellCWQuickInfo = $this->oagpSellQuickInfo("CurrentWeek");
 
-        $ongoingPC = ProjectContract::where("status","Ongoing")
-                                                        ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'>=', $startDate)
-                                                        ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'<=', $endDate);
+        return view('internal user.dashboard.index',compact("oagpSellCMQuickInfo","oagpSellCWQuickInfo"));
+    }
 
-        $ongoingPCCount = $ongoingPC->count();
-        $ongoingPCInvestedAmount = $ongoingPC->sum("invested_amount");
-        $ongoingPCPCJEntryCount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->count();
-        $ongoingPCPCJRevenueEntryCount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->where("entry_type","Revenue")->count();
-        $ongoingPCPCJLossEntryCount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->where("entry_type","Loss")->count();
-        $ongoingPCPCJRevenueAmount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->where("entry_type","Revenue")->sum("amount");
-        $ongoingPCPCJLossAmount = ProjectContractJournal::whereIn("project_contract_id",$ongoingPC->pluck("id"))->where("entry_type","Loss")->sum("amount");
+    private function oagpSellQuickInfo($frequency){
+        $totalPrice = 0;
+        $totalIncome = 0;
+        $totalDue = 0;
+        $totalPaid = 0;
+        $totalDuePaymentCount = 0;
+        $totalPayable = 0;
+        $totalCompletePaymentCount = 0;
 
+        $startDate = Carbon::now();
+        $endDate = Carbon::now();
 
-        $completePC = ProjectContract::where("status","Complete")
-                                        ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'>=', $startDate)
-                                        ->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'<=', $endDate);
-        $completePCPCJ =  ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"));
-        $completePCPCP =  ProjectContractPayment::whereIn("project_contract_id",$completePC->pluck("id"));
+        if($frequency == "CurrentMonth"){
+            $startDate =  Carbon::now()->startOfMonth();
+            $endDate = Carbon::now()->endOfMonth();
+        }
+        if($frequency == "CurrentWeek"){
+            $startDate =  Carbon::now()->startOfWeek();
+            $endDate = Carbon::now()->endOfWeek();
+        }
 
-        $completePCCount = $completePC->count();
-        $completePCInvested = $completePC->sum("invested_amount");
-        $completePCPCJEntryCount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->count();
-        $completeTotalPCPCPCount = ProjectContractPayment::whereIn("project_contract_id",$completePC->pluck("id"))->count();
-        $completePCPCJLossEntryCount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->where("entry_type","Loss")->count();
-        $completePCPCJRevenueEntryCount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->where("entry_type","Revenue")->count();
-        $completePCPCJRevenueAmount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->where("entry_type","Revenue")->sum("amount");
-        $completePCPCJLossAmount = ProjectContractJournal::whereIn("project_contract_id",$completePC->pluck("id"))->where("entry_type","Loss")->sum("amount");
-        $completePCReceivableAmount = (($completePCInvested + $completePCPCJRevenueAmount) - $completePCPCJLossAmount);
-        $completePCReceiveAmount = ProjectContractPayment::whereIn("project_contract_id",$completePC->pluck("id"))->sum("amount");
+        $startDate = date("Y-m-d",strtotime($startDate));
+        $endDate = date("Y-m-d",strtotime($endDate));
 
+        $sellquickinfo = array();
+        $oagpSells = OilAndGasPumpSell::orderBy("created_at","desc")->orderBy("id","desc");
 
-        $ongoingProjectContractQuickView = array(
-            "projectContract" => $ongoingPCCount,
-            "journalEntry" => $ongoingPCPCJEntryCount,
-            "journalRevenueEntry" => $ongoingPCPCJRevenueEntryCount,
-            "journalLossEntry" => $ongoingPCPCJLossEntryCount,
-            "investedAmount" => $ongoingPCInvestedAmount,
-            "revenueAmount" => $ongoingPCPCJRevenueAmount,
-            "lossAmount" => $ongoingPCPCJLossAmount,
-            "receivableAmount" => (($ongoingPCInvestedAmount + $ongoingPCPCJRevenueAmount) - $ongoingPCPCJLossAmount),
-        );
+        if(!($startDate == null)){
+            $oagpSells = $oagpSells->where("date",'>=',$startDate);
+        }
 
-        $completeProjectContractQuickView = array(
-            "projectContract" => $completePCCount,
-            "journalEntry" => $completePCPCJEntryCount,
-            "payment" =>  $completeTotalPCPCPCount,
-            "journalRevenueEntry" => $completePCPCJRevenueEntryCount,
-            "journalLossEntry" => $completePCPCJLossEntryCount,
-            "investedAmount" => $completePCInvested,
-            "revenueAmount" => $completePCPCJRevenueAmount,
-            "lossAmount" => $completePCPCJLossAmount,
-            "receivableAmount" => $completePCReceivableAmount,
-            "receiveAmount" => $completePCReceiveAmount,
-            "dueAmount" => $completePCReceivableAmount - $completePCReceiveAmount,
-        );
+        if(!($endDate == null)){
+            $oagpSells = $oagpSells->where('date','<=',$endDate);
+        }
+        $oagpSells = $oagpSells->get();
 
-        return view('internal user.dashboard.index',compact("ongoingProjectContractQuickView","completeProjectContractQuickView"));
+        foreach($oagpSells as $oagpSell){
+            $totalPrice += $oagpSell->totalPrice();
+            $totalIncome += $oagpSell->totalIncome();
+            $totalDue += $oagpSell->totalDue();
+            $totalPaid += $oagpSell->totalPaid();
+            $totalPayable += $oagpSell->totalPayable();
+
+            if($oagpSell->status == "Due"){
+                $totalDuePaymentCount += 1;
+            }
+
+            if($oagpSell->status == "Complete"){
+                $totalCompletePaymentCount += 1;
+            }
+        }
+
+        $sellquickinfo["total_price"] = $totalPrice;
+        $sellquickinfo["total_income"] = $totalIncome;
+        $sellquickinfo["total_due_amount"] = $totalDue;
+        $sellquickinfo["total_paid_amount"] = $totalPaid;
+        $sellquickinfo["total_payable_amount"] = $totalPayable;
+        $sellquickinfo["total_due_payment_count"] = $totalDuePaymentCount;
+        $sellquickinfo["total_complete_payment_count"] = $totalCompletePaymentCount;
+
+        return $sellquickinfo;
     }
 }
