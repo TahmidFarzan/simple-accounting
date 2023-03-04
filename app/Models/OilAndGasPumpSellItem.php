@@ -23,7 +23,6 @@ class OilAndGasPumpSellItem extends Model
         'oagp_sell_id',
         'created_by_id',
         'oagp_product_id',
-        'product_inventory',
     ];
 
     protected $hidden = [
@@ -44,7 +43,7 @@ class OilAndGasPumpSellItem extends Model
         ->logOnly([
             'quantity','created_by_id',
             'price','oagp_product_id','oagp_sell_id',
-            'product_inventory',
+
         ])
         ->useLogName('Oil and gas pump sell item')
         ->setDescriptionForEvent(fn(string $eventName) => "The record has been {$eventName}.")
