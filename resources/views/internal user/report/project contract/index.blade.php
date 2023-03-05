@@ -152,8 +152,8 @@
                                         @php
                                             $receivablePopOver = "<p>";
                                             $receivablePopOver = $receivablePopOver.'<b>Invested :</b> '.$perProjectContract->invested_amount." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                            $receivablePopOver = $receivablePopOver.'<b>Total revenue :</b> '.$perProjectContract->totalRevenueAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
-                                            $receivablePopOver = $receivablePopOver.'<b>Total loss :</b> '.$perProjectContract->totalLossAmount()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                            $receivablePopOver = $receivablePopOver.'<b>Total revenue :</b> '.$perProjectContract->totalRevenue()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
+                                            $receivablePopOver = $receivablePopOver.'<b>Total loss :</b> '.$perProjectContract->totalLoss()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                             $receivablePopOver = $receivablePopOver.'<b>Total receivable :</b> '.$perProjectContract->totalReceivable()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                             $receivablePopOver = $receivablePopOver.'<b>Total income :</b> '.$perProjectContract->totalIncome()." ".$setting["businessSetting"]["currency_symbol"].'<br/>';
                                             if($perProjectContract->status == "Complete"){

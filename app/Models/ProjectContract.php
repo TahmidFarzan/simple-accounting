@@ -95,27 +95,27 @@ class ProjectContract extends Model
         return $causer;
     }
 
-    public function totalRevenueAmount()
+    public function totalRevenue()
     {
-        $totalRevenueAmount = 0;
+        $totalRevenue = 0;
 
-        $totalRevenueAmount = ($this->journals->count() == 0 ) ? 0 : $this->journals()->where("entry_type","Revenue")->sum("amount");
+        $totalRevenue = ($this->journals->count() == 0 ) ? 0 : $this->journals()->where("entry_type","Revenue")->sum("amount");
 
-        return $totalRevenueAmount;
+        return $totalRevenue;
     }
 
-    public function totalLossAmount()
+    public function totalLoss()
     {
-        $totalLossAmount = 0;
+        $totalLoss = 0;
 
-        $totalLossAmount = ($this->journals->count() == 0 ) ? 0 : $this->journals()->where("entry_type","Loss")->sum("amount");
+        $totalLoss = ($this->journals->count() == 0 ) ? 0 : $this->journals()->where("entry_type","Loss")->sum("amount");
 
-        return $totalLossAmount;
+        return $totalLoss;
     }
 
     public function totalReceivable()
     {
-        return ($this->invested_amount + $this->totalRevenueAmount()) - $this->totalLossAmount();
+        return ($this->invested_amount + $this->totalRevenue()) - $this->totalLoss();
     }
 
     public function totalReceive()

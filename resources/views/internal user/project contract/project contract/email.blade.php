@@ -176,14 +176,14 @@
                                                     <th>Total revenue</th>
                                                     <th>:</th>
                                                     <td>
-                                                        {{ $projectContract->totalRevenueAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                        {{ $projectContract->totalRevenue() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Total loss</th>
                                                     <th>:</th>
                                                     <td>
-                                                        {{ $projectContract->totalLossAmount() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
+                                                        {{ $projectContract->totalLoss() }} {{ $setting["businessSetting"]["currency_symbol"] }}</span>
                                                     </td>
                                                 </tr>
 
