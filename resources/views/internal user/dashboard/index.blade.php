@@ -202,6 +202,106 @@
             </div>
         </div>
     </div>
+
+    <div class="card border-dark mb-3">
+        <div class="card-body text-dark">
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <h5 class="card-title">Project contract quick view - Current month</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6 class="card-title">{{ date('d-M-Y',strtotime(now()->startOfMonth())) }} to {{ date('d-M-Y',strtotime(now()->endOfMonth())) }}</h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-warning">Total due : {{ $pcCMQuickInfo['total_due'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-warning">Total loss : {{ $pcCMQuickInfo['total_loss'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total income : {{ $pcCMQuickInfo['total_income'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total receive : {{ $pcCMQuickInfo['total_receive'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total revenue : {{ $pcCMQuickInfo['total_revenue'] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total receivable : {{ $pcCMQuickInfo['total_receivable'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total ongoing : {{ $pcCMQuickInfo['total_ongoing_pc'] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total complete : {{ $pcCMQuickInfo['total_complete_pc'] }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <h5 class="card-title">Project contract quick view - Current week</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6 class="card-title">{{ date('d-M-Y',strtotime(now()->startOfWeek())) }} to {{ date('d-M-Y',strtotime(now()->endOfWeek())) }}</h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-warning">Total due : {{ $pcCWQuickInfo['total_due'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-warning">Total loss : {{ $pcCWQuickInfo['total_loss'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total income : {{ $pcCWQuickInfo['total_income'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total receive : {{ $pcCWQuickInfo['total_receive'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-success">Total revenue : {{ $pcCWQuickInfo['total_revenue'] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total receivable : {{ $pcCWQuickInfo['total_receivable'] }} {{ $setting["businessSetting"]["currency_symbol"] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total ongoing : {{ $pcCWQuickInfo['total_ongoing_pc'] }}</button>
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <button class="btn btn-sm btn-primary">Total complete : {{ $pcCWQuickInfo['total_complete_pc'] }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('authContentTwo')

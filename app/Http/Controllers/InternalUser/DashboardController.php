@@ -27,8 +27,10 @@ class DashboardController extends Controller
 
         $oagpPurchaseCMQuickInfo = $this->oagpPurchaseQuickInfo("CurrentMonth");
         $oagpPurchaseCWQuickInfo = $this->oagpPurchaseQuickInfo("CurrentWeek");
+        $pcCMQuickInfo = $this->pcQuickInfo("CurrentMonth");
+        $pcCWQuickInfo = $this->pcQuickInfo("CurrentWeek");
 
-        return view('internal user.dashboard.index',compact("oagpSellCMQuickInfo","oagpSellCWQuickInfo","oagpPurchaseCMQuickInfo","oagpPurchaseCWQuickInfo"));
+        return view('internal user.dashboard.index',compact("oagpSellCMQuickInfo","oagpSellCWQuickInfo","oagpPurchaseCMQuickInfo","oagpPurchaseCWQuickInfo","pcCMQuickInfo","pcCWQuickInfo"));
     }
 
     private function oagpSellQuickInfo($frequency){
@@ -153,5 +155,75 @@ class DashboardController extends Controller
         $purchaseQuickInfo["total_complete_payment_count"] = $totalCompletePaymentCount;
 
         return $purchaseQuickInfo;
+    }
+
+    private function pcQuickInfo($frequency){
+        $totalDue = 0;
+        $totalLoss = 0;
+        $totalIncome = 0;
+        $totalReceive = 0;
+        $totalRevenue = 0;
+        $totalReceivable = 0;
+
+        $totalOngingPC = 0;
+        $totalCompletePC = 0;
+
+        $startDate = Carbon::now();
+        $endDate = Carbon::now();
+
+        if($frequency == "CurrentMonth"){
+            $startDate =  Carbon::now()->startOfMonth();
+            $endDate = Carbon::now()->endOfMonth();
+        }
+        if($frequency == "CurrentWeek"){
+            $startDate =  Carbon::now()->startOfWeek();
+            $endDate = Carbon::now()->endOfWeek();
+        }
+
+        $startDate = date("Y-m-d",strtotime($startDate));
+        $endDate = date("Y-m-d",strtotime($endDate));
+
+        $pcQuickInfo = array();
+        $pcs = ProjectContract::orderBy("created_at","desc")->orderBy("id","desc");
+
+        if(!($startDate == null)){
+            $pcs = $pcs->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'>=', $startDate)
+                        ->where(DB::raw("(STR_TO_DATE(end_date,'%Y-%m-%d'))"),'>=', $startDate);
+        }
+
+        if(!($endDate == null)){
+            $pcs = $pcs->where(DB::raw("(STR_TO_DATE(start_date,'%Y-%m-%d'))"),'<=', $endDate)
+                        ->where(DB::raw("(STR_TO_DATE(end_date,'%Y-%m-%d'))"),'<=', $endDate);
+        }
+
+        $pcs = $pcs->get();
+
+        foreach($pcs as $pc){
+            $totalDue += $pc->totalDue();
+            $totalLoss += $pc->totalLoss();
+            $totalIncome +=  $pc->totalIncome();
+            $totalReceive +=  $pc->totalReceive();
+            $totalRevenue +=  $pc->totalRevenue();
+            $totalReceivable +=  $pc->totalReceivable();
+
+            if($pc->status == "Ongoing"){
+                $totalOngingPC += 1;
+            }
+
+            if($pc->status == "Complete"){
+                $totalCompletePC += 1;
+            }
+        }
+
+        $pcQuickInfo["total_due"] = $totalDue;
+        $pcQuickInfo["total_loss"] = $totalLoss;
+        $pcQuickInfo["total_income"] = $totalIncome;
+        $pcQuickInfo["total_receive"] =  $totalReceive;
+        $pcQuickInfo["total_revenue"] =  $totalRevenue ;
+        $pcQuickInfo["total_receivable"] = $totalReceivable;
+        $pcQuickInfo["total_ongoing_pc"] = $totalOngingPC;
+        $pcQuickInfo["total_complete_pc"] = $totalCompletePC;
+
+        return $pcQuickInfo;
     }
 }
